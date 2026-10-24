@@ -6,6 +6,7 @@ const DEFAULT_THEME = "dark"
 export default class extends Controller {
   connect() {
     this.#apply(this.#read() || DEFAULT_THEME)
+    this.element.dataset.themeReady = "true"
   }
 
   toggle() {
