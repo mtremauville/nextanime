@@ -1,19 +1,19 @@
-## Contexte
-<!-- Pourquoi cette PR ? -->
+## Context
+<!-- Why this PR? -->
 
-## Ce qui change
+## What changes
 -
 
-## Comment tester
+## How to test
 1.
 
-## Captures d'écran
-<!-- Pour les vues : desktop et mobile -->
+## Screenshots
+<!-- For views: desktop and mobile -->
 
 ## Checklist
-- [ ] `bundle exec rspec` vert
-- [ ] `bundle exec rubocop` vert
-- [ ] `bin/brakeman` vert
-- [ ] Auto-relecture faite
+- [ ] `bundle exec rspec` is green
+- [ ] `bundle exec rubocop` is green
+- [ ] `bin/brakeman` is green
+- [ ] Self-review done
 
 Closes #
