@@ -6,8 +6,9 @@ servers:
     - 147.79.114.207
 
 proxy:
-  ssl: true
+  ssl: false
   host: nextanime.tremic.fr
+  forward_headers: true
 
 registry:
   server: ghcr.io
