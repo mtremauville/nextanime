@@ -1,0 +1,32 @@
+// Palette brute — jamais utilisée directement dans les composants.
+// Les composants utilisent les variables CSS sémantiques (--na-*) définies plus bas.
+
+// Néon / cyber japonisant — thème SOMBRE (par défaut)
+$na-dark-bg:        #0B0A14;
+$na-dark-surface:   #14122A;
+$na-dark-surface-2: #1C1A38;
+$na-dark-border:    #2C2A55;
+$na-dark-text:      #F2F0FF;
+$na-dark-muted:     #A9A6D0;
+$na-dark-magenta:   #FF2E93;
+$na-dark-cyan:      #19E3F2;
+
+// Thème CLAIR « papier chaud » (accents désaturés, contraste AA >= 4.5:1)
+$na-light-bg:        #F4EFE6;
+$na-light-surface:   #FBF8F2;
+$na-light-surface-2: #ECE5D8;
+$na-light-border:    #D8CFBE;
+$na-light-text:      #3A3550;
+$na-light-muted:     #655F7A;
+$na-light-magenta:   #A83A6F;
+$na-light-cyan:      #2F6F76;
+
+// Dégradés d'affiches (placeholders, communs aux deux thèmes)
+$na-poster-gradients: (
+  violet:  linear-gradient(160deg, #2A0F3D 0%, #7A2AFF 100%),
+  magenta: linear-gradient(160deg, #4A0E2E 0%, #FF2E93 100%),
+  cyan:    linear-gradient(160deg, #0B3B5C 0%, #19E3F2 100%),
+  green:   linear-gradient(160deg, #0E3A33 0%, #2EFF9A 100%),
+  orange:  linear-gradient(160deg, #4A0E2E 0%, #FF7A2E 100%),
+  indigo:  linear-gradient(160deg, #1A1A4A 0%, #FF2E93 100%)
+);
