@@ -1,7 +1,8 @@
 require "simplecov"
 SimpleCov.start "rails" do
   enable_coverage :branch
-  minimum_coverage 90 # objectif indicatif sur le code métier
+  add_filter %w[app/jobs/application_job.rb app/mailers/application_mailer.rb app/models/application_record.rb]
+  minimum_coverage 90 if ENV["CI"] # enforced on CI, not on partial local runs
 end
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
