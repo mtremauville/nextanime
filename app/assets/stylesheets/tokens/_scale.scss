@@ -1,0 +1,30 @@
+// Typographie
+$na-font-heading: "Chakra Petch", sans-serif;   // titres, boutons (700)
+$na-font-body:    "Manrope", system-ui, sans-serif; // texte (400 / 600 / 800)
+$na-font-accent:  "DotGothic16", monospace;     // chiffres, étiquettes, pourcentages
+
+// Échelle de tailles utilisée dans les maquettes
+$na-font-sizes: (12: .75rem, 14: .875rem, 16: 1rem, 18: 1.125rem, 20: 1.25rem,
+                 24: 1.5rem, 32: 2rem, 40: 2.5rem, 48: 3rem, 64: 4rem);
+
+// Espacements (base 4 px) — alignés sur l'échelle $spacers de Bootstrap
+$na-spacers: (0: 0, 1: .25rem, 2: .5rem, 3: .75rem, 4: 1rem, 5: 1.5rem,
+              6: 2rem, 7: 3rem, 8: 4rem, 9: 5rem, 10: 6rem);
+
+// Rayons
+$na-radius-sm:   8px;   // boutons, champs
+$na-radius-md:   12px;  // petites cartes
+$na-radius-lg:   16px;  // cartes, panneaux
+$na-radius-pill: 999px; // tags, chips, barres de progression
+
+// Layout
+$na-container-max: 1344px; // contenu desktop (1440 - 2 x 48)
+$na-gutter-desktop: 48px;
+$na-gutter-mobile:  16px;
+$na-touch-target:   44px;  // hauteur minimale des zones cliquables
+$na-mobile-width:   390px; // maquettes mobiles
+
+// Lueurs néon (le thème clair les atténue)
+$na-glow-magenta: 0 0 24px rgba(255, 46, 147, .45);
+$na-glow-magenta-soft: 0 0 32px rgba(255, 46, 147, .25);
+$na-glow-cyan: 0 0 20px rgba(25, 227, 242, .35);

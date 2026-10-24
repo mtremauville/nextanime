@@ -1,0 +1,55 @@
+// Variables CSS sémantiques : c'est ce que les composants consomment.
+:root,
+[data-bs-theme="dark"] {
+  --na-bg:        #{$na-dark-bg};
+  --na-surface:   #{$na-dark-surface};
+  --na-surface-2: #{$na-dark-surface-2};
+  --na-border:    #{$na-dark-border};
+  --na-text:      #{$na-dark-text};
+  --na-muted:     #{$na-dark-muted};
+  --na-magenta:   #{$na-dark-magenta};
+  --na-cyan:      #{$na-dark-cyan};
+  --na-on-magenta: #{$na-dark-bg};          // texte sur bouton magenta
+  --na-glow-magenta: #{$na-glow-magenta};
+  --na-glow-magenta-soft: #{$na-glow-magenta-soft};
+  --na-glow-cyan: #{$na-glow-cyan};
+  --na-magenta-soft: rgba(255, 46, 147, .12); // fond d'élément actif
+  --na-cyan-soft:    rgba(25, 227, 242, .12);
+}
+
+[data-bs-theme="light"] {
+  --na-bg:        #{$na-light-bg};
+  --na-surface:   #{$na-light-surface};
+  --na-surface-2: #{$na-light-surface-2};
+  --na-border:    #{$na-light-border};
+  --na-text:      #{$na-light-text};
+  --na-muted:     #{$na-light-muted};
+  --na-magenta:   #{$na-light-magenta};
+  --na-cyan:      #{$na-light-cyan};
+  --na-on-magenta: #FBF8F2;
+  --na-glow-magenta: 0 2px 8px rgba(58, 53, 80, .10);
+  --na-glow-magenta-soft: 0 2px 12px rgba(58, 53, 80, .08);
+  --na-glow-cyan: 0 2px 8px rgba(58, 53, 80, .10);
+  --na-magenta-soft: rgba(168, 58, 111, .12);
+  --na-cyan-soft:    rgba(47, 111, 118, .12);
+}
+
+// Affiches : mêmes dégradés quel que soit le thème
+:root {
+  @each $name, $gradient in $na-poster-gradients {
+    --na-poster-#{$name}: #{$gradient};
+  }
+}
+
+// Zones sur affiche : toujours sombres, texte clair (lisibilité)
+.na-poster-overlay {
+  color: #F2F0FF;
+  background: linear-gradient(0deg, rgba(11, 10, 20, .92), rgba(11, 10, 20, 0));
+}
+.na-badge-match {
+  background: #0B0A14;
+  color: #19E3F2;
+  font-family: $na-font-accent;
+  border-radius: $na-radius-pill;
+  padding: 2px 10px;
+}

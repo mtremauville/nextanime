@@ -1,0 +1,40 @@
+// 1) Variables Sass Bootstrap — à définir AVANT l'import de Bootstrap.
+//    Les valeurs de couleur pointent vers le thème sombre par défaut ;
+//    le basculement clair/sombre passe par data-bs-theme et les variables --na-*.
+
+$font-family-sans-serif: $na-font-body;
+$headings-font-family:   $na-font-heading;
+$headings-font-weight:   700;
+$font-family-monospace:  $na-font-accent;
+
+$body-bg:        $na-dark-bg;
+$body-color:     $na-dark-text;
+$body-bg-dark:   $na-dark-bg;
+$body-color-dark: $na-dark-text;
+$body-secondary-color: $na-dark-muted;
+$border-color:   $na-dark-border;
+$border-color-translucent: $na-dark-border;
+
+$primary:   $na-dark-magenta;
+$info:      $na-dark-cyan;
+$secondary: $na-dark-muted;
+
+$border-radius:     $na-radius-sm;
+$border-radius-sm:  $na-radius-sm;
+$border-radius-lg:  $na-radius-lg;
+$border-radius-pill: $na-radius-pill;
+
+$spacer: 1rem;
+$spacers: $na-spacers;
+
+$container-max-widths: (xl: $na-container-max, xxl: $na-container-max);
+$btn-min-height: $na-touch-target;
+$input-btn-padding-y: .75rem;
+$btn-font-family: $na-font-heading;
+$btn-font-weight: 700;
+$card-border-radius: $na-radius-lg;
+$card-bg: $na-dark-surface;
+$input-bg: $na-dark-bg;
+$input-border-color: $na-dark-border;
+$input-color: $na-dark-text;
+$focus-ring-color: rgba($na-dark-cyan, .6);

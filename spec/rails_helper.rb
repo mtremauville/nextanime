@@ -1,7 +1,8 @@
 require "simplecov"
 SimpleCov.start "rails" do
   enable_coverage :branch
-  minimum_coverage 90 # objectif indicatif sur le code métier
+  skip %w[app/jobs/application_job.rb app/mailers/application_mailer.rb app/models/application_record.rb]
+  minimum_coverage 90 if ENV["CI"] # enforced on CI, not on partial local runs
 end
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
@@ -13,6 +14,8 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 # that will avoid rails generators crashing because migrations haven't been run yet
 # return unless Rails.env.test?
 require 'rspec/rails'
+
+Capybara.enable_aria_label = true
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -41,6 +44,14 @@ rescue ActiveRecord::PendingMigrationError => e
 end
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
+
+  config.before(:each, type: :system) do
+    driven_by :rack_test
+  end
+
+  config.before(:each, type: :system, js: true) do
+    driven_by :selenium, using: :headless_chrome, screen_size: [ 1400, 900 ]
+  end
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_paths = [
     Rails.root.join('spec/fixtures')
