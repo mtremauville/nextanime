@@ -15,5 +15,15 @@ RSpec.describe "Styleguide", type: :request do
     it "renders the theme toggle" do
       expect(response.body).to include('data-controller="theme"')
     end
+
+    it "lists every color token" do
+      StyleguideController::COLOR_TOKENS.each do |token|
+        expect(response.body).to include(token)
+      end
+    end
+
+    it "shows the three font families" do
+      expect(response.body).to include("Chakra Petch", "Manrope", "DotGothic16")
+    end
   end
 end

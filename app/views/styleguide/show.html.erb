@@ -1,6 +1,31 @@
 <main class="container py-5">
-  <h1>Styleguide NextAnime</h1>
-  <button type="button" class="btn btn-sm btn-na-outline"
-          data-controller="theme" data-action="theme#toggle"
-          aria-label="Basculer entre thème clair et sombre">Thème</button>
+  <header class="d-flex justify-content-between align-items-center mb-5">
+    <h1>Styleguide NextAnime</h1>
+    <button type="button" class="btn btn-sm btn-na-outline"
+            data-controller="theme" data-action="theme#toggle"
+            aria-label="Basculer entre thème clair et sombre">Thème</button>
+  </header>
+
+  <section class="mb-5" aria-labelledby="colors-title">
+    <h2 id="colors-title" class="h4 mb-3">Couleurs</h2>
+    <div class="row g-3">
+      <% @color_tokens.each do |token| %>
+        <div class="col-6 col-md-3">
+          <div class="na-card p-3">
+            <div class="na-swatch na-swatch-<%= token.delete_prefix("--na-") %> mb-2"></div>
+            <code><%= token %></code>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </section>
+
+  <section class="mb-5" aria-labelledby="fonts-title">
+    <h2 id="fonts-title" class="h4 mb-3">Typographie</h2>
+    <div class="na-card p-4 d-flex flex-column gap-3">
+      <p class="na-font-heading fs-3 mb-0">Chakra Petch — titres et boutons</p>
+      <p class="na-font-body mb-0">Manrope — texte courant, 400 / 600 / 800</p>
+      <p class="na-font-accent mb-0">DotGothic16 — chiffres et étiquettes 0123456789</p>
+    </div>
+  </section>
 </main>

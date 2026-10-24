@@ -1,0 +1,15 @@
+$na-swatch-names: bg, surface, surface-2, border, text, muted, magenta, cyan;
+
+.na-swatch {
+  height: 48px;
+  border: 1px solid var(--na-border);
+  border-radius: $na-radius-sm;
+}
+
+@each $name in $na-swatch-names {
+  .na-swatch-#{$name} { background: var(--na-#{$name}); }
+}
+
+.na-font-heading { font-family: $na-font-heading; font-weight: 700; }
+.na-font-body    { font-family: $na-font-body; }
+.na-font-accent  { font-family: $na-font-accent; }
