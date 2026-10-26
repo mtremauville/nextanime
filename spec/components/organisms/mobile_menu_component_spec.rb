@@ -47,4 +47,48 @@ RSpec.describe Organisms::MobileMenuComponent, type: :component do
     expect(rendered).to have_css("button[data-theme-theme-param='dark']", text: "Sombre")
     expect(rendered).to have_css("button[data-theme-theme-param='light']", text: "Clair")
   end
+
+  describe "account" do
+    let(:menu_arguments) { { items: [], countries: { "FR" => "France" }, selected_country: "FR" } }
+
+    context "for a visitor" do
+      before { render_inline(described_class.new(**menu_arguments)) }
+
+      it "announces the guest mode" do
+        expect(page).to have_css(".na-menu__guest", text: "Mode invité")
+        expect(page).to have_text("Ton profil n'est pas sauvegardé : il disparaît si tu fermes la page.")
+      end
+
+      it "offers to create an account and to sign in" do
+        expect(page).to have_css("a.btn-na-primary[href='/users/sign_up']", text: "Créer un compte")
+        expect(page).to have_css("a.btn-na-outline[href='/users/sign_in']", text: "Connexion")
+      end
+
+      it "offers no sign out" do
+        expect(page).to have_no_button("Déconnexion")
+      end
+    end
+
+    context "for a signed in user" do
+      before do
+        render_inline(described_class.new(**menu_arguments, user: build_stubbed(:user, email: "mickael@example.com")))
+      end
+
+      it "shows who is signed in" do
+        expect(page).to have_css(".na-menu__account span.na-avatar", text: "M")
+        expect(page).to have_css(".na-menu__account", text: "mickael@example.com")
+      end
+
+      it "signs out with a DELETE request" do
+        expect(page).to have_css("form[action='/users/sign_out'][method='post']")
+        expect(page).to have_css("input[name='_method'][value='delete']", visible: :all)
+        expect(page).to have_button("Déconnexion")
+      end
+
+      it "shows neither the guest notice nor the sign in links" do
+        expect(page).to have_no_css(".na-menu__guest")
+        expect(page).to have_no_link("Connexion")
+      end
+    end
+  end
 end

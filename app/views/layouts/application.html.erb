@@ -5,7 +5,7 @@
   <body>
     <a class="visually-hidden-focusable" href="#main">Aller au contenu</a>
 
-    <%= render Organisms::MainNavigationComponent.new(current_path: request.path) %>
+    <%= render Organisms::MainNavigationComponent.new(current_path: request.path, user: current_user) %>
 
     <main id="main" class="container na-main">
       <%= render "shared/flash" %><%= yield %>

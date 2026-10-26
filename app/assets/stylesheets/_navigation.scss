@@ -224,3 +224,46 @@
 
   .btn { min-height: 2.75rem; }
 }
+
+.na-menu__account {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .75rem 0;
+}
+
+.na-menu__account-email {
+  overflow: hidden;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.na-menu__guest {
+  padding: .75rem 1rem;
+  border: 1px solid var(--na-border);
+  border-radius: $na-radius-lg;
+  background: var(--na-surface-2);
+}
+
+.na-menu__guest-title {
+  margin: 0 0 .25rem;
+  color: var(--na-magenta);
+  font-size: .75rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.na-menu__guest-text {
+  margin: 0;
+  color: var(--na-muted);
+  font-size: .875rem;
+}
+
+.na-menu__actions {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+  margin-top: 1.5rem;
+}
