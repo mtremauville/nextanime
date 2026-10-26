@@ -1,0 +1,64 @@
+.na-auth {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 100vh;
+
+  @include media-breakpoint-up(lg) { grid-template-columns: 1fr 1fr; }
+
+  &__brand {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--na-surface);
+    border-bottom: 1px solid var(--na-border);
+
+    @include media-breakpoint-up(lg) {
+      justify-content: space-between;
+      padding: 3rem;
+      border-right: 1px solid var(--na-border);
+      border-bottom: 0;
+    }
+  }
+
+  &__logo {
+    display: inline-flex;
+    align-items: center;
+    gap: .75rem;
+    color: var(--na-text);
+    font-weight: 800;
+    text-decoration: none;
+  }
+
+  &__logo-mark { color: var(--na-magenta); font-size: 1.5rem; line-height: 1; }
+
+  &__pitch {
+    display: none;
+    @include media-breakpoint-up(lg) { display: block; }
+  }
+
+  &__eyebrow { margin-bottom: 1rem; color: var(--na-cyan); font-size: .875rem; }
+  &__title { margin-bottom: 1rem; font-size: 2.25rem; font-weight: 800; line-height: 1.2; }
+  &__accent { color: var(--na-magenta); }
+  &__lead { max-width: 28rem; color: var(--na-muted); }
+
+  &__panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+
+  &__panel-inner { width: 100%; max-width: 26rem; }
+
+  &__back {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    margin-bottom: 1.5rem;
+    color: var(--na-muted);
+    text-decoration: none;
+
+    &:hover { color: var(--na-text); }
+  }
+}

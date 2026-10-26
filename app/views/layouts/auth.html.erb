@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr" data-bs-theme="dark">
+  <%= render "layouts/head" %>
+
+  <body data-controller="theme">
+    <a class="visually-hidden-focusable" href="#main">Aller au contenu</a>
+
+    <div class="na-auth">
+      <aside class="na-auth__brand">
+        <%= link_to root_path, class: "na-auth__logo" do %>
+          <span class="na-auth__logo-mark" lang="ja" aria-hidden="true">次</span>
+          <span>NextAnime</span>
+        <% end %>
+
+        <div class="na-auth__pitch">
+          <p class="na-auth__eyebrow" lang="ja">次のアニメを見つけよう</p>
+          <p class="na-auth__title">Ton prochain anime se cache dans <span class="na-auth__accent">tes goûts</span>.</p>
+          <p class="na-auth__lead">Un compte te permet de garder ton profil, ta watchlist et tes notifications de sorties.</p>
+        </div>
+      </aside>
+
+      <main id="main" class="na-auth__panel">
+        <div class="na-auth__panel-inner">
+          <%= link_to root_path, class: "na-auth__back" do %>
+            <i class="bi bi-arrow-left" aria-hidden="true"></i>
+            <span>Retour à l'accueil</span>
+          <% end %>
+
+          <%= render "shared/flash" %>
+          <%= yield %>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
