@@ -62,3 +62,39 @@
     &:hover { color: var(--na-text); }
   }
 }
+
+.na-auth-tabs {
+  display: flex;
+  gap: .25rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--na-border);
+
+  &__link {
+    margin-bottom: -1px;
+    padding: .75rem 1rem;
+    border-bottom: 2px solid transparent;
+    color: var(--na-muted);
+    text-decoration: none;
+
+    &:hover { color: var(--na-text); }
+    &--active { border-bottom-color: var(--na-magenta); color: var(--na-text); }
+  }
+}
+
+.na-auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.5rem 0 1rem;
+  color: var(--na-muted);
+  font-size: .875rem;
+
+  &::before, &::after { content: ""; flex: 1; height: 1px; background: var(--na-border); }
+}
+
+.na-guest-access__hint {
+  margin: .75rem 0 0;
+  color: var(--na-muted);
+  font-size: .875rem;
+  text-align: center;
+}
