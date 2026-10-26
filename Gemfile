@@ -70,3 +70,6 @@ gem "simplecov", "~> 1.3", group: :test
 gem "view_component", "~> 4.19"
 
 gem "devise", "~> 5.0"
+
+gem "rails-i18n", "~> 8.1"
+gem "devise-i18n", "~> 1.16"
