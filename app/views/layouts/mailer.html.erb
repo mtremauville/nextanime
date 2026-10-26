@@ -1,13 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark">
+    <meta name="supported-color-schemes" content="dark">
+    <title><%= yield(:title) %></title>
     <style>
-      /* Email styles need to be inline */
+      :root { color-scheme: dark; supported-color-schemes: dark; }
+      @media (max-width: 620px) {
+        .na-mail-container { width: 100% !important; }
+        .na-mail-card { padding: 28px 20px !important; }
+      }
     </style>
   </head>
 
-  <body>
-    <%= yield %>
+  <body style="<%= mail_style(:body) %>" bgcolor="<%= mail_color(:background) %>">
+    <div data-role="preheader" style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent;mso-hide:all;"><%= yield(:preheader) %></div>
+
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="<%= mail_color(:background) %>">
+      <tr>
+        <td align="center" style="padding:32px 16px;">
+          <table role="presentation" class="na-mail-container" width="560" cellpadding="0" cellspacing="0" border="0" style="width:560px;max-width:560px;">
+            <tr>
+              <td data-role="brand" style="<%= mail_style(:brand) %>">
+                <span style="<%= mail_style(:brand_mark) %>" aria-hidden="true">次</span> NextAnime
+              </td>
+            </tr>
+            <tr>
+              <td class="na-mail-card" style="<%= mail_style(:card) %>" bgcolor="<%= mail_color(:surface) %>">
+                <%= yield %>
+              </td>
+            </tr>
+            <tr>
+              <td data-role="footer" style="<%= mail_style(:footer) %>">
+                <%= yield(:footer) %>
+                <p style="margin:12px 0 0;">NextAnime · Ton prochain anime se cache dans tes goûts.</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
   </body>
 </html>

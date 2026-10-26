@@ -9,7 +9,7 @@ RSpec.describe "Password reset", type: :request do
   end
 
   def token_from_last_mail
-    sent_mails.last.body.decoded[/reset_password_token=([^"&\s]+)/, 1]
+    sent_mails.last.html_part.decoded[/reset_password_token=([^"&\s]+)/, 1]
   end
 
   before { sent_mails.clear }
