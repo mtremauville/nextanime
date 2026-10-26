@@ -21,6 +21,10 @@
         <i class="bi bi-moon-stars na-theme-toggle__moon" aria-hidden="true"></i>
       </button>
 
+      <div class="d-none d-md-block">
+        <%= render Molecules::AccountActionsComponent.new(user: user) %>
+      </div>
+
       <button type="button" class="btn-na-outline na-icon-button d-md-none"
               data-menu-target="opener" data-action="menu#open"
               aria-label="Ouvrir le menu" aria-haspopup="dialog" aria-expanded="false"
@@ -30,7 +34,7 @@
     </div>
   </div>
 
-  <%= render Organisms::MobileMenuComponent.new(items: nav_items, countries: COUNTRIES, selected_country: DEFAULT_COUNTRY) %>
+  <%= render Organisms::MobileMenuComponent.new(items: nav_items, countries: COUNTRIES, selected_country: DEFAULT_COUNTRY, user: user) %>
 </header>
 
 <nav class="na-tabbar d-md-none" aria-label="Onglets">

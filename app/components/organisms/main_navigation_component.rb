@@ -10,11 +10,14 @@ class Organisms::MainNavigationComponent < ViewComponent::Base
     "GB" => "Royaume-Uni"
   }.freeze
 
-  def initialize(current_path:)
+  def initialize(current_path:, user: nil)
     @current_path = current_path
+    @user = user
   end
 
   private
+
+  attr_reader :user
 
   def nav_items
     items.map { |item| item.merge(current: current?(item[:href])) }

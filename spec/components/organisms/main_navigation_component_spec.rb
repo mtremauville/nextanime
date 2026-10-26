@@ -76,4 +76,38 @@ RSpec.describe Organisms::MainNavigationComponent, type: :component do
       end
     end
   end
+
+  describe "account access" do
+    context "for a visitor" do
+      before { render_inline(described_class.new(current_path: "/")) }
+
+      it "offers to sign in and to sign up in the header" do
+        expect(page).to have_css(".na-header__tools .na-account a[href='/users/sign_in']", text: "Connexion")
+        expect(page).to have_css(".na-header__tools .na-account a[href='/users/sign_up']", text: "Créer un compte")
+      end
+
+      it "shows the guest mode in the mobile menu" do
+        expect(page).to have_css("dialog .na-menu__guest")
+      end
+    end
+
+    context "for a signed in user" do
+      before do
+        render_inline(described_class.new(current_path: "/", user: build_stubbed(:user, email: "mickael@example.com")))
+      end
+
+      it "shows the avatar and a sign out button in the header" do
+        expect(page).to have_css(".na-header__tools .na-account span.na-avatar", text: "M")
+        expect(page).to have_css(".na-header__tools .na-account button", text: "Déconnexion")
+      end
+
+      it "no longer offers to sign in in the header" do
+        expect(page).to have_no_css(".na-header__tools a[href='/users/sign_in']")
+      end
+
+      it "shows the account in the mobile menu" do
+        expect(page).to have_css("dialog .na-menu__account", text: "mickael@example.com")
+      end
+    end
+  end
 end

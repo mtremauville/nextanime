@@ -9,6 +9,18 @@
       </button>
     </div>
 
+    <% if user %>
+      <div class="na-menu__account">
+        <%= render Atoms::AvatarComponent.new(name: user.email) %>
+        <span class="na-menu__account-email"><%= user.email %></span>
+      </div>
+    <% else %>
+      <div class="na-menu__guest">
+        <p class="na-menu__guest-title">Mode invité</p>
+        <p class="na-menu__guest-text">Ton profil n'est pas sauvegardé : il disparaît si tu fermes la page.</p>
+      </div>
+    <% end %>
+
     <nav class="na-menu__nav" aria-label="Navigation mobile">
       <% items.each do |item| %>
         <%= render Molecules::NavItemComponent.new(**item) %>
@@ -35,5 +47,14 @@
         <% end %>
       </div>
     </fieldset>
+
+    <div class="na-menu__actions">
+      <% if user %>
+        <%= button_to "Déconnexion", destroy_user_session_path, method: :delete, class: "btn btn-na-outline w-100" %>
+      <% else %>
+        <%= render Atoms::ButtonComponent.new(href: new_user_registration_path, class: "w-100") do %>Créer un compte<% end %>
+        <%= render Atoms::ButtonComponent.new(variant: :outline, href: new_user_session_path, class: "w-100") do %>Connexion<% end %>
+      <% end %>
+    </div>
   </div>
 </dialog>

@@ -1,0 +1,11 @@
+<%= form_with scope: :user, url: user_session_path, class: "na-auth-form" do %>
+  <%= render Molecules::FormFieldComponent.new(name: "user[email]", label: "Adresse e-mail", type: "email", value: resource.email, autocomplete: "email") %>
+  <%= render Molecules::FormFieldComponent.new(name: "user[password]", label: "Mot de passe", type: "password", autocomplete: "current-password") %>
+
+  <div class="na-auth-form__options">
+    <%= render Molecules::CheckboxFieldComponent.new(name: "user[remember_me]", label: "Se souvenir de moi") %>
+    <%= link_to "Mot de passe oublié ?", new_user_password_path, class: "na-auth-form__forgot" %>
+  </div>
+
+  <%= render Atoms::ButtonComponent.new(type: "submit", class: "w-100") do %>Se connecter<% end %>
+<% end %>
