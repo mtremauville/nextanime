@@ -10,9 +10,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_26_191444) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_26_192257) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "animes", force: :cascade do |t|
+    t.integer "anilist_id", null: false
+    t.string "title_romaji", null: false
+    t.string "title_english"
+    t.string "title_native"
+    t.text "description"
+    t.string "cover_image_url"
+    t.string "banner_image_url"
+    t.string "format"
+    t.string "airing_status"
+    t.string "season"
+    t.integer "season_year"
+    t.integer "episodes"
+    t.integer "duration"
+    t.integer "average_score"
+    t.integer "popularity"
+    t.date "start_date"
+    t.date "end_date"
+    t.integer "next_episode"
+    t.datetime "next_airing_at"
+    t.datetime "synced_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["anilist_id"], name: "index_animes_on_anilist_id", unique: true
+  end
 
   create_table "genres", force: :cascade do |t|
     t.string "name", null: false
