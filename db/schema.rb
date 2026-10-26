@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_26_190435) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_26_191221) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -19,5 +19,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_26_190435) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_genres_on_name", unique: true
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.integer "anilist_tag_id", null: false
+    t.string "name", null: false
+    t.string "category"
+    t.boolean "adult", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["anilist_tag_id"], name: "index_tags_on_anilist_tag_id", unique: true
   end
 end
