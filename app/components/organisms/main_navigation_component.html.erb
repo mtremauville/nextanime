@@ -1,10 +1,10 @@
-<header class="na-header">
+<header class="na-header" data-controller="menu">
   <div class="na-header__bar">
     <%= link_to BRAND, root_path, class: "na-header__brand" %>
 
     <nav class="na-header__nav d-none d-md-flex" aria-label="Navigation principale">
-      <% items.each do |item| %>
-        <%= render Molecules::NavItemComponent.new(**item, current: current?(item[:href])) %>
+      <% nav_items.each do |item| %>
+        <%= render Molecules::NavItemComponent.new(**item) %>
       <% end %>
     </nav>
 
@@ -14,18 +14,27 @@
         <%= select_tag "country", country_options, id: "country", class: "form-select form-select-sm" %>
       </div>
 
-      <button type="button" class="btn-na-outline na-theme-toggle"
+      <button type="button" class="btn-na-outline na-theme-toggle d-none d-md-inline-flex"
               data-controller="theme" data-action="theme#toggle"
               aria-label="Changer de thème">
         <i class="bi bi-sun na-theme-toggle__sun" aria-hidden="true"></i>
         <i class="bi bi-moon-stars na-theme-toggle__moon" aria-hidden="true"></i>
       </button>
+
+      <button type="button" class="btn-na-outline na-icon-button d-md-none"
+              data-menu-target="opener" data-action="menu#open"
+              aria-label="Ouvrir le menu" aria-haspopup="dialog" aria-expanded="false"
+              aria-controls="<%= Organisms::MobileMenuComponent::DOM_ID %>">
+        <i class="bi bi-list" aria-hidden="true"></i>
+      </button>
     </div>
   </div>
+
+  <%= render Organisms::MobileMenuComponent.new(items: nav_items, countries: COUNTRIES, selected_country: DEFAULT_COUNTRY) %>
 </header>
 
 <nav class="na-tabbar d-md-none" aria-label="Onglets">
-  <% items.each do |item| %>
-    <%= render Molecules::NavItemComponent.new(**item, current: current?(item[:href])) %>
+  <% nav_items.each do |item| %>
+    <%= render Molecules::NavItemComponent.new(**item) %>
   <% end %>
 </nav>
