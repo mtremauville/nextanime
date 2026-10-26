@@ -1,0 +1,38 @@
+<dialog id="<%= DOM_ID %>" class="na-menu" aria-labelledby="mobile-menu-title">
+  <div class="na-menu__panel">
+    <div class="na-menu__header">
+      <h2 id="mobile-menu-title" class="na-menu__title">Menu</h2>
+      <button type="button" class="btn-na-outline na-icon-button"
+              data-action="menu#close" aria-label="Fermer le menu">
+        <i class="bi bi-x-lg" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <nav class="na-menu__nav" aria-label="Navigation mobile">
+      <% items.each do |item| %>
+        <%= render Molecules::NavItemComponent.new(**item) %>
+      <% end %>
+    </nav>
+
+    <fieldset class="na-menu__section">
+      <legend class="na-menu__section-title">Pays</legend>
+      <% countries.each do |code, name| %>
+        <label class="na-menu__choice">
+          <%= radio_button_tag "menu_country", code, code == selected_country %>
+          <span><%= name %></span>
+        </label>
+      <% end %>
+    </fieldset>
+
+    <fieldset class="na-menu__section">
+      <legend class="na-menu__section-title">Thème</legend>
+      <div class="na-menu__themes">
+        <% THEMES.each do |theme, label| %>
+          <button type="button" class="na-menu__theme"
+                  data-controller="theme" data-action="theme#choose"
+                  data-theme-theme-param="<%= theme %>"><%= label %></button>
+        <% end %>
+      </div>
+    </fieldset>
+  </div>
+</dialog>

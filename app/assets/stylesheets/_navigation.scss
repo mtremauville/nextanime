@@ -100,6 +100,7 @@
   }
 }
 
+.na-icon-button,
 .na-theme-toggle {
   display: inline-flex;
   align-items: center;
@@ -114,4 +115,92 @@
 [data-bs-theme="dark"] .na-theme-toggle__moon,
 [data-bs-theme="light"] .na-theme-toggle__sun {
   display: none;
+}
+
+.na-menu {
+  width: min(22rem, 100%);
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0 0 0 auto;
+  padding: 0;
+  border: 0;
+  background: var(--na-surface);
+  color: var(--na-text);
+
+  &::backdrop {
+    background: rgba(0, 0, 0, 0.6);
+  }
+}
+
+.na-menu__panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-height: 100%;
+  padding: 1rem;
+}
+
+.na-menu__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.na-menu__title {
+  margin: 0;
+  font-family: "Chakra Petch", sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.na-menu__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.na-menu__section {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.na-menu__section-title {
+  float: none;
+  width: auto;
+  margin-bottom: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--na-muted);
+}
+
+.na-menu__choice {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+}
+
+.na-menu__themes {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.na-menu__theme {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid var(--na-border);
+  border-radius: 0.5rem;
+  background: transparent;
+  font-weight: 600;
+  color: var(--na-text);
+}
+
+[data-bs-theme="dark"] .na-menu__theme[data-theme-theme-param="dark"],
+[data-bs-theme="light"] .na-menu__theme[data-theme-theme-param="light"] {
+  border-color: var(--na-cyan);
+  color: var(--na-cyan);
 }
