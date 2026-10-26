@@ -1,0 +1,8 @@
+<% content_for :title, "Mot de passe oublié · Next Anime" %>
+
+<h1 class="h3">Mot de passe oublié ?</h1>
+<p class="text-body-secondary mb-4">
+  Indique ton adresse e-mail. Si elle correspond à un compte, tu recevras un lien pour choisir un nouveau mot de passe, valable <%= distance_of_time_in_words(Time.current, Devise.reset_password_within.from_now) %>.
+</p>
+
+<%= render Organisms::ForgotPasswordFormComponent.new(resource: resource) %>

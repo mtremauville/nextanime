@@ -1,0 +1,6 @@
+<% content_for :title, "Nouveau mot de passe · Next Anime" %>
+
+<h1 class="h3">Nouveau mot de passe</h1>
+<p class="text-body-secondary mb-4">Choisis un mot de passe solide : tu l'utiliseras dès ta prochaine connexion.</p>
+
+<%= render Organisms::ResetPasswordFormComponent.new(resource: resource) %>

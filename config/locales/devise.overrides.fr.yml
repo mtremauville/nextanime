@@ -1,0 +1,10 @@
+fr:
+  devise:
+    mailer:
+      reset_password_instructions:
+        subject: "Réinitialise ton mot de passe NextAnime"
+    passwords:
+      no_token: "Ce lien n'est pas valide. Demande-en un nouveau."
+      send_paranoid_instructions: "Si ton adresse e-mail est connue, tu vas recevoir un lien pour choisir un nouveau mot de passe."
+      updated: "Ton mot de passe a bien été changé. Tu es connecté."
+      updated_not_active: "Ton mot de passe a bien été changé."
