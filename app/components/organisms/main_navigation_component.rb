@@ -1,7 +1,14 @@
 class Organisms::MainNavigationComponent < ViewComponent::Base
   BRAND = "NextAnime".freeze
   DEFAULT_COUNTRY = "FR".freeze
-  COUNTRIES = { "FR" => "France", "BE" => "Belgique", "CH" => "Suisse", "CA" => "Canada" }.freeze
+  COUNTRIES = {
+    "FR" => "France",
+    "BE" => "Belgique",
+    "CH" => "Suisse",
+    "CA" => "Canada",
+    "US" => "États-Unis",
+    "GB" => "Royaume-Uni"
+  }.freeze
 
   def initialize(current_path:)
     @current_path = current_path

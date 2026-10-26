@@ -25,7 +25,9 @@ RSpec.describe Organisms::MainNavigationComponent, type: :component do
   it "offers a country selector" do
     expect(rendered).to have_select("Pays")
   end
-
+  it "lists the six supported countries" do
+    expect(rendered).to have_select("Pays", options: [ "France", "Belgique", "Suisse", "Canada", "États-Unis", "Royaume-Uni" ])
+  end
   it "offers a theme toggle" do
     expect(rendered).to have_css("button[data-action*='theme#toggle']")
   end
