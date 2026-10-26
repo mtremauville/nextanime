@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_26_193120) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_26_193816) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -21,6 +21,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_26_193120) do
     t.datetime "updated_at", null: false
     t.index ["anime_id", "genre_id"], name: "index_anime_genres_on_anime_id_and_genre_id", unique: true
     t.index ["genre_id"], name: "index_anime_genres_on_genre_id"
+  end
+
+  create_table "anime_tags", force: :cascade do |t|
+    t.bigint "anime_id", null: false
+    t.bigint "tag_id", null: false
+    t.integer "rank", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["anime_id", "tag_id"], name: "index_anime_tags_on_anime_id_and_tag_id", unique: true
+    t.index ["tag_id"], name: "index_anime_tags_on_tag_id"
   end
 
   create_table "animes", force: :cascade do |t|
@@ -77,4 +87,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_26_193120) do
 
   add_foreign_key "anime_genres", "animes"
   add_foreign_key "anime_genres", "genres"
+  add_foreign_key "anime_tags", "animes"
+  add_foreign_key "anime_tags", "tags"
 end

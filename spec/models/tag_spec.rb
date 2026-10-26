@@ -7,6 +7,11 @@ RSpec.describe Tag, type: :model do
     expect(tag).to be_valid
   end
 
+  describe "associations" do
+    it { is_expected.to have_many(:anime_tags).dependent(:destroy) }
+    it { is_expected.to have_many(:animes).through(:anime_tags) }
+  end
+
   describe "columns" do
     it { is_expected.to have_db_column(:anilist_tag_id).of_type(:integer).with_options(null: false) }
     it { is_expected.to have_db_column(:name).of_type(:string).with_options(null: false) }

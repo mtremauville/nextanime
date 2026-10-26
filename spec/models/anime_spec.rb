@@ -70,6 +70,9 @@ RSpec.describe Anime, type: :model do
     it { is_expected.to have_many(:anime_genres).dependent(:destroy) }
     it { is_expected.to have_many(:genres).through(:anime_genres) }
 
+    it { is_expected.to have_many(:anime_tags).dependent(:destroy) }
+    it { is_expected.to have_many(:tags).through(:anime_tags) }
+
     it "removes its genre links when destroyed" do
       anime = create(:anime, genres: [ create(:genre) ])
 

@@ -26,6 +26,8 @@ class Anime < ApplicationRecord
 
   has_many :anime_genres, dependent: :destroy
   has_many :genres, through: :anime_genres
+  has_many :anime_tags, dependent: :destroy
+  has_many :tags, through: :anime_tags
 
   validates :anilist_id, presence: true, uniqueness: true
   validates :title_romaji, presence: true
