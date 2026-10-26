@@ -7,7 +7,7 @@ RSpec.describe "Password reset", type: :system do
   before { ActionMailer::Base.deliveries.clear }
 
   def reset_path_from_last_mail
-    html = Capybara.string(ActionMailer::Base.deliveries.last.body.decoded)
+    html = Capybara.string(ActionMailer::Base.deliveries.last.html_part.decoded)
     URI(html.find_link("Choisir un nouveau mot de passe")[:href]).request_uri
   end
 

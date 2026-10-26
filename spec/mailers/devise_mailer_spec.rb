@@ -15,11 +15,11 @@ RSpec.describe Devise::Mailer, type: :mailer do
     end
 
     it "contains a link to the new password page with the token" do
-      expect(mail.body.decoded).to include("/users/password/edit?reset_password_token=abc123")
+      expect(mail.html_part.decoded).to include("/users/password/edit?reset_password_token=abc123")
     end
 
     it "uses an absolute link" do
-      expect(mail.body.decoded).to match(%r{https?://[^/\s"]+/users/password/edit})
+      expect(mail.html_part.decoded).to match(%r{https?://[^/\s"]+/users/password/edit})
     end
   end
 end
