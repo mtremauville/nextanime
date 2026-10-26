@@ -21,7 +21,9 @@ RSpec.describe Organisms::MobileMenuComponent, type: :component do
   it "offers a button that closes the menu" do
     expect(rendered).to have_css("button[aria-label='Fermer le menu'][data-action*='menu#close']")
   end
-
+  it "connects the dialog to the menu controller" do
+    expect(rendered).to have_css("dialog[data-menu-target='dialog'][data-action*='click->menu#backdrop'][data-action*='close->menu#closed']")
+  end
   it "links every page of the navigation" do
     expect(rendered).to have_link("Découvrir", href: "/")
     expect(rendered).to have_link("Catalogue", href: "/catalogue")

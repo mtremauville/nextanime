@@ -35,7 +35,17 @@ RSpec.describe Organisms::MainNavigationComponent, type: :component do
     expect(rendered).to have_css('button .bi-sun.na-theme-toggle__sun[aria-hidden="true"]')
     expect(rendered).to have_css('button .bi-moon-stars.na-theme-toggle__moon[aria-hidden="true"]')
   end
+  it "wires the header to the menu controller" do
+    expect(rendered).to have_css("header[data-controller='menu'] dialog#mobile-menu")
+  end
 
+  it "offers a burger button that opens the mobile menu" do
+    expect(rendered).to have_css("button[aria-label='Ouvrir le menu'][aria-haspopup='dialog'][aria-expanded='false'][aria-controls='mobile-menu'][data-menu-target='opener'][data-action='menu#open']")
+  end
+
+  it "passes the current page to the mobile menu" do
+    expect(rendered).to have_css("dialog nav a[aria-current='page']", count: 1, text: "Catalogue")
+  end
   describe "current page" do
     it "marks only the current page in each navigation" do
       expect(rendered).to have_css("nav[aria-label='Navigation principale'] a[aria-current='page']", count: 1, text: "Catalogue")

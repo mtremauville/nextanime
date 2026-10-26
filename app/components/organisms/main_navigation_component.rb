@@ -16,6 +16,10 @@ class Organisms::MainNavigationComponent < ViewComponent::Base
 
   private
 
+  def nav_items
+    items.map { |item| item.merge(current: current?(item[:href])) }
+  end
+
   def items
     [
       { label: "Découvrir", href: root_path, icon: "stars" },
