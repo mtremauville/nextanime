@@ -53,4 +53,30 @@ RSpec.describe User, type: :model do
       travel_to(61.minutes.from_now) { expect(user).not_to be_access_locked }
     end
   end
+
+  describe "privacy policy" do
+    it "is valid when accepted" do
+      expect(build(:user, privacy_policy: "1")).to be_valid
+    end
+
+    it "is required, even when the field is missing" do
+      user = build(:user, privacy_policy: nil)
+      user.validate
+
+      expect(user.errors[:privacy_policy]).to include("doit être accepté(e)")
+    end
+
+    it "is refused when the box is unchecked" do
+      user = build(:user, privacy_policy: "0")
+      user.validate
+
+      expect(user.errors[:privacy_policy]).to include("doit être accepté(e)")
+    end
+
+    it "is not asked again when the account is updated" do
+      user = User.find(create(:user).id)
+
+      expect(user.update(country: "BE")).to be(true)
+    end
+  end
 end
