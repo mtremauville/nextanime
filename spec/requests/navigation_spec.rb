@@ -40,4 +40,12 @@ RSpec.describe "Navigation", type: :request do
       expect(document).to have_css("a.visually-hidden-focusable[href='#main']")
     end
   end
+
+  describe "GET /styleguide" do
+    before { get "/styleguide" }
+
+    it "has a single main landmark" do
+      expect(document).to have_css("main", count: 1)
+    end
+  end
 end
