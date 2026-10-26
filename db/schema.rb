@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_26_191221) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_26_191444) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -19,6 +19,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_26_191221) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_genres_on_name", unique: true
+  end
+
+  create_table "studios", force: :cascade do |t|
+    t.integer "anilist_studio_id", null: false
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["anilist_studio_id"], name: "index_studios_on_anilist_studio_id", unique: true
+    t.index ["name"], name: "index_studios_on_name", unique: true
   end
 
   create_table "tags", force: :cascade do |t|
