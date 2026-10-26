@@ -28,4 +28,55 @@
       <p class="na-font-accent mb-0">DotGothic16 — chiffres et étiquettes 0123456789</p>
     </div>
   </section>
+
+  <section class="mb-5" aria-labelledby="buttons-title">
+    <h2 id="buttons-title" class="h4 mb-3">Boutons</h2>
+    <div class="d-flex flex-wrap gap-3">
+      <%= render(Atoms::ButtonComponent.new) { "Découvrir" } %>
+      <%= render(Atoms::ButtonComponent.new(variant: :outline)) { "Voir la fiche" } %>
+      <%= render(Atoms::ButtonComponent.new(variant: :outline, href: "/styleguide")) { "Lien en bouton" } %>
+    </div>
+  </section>
+
+  <section class="mb-5" aria-labelledby="tags-title">
+    <h2 id="tags-title" class="h4 mb-3">Tags et badge de match</h2>
+    <div class="d-flex flex-wrap align-items-center gap-3">
+      <%= render Atoms::TagComponent.new(label: "Thriller") %>
+      <%= render Atoms::TagComponent.new(label: "Psychologique", tone: :cyan) %>
+      <%= render Atoms::MatchBadgeComponent.new(percent: 94) %>
+      <%= render Atoms::MatchBadgeComponent.new(percent: 61) %>
+    </div>
+  </section>
+
+  <section class="mb-5" aria-labelledby="meters-title">
+    <h2 id="meters-title" class="h4 mb-3">Jauges</h2>
+    <div class="d-flex flex-column gap-3" style="max-width: 32rem;">
+      <%= render Atoms::MeterComponent.new(value: 82, label: "Thriller") %>
+      <%= render Atoms::MeterComponent.new(value: 45, label: "Action", tone: :cyan) %>
+    </div>
+  </section>
+
+  <section class="mb-5" aria-labelledby="fields-title">
+    <h2 id="fields-title" class="h4 mb-3">Champs de formulaire</h2>
+    <div style="max-width: 32rem;">
+      <%= render Molecules::FormFieldComponent.new(name: "demo_email", label: "Adresse e-mail", type: "email", value: "mickael@exemple.fr") %>
+      <%= render Molecules::FormFieldComponent.new(name: "demo_password", label: "Mot de passe", type: "password", hint: "12 caractères minimum") %>
+      <%= render Molecules::FormFieldComponent.new(name: "demo_invalid", label: "Pseudo", value: "x", error: "est trop court (2 caractères minimum)") %>
+    </div>
+  </section>
+
+  <section class="mb-5" aria-labelledby="cards-title">
+    <h2 id="cards-title" class="h4 mb-3">Cartes d'affiche</h2>
+    <div class="row g-3">
+      <div class="col-6 col-md-4 col-lg-3">
+        <%= render Molecules::PosterCardComponent.new(title: "Perfect Blue", href: "/styleguide", meta: "Film · 1997 · Madhouse", tags: %w[Thriller Psychologique], match: 94, poster: :violet) %>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3">
+        <%= render Molecules::PosterCardComponent.new(title: "Chainsaw Man", href: "/styleguide", meta: "Série · 12 épisodes · MAPPA", tags: %w[Action Horreur], match: 91, poster: :magenta) %>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3">
+        <%= render Molecules::PosterCardComponent.new(title: "Monster", href: "/styleguide", meta: "Série · 74 épisodes · Madhouse", tags: %w[Mystère], poster: :indigo) %>
+      </div>
+    </div>
+  </section>
 </main>
