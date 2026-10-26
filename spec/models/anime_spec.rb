@@ -66,6 +66,17 @@ RSpec.describe Anime, type: :model do
     end
   end
 
+  describe "associations" do
+    it { is_expected.to have_many(:anime_genres).dependent(:destroy) }
+    it { is_expected.to have_many(:genres).through(:anime_genres) }
+
+    it "removes its genre links when destroyed" do
+      anime = create(:anime, genres: [ create(:genre) ])
+
+      expect { anime.destroy }.to change(AnimeGenre, :count).by(-1)
+    end
+  end
+
   describe "#display_title" do
     it "prefers the English title" do
       anime = build(:anime, title_romaji: "Shingeki no Kyojin", title_english: "Attack on Titan")

@@ -24,6 +24,9 @@ class Anime < ApplicationRecord
     fall: "FALL"
   }, prefix: true, validate: { allow_nil: true }
 
+  has_many :anime_genres, dependent: :destroy
+  has_many :genres, through: :anime_genres
+
   validates :anilist_id, presence: true, uniqueness: true
   validates :title_romaji, presence: true
   validates :average_score, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }, allow_nil: true
