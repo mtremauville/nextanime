@@ -98,3 +98,13 @@
   font-size: .875rem;
   text-align: center;
 }
+
+.na-auth-form__options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: .5rem 1rem;
+}
+
+.na-auth-form__forgot { font-size: .875rem; }
