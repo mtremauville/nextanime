@@ -10,9 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_26_192257) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_26_193120) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "anime_genres", force: :cascade do |t|
+    t.bigint "anime_id", null: false
+    t.bigint "genre_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["anime_id", "genre_id"], name: "index_anime_genres_on_anime_id_and_genre_id", unique: true
+    t.index ["genre_id"], name: "index_anime_genres_on_genre_id"
+  end
 
   create_table "animes", force: :cascade do |t|
     t.integer "anilist_id", null: false
@@ -65,4 +74,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_26_192257) do
     t.datetime "updated_at", null: false
     t.index ["anilist_tag_id"], name: "index_tags_on_anilist_tag_id", unique: true
   end
+
+  add_foreign_key "anime_genres", "animes"
+  add_foreign_key "anime_genres", "genres"
 end
