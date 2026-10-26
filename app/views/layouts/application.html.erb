@@ -32,7 +32,7 @@
     <%= render Organisms::MainNavigationComponent.new(current_path: request.path) %>
 
     <main id="main" class="container na-main">
-      <%= yield %>
+      <%= render "shared/flash" %><%= yield %>
     </main>
   </body>
 </html>
