@@ -73,10 +73,31 @@ RSpec.describe Anime, type: :model do
     it { is_expected.to have_many(:anime_tags).dependent(:destroy) }
     it { is_expected.to have_many(:tags).through(:anime_tags) }
 
+    it { is_expected.to have_many(:anime_studios).dependent(:destroy) }
+    it { is_expected.to have_many(:studios).through(:anime_studios) }
+
     it "removes its genre links when destroyed" do
       anime = create(:anime, genres: [ create(:genre) ])
 
       expect { anime.destroy }.to change(AnimeGenre, :count).by(-1)
+    end
+  end
+
+  describe "#main_studio" do
+    let(:anime) { create(:anime) }
+    let(:main_studio) { create(:studio) }
+
+    it "returns the studio flagged as main" do
+      create(:anime_studio, anime: anime, studio: create(:studio), main: false)
+      create(:anime_studio, anime: anime, studio: main_studio, main: true)
+
+      expect(anime.main_studio).to eq(main_studio)
+    end
+
+    it "is nil when no studio is flagged as main" do
+      create(:anime_studio, anime: anime, main: false)
+
+      expect(anime.main_studio).to be_nil
     end
   end
 

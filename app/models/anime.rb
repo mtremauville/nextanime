@@ -28,6 +28,10 @@ class Anime < ApplicationRecord
   has_many :genres, through: :anime_genres
   has_many :anime_tags, dependent: :destroy
   has_many :tags, through: :anime_tags
+  has_many :anime_studios, dependent: :destroy
+  has_many :studios, through: :anime_studios
+  has_one :main_anime_studio, -> { where(main: true) }, class_name: "AnimeStudio"
+  has_one :main_studio, through: :main_anime_studio, source: :studio
 
   validates :anilist_id, presence: true, uniqueness: true
   validates :title_romaji, presence: true

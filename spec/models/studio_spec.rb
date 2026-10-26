@@ -7,6 +7,11 @@ RSpec.describe Studio, type: :model do
     expect(studio).to be_valid
   end
 
+  describe "associations" do
+    it { is_expected.to have_many(:anime_studios).dependent(:destroy) }
+    it { is_expected.to have_many(:animes).through(:anime_studios) }
+  end
+
   describe "columns" do
     it { is_expected.to have_db_column(:anilist_studio_id).of_type(:integer).with_options(null: false) }
     it { is_expected.to have_db_column(:name).of_type(:string).with_options(null: false) }
