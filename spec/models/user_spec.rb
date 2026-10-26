@@ -79,4 +79,50 @@ RSpec.describe User, type: :model do
       expect(user.update(country: "BE")).to be(true)
     end
   end
+
+  describe "password reset" do
+    let(:user) { create(:user, password: "old password is long enough") }
+    let(:new_password) { "brand new password is long" }
+
+    def reset_with(token)
+      User.reset_password_by_token(
+        reset_password_token: token,
+        password: new_password,
+        password_confirmation: new_password
+      )
+    end
+
+    it "keeps the reset link valid for two hours" do
+      expect(Devise.reset_password_within).to eq(2.hours)
+    end
+
+    it "changes the password with a valid token" do
+      token = user.send_reset_password_instructions
+
+      reset_with(token)
+
+      expect(user.reload.valid_password?(new_password)).to be(true)
+    end
+
+    it "refuses an expired token and keeps the old password" do
+      token = user.send_reset_password_instructions
+
+      travel_to(3.hours.from_now) do
+        expect(reset_with(token).errors[:reset_password_token]).to be_present
+      end
+
+      expect(user.reload.valid_password?(new_password)).to be(false)
+    end
+
+    it "refuses an unknown token" do
+      expect(reset_with("not-a-token").errors[:reset_password_token]).to be_present
+    end
+
+    it "cannot be used twice" do
+      token = user.send_reset_password_instructions
+      reset_with(token)
+
+      expect(reset_with(token).errors[:reset_password_token]).to be_present
+    end
+  end
 end
