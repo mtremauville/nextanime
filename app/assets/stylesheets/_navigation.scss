@@ -99,3 +99,19 @@
     padding-bottom: 1.5rem;
   }
 }
+
+.na-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  min-height: 0; // cancels the 52px min-height of .btn-na-outline so the button stays round
+  padding: 0;
+  border-radius: 50%;
+}
+
+[data-bs-theme="dark"] .na-theme-toggle__moon,
+[data-bs-theme="light"] .na-theme-toggle__sun {
+  display: none;
+}

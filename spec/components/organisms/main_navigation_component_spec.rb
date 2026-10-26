@@ -29,6 +29,10 @@ RSpec.describe Organisms::MainNavigationComponent, type: :component do
   it "offers a theme toggle" do
     expect(rendered).to have_css("button[data-action*='theme#toggle']")
   end
+  it "shows both theme icons and lets the stylesheet pick the right one" do
+    expect(rendered).to have_css('button .bi-sun.na-theme-toggle__sun[aria-hidden="true"]')
+    expect(rendered).to have_css('button .bi-moon-stars.na-theme-toggle__moon[aria-hidden="true"]')
+  end
 
   describe "current page" do
     it "marks only the current page in each navigation" do
