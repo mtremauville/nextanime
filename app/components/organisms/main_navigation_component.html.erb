@@ -1,0 +1,31 @@
+<header class="na-header">
+  <div class="na-header__bar">
+    <%= link_to BRAND, root_path, class: "na-header__brand" %>
+
+    <nav class="na-header__nav d-none d-md-flex" aria-label="Navigation principale">
+      <% items.each do |item| %>
+        <%= render Molecules::NavItemComponent.new(**item, current: current?(item[:href])) %>
+      <% end %>
+    </nav>
+
+    <div class="na-header__tools">
+      <div class="d-none d-md-block">
+        <label for="country" class="visually-hidden">Pays</label>
+        <%= select_tag "country", country_options, id: "country", class: "form-select form-select-sm" %>
+      </div>
+
+      <button type="button" class="btn-na-outline na-theme-toggle"
+              data-controller="theme" data-action="theme#toggle"
+              aria-label="Changer de thème">
+        <i class="bi bi-sun na-theme-toggle__sun" aria-hidden="true"></i>
+        <i class="bi bi-moon-stars na-theme-toggle__moon" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+</header>
+
+<nav class="na-tabbar d-md-none" aria-label="Onglets">
+  <% items.each do |item| %>
+    <%= render Molecules::NavItemComponent.new(**item, current: current?(item[:href])) %>
+  <% end %>
+</nav>
