@@ -204,3 +204,23 @@
   border-color: var(--na-cyan);
   color: var(--na-cyan);
 }
+
+.na-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: var(--na-magenta);
+  color: var(--na-on-magenta);
+  font-weight: 800;
+}
+
+.na-account {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+
+  .btn { min-height: 2.75rem; }
+}

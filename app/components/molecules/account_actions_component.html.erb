@@ -1,0 +1,10 @@
+<div class="na-account">
+  <% if user %>
+    <%= render Atoms::AvatarComponent.new(name: user.email) %>
+    <span class="visually-hidden">Connecté en tant que <%= user.email %></span>
+    <%= button_to "Déconnexion", destroy_user_session_path, method: :delete, class: "btn btn-na-outline btn-sm" %>
+  <% else %>
+    <%= render Atoms::ButtonComponent.new(variant: :outline, href: new_user_session_path, class: "btn-sm") do %>Connexion<% end %>
+    <%= render Atoms::ButtonComponent.new(href: new_user_registration_path, class: "btn-sm") do %>Créer un compte<% end %>
+  <% end %>
+</div>
