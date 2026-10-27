@@ -98,7 +98,7 @@ $na-auth-glow: color-mix(in srgb, var(--na-magenta) 45%, transparent);
   }
 
   &__accent { color: var(--na-magenta); text-shadow: 0 0 1.5rem $na-auth-glow; }
-  &__lead { margin: 0; color: var(--na-muted); line-height: 1.6; }
+  &__lead { margin: 0 0 3rem; color: var(--na-muted); line-height: 1.6; }
 
   &__card {
     flex: 0 1 28.75rem;
@@ -163,4 +163,50 @@ $na-auth-glow: color-mix(in srgb, var(--na-magenta) 45%, transparent);
 .na-auth-form__inline-link {
   color: var(--na-cyan);
   font-weight: 600;
+}
+
+// Affiches décoratives de la présentation (dégradés des maquettes, clair et sombre).
+$na-showcase-scrim: #0B0A14;
+$na-showcase-gradients: (
+  "violet": (#2A0F3D, #7A2AFF),
+  "magenta": (#4A0E2E, var(--na-magenta)),
+  "cyan": (#0B3B5C, var(--na-cyan))
+);
+
+.na-showcase {
+  position: relative;
+  width: 28.75rem;
+  max-width: 100%;
+  height: 25rem;
+}
+
+.na-showcase-poster {
+  position: absolute;
+  width: 12.5rem;
+  height: 18.75rem;
+  overflow: hidden;
+  border: 1px solid var(--na-border);
+  border-radius: 1rem;
+  box-shadow: 0 0 2rem color-mix(in srgb, var(--na-magenta) 25%, transparent);
+
+  &--left { top: 4.375rem; left: 0; z-index: 1; transform: rotate(-8deg); }
+  &--center { top: 0; left: 8.125rem; z-index: 3; }
+  &--right { top: 5.625rem; left: 16.25rem; z-index: 2; transform: rotate(8deg); }
+
+  @each $name, $stops in $na-showcase-gradients {
+    &--#{$name} { background: linear-gradient(160deg, nth($stops, 1) 0%, nth($stops, 2) 100%); }
+  }
+
+  &__title {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 2.5rem 1rem 1rem;
+    background: linear-gradient(0deg, rgba($na-showcase-scrim, .92), rgba($na-showcase-scrim, 0));
+    color: #F2F0FF;
+    font-family: $na-font-heading;
+    font-size: 1.125rem;
+    font-weight: 700;
+  }
 }

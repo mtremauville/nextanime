@@ -47,6 +47,10 @@ RSpec.describe "Authentication layout", type: :request do
       expect(document).to have_css("main#main > section.na-auth__card")
       expect(document).to have_no_css("aside")
     end
+
+    it "shows the poster showcase in the presentation" do
+      expect(document).to have_css("section.na-auth__brand .na-showcase .na-showcase-poster", count: 3)
+    end
   end
 
   describe "flash messages" do
