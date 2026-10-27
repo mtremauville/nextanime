@@ -1,5 +1,4 @@
 class Organisms::MainNavigationComponent < ViewComponent::Base
-  BRAND = "NextAnime".freeze
   DEFAULT_COUNTRY = "FR".freeze
   COUNTRIES = {
     "FR" => "France",

@@ -2,37 +2,47 @@
   position: sticky;
   top: 0;
   z-index: 1030;
-  background: var(--na-surface);
+  background: var(--na-bg);
   border-bottom: 1px solid var(--na-border);
 }
 
 .na-header__bar {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  max-width: 80rem;
-  margin: 0 auto;
-  padding: 0.75rem 1rem;
-}
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 3.5rem;
+  padding: 0 1rem;
 
-.na-header__brand {
-  font-family: "Chakra Petch", sans-serif;
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--na-text);
-  text-decoration: none;
+  @include media-breakpoint-up(md) { min-height: 4.5rem; padding: 0 3rem; }
 }
 
 .na-header__nav {
-  flex: 1;
-  gap: 0.25rem;
+  align-self: stretch;
+  align-items: stretch;
+  gap: 2rem;
 }
 
 .na-header__tools {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin-left: auto;
+  gap: .5rem;
+}
+
+// Header desktop : liens en texte seul, l'onglet actif est souligné en magenta (maquettes).
+.na-header__nav .na-nav__link {
+  padding: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  font-size: .875rem;
+
+  .bi { display: none; }
+
+  &--active {
+    border-bottom-color: var(--na-magenta);
+    background: none;
+    box-shadow: none;
+  }
 }
 
 .na-nav__link {

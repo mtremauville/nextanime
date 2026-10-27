@@ -6,11 +6,16 @@
     <a class="visually-hidden-focusable" href="#main">Aller au contenu</a>
 
     <div class="na-auth">
+<<<<<<< HEAD
       <header class="na-auth__header">
         <%= link_to root_path, class: "na-auth__logo" do %>
           <span class="na-auth__logo-mark" lang="ja" aria-hidden="true">次</span>
           <span>NextAnime</span>
         <% end %>
+=======
+      <aside class="na-auth__brand">
+        <%= render Atoms::BrandLogoComponent.new %>
+>>>>>>> 1de9db8 (feat: style the header brand and links as in the mockups)
 
         <%= link_to root_path, class: "na-auth__back" do %>
           <i class="bi bi-arrow-left" aria-hidden="true"></i>

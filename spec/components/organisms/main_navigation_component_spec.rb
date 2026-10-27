@@ -10,6 +10,10 @@ RSpec.describe Organisms::MainNavigationComponent, type: :component do
     expect(rendered).to have_css("header a[href='/']", text: "NextAnime")
   end
 
+  it "shows the brand logo with its mark" do
+    expect(rendered).to have_css("header a.na-brand .na-brand__mark", text: "次")
+  end
+
   it "renders the pages open to visitors in the desktop navigation" do
     labels.each do |label|
       expect(rendered).to have_css("nav[aria-label='Navigation principale'] a", text: label)

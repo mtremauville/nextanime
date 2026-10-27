@@ -1,6 +1,6 @@
 <header class="na-header" data-controller="menu">
   <div class="na-header__bar">
-    <%= link_to BRAND, root_path, class: "na-header__brand" %>
+    <%= render Atoms::BrandLogoComponent.new %>
 
     <nav class="na-header__nav d-none d-md-flex" aria-label="Navigation principale">
       <% nav_items.each do |item| %>

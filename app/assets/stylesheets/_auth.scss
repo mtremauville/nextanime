@@ -16,6 +16,7 @@ $na-auth-glow: color-mix(in srgb, var(--na-magenta) 45%, transparent);
     @include media-breakpoint-up(md) { min-height: 4.5rem; padding: 0 3rem; }
   }
 
+<<<<<<< HEAD
   &__logo {
     display: inline-flex;
     align-items: center;
@@ -31,6 +32,14 @@ $na-auth-glow: color-mix(in srgb, var(--na-magenta) 45%, transparent);
   }
 
   &__logo-mark {
+=======
+  &__eyebrow { margin-bottom: 1rem; color: var(--na-cyan); font-size: .875rem; }
+  &__title { margin-bottom: 1rem; font-size: 2.25rem; font-weight: 800; line-height: 1.2; }
+  &__accent { color: var(--na-magenta); }
+  &__lead { max-width: 28rem; color: var(--na-muted); }
+
+  &__panel {
+>>>>>>> 1de9db8 (feat: style the header brand and links as in the mockups)
     display: flex;
     align-items: center;
     justify-content: center;
