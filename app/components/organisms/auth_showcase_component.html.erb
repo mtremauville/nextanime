@@ -1,0 +1,5 @@
+<div class="na-showcase" aria-hidden="true">
+  <% POSTERS.each do |poster| %>
+    <%= render Molecules::ShowcasePosterComponent.new(**poster) %>
+  <% end %>
+</div>

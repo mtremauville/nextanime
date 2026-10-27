@@ -1,9 +1,7 @@
 <% content_for :title, "Créer un compte · Next Anime" %>
 
 <%= render Molecules::AuthTabsComponent.new(current: :sign_up) %>
-
-<h1 class="h3">Rejoins NextAnime</h1>
-<p class="text-body-secondary mb-4">Sauvegarde ton profil de goûts et suis ta progression.</p>
+<%= render Molecules::AuthHeadingComponent.new(title: "Rejoins NextAnime", subtitle: "Sauvegarde ton profil de goûts et suis ta progression.") %>
 
 <%= render Organisms::SignUpFormComponent.new(resource: resource) %>
 <%= render Molecules::GuestAccessComponent.new %>

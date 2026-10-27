@@ -1,93 +1,189 @@
+$na-auth-glow: color-mix(in srgb, var(--na-magenta) 45%, transparent);
+
 .na-auth {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
 
-  @include media-breakpoint-up(lg) { grid-template-columns: 1fr 1fr; }
-
-  &__brand {
+  &__header {
     display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    padding: 1.25rem 1.5rem;
-    background: var(--na-surface);
+    align-items: center;
+    justify-content: space-between;
+    min-height: 3.5rem;
+    padding: 0 1rem;
     border-bottom: 1px solid var(--na-border);
 
-    @include media-breakpoint-up(lg) {
-      justify-content: space-between;
-      padding: 3rem;
-      border-right: 1px solid var(--na-border);
-      border-bottom: 0;
-    }
+    @include media-breakpoint-up(md) { min-height: 4.5rem; padding: 0 3rem; }
   }
 
   &__logo {
     display: inline-flex;
     align-items: center;
-    gap: .75rem;
+    gap: .5rem;
     color: var(--na-text);
-    font-weight: 800;
+    font-family: $na-font-heading;
+    font-size: 1.125rem;
+    font-weight: 700;
+    letter-spacing: .02em;
     text-decoration: none;
+
+    @include media-breakpoint-up(md) { gap: .75rem; font-size: 1.375rem; }
   }
 
-  &__logo-mark { color: var(--na-magenta); font-size: 1.5rem; line-height: 1; }
-
-  &__pitch {
-    display: none;
-    @include media-breakpoint-up(lg) { display: block; }
-  }
-
-  &__eyebrow { margin-bottom: 1rem; color: var(--na-cyan); font-size: .875rem; }
-  &__title { margin-bottom: 1rem; font-size: 2.25rem; font-weight: 800; line-height: 1.2; }
-  &__accent { color: var(--na-magenta); }
-  &__lead { max-width: 28rem; color: var(--na-muted); }
-
-  &__panel {
+  &__logo-mark {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1.5rem;
-  }
+    width: 1.75rem;
+    height: 1.75rem;
+    border: 1px solid var(--na-magenta);
+    border-radius: .5rem;
+    color: var(--na-magenta);
+    font-family: $na-font-accent;
+    font-size: 1rem;
+    line-height: 1;
 
-  &__panel-inner { width: 100%; max-width: 26rem; }
+    @include media-breakpoint-up(md) {
+      width: 2rem;
+      height: 2rem;
+      box-shadow: 0 0 1rem $na-auth-glow;
+      font-size: 1.125rem;
+    }
+  }
 
   &__back {
     display: inline-flex;
     align-items: center;
     gap: .5rem;
-    margin-bottom: 1.5rem;
+    min-height: 2.75rem;
+    padding: 0 .75rem;
     color: var(--na-muted);
+    font-size: .875rem;
+    font-weight: 600;
     text-decoration: none;
 
     &:hover { color: var(--na-text); }
+
+    @include media-breakpoint-up(md) { padding: 0; }
+  }
+
+  &__back-full {
+    display: none;
+    @include media-breakpoint-up(md) { display: inline; }
+  }
+
+  &__back-short {
+    @include media-breakpoint-up(md) { display: none; }
+  }
+
+  &__main {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 4rem;
+    width: 100%;
+    max-width: 84rem;
+    margin: 0 auto;
+    padding: 2rem 1rem 2.5rem;
+
+    @include media-breakpoint-up(md) { align-items: center; padding: 4rem 3rem; }
+  }
+
+  &__brand {
+    display: none;
+
+    @include media-breakpoint-up(lg) {
+      display: block;
+      flex: 1 1 30rem;
+      min-width: 0;
+      max-width: 35rem;
+    }
+  }
+
+  &__eyebrow {
+    margin-bottom: 1rem;
+    color: var(--na-cyan);
+    font-family: $na-font-accent;
+    font-size: .875rem;
+    letter-spacing: .12em;
+  }
+
+  &__title {
+    margin: 0 0 1rem;
+    font-family: $na-font-heading;
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  &__accent { color: var(--na-magenta); text-shadow: 0 0 1.5rem $na-auth-glow; }
+  &__lead { margin: 0 0 3rem; color: var(--na-muted); line-height: 1.6; }
+
+  // Sous md, le formulaire est posé sur la page, sans carte (maquettes mobiles).
+  &__card {
+    flex: 0 1 28.75rem;
+    width: 100%;
+    max-width: 28.75rem;
+
+    @include media-breakpoint-up(md) {
+      padding: 2.5rem;
+      background: var(--na-surface);
+      border: 1px solid var(--na-border);
+      border-radius: 1rem;
+    }
   }
 }
 
 .na-auth-tabs {
   display: flex;
-  gap: .25rem;
+  gap: .5rem;
   margin-bottom: 1.5rem;
-  border-bottom: 1px solid var(--na-border);
 
   &__link {
-    margin-bottom: -1px;
-    padding: .75rem 1rem;
-    border-bottom: 2px solid transparent;
+    display: flex;
+    flex: 1 1 0;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.75rem;
+    border: 1px solid var(--na-border);
+    border-radius: .5rem;
     color: var(--na-muted);
+    font-size: .875rem;
+    font-weight: 600;
     text-decoration: none;
 
     &:hover { color: var(--na-text); }
-    &--active { border-bottom-color: var(--na-magenta); color: var(--na-text); }
+
+    &--active {
+      border-color: var(--na-magenta);
+      background: color-mix(in srgb, var(--na-magenta) 12%, transparent);
+      color: var(--na-text);
+    }
   }
+}
+
+.na-auth-heading {
+  margin-bottom: 1.5rem;
+
+  &__title {
+    margin: 0 0 .5rem;
+    font-family: $na-font-heading;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  &__subtitle { margin: 0; color: var(--na-muted); font-size: .875rem; line-height: 1.5; }
 }
 
 .na-auth-divider {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  margin: 1.5rem 0 1rem;
+  gap: .75rem;
+  margin: 1.5rem 0;
   color: var(--na-muted);
-  font-size: .875rem;
+  font-size: .75rem;
 
   &::before, &::after { content: ""; flex: 1; height: 1px; background: var(--na-border); }
 }
@@ -95,11 +191,13 @@
 .na-guest-access__hint {
   margin: .75rem 0 0;
   color: var(--na-muted);
-  font-size: .875rem;
+  font-size: .75rem;
+  line-height: 1.5;
   text-align: center;
 }
 
 .na-auth-form__options {
+  margin-bottom: 1.25rem;
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
@@ -114,3 +212,92 @@
   color: var(--na-cyan);
   font-weight: 600;
 }
+
+// Affiches décoratives de la présentation (dégradés des maquettes, clair et sombre).
+$na-showcase-scrim: #0B0A14;
+$na-showcase-gradients: (
+  "violet": (#2A0F3D, #7A2AFF),
+  "magenta": (#4A0E2E, var(--na-magenta)),
+  "cyan": (#0B3B5C, var(--na-cyan))
+);
+
+.na-showcase {
+  position: relative;
+  width: 28.75rem;
+  max-width: 100%;
+  height: 25rem;
+}
+
+.na-showcase-poster {
+  position: absolute;
+  width: 12.5rem;
+  height: 18.75rem;
+  overflow: hidden;
+  border: 1px solid var(--na-border);
+  border-radius: 1rem;
+  box-shadow: 0 0 2rem color-mix(in srgb, var(--na-magenta) 25%, transparent);
+
+  &--left { top: 4.375rem; left: 0; z-index: 1; transform: rotate(-8deg); }
+  &--center { top: 0; left: 8.125rem; z-index: 3; }
+  &--right { top: 5.625rem; left: 16.25rem; z-index: 2; transform: rotate(8deg); }
+
+  @each $name, $stops in $na-showcase-gradients {
+    &--#{$name} { background: linear-gradient(160deg, nth($stops, 1) 0%, nth($stops, 2) 100%); }
+  }
+
+  &__title {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 2.5rem 1rem 1rem;
+    background: linear-gradient(0deg, rgba($na-showcase-scrim, .92), rgba($na-showcase-scrim, 0));
+    color: #F2F0FF;
+    font-family: $na-font-heading;
+    font-size: 1.125rem;
+    font-weight: 700;
+  }
+}
+
+// Champs, messages et cases à cocher (maquettes : champs de 48px, erreurs en magenta).
+.na-auth-form {
+  .form-label { margin-bottom: .5rem; font-size: .875rem; }
+
+  .form-control {
+    min-height: 3rem;
+    padding: 0 1rem;
+    border-color: var(--na-border);
+    border-radius: .5rem;
+    background-color: var(--na-bg);
+    color: var(--na-text);
+    font-size: 1rem;
+
+    &:focus {
+      border-color: var(--na-border);
+      background-color: var(--na-bg);
+      color: var(--na-text);
+      box-shadow: none;
+      outline: 2px solid var(--na-cyan);
+      outline-offset: 2px;
+    }
+
+    &.is-invalid {
+      padding-right: 1rem;
+      border-color: var(--na-magenta);
+      background-image: none;
+
+      &:focus { border-color: var(--na-magenta); box-shadow: none; }
+    }
+  }
+
+  .form-text { margin-top: .375rem; color: var(--na-muted); font-size: .75rem; }
+  .invalid-feedback { margin-top: .375rem; color: var(--na-magenta); font-size: .75rem; }
+
+  // Bootstrap pose mb-3 avec !important : les maquettes demandent 20px entre les champs.
+  .mb-3 { margin-bottom: 1.25rem !important; }
+
+  .form-check-label { color: var(--na-muted); font-size: .875rem; }
+  .form-check-input:checked { border-color: var(--na-magenta); background-color: var(--na-magenta); }
+}
+
+.na-auth-form__options .form-check { margin-bottom: 0 !important; }
