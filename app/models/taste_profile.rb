@@ -1,6 +1,7 @@
 class TasteProfile < ApplicationRecord
   belongs_to :user, optional: true
   has_many :swipes, dependent: :destroy
+  has_many :recommendations, dependent: :destroy
 
   validates :user_id, uniqueness: true, allow_nil: true
   validates :session_token, uniqueness: true, allow_nil: true

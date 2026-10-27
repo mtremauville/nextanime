@@ -24,6 +24,11 @@ RSpec.describe Swipe, type: :model do
     subject { create(:swipe) }
 
     it { is_expected.to validate_uniqueness_of(:anime_id).scoped_to(:taste_profile_id) }
-    it { is_expected.to validate_inclusion_of(:liked).in_array([ true, false ]) }
+    it "is invalid without a choice" do
+      swipe = build(:swipe, liked: nil)
+
+      expect(swipe).not_to be_valid
+      expect(swipe.errors[:liked]).to be_present
+    end
   end
 end

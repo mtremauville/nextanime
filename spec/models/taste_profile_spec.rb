@@ -4,6 +4,7 @@ RSpec.describe TasteProfile, type: :model do
   describe "associations" do
     it { is_expected.to belong_to(:user).optional }
     it { is_expected.to have_many(:swipes).dependent(:destroy) }
+    it { is_expected.to have_many(:recommendations).dependent(:destroy) }
   end
 
   describe "defaults" do
