@@ -158,10 +158,10 @@ $na-auth-glow: color-mix(in srgb, var(--na-magenta) 45%, transparent);
 .na-auth-divider {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  margin: 1.5rem 0 1rem;
+  gap: .75rem;
+  margin: 1.5rem 0;
   color: var(--na-muted);
-  font-size: .875rem;
+  font-size: .75rem;
 
   &::before, &::after { content: ""; flex: 1; height: 1px; background: var(--na-border); }
 }
@@ -169,11 +169,13 @@ $na-auth-glow: color-mix(in srgb, var(--na-magenta) 45%, transparent);
 .na-guest-access__hint {
   margin: .75rem 0 0;
   color: var(--na-muted);
-  font-size: .875rem;
+  font-size: .75rem;
+  line-height: 1.5;
   text-align: center;
 }
 
 .na-auth-form__options {
+  margin-bottom: 1.25rem;
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
@@ -234,3 +236,46 @@ $na-showcase-gradients: (
     font-weight: 700;
   }
 }
+
+// Champs, messages et cases à cocher (maquettes : champs de 48px, erreurs en magenta).
+.na-auth-form {
+  .form-label { margin-bottom: .5rem; font-size: .875rem; }
+
+  .form-control {
+    min-height: 3rem;
+    padding: 0 1rem;
+    border-color: var(--na-border);
+    border-radius: .5rem;
+    background-color: var(--na-bg);
+    color: var(--na-text);
+    font-size: 1rem;
+
+    &:focus {
+      border-color: var(--na-border);
+      background-color: var(--na-bg);
+      color: var(--na-text);
+      box-shadow: none;
+      outline: 2px solid var(--na-cyan);
+      outline-offset: 2px;
+    }
+
+    &.is-invalid {
+      padding-right: 1rem;
+      border-color: var(--na-magenta);
+      background-image: none;
+
+      &:focus { border-color: var(--na-magenta); box-shadow: none; }
+    }
+  }
+
+  .form-text { margin-top: .375rem; color: var(--na-muted); font-size: .75rem; }
+  .invalid-feedback { margin-top: .375rem; color: var(--na-magenta); font-size: .75rem; }
+
+  // Bootstrap pose mb-3 avec !important : les maquettes demandent 20px entre les champs.
+  .mb-3 { margin-bottom: 1.25rem !important; }
+
+  .form-check-label { color: var(--na-muted); font-size: .875rem; }
+  .form-check-input:checked { border-color: var(--na-magenta); background-color: var(--na-magenta); }
+}
+
+.na-auth-form__options .form-check { margin-bottom: 0 !important; }

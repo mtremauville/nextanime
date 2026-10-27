@@ -3,7 +3,7 @@
 <% end %>
 
 <%= form_with scope: :user, url: user_registration_path, class: "na-auth-form" do %>
-  <%= render Molecules::FormFieldComponent.new(name: "user[email]", label: "Adresse e-mail", type: "email", value: resource.email, error: error_for(:email), autocomplete: "email") %>
+  <%= render Molecules::FormFieldComponent.new(name: "user[email]", label: "Adresse e-mail", type: "email", value: resource.email, error: error_for(:email), autocomplete: "email", placeholder: "toi@exemple.fr") %>
   <%= render Molecules::FormFieldComponent.new(name: "user[password]", label: "Mot de passe", type: "password", hint: password_hint, error: error_for(:password), autocomplete: "new-password") %>
   <%= render Molecules::FormFieldComponent.new(name: "user[password_confirmation]", label: "Confirmer le mot de passe", type: "password", error: error_for(:password_confirmation), autocomplete: "new-password") %>
   <%= render Molecules::CheckboxFieldComponent.new(name: "user[privacy_policy]", label: PRIVACY_LABEL, checked: privacy_policy_accepted?, error: error_for(:privacy_policy)) %>
