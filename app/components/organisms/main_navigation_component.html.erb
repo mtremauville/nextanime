@@ -11,10 +11,10 @@
     <div class="na-header__tools">
       <div class="d-none d-md-block">
         <label for="country" class="visually-hidden">Pays</label>
-        <%= select_tag "country", country_options, id: "country", class: "form-select form-select-sm" %>
+        <%= select_tag "country", country_options, id: "country", class: "form-select na-country" %>
       </div>
 
-      <button type="button" class="btn-na-outline na-theme-toggle d-none d-md-inline-flex"
+      <button type="button" class="na-icon-button na-icon-button--plain na-theme-toggle d-none d-md-inline-flex"
               data-controller="theme" data-action="theme#toggle"
               aria-label="Changer de thème">
         <i class="bi bi-sun na-theme-toggle__sun" aria-hidden="true"></i>
@@ -25,7 +25,11 @@
         <%= render Molecules::AccountActionsComponent.new(user: user) %>
       </div>
 
-      <button type="button" class="btn-na-outline na-icon-button d-md-none"
+      <% unless user %>
+        <%= link_to "Connexion", new_user_session_path, class: "na-header__signin d-md-none" %>
+      <% end %>
+
+      <button type="button" class="na-icon-button na-icon-button--plain na-header__burger d-md-none"
               data-menu-target="opener" data-action="menu#open"
               aria-label="Ouvrir le menu" aria-haspopup="dialog" aria-expanded="false"
               aria-controls="<%= Organisms::MobileMenuComponent::DOM_ID %>">

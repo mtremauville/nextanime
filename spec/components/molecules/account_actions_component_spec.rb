@@ -4,12 +4,13 @@ RSpec.describe Molecules::AccountActionsComponent, type: :component do
   context "without a user" do
     before { render_inline(described_class.new) }
 
-    it "links to the sign in page as an outline button" do
-      expect(page).to have_css("a.btn-na-outline[href='/users/sign_in']", text: "Connexion")
+    it "links to the sign in page as a plain text link" do
+      expect(page).to have_css("a.na-account__link[href='/users/sign_in']", text: "Connexion")
+      expect(page).to have_no_css("a.btn[href='/users/sign_in']")
     end
 
-    it "links to the sign up page as a primary button" do
-      expect(page).to have_css("a.btn-na-primary[href='/users/sign_up']", text: "Créer un compte")
+    it "links to the sign up page as an outline button" do
+      expect(page).to have_css("a.btn-na-outline[href='/users/sign_up']", text: "Créer un compte")
     end
 
     it "offers no sign out" do
@@ -32,6 +33,10 @@ RSpec.describe Molecules::AccountActionsComponent, type: :component do
       expect(page).to have_css("form[action='/users/sign_out'][method='post']")
       expect(page).to have_css("input[name='_method'][value='delete']", visible: :all)
       expect(page).to have_button("Déconnexion")
+    end
+
+    it "shows the sign out as a neutral button" do
+      expect(page).to have_css("button.na-account__signout", text: "Déconnexion")
     end
 
     it "offers no sign in or sign up" do

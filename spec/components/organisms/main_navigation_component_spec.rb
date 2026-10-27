@@ -81,6 +81,27 @@ RSpec.describe Organisms::MainNavigationComponent, type: :component do
     end
   end
 
+  describe "header tools" do
+    it "styles the country selector as a field" do
+      expect(rendered).to have_css("select#country.na-country")
+    end
+
+    it "shows the theme toggle and the burger as plain icon buttons" do
+      expect(rendered).to have_css("button.na-theme-toggle.na-icon-button--plain")
+      expect(rendered).to have_css("button.na-header__burger.na-icon-button--plain[aria-label='Ouvrir le menu']")
+    end
+
+    it "offers a short sign in link to visitors on small screens" do
+      expect(rendered).to have_css(".na-header__tools a.na-header__signin[href='/users/sign_in']", text: "Connexion")
+    end
+
+    it "offers no short sign in link to a signed in user" do
+      signed_in = render_inline(described_class.new(current_path: "/", user: build_stubbed(:user)))
+
+      expect(signed_in).to have_no_css(".na-header__signin")
+    end
+  end
+
   describe "watchlist" do
     context "for a visitor" do
       it "is hidden from the desktop navigation, the tab bar and the mobile menu" do

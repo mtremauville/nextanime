@@ -27,6 +27,8 @@
   display: flex;
   align-items: center;
   gap: .5rem;
+
+  @include media-breakpoint-up(md) { gap: 1rem; }
 }
 
 // Header desktop : liens en texte seul, l'onglet actif est souligné en magenta (maquettes).
@@ -230,10 +232,12 @@
 .na-account {
   display: flex;
   align-items: center;
-  gap: .75rem;
+  gap: 1rem;
 
-  .btn { min-height: 2.75rem; }
+  .btn { min-height: 2.75rem; padding: 0 1.25rem; font-size: .875rem; }
 }
+
+
 
 .na-menu__account {
   display: flex;
@@ -277,3 +281,53 @@
   gap: .75rem;
   margin-top: 1.5rem;
 }
+
+// Outils du header (maquettes) : sélecteur de pays, liens de compte, boutons d'icône sans contour.
+.na-country {
+  min-height: 2.75rem;
+  padding: 0 2.25rem 0 .75rem;
+  border-color: var(--na-border);
+  border-radius: .5rem;
+  background-color: var(--na-surface);
+  color: var(--na-text);
+  font-size: .875rem;
+  cursor: pointer;
+}
+
+.na-account__link,
+.na-header__signin {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  color: var(--na-text);
+  font-size: .875rem;
+  font-weight: 600;
+  text-decoration: none;
+
+  &:hover { color: var(--na-cyan); }
+}
+
+.na-account__link { padding: 0 1rem; }
+.na-header__signin { padding: 0 .75rem; color: var(--na-cyan); }
+
+.na-account__signout {
+  border: 1px solid var(--na-border);
+  border-radius: .5rem;
+  background: transparent;
+  color: var(--na-text);
+  font-family: $na-font-body;
+  font-weight: 600;
+
+  &:hover { border-color: var(--na-cyan); color: var(--na-cyan); }
+}
+
+.na-icon-button--plain {
+  border: 0;
+  background: transparent;
+  color: var(--na-text);
+  font-size: 1.5rem;
+
+  &:hover { color: var(--na-cyan); }
+}
+
+.na-header__burger { margin-right: -.625rem; }
