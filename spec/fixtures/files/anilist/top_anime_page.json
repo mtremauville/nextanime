@@ -16,10 +16,18 @@
           "popularity": 300000,
           "description": "Bounty hunters travel the solar system.",
           "coverImage": { "large": "https://example.test/covers/1.jpg" },
+          "bannerImage": "https://example.test/banners/1.jpg",
+          "startDate": { "year": 1998, "month": 4, "day": 3 },
+          "endDate": { "year": 1999, "month": 4, "day": 24 },
           "nextAiringEpisode": null,
           "genres": ["Action", "Sci-Fi"],
-          "tags": [{ "id": 101, "name": "Space", "rank": 90, "isAdult": false }],
-          "studios": { "edges": [{ "isMain": true, "node": { "id": 14, "name": "Sunrise" } }] }
+          "tags": [{ "id": 101, "name": "Space", "category": "Setting-Universe", "rank": 90, "isAdult": false }],
+          "studios": {
+            "edges": [
+              { "isMain": true, "node": { "id": 14, "name": "Sunrise", "isAnimationStudio": true } },
+              { "isMain": false, "node": { "id": 53, "name": "Bandai Visual", "isAnimationStudio": false } }
+            ]
+          }
         },
         {
           "id": 154587,
@@ -34,10 +42,15 @@
           "popularity": 250000,
           "description": "An elf mage looks back on her journey.",
           "coverImage": { "large": "https://example.test/covers/154587.jpg" },
+          "bannerImage": null,
+          "startDate": { "year": 2023, "month": 9, "day": 29 },
+          "endDate": { "year": null, "month": null, "day": null },
           "nextAiringEpisode": { "airingAt": 1798761600, "episode": 29 },
           "genres": ["Adventure", "Drama", "Fantasy"],
-          "tags": [{ "id": 202, "name": "Elf", "rank": 80, "isAdult": false }],
-          "studios": { "edges": [{ "isMain": true, "node": { "id": 569, "name": "Madhouse" } }] }
+          "tags": [{ "id": 202, "name": "Elf", "category": "Cast-Traits", "rank": 80, "isAdult": false }],
+          "studios": {
+            "edges": [{ "isMain": true, "node": { "id": 569, "name": "Madhouse", "isAnimationStudio": true } }]
+          }
         }
       ]
     }
