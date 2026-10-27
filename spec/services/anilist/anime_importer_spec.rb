@@ -157,6 +157,41 @@ RSpec.describe Anilist::AnimeImporter do
       end
     end
 
+    describe "studios listed in a surprising way" do
+      def edge(id, name, main:)
+        { "isMain" => main, "node" => { "id" => id, "name" => name, "isAnimationStudio" => true } }
+      end
+
+      def import_with(edges)
+        importer.import(bebop.merge("studios" => { "edges" => edges }))
+      end
+
+      it "links a studio listed twice only once" do
+        anime = import_with([ edge(14, "Sunrise", main: false), edge(14, "Sunrise", main: false) ])
+
+        expect(anime.anime_studios.count).to eq(1)
+      end
+
+      it "keeps the main flag when only one of the listings has it" do
+        anime = import_with([ edge(14, "Sunrise", main: false), edge(14, "Sunrise", main: true) ])
+
+        expect(anime.main_studio.name).to eq("Sunrise")
+      end
+
+      it "keeps a single main studio when AniList flags several" do
+        anime = import_with([ edge(14, "Sunrise", main: true), edge(99, "Bones", main: true) ])
+
+        expect(anime.studios.count).to eq(2)
+        expect(anime.anime_studios.where(main: true).count).to eq(1)
+        expect(anime.main_studio.name).to eq("Sunrise")
+      end
+
+      it "has no main studio when AniList flags none" do
+        anime = import_with([ edge(14, "Sunrise", main: false) ])
+
+        expect(anime.main_studio).to be_nil
+      end
+    end
     describe "importing the same anime again" do
       before { importer.import(bebop) }
 

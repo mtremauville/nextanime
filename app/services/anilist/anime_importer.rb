@@ -65,13 +65,25 @@ module Anilist
     def replace_studios(anime, edges)
       anime.anime_studios.destroy_all
 
-      edges.each do |edge|
+      main_taken = false
+      animation_studio_links(edges).each_value do |link|
+        studio = Studio.find_or_initialize_by(anilist_studio_id: link[:node].fetch("id"))
+        studio.update!(name: link[:node].fetch("name"))
+
+        main = link[:main] && !main_taken
+        main_taken ||= main
+        anime.anime_studios.create!(studio: studio, main: main)
+      end
+    end
+
+    # AniList may list a studio twice, and flag several studios as main.
+    def animation_studio_links(edges)
+      edges.each_with_object({}) do |edge, links|
         node = edge.fetch("node")
         next unless node.fetch("isAnimationStudio")
 
-        studio = Studio.find_or_initialize_by(anilist_studio_id: node.fetch("id"))
-        studio.update!(name: node.fetch("name"))
-        anime.anime_studios.create!(studio: studio, main: edge.fetch("isMain"))
+        link = (links[node.fetch("id")] ||= { node: node, main: false })
+        link[:main] ||= edge.fetch("isMain")
       end
     end
   end
