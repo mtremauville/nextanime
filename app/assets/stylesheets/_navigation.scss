@@ -88,18 +88,15 @@
     flex: 1;
     flex-direction: column;
     justify-content: center;
-    gap: 0.125rem;
-    padding: 0.5rem 0.25rem;
+    gap: .25rem;
+    min-height: 4rem;
+    padding: 0 .25rem;
     border-radius: 0;
-    font-size: 0.75rem;
+    font-size: .6875rem;
 
-    .bi {
-      font-size: 1.25rem;
-    }
+    .bi { font-size: 1.375rem; line-height: 1; }
 
-    &--active {
-      box-shadow: inset 0 2px 0 var(--na-magenta);
-    }
+    &--active { background: none; box-shadow: none; color: var(--na-magenta); }
   }
 }
 
