@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_26_200404) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_27_150440) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -77,6 +77,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_26_200404) do
     t.index ["name"], name: "index_genres_on_name", unique: true
   end
 
+  create_table "recommendations", force: :cascade do |t|
+    t.bigint "taste_profile_id", null: false
+    t.bigint "anime_id", null: false
+    t.decimal "score", precision: 5, scale: 4, null: false
+    t.text "explanation"
+    t.string "explanation_digest"
+    t.datetime "explained_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["anime_id"], name: "index_recommendations_on_anime_id"
+    t.index ["taste_profile_id", "anime_id"], name: "index_recommendations_on_taste_profile_id_and_anime_id", unique: true
+    t.index ["taste_profile_id", "score"], name: "index_recommendations_on_taste_profile_id_and_score"
+  end
+
   create_table "studios", force: :cascade do |t|
     t.integer "anilist_studio_id", null: false
     t.string "name", null: false
@@ -84,6 +98,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_26_200404) do
     t.datetime "updated_at", null: false
     t.index ["anilist_studio_id"], name: "index_studios_on_anilist_studio_id", unique: true
     t.index ["name"], name: "index_studios_on_name", unique: true
+  end
+
+  create_table "swipes", force: :cascade do |t|
+    t.bigint "taste_profile_id", null: false
+    t.bigint "anime_id", null: false
+    t.boolean "liked", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["anime_id"], name: "index_swipes_on_anime_id"
+    t.index ["taste_profile_id", "anime_id"], name: "index_swipes_on_taste_profile_id_and_anime_id", unique: true
   end
 
   create_table "tags", force: :cascade do |t|
@@ -94,6 +118,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_26_200404) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["anilist_tag_id"], name: "index_tags_on_anilist_tag_id", unique: true
+  end
+
+  create_table "taste_profiles", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "session_token"
+    t.jsonb "genre_weights", default: {}, null: false
+    t.jsonb "tag_weights", default: {}, null: false
+    t.string "digest"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["session_token"], name: "index_taste_profiles_on_session_token", unique: true, where: "(session_token IS NOT NULL)"
+    t.index ["user_id"], name: "index_taste_profiles_on_user_id", unique: true, where: "(user_id IS NOT NULL)"
   end
 
   create_table "users", force: :cascade do |t|
@@ -114,10 +150,29 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_26_200404) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  create_table "watchlist_entries", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "anime_id", null: false
+    t.integer "status", default: 0, null: false
+    t.integer "progress", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["anime_id"], name: "index_watchlist_entries_on_anime_id"
+    t.index ["user_id", "anime_id"], name: "index_watchlist_entries_on_user_id_and_anime_id", unique: true
+    t.index ["user_id", "status"], name: "index_watchlist_entries_on_user_id_and_status"
+  end
+
   add_foreign_key "anime_genres", "animes"
   add_foreign_key "anime_genres", "genres"
   add_foreign_key "anime_studios", "animes"
   add_foreign_key "anime_studios", "studios"
   add_foreign_key "anime_tags", "animes"
   add_foreign_key "anime_tags", "tags"
+  add_foreign_key "recommendations", "animes"
+  add_foreign_key "recommendations", "taste_profiles"
+  add_foreign_key "swipes", "animes"
+  add_foreign_key "swipes", "taste_profiles"
+  add_foreign_key "taste_profiles", "users"
+  add_foreign_key "watchlist_entries", "animes"
+  add_foreign_key "watchlist_entries", "users"
 end

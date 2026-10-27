@@ -67,6 +67,7 @@ RSpec.describe Anime, type: :model do
   end
 
   describe "associations" do
+    it { is_expected.to have_many(:watchlist_entries).dependent(:destroy) }
     it { is_expected.to have_many(:anime_genres).dependent(:destroy) }
     it { is_expected.to have_many(:genres).through(:anime_genres) }
 
@@ -75,7 +76,8 @@ RSpec.describe Anime, type: :model do
 
     it { is_expected.to have_many(:anime_studios).dependent(:destroy) }
     it { is_expected.to have_many(:studios).through(:anime_studios) }
-
+    it { is_expected.to have_many(:swipes).dependent(:destroy) }
+    it { is_expected.to have_many(:recommendations).dependent(:destroy) }
     it "removes its genre links when destroyed" do
       anime = create(:anime, genres: [ create(:genre) ])
 

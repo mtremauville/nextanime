@@ -32,6 +32,9 @@ class Anime < ApplicationRecord
   has_many :studios, through: :anime_studios
   has_one :main_anime_studio, -> { where(main: true) }, class_name: "AnimeStudio"
   has_one :main_studio, through: :main_anime_studio, source: :studio
+  has_many :swipes, dependent: :destroy
+  has_many :recommendations, dependent: :destroy
+  has_many :watchlist_entries, dependent: :destroy
 
   validates :anilist_id, presence: true, uniqueness: true
   validates :title_romaji, presence: true
