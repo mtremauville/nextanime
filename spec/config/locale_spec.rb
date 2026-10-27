@@ -9,7 +9,7 @@ RSpec.describe "Locale" do
     user = User.new
     user.validate
 
-    expect(user.errors[:email]).to include("doit être rempli(e)")
+    expect(user.errors[:email]).to include("Saisis ton adresse e-mail.")
   end
 
   it "translates the Devise messages" do

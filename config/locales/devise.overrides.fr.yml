@@ -1,5 +1,8 @@
 fr:
   devise:
+    failure:
+      invalid: "Adresse e-mail ou mot de passe incorrect."
+      not_found_in_database: "Adresse e-mail ou mot de passe incorrect."
     mailer:
       reset_password_instructions:
         subject: "Réinitialise ton mot de passe NextAnime"

@@ -108,3 +108,9 @@
 }
 
 .na-auth-form__forgot { font-size: .875rem; }
+
+// Lien placé dans un message d'erreur, par exemple « Te connecter ? ».
+.na-auth-form__inline-link {
+  color: var(--na-cyan);
+  font-weight: 600;
+}

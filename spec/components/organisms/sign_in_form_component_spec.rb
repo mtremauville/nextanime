@@ -40,4 +40,18 @@ RSpec.describe Organisms::SignInFormComponent, type: :component do
   it "submits with a full-width primary button" do
     expect(page).to have_css("button.btn-na-primary.w-100[type='submit']", text: "Se connecter")
   end
+
+  describe "after a failed attempt" do
+    before do
+      render_inline(described_class.new(resource: User.new(email: "ayako@example.com"), failed: true))
+    end
+
+    it "flags the password field" do
+      expect(page.find_field("Mot de passe", exact: true)["aria-invalid"]).to eq("true")
+    end
+
+    it "leaves the e-mail field unflagged" do
+      expect(page.find_field("Adresse e-mail")["aria-invalid"]).to be_nil
+    end
+  end
 end

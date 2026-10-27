@@ -15,8 +15,18 @@ module Organisms
       "#{Devise.password_length.min} caractères minimum."
     end
 
+    def error_summary
+      count = resource.errors.attribute_names.size
+      return if count.zero?
+
+      count == 1 ? "1 erreur empêche la création du compte." : "#{count} erreurs empêchent la création du compte."
+    end
+
     def error_for(attribute)
-      resource.errors[attribute].first
+      message = resource.errors[attribute].first
+      return message unless attribute == :email && resource.errors.of_kind?(:email, :taken)
+
+      safe_join([ "#{message} ", link_to("Te connecter ?", new_user_session_path, class: "na-auth-form__inline-link") ])
     end
 
     def privacy_policy_accepted?
