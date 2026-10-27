@@ -14,6 +14,9 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 # that will avoid rails generators crashing because migrations haven't been run yet
 # return unless Rails.env.test?
 require 'rspec/rails'
+require "webmock/rspec"
+
+WebMock.disable_net_connect!(allow_localhost: true)
 
 Capybara.enable_aria_label = true
 # Add additional requires below this line. Rails is not loaded until this point!
