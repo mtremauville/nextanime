@@ -5,5 +5,5 @@
 <h1 class="h3">Content de te revoir</h1>
 <p class="text-body-secondary mb-4">Retrouve ton profil de goûts, ta watchlist et ton calendrier.</p>
 
-<%= render Organisms::SignInFormComponent.new(resource: resource) %>
+<%= render Organisms::SignInFormComponent.new(resource: resource, failed: request.post?) %>
 <%= render Molecules::GuestAccessComponent.new %>

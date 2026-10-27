@@ -1,3 +1,7 @@
+<% if error_summary %>
+  <%= render Molecules::AlertComponent.new(message: error_summary, variant: :alert) %>
+<% end %>
+
 <%= form_with scope: :user, url: user_registration_path, class: "na-auth-form" do %>
   <%= render Molecules::FormFieldComponent.new(name: "user[email]", label: "Adresse e-mail", type: "email", value: resource.email, error: error_for(:email), autocomplete: "email") %>
   <%= render Molecules::FormFieldComponent.new(name: "user[password]", label: "Mot de passe", type: "password", hint: password_hint, error: error_for(:password), autocomplete: "new-password") %>

@@ -58,4 +58,18 @@ RSpec.describe Molecules::FormFieldComponent, type: :component do
 
     expect(page).to have_css("input[autocomplete='email'][required]")
   end
+
+  describe "flagged without a message" do
+    before do
+      render_inline(described_class.new(name: "user[password]", label: "Mot de passe", type: "password", invalid: true))
+    end
+
+    it "flags the input as invalid" do
+      expect(page).to have_css("input.is-invalid[aria-invalid='true']")
+    end
+
+    it "shows no error markup" do
+      expect(page).not_to have_css("[role='alert']")
+    end
+  end
 end

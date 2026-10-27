@@ -81,4 +81,59 @@ RSpec.describe Organisms::SignUpFormComponent, type: :component do
       expect(page).to have_css("#field_user_privacy_policy_error[role='alert']", text: "doit être accepté(e)")
     end
   end
+
+  describe "error summary" do
+    def render_with_errors(errors = [])
+      user = User.new(email: "ayako@example.com")
+      errors.each { |attribute, message| user.errors.add(attribute, message) }
+      render_inline(described_class.new(resource: user))
+    end
+
+    it "is absent without error" do
+      render_with_errors
+
+      expect(page).not_to have_text("erreur")
+    end
+
+    it "announces a single error in the singular" do
+      render_with_errors([ [ :password_confirmation, "Les mots de passe ne correspondent pas." ] ])
+
+      expect(page).to have_css("[role='alert']", text: "1 erreur empêche la création du compte.")
+    end
+
+    it "announces several errors in the plural" do
+      render_with_errors([
+        [ :password, "Saisis un mot de passe." ],
+        [ :password_confirmation, "Les mots de passe ne correspondent pas." ]
+      ])
+
+      expect(page).to have_css("[role='alert']", text: "2 erreurs empêchent la création du compte.")
+    end
+
+    it "counts fields, not messages" do
+      render_with_errors([
+        [ :password, "Saisis un mot de passe." ],
+        [ :password, "Ce mot de passe est trop court." ]
+      ])
+
+      expect(page).to have_css("[role='alert']", text: "1 erreur empêche la création du compte.")
+    end
+  end
+
+  describe "when the e-mail address is already used" do
+    before do
+      user = User.new(email: "ayako@example.com")
+      user.errors.add(:email, :taken)
+      render_inline(described_class.new(resource: user))
+    end
+
+    it "says so and offers to sign in" do
+      expect(page).to have_css("#field_user_email_error", text: "Cette adresse est déjà utilisée.")
+      expect(page).to have_link("Te connecter ?", href: "/users/sign_in")
+    end
+
+    it "flags the e-mail field" do
+      expect(page.find_field("Adresse e-mail")["aria-invalid"]).to eq("true")
+    end
+  end
 end
