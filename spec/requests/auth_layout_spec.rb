@@ -37,7 +37,7 @@ RSpec.describe "Authentication layout", type: :request do
     end
 
     it "puts the brand and the way back in a header above the main landmark" do
-      expect(document).to have_css("header.na-auth__header a.na-auth__logo", text: "NextAnime")
+      expect(document).to have_css("header.na-auth__header a.na-brand", text: "NextAnime")
       expect(document).to have_css("header.na-auth__header a.na-auth__back", text: "Retour à l'accueil")
       expect(document).to have_no_css("main#main a.na-auth__back")
     end
