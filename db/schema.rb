@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_27_145334) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_27_150440) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -150,6 +150,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_27_145334) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  create_table "watchlist_entries", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "anime_id", null: false
+    t.integer "status", default: 0, null: false
+    t.integer "progress", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["anime_id"], name: "index_watchlist_entries_on_anime_id"
+    t.index ["user_id", "anime_id"], name: "index_watchlist_entries_on_user_id_and_anime_id", unique: true
+    t.index ["user_id", "status"], name: "index_watchlist_entries_on_user_id_and_status"
+  end
+
   add_foreign_key "anime_genres", "animes"
   add_foreign_key "anime_genres", "genres"
   add_foreign_key "anime_studios", "animes"
@@ -161,4 +173,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_27_145334) do
   add_foreign_key "swipes", "animes"
   add_foreign_key "swipes", "taste_profiles"
   add_foreign_key "taste_profiles", "users"
+  add_foreign_key "watchlist_entries", "animes"
+  add_foreign_key "watchlist_entries", "users"
 end

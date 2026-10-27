@@ -67,6 +67,7 @@ RSpec.describe Anime, type: :model do
   end
 
   describe "associations" do
+    it { is_expected.to have_many(:watchlist_entries).dependent(:destroy) }
     it { is_expected.to have_many(:anime_genres).dependent(:destroy) }
     it { is_expected.to have_many(:genres).through(:anime_genres) }
 

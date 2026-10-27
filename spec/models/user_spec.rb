@@ -127,6 +127,8 @@ RSpec.describe User, type: :model do
   end
 describe "associations" do
   it { is_expected.to have_one(:taste_profile).dependent(:destroy) }
+    it { is_expected.to have_many(:watchlist_entries).dependent(:destroy) }
+    it { is_expected.to have_many(:animes).through(:watchlist_entries) }
 end
   describe "error messages" do
     def first_error(attribute, **overrides)
