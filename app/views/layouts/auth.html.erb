@@ -6,29 +6,29 @@
     <a class="visually-hidden-focusable" href="#main">Aller au contenu</a>
 
     <div class="na-auth">
-      <aside class="na-auth__brand">
+      <header class="na-auth__header">
         <%= link_to root_path, class: "na-auth__logo" do %>
           <span class="na-auth__logo-mark" lang="ja" aria-hidden="true">次</span>
           <span>NextAnime</span>
         <% end %>
 
-        <div class="na-auth__pitch">
+        <%= link_to root_path, class: "na-auth__back" do %>
+          <i class="bi bi-arrow-left" aria-hidden="true"></i>
+          <span>Retour à l'accueil</span>
+        <% end %>
+      </header>
+
+      <main id="main" class="na-auth__main">
+        <section class="na-auth__brand" aria-label="Présentation">
           <p class="na-auth__eyebrow" lang="ja">次のアニメを見つけよう</p>
-          <p class="na-auth__title">Ton prochain anime se cache dans <span class="na-auth__accent">tes goûts</span>.</p>
+          <h2 class="na-auth__title">Ton prochain anime se cache dans <span class="na-auth__accent">tes goûts</span>.</h2>
           <p class="na-auth__lead">Un compte te permet de garder ton profil, ta watchlist et tes notifications de sorties.</p>
-        </div>
-      </aside>
+        </section>
 
-      <main id="main" class="na-auth__panel">
-        <div class="na-auth__panel-inner">
-          <%= link_to root_path, class: "na-auth__back" do %>
-            <i class="bi bi-arrow-left" aria-hidden="true"></i>
-            <span>Retour à l'accueil</span>
-          <% end %>
-
+        <section class="na-auth__card">
           <%= render "shared/flash" %>
           <%= yield %>
-        </div>
+        </section>
       </main>
     </div>
   </body>

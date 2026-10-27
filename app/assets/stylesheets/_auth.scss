@@ -1,24 +1,19 @@
+$na-auth-glow: color-mix(in srgb, var(--na-magenta) 45%, transparent);
+
 .na-auth {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
 
-  @include media-breakpoint-up(lg) { grid-template-columns: 1fr 1fr; }
-
-  &__brand {
+  &__header {
     display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    padding: 1.25rem 1.5rem;
-    background: var(--na-surface);
+    align-items: center;
+    justify-content: space-between;
+    min-height: 4.5rem;
+    padding: 0 1rem;
     border-bottom: 1px solid var(--na-border);
 
-    @include media-breakpoint-up(lg) {
-      justify-content: space-between;
-      padding: 3rem;
-      border-right: 1px solid var(--na-border);
-      border-bottom: 0;
-    }
+    @include media-breakpoint-up(lg) { padding: 0 3rem; }
   }
 
   &__logo {
@@ -26,40 +21,95 @@
     align-items: center;
     gap: .75rem;
     color: var(--na-text);
-    font-weight: 800;
+    font-family: $na-font-heading;
+    font-size: 1.375rem;
+    font-weight: 700;
+    letter-spacing: .02em;
     text-decoration: none;
   }
 
-  &__logo-mark { color: var(--na-magenta); font-size: 1.5rem; line-height: 1; }
-
-  &__pitch {
-    display: none;
-    @include media-breakpoint-up(lg) { display: block; }
-  }
-
-  &__eyebrow { margin-bottom: 1rem; color: var(--na-cyan); font-size: .875rem; }
-  &__title { margin-bottom: 1rem; font-size: 2.25rem; font-weight: 800; line-height: 1.2; }
-  &__accent { color: var(--na-magenta); }
-  &__lead { max-width: 28rem; color: var(--na-muted); }
-
-  &__panel {
+  &__logo-mark {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1.5rem;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid var(--na-magenta);
+    border-radius: .5rem;
+    box-shadow: 0 0 1rem $na-auth-glow;
+    color: var(--na-magenta);
+    font-family: $na-font-accent;
+    font-size: 1.125rem;
+    line-height: 1;
   }
-
-  &__panel-inner { width: 100%; max-width: 26rem; }
 
   &__back {
     display: inline-flex;
     align-items: center;
     gap: .5rem;
-    margin-bottom: 1.5rem;
+    min-height: 2.75rem;
     color: var(--na-muted);
+    font-size: .875rem;
+    font-weight: 600;
     text-decoration: none;
 
     &:hover { color: var(--na-text); }
+  }
+
+  &__main {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: center;
+    gap: 4rem;
+    width: 100%;
+    max-width: 84rem;
+    margin: 0 auto;
+    padding: 1.5rem 1rem;
+
+    @include media-breakpoint-up(lg) { padding: 4rem 3rem; }
+  }
+
+  &__brand {
+    display: none;
+
+    @include media-breakpoint-up(lg) {
+      display: block;
+      flex: 1 1 30rem;
+      min-width: 0;
+      max-width: 35rem;
+    }
+  }
+
+  &__eyebrow {
+    margin-bottom: 1rem;
+    color: var(--na-cyan);
+    font-family: $na-font-accent;
+    font-size: .875rem;
+    letter-spacing: .12em;
+  }
+
+  &__title {
+    margin: 0 0 1rem;
+    font-family: $na-font-heading;
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  &__accent { color: var(--na-magenta); text-shadow: 0 0 1.5rem $na-auth-glow; }
+  &__lead { margin: 0; color: var(--na-muted); line-height: 1.6; }
+
+  &__card {
+    flex: 0 1 28.75rem;
+    width: 100%;
+    max-width: 28.75rem;
+    padding: 1.5rem;
+    background: var(--na-surface);
+    border: 1px solid var(--na-border);
+    border-radius: 1rem;
+
+    @include media-breakpoint-up(sm) { padding: 2.5rem; }
   }
 }
 
