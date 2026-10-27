@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_27_143018) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_27_144042) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -86,6 +86,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_27_143018) do
     t.index ["name"], name: "index_studios_on_name", unique: true
   end
 
+  create_table "swipes", force: :cascade do |t|
+    t.bigint "taste_profile_id", null: false
+    t.bigint "anime_id", null: false
+    t.boolean "liked", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["anime_id"], name: "index_swipes_on_anime_id"
+    t.index ["taste_profile_id", "anime_id"], name: "index_swipes_on_taste_profile_id_and_anime_id", unique: true
+  end
+
   create_table "tags", force: :cascade do |t|
     t.integer "anilist_tag_id", null: false
     t.string "name", null: false
@@ -132,5 +142,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_27_143018) do
   add_foreign_key "anime_studios", "studios"
   add_foreign_key "anime_tags", "animes"
   add_foreign_key "anime_tags", "tags"
+  add_foreign_key "swipes", "animes"
+  add_foreign_key "swipes", "taste_profiles"
   add_foreign_key "taste_profiles", "users"
 end
