@@ -53,7 +53,8 @@ RSpec.describe Anilist::Client do
       expect(sent_payload["query"]).to include(
         "title", "format", "status", "season", "seasonYear", "episodes", "duration",
         "averageScore", "popularity", "description", "coverImage", "nextAiringEpisode",
-        "genres", "tags", "studios"
+        "genres", "tags", "studios",
+        "bannerImage", "startDate", "endDate", "category", "isAnimationStudio"
       )
     end
 

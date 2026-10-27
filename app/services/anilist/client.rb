@@ -29,10 +29,13 @@ module Anilist
             popularity
             description(asHtml: false)
             coverImage { large }
+            bannerImage
+            startDate { year month day }
+            endDate { year month day }
             nextAiringEpisode { airingAt episode }
             genres
-            tags { id name rank isAdult }
-            studios { edges { isMain node { id name } } }
+            tags { id name category rank isAdult }
+            studios { edges { isMain node { id name isAnimationStudio } } }
           }
         }
       }
