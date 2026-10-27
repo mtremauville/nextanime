@@ -1,5 +1,4 @@
 class Organisms::MainNavigationComponent < ViewComponent::Base
-  BRAND = "NextAnime".freeze
   DEFAULT_COUNTRY = "FR".freeze
   COUNTRIES = {
     "FR" => "France",
@@ -28,9 +27,9 @@ class Organisms::MainNavigationComponent < ViewComponent::Base
       { label: "Découvrir", href: root_path, icon: "stars" },
       { label: "Catalogue", href: catalogue_path, icon: "grid" },
       { label: "Recos", href: recommendations_path, icon: "heart" },
-      { label: "Watchlist", href: watchlist_path, icon: "bookmark" },
+      ({ label: "Watchlist", href: watchlist_path, icon: "bookmark" } if user),
       { label: "Calendrier", href: calendar_path, icon: "calendar3" }
-    ]
+    ].compact
   end
 
   def country_options

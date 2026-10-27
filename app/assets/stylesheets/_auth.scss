@@ -16,41 +16,6 @@ $na-auth-glow: color-mix(in srgb, var(--na-magenta) 45%, transparent);
     @include media-breakpoint-up(md) { min-height: 4.5rem; padding: 0 3rem; }
   }
 
-  &__logo {
-    display: inline-flex;
-    align-items: center;
-    gap: .5rem;
-    color: var(--na-text);
-    font-family: $na-font-heading;
-    font-size: 1.125rem;
-    font-weight: 700;
-    letter-spacing: .02em;
-    text-decoration: none;
-
-    @include media-breakpoint-up(md) { gap: .75rem; font-size: 1.375rem; }
-  }
-
-  &__logo-mark {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 1.75rem;
-    height: 1.75rem;
-    border: 1px solid var(--na-magenta);
-    border-radius: .5rem;
-    color: var(--na-magenta);
-    font-family: $na-font-accent;
-    font-size: 1rem;
-    line-height: 1;
-
-    @include media-breakpoint-up(md) {
-      width: 2rem;
-      height: 2rem;
-      box-shadow: 0 0 1rem $na-auth-glow;
-      font-size: 1.125rem;
-    }
-  }
-
   &__back {
     display: inline-flex;
     align-items: center;

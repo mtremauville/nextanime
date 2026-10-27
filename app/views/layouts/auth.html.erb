@@ -7,10 +7,7 @@
 
     <div class="na-auth">
       <header class="na-auth__header">
-        <%= link_to root_path, class: "na-auth__logo" do %>
-          <span class="na-auth__logo-mark" lang="ja" aria-hidden="true">次</span>
-          <span>NextAnime</span>
-        <% end %>
+        <%= render Atoms::BrandLogoComponent.new %>
 
         <%= link_to root_path, class: "na-auth__back" do %>
           <i class="bi bi-arrow-left" aria-hidden="true"></i>

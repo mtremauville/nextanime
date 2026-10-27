@@ -2,37 +2,49 @@
   position: sticky;
   top: 0;
   z-index: 1030;
-  background: var(--na-surface);
+  background: var(--na-bg);
   border-bottom: 1px solid var(--na-border);
 }
 
 .na-header__bar {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  max-width: 80rem;
-  margin: 0 auto;
-  padding: 0.75rem 1rem;
-}
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 3.5rem;
+  padding: 0 1rem;
 
-.na-header__brand {
-  font-family: "Chakra Petch", sans-serif;
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--na-text);
-  text-decoration: none;
+  @include media-breakpoint-up(md) { min-height: 4.5rem; padding: 0 3rem; }
 }
 
 .na-header__nav {
-  flex: 1;
-  gap: 0.25rem;
+  align-self: stretch;
+  align-items: stretch;
+  gap: 2rem;
 }
 
 .na-header__tools {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin-left: auto;
+  gap: .5rem;
+
+  @include media-breakpoint-up(md) { gap: 1rem; }
+}
+
+// Header desktop : liens en texte seul, l'onglet actif est souligné en magenta (maquettes).
+.na-header__nav .na-nav__link {
+  padding: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  font-size: .875rem;
+
+  .bi { display: none; }
+
+  &--active {
+    border-bottom-color: var(--na-magenta);
+    background: none;
+    box-shadow: none;
+  }
 }
 
 .na-nav__link {
@@ -76,18 +88,15 @@
     flex: 1;
     flex-direction: column;
     justify-content: center;
-    gap: 0.125rem;
-    padding: 0.5rem 0.25rem;
+    gap: .25rem;
+    min-height: 4rem;
+    padding: 0 .25rem;
     border-radius: 0;
-    font-size: 0.75rem;
+    font-size: .6875rem;
 
-    .bi {
-      font-size: 1.25rem;
-    }
+    .bi { font-size: 1.375rem; line-height: 1; }
 
-    &--active {
-      box-shadow: inset 0 2px 0 var(--na-magenta);
-    }
+    &--active { background: none; box-shadow: none; color: var(--na-magenta); }
   }
 }
 
@@ -220,10 +229,12 @@
 .na-account {
   display: flex;
   align-items: center;
-  gap: .75rem;
+  gap: 1rem;
 
-  .btn { min-height: 2.75rem; }
+  .btn { min-height: 2.75rem; padding: 0 1.25rem; font-size: .875rem; }
 }
+
+
 
 .na-menu__account {
   display: flex;
@@ -267,3 +278,53 @@
   gap: .75rem;
   margin-top: 1.5rem;
 }
+
+// Outils du header (maquettes) : sélecteur de pays, liens de compte, boutons d'icône sans contour.
+.na-country {
+  min-height: 2.75rem;
+  padding: 0 2.25rem 0 .75rem;
+  border-color: var(--na-border);
+  border-radius: .5rem;
+  background-color: var(--na-surface);
+  color: var(--na-text);
+  font-size: .875rem;
+  cursor: pointer;
+}
+
+.na-account__link,
+.na-header__signin {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  color: var(--na-text);
+  font-size: .875rem;
+  font-weight: 600;
+  text-decoration: none;
+
+  &:hover { color: var(--na-cyan); }
+}
+
+.na-account__link { padding: 0 1rem; }
+.na-header__signin { padding: 0 .75rem; color: var(--na-cyan); }
+
+.na-account__signout {
+  border: 1px solid var(--na-border);
+  border-radius: .5rem;
+  background: transparent;
+  color: var(--na-text);
+  font-family: $na-font-body;
+  font-weight: 600;
+
+  &:hover { border-color: var(--na-cyan); color: var(--na-cyan); }
+}
+
+.na-icon-button--plain {
+  border: 0;
+  background: transparent;
+  color: var(--na-text);
+  font-size: 1.5rem;
+
+  &:hover { color: var(--na-cyan); }
+}
+
+.na-header__burger { margin-right: -.625rem; }
