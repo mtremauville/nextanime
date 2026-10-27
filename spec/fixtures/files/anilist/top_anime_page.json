@@ -1,0 +1,45 @@
+{
+  "data": {
+    "Page": {
+      "pageInfo": { "currentPage": 2, "hasNextPage": true },
+      "media": [
+        {
+          "id": 1,
+          "title": { "romaji": "Cowboy Bebop", "english": "Cowboy Bebop", "native": "カウボーイビバップ" },
+          "format": "TV",
+          "status": "FINISHED",
+          "season": "SPRING",
+          "seasonYear": 1998,
+          "episodes": 26,
+          "duration": 24,
+          "averageScore": 86,
+          "popularity": 300000,
+          "description": "Bounty hunters travel the solar system.",
+          "coverImage": { "large": "https://example.test/covers/1.jpg" },
+          "nextAiringEpisode": null,
+          "genres": ["Action", "Sci-Fi"],
+          "tags": [{ "id": 101, "name": "Space", "rank": 90, "isAdult": false }],
+          "studios": { "edges": [{ "isMain": true, "node": { "id": 14, "name": "Sunrise" } }] }
+        },
+        {
+          "id": 154587,
+          "title": { "romaji": "Sousou no Frieren", "english": "Frieren: Beyond Journey's End", "native": "葬送のフリーレン" },
+          "format": "TV",
+          "status": "RELEASING",
+          "season": "FALL",
+          "seasonYear": 2023,
+          "episodes": 28,
+          "duration": 24,
+          "averageScore": 91,
+          "popularity": 250000,
+          "description": "An elf mage looks back on her journey.",
+          "coverImage": { "large": "https://example.test/covers/154587.jpg" },
+          "nextAiringEpisode": { "airingAt": 1798761600, "episode": 29 },
+          "genres": ["Adventure", "Drama", "Fantasy"],
+          "tags": [{ "id": 202, "name": "Elf", "rank": 80, "isAdult": false }],
+          "studios": { "edges": [{ "isMain": true, "node": { "id": 569, "name": "Madhouse" } }] }
+        }
+      ]
+    }
+  }
+}
