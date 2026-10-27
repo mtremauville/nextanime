@@ -86,7 +86,7 @@ RSpec.describe "Sign up", type: :request do
       it "explains that the policy must be accepted" do
         post user_registration_path, params: params
 
-        expect(document).to have_css("#field_user_privacy_policy_error[role='alert']", text: "doit être accepté(e)")
+        expect(document).to have_css("#field_user_privacy_policy_error[role='alert']", text: "Tu dois accepter la politique de confidentialité.")
       end
 
       it "keeps the e-mail address but never sends the passwords back" do

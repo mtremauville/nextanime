@@ -63,14 +63,14 @@ RSpec.describe User, type: :model do
       user = build(:user, privacy_policy: nil)
       user.validate
 
-      expect(user.errors[:privacy_policy]).to include("doit être accepté(e)")
+      expect(user.errors[:privacy_policy]).to include("Tu dois accepter la politique de confidentialité.")
     end
 
     it "is refused when the box is unchecked" do
       user = build(:user, privacy_policy: "0")
       user.validate
 
-      expect(user.errors[:privacy_policy]).to include("doit être accepté(e)")
+      expect(user.errors[:privacy_policy]).to include("Tu dois accepter la politique de confidentialité.")
     end
 
     it "is not asked again when the account is updated" do
@@ -123,6 +123,52 @@ RSpec.describe User, type: :model do
       reset_with(token)
 
       expect(reset_with(token).errors[:reset_password_token]).to be_present
+    end
+  end
+
+  describe "error messages" do
+    def first_error(attribute, **overrides)
+      user = User.new({
+        email: "ayako@example.com",
+        password: "a long enough password",
+        password_confirmation: "a long enough password",
+        privacy_policy: true
+      }.merge(overrides))
+      user.validate
+      user.errors[attribute].first
+    end
+
+    it "asks for the e-mail address" do
+      expect(first_error(:email, email: "")).to eq("Saisis ton adresse e-mail.")
+    end
+
+    it "refuses a malformed e-mail address" do
+      expect(first_error(:email, email: "not-an-address")).to eq("Cette adresse e-mail n'est pas valide.")
+    end
+
+    it "tells that the e-mail address is already used" do
+      create(:user, email: "ayako@example.com")
+
+      expect(first_error(:email)).to eq("Cette adresse est déjà utilisée.")
+    end
+
+    it "asks for a password" do
+      expect(first_error(:password, password: "", password_confirmation: "")).to eq("Saisis un mot de passe.")
+    end
+
+    it "explains the minimum length of the password" do
+      expect(first_error(:password, password: "short", password_confirmation: "short"))
+        .to eq("Ce mot de passe est trop court (12 caractères minimum).")
+    end
+
+    it "tells that the passwords differ" do
+      expect(first_error(:password_confirmation, password_confirmation: "another long enough password"))
+        .to eq("Les mots de passe ne correspondent pas.")
+    end
+
+    it "asks to accept the privacy policy" do
+      expect(first_error(:privacy_policy, privacy_policy: false))
+        .to eq("Tu dois accepter la politique de confidentialité.")
     end
   end
 end

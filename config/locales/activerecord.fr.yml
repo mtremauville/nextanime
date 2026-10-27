@@ -1,0 +1,17 @@
+fr:
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            email:
+              blank: "Saisis ton adresse e-mail."
+              invalid: "Cette adresse e-mail n'est pas valide."
+              taken: "Cette adresse est déjà utilisée."
+            password:
+              blank: "Saisis un mot de passe."
+              too_short: "Ce mot de passe est trop court (%{count} caractères minimum)."
+            password_confirmation:
+              confirmation: "Les mots de passe ne correspondent pas."
+            privacy_policy:
+              accepted: "Tu dois accepter la politique de confidentialité."
