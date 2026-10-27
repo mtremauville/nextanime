@@ -125,7 +125,9 @@ RSpec.describe User, type: :model do
       expect(reset_with(token).errors[:reset_password_token]).to be_present
     end
   end
-
+describe "associations" do
+  it { is_expected.to have_one(:taste_profile).dependent(:destroy) }
+end
   describe "error messages" do
     def first_error(attribute, **overrides)
       user = User.new({

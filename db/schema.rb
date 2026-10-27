@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_26_200404) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_27_143018) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -96,6 +96,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_26_200404) do
     t.index ["anilist_tag_id"], name: "index_tags_on_anilist_tag_id", unique: true
   end
 
+  create_table "taste_profiles", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "session_token"
+    t.jsonb "genre_weights", default: {}, null: false
+    t.jsonb "tag_weights", default: {}, null: false
+    t.string "digest"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["session_token"], name: "index_taste_profiles_on_session_token", unique: true, where: "(session_token IS NOT NULL)"
+    t.index ["user_id"], name: "index_taste_profiles_on_user_id", unique: true, where: "(user_id IS NOT NULL)"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -120,4 +132,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_26_200404) do
   add_foreign_key "anime_studios", "studios"
   add_foreign_key "anime_tags", "animes"
   add_foreign_key "anime_tags", "tags"
+  add_foreign_key "taste_profiles", "users"
 end
