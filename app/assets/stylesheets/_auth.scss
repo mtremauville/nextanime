@@ -115,20 +115,44 @@ $na-auth-glow: color-mix(in srgb, var(--na-magenta) 45%, transparent);
 
 .na-auth-tabs {
   display: flex;
-  gap: .25rem;
+  gap: .5rem;
   margin-bottom: 1.5rem;
-  border-bottom: 1px solid var(--na-border);
 
   &__link {
-    margin-bottom: -1px;
-    padding: .75rem 1rem;
-    border-bottom: 2px solid transparent;
+    display: flex;
+    flex: 1 1 0;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.75rem;
+    border: 1px solid var(--na-border);
+    border-radius: .5rem;
     color: var(--na-muted);
+    font-size: .875rem;
+    font-weight: 600;
     text-decoration: none;
 
     &:hover { color: var(--na-text); }
-    &--active { border-bottom-color: var(--na-magenta); color: var(--na-text); }
+
+    &--active {
+      border-color: var(--na-magenta);
+      background: color-mix(in srgb, var(--na-magenta) 12%, transparent);
+      color: var(--na-text);
+    }
   }
+}
+
+.na-auth-heading {
+  margin-bottom: 1.5rem;
+
+  &__title {
+    margin: 0 0 .5rem;
+    font-family: $na-font-heading;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  &__subtitle { margin: 0; color: var(--na-muted); font-size: .875rem; line-height: 1.5; }
 }
 
 .na-auth-divider {

@@ -1,9 +1,7 @@
 <% content_for :title, "Connexion · Next Anime" %>
 
 <%= render Molecules::AuthTabsComponent.new(current: :sign_in) %>
-
-<h1 class="h3">Content de te revoir</h1>
-<p class="text-body-secondary mb-4">Retrouve ton profil de goûts, ta watchlist et ton calendrier.</p>
+<%= render Molecules::AuthHeadingComponent.new(title: "Content de te revoir", subtitle: "Retrouve ton profil de goûts, ta watchlist et ton calendrier.") %>
 
 <%= render Organisms::SignInFormComponent.new(resource: resource, failed: request.post?) %>
 <%= render Molecules::GuestAccessComponent.new %>
