@@ -51,6 +51,11 @@ RSpec.describe "Authentication layout", type: :request do
     it "shows the poster showcase in the presentation" do
       expect(document).to have_css("section.na-auth__brand .na-showcase .na-showcase-poster", count: 3)
     end
+
+    it "offers a short and a full label for the way back" do
+      expect(document).to have_css("a.na-auth__back .na-auth__back-full", text: "Retour à l'accueil")
+      expect(document).to have_css("a.na-auth__back .na-auth__back-short", text: "Accueil")
+    end
   end
 
   describe "flash messages" do

@@ -9,38 +9,46 @@ $na-auth-glow: color-mix(in srgb, var(--na-magenta) 45%, transparent);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    min-height: 4.5rem;
+    min-height: 3.5rem;
     padding: 0 1rem;
     border-bottom: 1px solid var(--na-border);
 
-    @include media-breakpoint-up(lg) { padding: 0 3rem; }
+    @include media-breakpoint-up(md) { min-height: 4.5rem; padding: 0 3rem; }
   }
 
   &__logo {
     display: inline-flex;
     align-items: center;
-    gap: .75rem;
+    gap: .5rem;
     color: var(--na-text);
     font-family: $na-font-heading;
-    font-size: 1.375rem;
+    font-size: 1.125rem;
     font-weight: 700;
     letter-spacing: .02em;
     text-decoration: none;
+
+    @include media-breakpoint-up(md) { gap: .75rem; font-size: 1.375rem; }
   }
 
   &__logo-mark {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 2rem;
-    height: 2rem;
+    width: 1.75rem;
+    height: 1.75rem;
     border: 1px solid var(--na-magenta);
     border-radius: .5rem;
-    box-shadow: 0 0 1rem $na-auth-glow;
     color: var(--na-magenta);
     font-family: $na-font-accent;
-    font-size: 1.125rem;
+    font-size: 1rem;
     line-height: 1;
+
+    @include media-breakpoint-up(md) {
+      width: 2rem;
+      height: 2rem;
+      box-shadow: 0 0 1rem $na-auth-glow;
+      font-size: 1.125rem;
+    }
   }
 
   &__back {
@@ -48,26 +56,38 @@ $na-auth-glow: color-mix(in srgb, var(--na-magenta) 45%, transparent);
     align-items: center;
     gap: .5rem;
     min-height: 2.75rem;
+    padding: 0 .75rem;
     color: var(--na-muted);
     font-size: .875rem;
     font-weight: 600;
     text-decoration: none;
 
     &:hover { color: var(--na-text); }
+
+    @include media-breakpoint-up(md) { padding: 0; }
+  }
+
+  &__back-full {
+    display: none;
+    @include media-breakpoint-up(md) { display: inline; }
+  }
+
+  &__back-short {
+    @include media-breakpoint-up(md) { display: none; }
   }
 
   &__main {
     display: flex;
     flex: 1 1 auto;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     gap: 4rem;
     width: 100%;
     max-width: 84rem;
     margin: 0 auto;
-    padding: 1.5rem 1rem;
+    padding: 2rem 1rem 2.5rem;
 
-    @include media-breakpoint-up(lg) { padding: 4rem 3rem; }
+    @include media-breakpoint-up(md) { align-items: center; padding: 4rem 3rem; }
   }
 
   &__brand {
@@ -100,16 +120,18 @@ $na-auth-glow: color-mix(in srgb, var(--na-magenta) 45%, transparent);
   &__accent { color: var(--na-magenta); text-shadow: 0 0 1.5rem $na-auth-glow; }
   &__lead { margin: 0 0 3rem; color: var(--na-muted); line-height: 1.6; }
 
+  // Sous md, le formulaire est posé sur la page, sans carte (maquettes mobiles).
   &__card {
     flex: 0 1 28.75rem;
     width: 100%;
     max-width: 28.75rem;
-    padding: 1.5rem;
-    background: var(--na-surface);
-    border: 1px solid var(--na-border);
-    border-radius: 1rem;
 
-    @include media-breakpoint-up(sm) { padding: 2.5rem; }
+    @include media-breakpoint-up(md) {
+      padding: 2.5rem;
+      background: var(--na-surface);
+      border: 1px solid var(--na-border);
+      border-radius: 1rem;
+    }
   }
 }
 
