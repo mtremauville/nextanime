@@ -114,3 +114,70 @@ $na-cover-dark: #0B0A14;
   font-size: .875rem;
   color: $na-cover-muted;
 }
+
+// Pass / like buttons under the deck (wired in the next backlog item).
+.na-swipe-actions {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-top: 2rem;
+}
+
+.na-swipe-actions__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .5rem;
+}
+
+.na-swipe-actions__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border: 2px solid;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: transform .15s ease;
+
+  &:hover { transform: scale(1.06); }
+
+  @include media-breakpoint-up(md) {
+    width: 72px;
+    height: 72px;
+  }
+}
+
+.na-swipe-actions__button--pass {
+  border-color: var(--na-cyan);
+  background: var(--na-bg);
+  color: var(--na-cyan);
+  box-shadow: var(--na-glow-cyan);
+}
+
+.na-swipe-actions__button--like {
+  border-color: var(--na-magenta);
+  background: var(--na-magenta);
+  color: var(--na-on-magenta);
+  box-shadow: var(--na-glow-magenta);
+}
+
+.na-swipe-actions__label {
+  font-size: .875rem;
+  color: var(--na-muted);
+}
+
+// Keyboard shortcuts: useless on a touch screen.
+.na-swipe-actions__hint {
+  margin: 1.5rem 0 0;
+  text-align: center;
+  font-family: $na-font-accent;
+  font-size: .75rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--na-muted);
+
+  @include media-breakpoint-down(md) { display: none; }
+}
