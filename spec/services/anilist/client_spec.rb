@@ -20,6 +20,46 @@ RSpec.describe Anilist::Client do
     payload
   end
 
+  describe "#media_by_ids" do
+    it "asks for the anime with the given AniList ids" do
+      client.media_by_ids([ 1535, 16498 ])
+
+      expect(sent_payload["query"]).to include("type: ANIME", "id_in")
+      expect(sent_payload["variables"]).to eq("ids" => [ 1535, 16498 ], "perPage" => 2)
+    end
+
+    it "asks for everything the import needs" do
+      client.media_by_ids([ 1535 ])
+
+      expect(sent_payload["query"]).to include(
+        "title", "status", "nextAiringEpisode", "genres", "tags", "studios", "isAnimationStudio"
+      )
+    end
+
+    it "returns the raw media" do
+      expected = JSON.parse(response_body).dig("data", "Page", "media")
+
+      expect(client.media_by_ids([ 1535 ])).to eq(expected)
+    end
+
+    it "sends nothing when there is no id" do
+      expect(client.media_by_ids([])).to eq([])
+      expect(WebMock).not_to have_requested(:post, endpoint)
+    end
+
+    it "refuses more ids than a page can hold" do
+      expect { client.media_by_ids((1..51).to_a) }.to raise_error(ArgumentError, /50/)
+    end
+
+    context "when the response is missing its data" do
+      let(:response_body) { { data: {} }.to_json }
+
+      it "raises a response error" do
+        expect { client.media_by_ids([ 1535 ]) }.to raise_error(Anilist::ResponseError)
+      end
+    end
+  end
+
   describe "#top_anime" do
     it "posts JSON to the AniList GraphQL endpoint" do
       client.top_anime

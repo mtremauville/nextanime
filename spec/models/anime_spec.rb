@@ -85,6 +85,31 @@ RSpec.describe Anime, type: :model do
     end
   end
 
+  describe ".to_sync" do
+    it "keeps the anime that are airing or not yet released" do
+      airing = create(:anime, airing_status: :releasing)
+      upcoming = create(:anime, airing_status: :not_yet_released)
+
+      expect(described_class.to_sync).to contain_exactly(airing, upcoming)
+    end
+
+    it "ignores the anime that are over" do
+      create(:anime, airing_status: :finished)
+      create(:anime, airing_status: :cancelled)
+      create(:anime, airing_status: nil)
+
+      expect(described_class.to_sync).to be_empty
+    end
+
+    it "starts with the least recently synchronized anime" do
+      recent = create(:anime, airing_status: :releasing, synced_at: 1.hour.ago)
+      oldest = create(:anime, airing_status: :releasing, synced_at: 3.days.ago)
+      never = create(:anime, airing_status: :releasing, synced_at: nil)
+
+      expect(described_class.to_sync).to eq([ never, oldest, recent ])
+    end
+  end
+
   describe "#main_studio" do
     let(:anime) { create(:anime) }
     let(:main_studio) { create(:studio) }
