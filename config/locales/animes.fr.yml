@@ -1,0 +1,13 @@
+fr:
+  animes:
+    formats:
+      tv: Série
+      tv_short: Série courte
+      movie: Film
+      special: Spécial
+      ova: OVA
+      ona: ONA
+      music: Musique
+    episodes:
+      one: "%{count} épisode"
+      other: "%{count} épisodes"
