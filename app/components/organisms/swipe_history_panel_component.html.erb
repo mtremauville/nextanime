@@ -1,0 +1,9 @@
+<aside class="na-side-panel" aria-labelledby="swipe-history-title">
+  <p class="na-eyebrow"><%= I18n.t("swipes.history.eyebrow") %></p>
+  <h2 class="na-side-panel__title" id="swipe-history-title"><%= I18n.t("swipes.history.title") %></h2>
+  <p class="na-side-panel__empty"><%= I18n.t("swipes.history.empty") %></p>
+  <div class="na-side-panel__callout">
+    <p><%= I18n.t("swipes.history.callout") %></p>
+    <%= link_to I18n.t("swipes.history.link"), recommendations_href, class: "btn btn-na-outline" %>
+  </div>
+</aside>
