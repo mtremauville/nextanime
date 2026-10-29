@@ -8,3 +8,9 @@ fr:
       remaining: "Plus que %{remaining}"
       last: Dernier anime
       label: Progression dans le deck
+    actions:
+      pass: Passer
+      pass_label: Passer cet anime
+      like: J'aime
+      like_label: J'aime cet anime
+      hint: "← Passer · J'aime →"
