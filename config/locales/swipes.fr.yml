@@ -14,3 +14,8 @@ fr:
       like: J'aime
       like_label: J'aime cet anime
       hint: "← Passer · J'aime →"
+    taste_profile:
+      eyebrow: Ton profil se dessine
+      title: Genres et ambiances
+      empty: Swipe quelques animes pour dessiner ton profil.
+      link: Voir mon profil complet →
