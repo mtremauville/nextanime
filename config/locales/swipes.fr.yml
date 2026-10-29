@@ -19,3 +19,9 @@ fr:
       title: Genres et ambiances
       empty: Swipe quelques animes pour dessiner ton profil.
       link: Voir mon profil complet →
+    history:
+      eyebrow: Derniers swipes
+      title: Ton historique
+      empty: Aucun swipe pour l'instant. Tes choix apparaîtront ici.
+      callout: Tu peux déjà voir tes recommandations, elles s'affinent à chaque swipe.
+      link: Voir mes recommandations
