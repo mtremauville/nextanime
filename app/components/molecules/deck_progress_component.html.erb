@@ -1,0 +1,7 @@
+<div class="na-deck-progress">
+  <div class="na-deck-progress__labels">
+    <span><%= position_label %></span>
+    <span class="na-deck-progress__remaining"><%= remaining_label %></span>
+  </div>
+  <%= render Atoms::MeterComponent.new(value: percent, label: I18n.t("swipes.progress.label")) %>
+</div>
