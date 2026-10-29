@@ -29,4 +29,11 @@ RSpec.describe Organisms::SwipeDeckComponent, type: :component do
 
     expect(page).to have_text("Anime 1 / 3")
   end
+
+  it "offers to pass or like the current anime" do
+    render_deck
+
+    expect(page).to have_css("button[aria-label='Passer cet anime']")
+    expect(page).to have_css("button[aria-label='J\\'aime cet anime']")
+  end
 end
