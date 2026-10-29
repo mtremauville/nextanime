@@ -1,7 +1,17 @@
 <h1 class="visually-hidden">Découvrir</h1>
 
 <% if @animes.any? %>
-  <%= render Organisms::SwipeDeckComponent.new(animes: @animes) %>
+  <div class="na-swipe-page">
+    <div class="na-swipe-page__side na-swipe-page__side--start">
+      <%= render Organisms::TasteProfilePanelComponent.new %>
+    </div>
+    <div class="na-swipe-page__main">
+      <%= render Organisms::SwipeDeckComponent.new(animes: @animes) %>
+    </div>
+    <div class="na-swipe-page__side na-swipe-page__side--end">
+      <%= render Organisms::SwipeHistoryPanelComponent.new(recommendations_href: recommendations_path) %>
+    </div>
+  </div>
 <% else %>
   <p class="text-body-secondary text-center"><%= t("swipes.deck.empty") %></p>
 <% end %>

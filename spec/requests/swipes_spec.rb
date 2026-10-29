@@ -20,6 +20,19 @@ RSpec.describe "Swipes", type: :request do
     end
 
     context "with anime in the catalog" do
+    it "shows the taste profile panel without a profile link yet" do
+      get root_path
+
+      expect(response.body).to include("Genres et ambiances")
+      expect(response.body).not_to include("Voir mon profil complet")
+    end
+
+    it "shows the history panel linking to the recommendations" do
+      get root_path
+
+      expect(response.body).to include("Ton historique")
+      expect(response.body).to include(%(href="#{recommendations_path}"))
+    end
       before do
         create_list(:anime, 3, cover_image_url: "https://img.test/cover.jpg")
         get root_path

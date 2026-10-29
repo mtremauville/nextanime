@@ -181,3 +181,57 @@ $na-cover-dark: #0B0A14;
 
   @include media-breakpoint-down(md) { display: none; }
 }
+
+// Three columns on desktop: profile, deck, history. On mobile only the deck stays,
+// the panels come back under it.
+.na-swipe-page {
+  display: grid;
+  gap: 2rem;
+
+  @include media-breakpoint-up(lg) {
+    grid-template-columns: minmax(0, 300px) minmax(0, 440px) minmax(0, 300px);
+    justify-content: center;
+    align-items: start;
+  }
+}
+
+.na-swipe-page__main { order: -1; }
+
+@include media-breakpoint-up(lg) {
+  .na-swipe-page__main { order: 0; }
+}
+
+.na-side-panel {
+  padding: 1.25rem;
+  border: 1px solid var(--na-border);
+  border-radius: $na-radius-lg;
+  background: var(--na-surface);
+}
+
+.na-side-panel__title {
+  margin: .25rem 0 1rem;
+  font-family: $na-font-heading;
+  font-size: 1.25rem;
+}
+
+.na-side-panel__empty {
+  margin: 0 0 1rem;
+  font-size: .9375rem;
+  color: var(--na-muted);
+}
+
+.na-side-panel__link {
+  font-size: .875rem;
+  color: var(--na-cyan);
+}
+
+.na-side-panel__callout {
+  padding: 1rem;
+  border-radius: $na-radius-md;
+  background: var(--na-magenta-soft);
+
+  p {
+    margin: 0 0 .75rem;
+    font-size: .875rem;
+  }
+}
