@@ -26,7 +26,7 @@ class SwipeDeckQuery
 
   def candidates
     Anime.where.not(cover_image_url: nil)
-         .includes(:genres)
+         .includes(:genres, :main_studio)
          .order(Anime.arel_table[:popularity].desc.nulls_last)
          .limit(CANDIDATES_LIMIT)
   end
