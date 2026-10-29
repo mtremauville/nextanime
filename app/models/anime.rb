@@ -23,6 +23,9 @@ class Anime < ApplicationRecord
     summer: "SUMMER",
     fall: "FALL"
   }, prefix: true, validate: { allow_nil: true }
+  SYNCED_STATUSES = %i[releasing not_yet_released].freeze
+
+  scope :to_sync, -> { where(airing_status: SYNCED_STATUSES).order(arel_table[:synced_at].asc.nulls_first) }
 
   has_many :anime_genres, dependent: :destroy
   has_many :genres, through: :anime_genres
