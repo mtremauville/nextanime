@@ -1,0 +1,10 @@
+<section class="na-swipe-deck" aria-label="<%= I18n.t("swipes.deck.label") %>">
+  <%= render Molecules::DeckProgressComponent.new(position: 1, total: animes.size) %>
+  <div class="na-swipe-deck__stack">
+    <% animes.each_with_index do |anime, index| %>
+      <%= tag.div class: "na-swipe-deck__slot", hidden: index.positive? do %>
+        <%= render Molecules::SwipeCardComponent.new(anime: anime) %>
+      <% end %>
+    <% end %>
+  </div>
+</section>
