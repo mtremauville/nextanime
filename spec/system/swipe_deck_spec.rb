@@ -4,6 +4,7 @@ RSpec.describe "Swiping the deck", type: :system, js: true do
   let(:visible_slot) { ".na-swipe-deck__slot:not([hidden])" }
 
   before do
+    page.current_window.resize_to(1400, 900)
     create_list(:anime, 3, cover_image_url: "https://img.test/cover.jpg")
     visit root_path
   end
@@ -57,5 +58,43 @@ RSpec.describe "Swiping the deck", type: :system, js: true do
     click_button "J'aime cet anime"
     expect(page).to have_text(/dernier anime/i)
     expect(Swipe.count).to eq(2)
+  end
+
+  describe "with the keyboard" do
+    it "likes with the right arrow" do
+      first_id = displayed_anime_id
+
+      find("body").send_keys(:arrow_right)
+
+      expect(page).to have_progress(2)
+      expect(Swipe.last).to have_attributes(anime_id: first_id, liked: true)
+    end
+
+    it "passes with the left arrow" do
+      first_id = displayed_anime_id
+
+      find("body").send_keys(:arrow_left)
+
+      expect(page).to have_progress(2)
+      expect(Swipe.last).to have_attributes(anime_id: first_id, liked: false)
+    end
+
+    it "leaves the arrows to the country selector" do
+      first_id = displayed_anime_id
+
+      find("select", match: :first).send_keys(:arrow_right)
+
+      expect(displayed_anime_id).to eq(first_id)
+      expect(Swipe.count).to eq(0)
+    end
+
+    it "leaves the browser shortcuts alone" do
+      first_id = displayed_anime_id
+
+      find("body").send_keys([ :alt, :arrow_left ])
+
+      expect(displayed_anime_id).to eq(first_id)
+      expect(Swipe.count).to eq(0)
+    end
   end
 end

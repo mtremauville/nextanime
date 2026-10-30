@@ -54,4 +54,10 @@ RSpec.describe Organisms::SwipeDeckComponent, type: :component do
       )
     end
   end
+
+  it "listens to the arrow keys on the whole page" do
+    render_deck
+
+    expect(page).to have_css("section[data-action~='keydown@window->swipe-deck#keydown']")
+  end
 end

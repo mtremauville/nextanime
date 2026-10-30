@@ -11,6 +11,7 @@ export default class extends Controller {
     total: Number,
     position: { type: Number, default: 1 }
   }
+  static keyActions = { ArrowLeft: "pass", ArrowRight: "like" }
 
   like() {
     this.decide(true)
@@ -18,6 +19,20 @@ export default class extends Controller {
 
   pass() {
     this.decide(false)
+  }
+
+  keydown(event) {
+    const action = this.constructor.keyActions[event.key]
+    if (!action || this.keepsKeyboard(event)) return
+
+    event.preventDefault()
+    this[action]()
+  }
+
+  // The arrows belong to form fields and dialogs, and Alt + arrow is the browser history.
+  keepsKeyboard(event) {
+    const modified = event.altKey || event.ctrlKey || event.metaKey || event.shiftKey
+    return modified || event.target.closest("input, select, textarea, dialog, [contenteditable]") !== null
   }
 
   decide(liked) {
