@@ -120,4 +120,33 @@ RSpec.describe "Swipes", type: :request do
       expect(response).to have_http_status(:unprocessable_content)
     end
   end
+
+  describe "POST /swipes asking for a Turbo Stream" do
+    let(:anime) { create(:anime) }
+    let(:turbo_stream_headers) { { "Accept" => "text/vnd.turbo-stream.html" } }
+
+    it "replaces the progress with the next position" do
+      post swipes_path,
+           params: { anime_id: anime.id, liked: true, position: 2, total: 24 },
+           headers: turbo_stream_headers
+
+      expect(response.media_type).to eq("text/vnd.turbo-stream.html")
+      expect(response.body).to include('<turbo-stream action="replace" target="deck-progress">')
+      expect(response.body).to include("Anime 2 / 24")
+    end
+
+    it "refuses a position outside the deck" do
+      post swipes_path,
+           params: { anime_id: anime.id, liked: true, position: 25, total: 24 },
+           headers: turbo_stream_headers
+
+      expect(response).to have_http_status(:unprocessable_content)
+    end
+
+    it "refuses a request without a position" do
+      post swipes_path, params: { anime_id: anime.id, liked: true }, headers: turbo_stream_headers
+
+      expect(response).to have_http_status(:unprocessable_content)
+    end
+  end
 end

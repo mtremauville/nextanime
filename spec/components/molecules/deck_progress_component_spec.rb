@@ -37,4 +37,10 @@ RSpec.describe Molecules::DeckProgressComponent, type: :component do
   it "refuses a position outside the deck" do
     expect { described_class.new(position: 0, total: 24) }.to raise_error(ArgumentError, /Position/)
   end
+
+  it "can be replaced by a Turbo Stream through its id" do
+    render_inline(described_class.new(position: 1, total: 24))
+
+    expect(page).to have_css("div#deck-progress.na-deck-progress")
+  end
 end
