@@ -60,4 +60,44 @@ RSpec.describe TasteProfile, type: :model do
       expect(build(:taste_profile, :with_user)).to be_valid
     end
   end
+
+  describe ".for_session" do
+    it "creates the profile of a new session token" do
+      profile = described_class.for_session("abc")
+
+      expect(profile).to be_persisted
+      expect(profile.session_token).to eq("abc")
+    end
+
+    it "finds the profile already linked to the token" do
+      existing = create(:taste_profile, session_token: "abc")
+
+      expect(described_class.for_session("abc")).to eq(existing)
+    end
+  end
+
+  describe "#record_swipe" do
+    let(:profile) { create(:taste_profile) }
+    let(:anime) { create(:anime) }
+
+    it "stores a like" do
+      swipe = profile.record_swipe(anime, liked: true)
+
+      expect(swipe).to be_persisted
+      expect(swipe.liked).to be(true)
+    end
+
+    it "stores a pass" do
+      swipe = profile.record_swipe(anime, liked: false)
+
+      expect(swipe.liked).to be(false)
+    end
+
+    it "changes the verdict of an anime already swiped without duplicating it" do
+      profile.record_swipe(anime, liked: false)
+
+      expect { profile.record_swipe(anime, liked: true) }.not_to change(Swipe, :count)
+      expect(profile.swipes.find_by(anime: anime).liked).to be(true)
+    end
+  end
 end
