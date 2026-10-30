@@ -23,4 +23,12 @@ RSpec.describe Molecules::SwipeActionsComponent, type: :component do
   it "reminds the keyboard shortcuts" do
     expect(page).to have_text("← Passer · J'aime →")
   end
+
+  it "passes through the deck controller" do
+    expect(page).to have_css("button[data-action='swipe-deck#pass'][aria-label='Passer cet anime']")
+  end
+
+  it "likes through the deck controller" do
+    expect(page).to have_css("button[data-action='swipe-deck#like'][aria-label='J\\'aime cet anime']")
+  end
 end

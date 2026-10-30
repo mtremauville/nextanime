@@ -1,11 +1,17 @@
-<section class="na-swipe-deck" aria-label="<%= I18n.t("swipes.deck.label") %>">
+<%= tag.section class: "na-swipe-deck",
+                aria: { label: I18n.t("swipes.deck.label") },
+                data: { controller: "swipe-deck",
+                        swipe_deck_url_value: helpers.swipes_path,
+                        swipe_deck_total_value: animes.size } do %>
   <%= render Molecules::DeckProgressComponent.new(position: 1, total: animes.size) %>
   <div class="na-swipe-deck__stack">
     <% animes.each_with_index do |anime, index| %>
-      <%= tag.div class: "na-swipe-deck__slot", hidden: index.positive? do %>
+      <%= tag.div class: "na-swipe-deck__slot",
+                  hidden: index.positive?,
+                  data: { swipe_deck_target: "slot", anime_id: anime.id } do %>
         <%= render Molecules::SwipeCardComponent.new(anime: anime) %>
       <% end %>
     <% end %>
   </div>
   <%= render Molecules::SwipeActionsComponent.new %>
-</section>
+<% end %>

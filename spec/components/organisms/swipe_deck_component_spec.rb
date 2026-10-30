@@ -36,4 +36,22 @@ RSpec.describe Organisms::SwipeDeckComponent, type: :component do
     expect(page).to have_css("button[aria-label='Passer cet anime']")
     expect(page).to have_css("button[aria-label='J\\'aime cet anime']")
   end
+
+  it "is driven by the swipe deck Stimulus controller" do
+    render_deck
+
+    expect(page).to have_css(
+      "section[data-controller='swipe-deck'][data-swipe-deck-url-value='/swipes'][data-swipe-deck-total-value='3']"
+    )
+  end
+
+  it "tells the controller which anime each card holds" do
+    render_deck
+
+    animes.each do |anime|
+      expect(page).to have_css(
+        ".na-swipe-deck__slot[data-swipe-deck-target='slot'][data-anime-id='#{anime.id}']", visible: :all
+      )
+    end
+  end
 end
