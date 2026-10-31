@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   # root "posts#index"
   get "styleguide", to: "styleguide#show"
   root "swipes#index"
+  resources :swipes, only: :create
   get "catalogue", to: "animes#index", as: :catalogue
   get "recos", to: "recommendations#index", as: :recommendations
   get "watchlist", to: "watchlist_entries#index", as: :watchlist

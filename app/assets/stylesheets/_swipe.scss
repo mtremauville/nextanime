@@ -235,3 +235,42 @@ $na-cover-dark: #0B0A14;
     font-size: .875rem;
   }
 }
+
+// Dragging a card: the pointer events are handled by the swipe deck controller.
+.na-swipe-deck__stack {
+  touch-action: pan-y; // the page keeps its vertical scroll, the controller takes the horizontal moves
+  user-select: none;
+}
+
+.na-swipe-deck__slot {
+  cursor: grab;
+  transition: transform .2s ease-out; // brings a card back when the drag is too short
+}
+
+.na-swipe-deck__slot--dragging {
+  cursor: grabbing;
+  transition: none; // the card follows the pointer without lag
+}
+
+// The image must not start the browser's own drag and drop.
+.na-swipe-card__image {
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+
+// End of deck: replaces the cards once the last one has been swiped.
+.na-swipe-deck--finished {
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.na-swipe-deck__finished-title {
+  margin: 0 0 .75rem;
+  font-family: $na-font-heading;
+  font-size: 1.75rem;
+}
+
+.na-swipe-deck__finished-text {
+  margin: 0 0 1.5rem;
+  color: var(--na-muted);
+}

@@ -57,4 +57,108 @@ RSpec.describe "Swipes", type: :request do
       end
     end
   end
+
+  describe "POST /swipes" do
+    let(:anime) { create(:anime) }
+
+    it "records a like for the visitor" do
+      expect { post swipes_path, params: { anime_id: anime.id, liked: true } }
+        .to change(Swipe, :count).by(1)
+
+      expect(response).to have_http_status(:created)
+      expect(Swipe.last.liked).to be(true)
+    end
+
+    it "records a pass" do
+      post swipes_path, params: { anime_id: anime.id, liked: false }
+
+      expect(Swipe.last.liked).to be(false)
+    end
+
+    it "creates the visitor profile on the first swipe and reuses it afterwards" do
+      other_anime = create(:anime)
+
+      expect { post swipes_path, params: { anime_id: anime.id, liked: true } }
+        .to change(TasteProfile, :count).by(1)
+      expect { post swipes_path, params: { anime_id: other_anime.id, liked: false } }
+        .not_to change(TasteProfile, :count)
+      expect(TasteProfile.last.swipes.count).to eq(2)
+    end
+
+    it "keeps the profile in a signed cookie that scripts cannot read" do
+      post swipes_path, params: { anime_id: anime.id, liked: true }
+
+      expect(response.headers["Set-Cookie"]).to match(/taste_session=[^;]+;.*HttpOnly/i)
+    end
+
+    it "ignores a forged cookie and starts a new profile" do
+      cookies[:taste_session] = "forged"
+
+      post swipes_path, params: { anime_id: anime.id, liked: true }
+
+      expect(TasteProfile.where(session_token: "forged")).to be_empty
+      expect(Swipe.count).to eq(1)
+    end
+
+    it "changes the verdict when the same anime is swiped again" do
+      post swipes_path, params: { anime_id: anime.id, liked: false }
+
+      expect { post swipes_path, params: { anime_id: anime.id, liked: true } }
+        .not_to change(Swipe, :count)
+      expect(Swipe.last.liked).to be(true)
+    end
+
+    it "answers not found for an unknown anime" do
+      post swipes_path, params: { anime_id: 0, liked: true }
+
+      expect(response).to have_http_status(:not_found)
+    end
+
+    it "refuses a swipe without a verdict" do
+      expect { post swipes_path, params: { anime_id: anime.id } }.not_to change(Swipe, :count)
+
+      expect(response).to have_http_status(:unprocessable_content)
+    end
+  end
+
+  describe "POST /swipes asking for a Turbo Stream" do
+    let(:anime) { create(:anime) }
+    let(:turbo_stream_headers) { { "Accept" => "text/vnd.turbo-stream.html" } }
+
+    it "replaces the progress with the next position" do
+      post swipes_path,
+           params: { anime_id: anime.id, liked: true, position: 2, total: 24 },
+           headers: turbo_stream_headers
+
+      expect(response.media_type).to eq("text/vnd.turbo-stream.html")
+      expect(response.body).to include('<turbo-stream action="replace" target="deck-progress">')
+      expect(response.body).to include("Anime 2 / 24")
+    end
+
+    it "refuses a position outside the deck" do
+      post swipes_path,
+           params: { anime_id: anime.id, liked: true, position: 26, total: 24 },
+           headers: turbo_stream_headers
+
+      expect(response).to have_http_status(:unprocessable_content)
+    end
+
+    it "refuses a request without a position" do
+      post swipes_path, params: { anime_id: anime.id, liked: true }, headers: turbo_stream_headers
+
+      expect(response).to have_http_status(:unprocessable_content)
+    end
+  end
+
+  describe "POST /swipes on the last card" do
+    it "replaces the whole deck with the end of deck message" do
+      post swipes_path,
+           params: { anime_id: create(:anime).id, liked: true, position: 25, total: 24 },
+           headers: { "Accept" => "text/vnd.turbo-stream.html" }
+
+      expect(response.body).to include('<turbo-stream action="replace" target="swipe-deck">')
+      expect(response.body).to include("Tu as tout vu !")
+      expect(response.body).to include(%(href="#{recommendations_path}"))
+    end
+  end
 end

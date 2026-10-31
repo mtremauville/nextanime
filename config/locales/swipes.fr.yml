@@ -25,3 +25,7 @@ fr:
       empty: Aucun swipe pour l'instant. Tes choix apparaîtront ici.
       callout: Tu peux déjà voir tes recommandations, elles s'affinent à chaque swipe.
       link: Voir mes recommandations
+    finished:
+      title: Tu as tout vu !
+      text: Tes swipes ont affiné tes recommandations.
+      link: Voir mes recommandations

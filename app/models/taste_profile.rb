@@ -7,6 +7,16 @@ class TasteProfile < ApplicationRecord
   validates :session_token, uniqueness: true, allow_nil: true
   validate :owner_present
 
+  def self.for_session(token)
+    find_or_create_by!(session_token: token)
+  end
+
+  def record_swipe(anime, liked:)
+    swipe = swipes.find_or_initialize_by(anime: anime)
+    swipe.update!(liked: liked)
+    swipe
+  end
+
   private
 
   def owner_present
