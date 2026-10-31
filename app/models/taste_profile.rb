@@ -11,6 +11,14 @@ class TasteProfile < ApplicationRecord
     find_or_create_by!(session_token: token)
   end
 
+  # Turns the profile of a visitor into the profile of the account it just created.
+  def self.attach_session_profile(token, to:)
+    return if token.blank? || to.taste_profile
+
+    profile = find_by(session_token: token, user_id: nil)
+    profile&.tap { |found| found.update!(user: to, session_token: nil) }
+  end
+
   def record_swipe(anime, liked:)
     swipe = swipes.find_or_initialize_by(anime: anime)
     swipe.update!(liked: liked)

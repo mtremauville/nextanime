@@ -123,4 +123,60 @@ RSpec.describe TasteProfile, type: :model do
       expect(profile.swiped_anime_ids).to be_empty
     end
   end
+
+  describe ".attach_session_profile" do
+    let(:user) { create(:user) }
+    let!(:profile) { described_class.for_session("visitor-token") }
+
+    it "gives the profile of the session to the user" do
+      described_class.attach_session_profile("visitor-token", to: user)
+
+      expect(user.reload.taste_profile).to eq(profile)
+    end
+
+    it "returns the attached profile" do
+      expect(described_class.attach_session_profile("visitor-token", to: user)).to eq(profile)
+    end
+
+    it "forgets the session token so that the cookie no longer opens the profile" do
+      described_class.attach_session_profile("visitor-token", to: user)
+
+      expect(profile.reload.session_token).to be_nil
+    end
+
+    it "keeps the swipes of the visitor" do
+      anime = create(:anime)
+      profile.record_swipe(anime, liked: true)
+
+      described_class.attach_session_profile("visitor-token", to: user)
+
+      expect(user.reload.taste_profile.swiped_anime_ids).to eq([ anime.id ])
+    end
+
+    it "does nothing without a token" do
+      expect(described_class.attach_session_profile(nil, to: user)).to be_nil
+      expect(user.reload.taste_profile).to be_nil
+    end
+
+    it "does nothing for an unknown token" do
+      expect(described_class.attach_session_profile("other-token", to: user)).to be_nil
+      expect(user.reload.taste_profile).to be_nil
+    end
+
+    it "does not take a profile that already belongs to an account" do
+      owner = create(:user)
+      profile.update!(user: owner)
+
+      expect(described_class.attach_session_profile("visitor-token", to: user)).to be_nil
+      expect(profile.reload.user).to eq(owner)
+    end
+
+    it "keeps the profile the user already has" do
+      own_profile = described_class.create!(user: user)
+
+      expect(described_class.attach_session_profile("visitor-token", to: user)).to be_nil
+      expect(user.reload.taste_profile).to eq(own_profile)
+      expect(profile.reload.session_token).to eq("visitor-token")
+    end
+  end
 end
