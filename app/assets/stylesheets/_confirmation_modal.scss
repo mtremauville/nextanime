@@ -1,0 +1,92 @@
+.na-modal {
+  width: min(25rem, calc(100% - 2rem));
+  max-width: none;
+  padding: 0;
+  border: 1px solid var(--na-border);
+  border-radius: 1rem;
+  background: var(--na-surface);
+  color: var(--na-text);
+  box-shadow: 0 0 2rem color-mix(in srgb, var(--na-magenta) 25%, transparent);
+
+  &::backdrop {
+    background: rgba(11, 10, 20, 0.7);
+  }
+}
+
+// The padding lives here, not on the dialog: a click on the dialog itself is a click on the backdrop.
+.na-modal__panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.75rem;
+}
+
+.na-modal__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.na-modal__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  font-size: 1.25rem;
+
+  &--magenta {
+    color: var(--na-magenta);
+    background: var(--na-magenta-soft);
+    border: 1px solid color-mix(in srgb, var(--na-magenta) 40%, transparent);
+  }
+
+  &--cyan {
+    color: var(--na-cyan);
+    background: color-mix(in srgb, var(--na-cyan) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--na-cyan) 40%, transparent);
+  }
+}
+
+.na-modal__title {
+  margin: 0;
+  font-family: $na-font-accent;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.na-modal__body {
+  font-size: 0.875rem;
+  color: var(--na-muted);
+
+  p { margin-bottom: 0.5rem; }
+  ul { margin: 0; padding-left: 1.25rem; }
+}
+
+.na-modal__confirmation {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.na-modal__label {
+  font-size: 0.875rem;
+  color: var(--na-muted);
+}
+
+.na-modal__word {
+  font-family: $na-font-accent;
+  font-weight: 700;
+  color: var(--na-text);
+}
+
+.na-modal__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.na-modal__confirm {
+  margin: 0;
+}
