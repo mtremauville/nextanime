@@ -257,3 +257,20 @@ $na-cover-dark: #0B0A14;
   pointer-events: none;
   -webkit-user-drag: none;
 }
+
+// End of deck: replaces the cards once the last one has been swiped.
+.na-swipe-deck--finished {
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.na-swipe-deck__finished-title {
+  margin: 0 0 .75rem;
+  font-family: $na-font-heading;
+  font-size: 1.75rem;
+}
+
+.na-swipe-deck__finished-text {
+  margin: 0 0 1.5rem;
+  color: var(--na-muted);
+}

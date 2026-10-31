@@ -70,4 +70,10 @@ RSpec.describe Organisms::SwipeDeckComponent, type: :component do
       "[data-action~='pointerup->swipe-deck#dragEnd']"
     )
   end
+
+  it "can be replaced as a whole through its id" do
+    render_deck
+
+    expect(page).to have_css("section#swipe-deck.na-swipe-deck")
+  end
 end
