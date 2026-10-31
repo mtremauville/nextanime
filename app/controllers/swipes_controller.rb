@@ -2,6 +2,7 @@ class SwipesController < ApplicationController
   include CurrentTasteProfile
 
   PROGRESS_TARGET = "deck-progress".freeze
+  DECK_TARGET = "swipe-deck".freeze
 
   rescue_from ActiveRecord::RecordInvalid, ArgumentError, with: :unprocessable
 
@@ -14,7 +15,7 @@ class SwipesController < ApplicationController
     current_taste_profile.record_swipe(anime, liked: liked_param)
 
     respond_to do |format|
-      format.turbo_stream { render turbo_stream: progress_stream }
+      format.turbo_stream { render turbo_stream: deck_stream }
       format.any { head :created }
     end
   end
@@ -29,12 +30,21 @@ class SwipesController < ApplicationController
     ActiveModel::Type::Boolean.new.cast(swipe_params[:liked])
   end
 
-  def progress_stream
-    progress = Molecules::DeckProgressComponent.new(
-      position: swipe_params[:position].to_i,
-      total: swipe_params[:total].to_i
-    )
-    turbo_stream.replace(PROGRESS_TARGET, progress)
+  def position_param
+    swipe_params[:position].to_i
+  end
+
+  def total_param
+    swipe_params[:total].to_i
+  end
+
+  # The position is the next card to show: one past the total means the deck is done.
+  def deck_stream
+    if position_param == total_param + 1
+      turbo_stream.replace(DECK_TARGET, Molecules::DeckFinishedComponent.new(recommendations_href: recommendations_path))
+    else
+      turbo_stream.replace(PROGRESS_TARGET, Molecules::DeckProgressComponent.new(position: position_param, total: total_param))
+    end
   end
 
   def unprocessable

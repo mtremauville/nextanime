@@ -137,7 +137,7 @@ RSpec.describe "Swipes", type: :request do
 
     it "refuses a position outside the deck" do
       post swipes_path,
-           params: { anime_id: anime.id, liked: true, position: 25, total: 24 },
+           params: { anime_id: anime.id, liked: true, position: 26, total: 24 },
            headers: turbo_stream_headers
 
       expect(response).to have_http_status(:unprocessable_content)
@@ -147,6 +147,18 @@ RSpec.describe "Swipes", type: :request do
       post swipes_path, params: { anime_id: anime.id, liked: true }, headers: turbo_stream_headers
 
       expect(response).to have_http_status(:unprocessable_content)
+    end
+  end
+
+  describe "POST /swipes on the last card" do
+    it "replaces the whole deck with the end of deck message" do
+      post swipes_path,
+           params: { anime_id: create(:anime).id, liked: true, position: 25, total: 24 },
+           headers: { "Accept" => "text/vnd.turbo-stream.html" }
+
+      expect(response.body).to include('<turbo-stream action="replace" target="swipe-deck">')
+      expect(response.body).to include("Tu as tout vu !")
+      expect(response.body).to include(%(href="#{recommendations_path}"))
     end
   end
 end
