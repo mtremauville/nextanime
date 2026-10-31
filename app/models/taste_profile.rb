@@ -17,6 +17,10 @@ class TasteProfile < ApplicationRecord
     swipe
   end
 
+  def swiped_anime_ids
+    swipes.pluck(:anime_id)
+  end
+
   private
 
   def owner_present
