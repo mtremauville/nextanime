@@ -60,4 +60,14 @@ RSpec.describe Organisms::SwipeDeckComponent, type: :component do
 
     expect(page).to have_css("section[data-action~='keydown@window->swipe-deck#keydown']")
   end
+
+  it "lets the visitor drag the cards" do
+    render_deck
+
+    expect(page).to have_css(
+      ".na-swipe-deck__stack[data-swipe-deck-target='stack']" \
+      "[data-action~='pointerdown->swipe-deck#dragStart']" \
+      "[data-action~='pointerup->swipe-deck#dragEnd']"
+    )
+  end
 end

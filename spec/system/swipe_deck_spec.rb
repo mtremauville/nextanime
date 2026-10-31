@@ -97,4 +97,38 @@ RSpec.describe "Swiping the deck", type: :system, js: true do
       expect(Swipe.count).to eq(0)
     end
   end
+
+  describe "by dragging the card" do
+    def drag_card_by(pixels)
+      card = find("#{visible_slot} .na-swipe-card")
+      page.driver.browser.action.move_to(card.native).click_and_hold.move_by(pixels, 0).release.perform
+    end
+
+    it "likes when the card is dragged to the right" do
+      first_id = displayed_anime_id
+
+      drag_card_by(180)
+
+      expect(page).to have_progress(2)
+      expect(Swipe.last).to have_attributes(anime_id: first_id, liked: true)
+    end
+
+    it "passes when the card is dragged to the left" do
+      first_id = displayed_anime_id
+
+      drag_card_by(-180)
+
+      expect(page).to have_progress(2)
+      expect(Swipe.last).to have_attributes(anime_id: first_id, liked: false)
+    end
+
+    it "keeps the card when the drag is too short" do
+      first_id = displayed_anime_id
+
+      drag_card_by(30)
+
+      expect(displayed_anime_id).to eq(first_id)
+      expect(Swipe.count).to eq(0)
+    end
+  end
 end
