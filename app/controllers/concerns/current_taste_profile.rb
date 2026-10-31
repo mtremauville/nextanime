@@ -1,5 +1,5 @@
-# Identifies a visitor without an account by a signed cookie, and finds the
-# taste profile attached to it.
+# Finds the taste profile of the person using the app: the profile of the
+# account when signed in, otherwise the one attached to a signed cookie.
 module CurrentTasteProfile
   extend ActiveSupport::Concern
 
@@ -8,9 +8,9 @@ module CurrentTasteProfile
 
   private
 
-  # Creates the profile when the visitor has none yet: use it when a swipe is recorded.
+  # Creates the profile when there is none yet: use it when a swipe is recorded.
   def current_taste_profile
-    @current_taste_profile ||= TasteProfile.for_session(taste_session_token)
+    @current_taste_profile ||= current_user ? account_taste_profile : TasteProfile.for_session(taste_session_token)
   end
 
   # Looking at the deck must not create anything, so this only reads.
@@ -19,8 +19,14 @@ module CurrentTasteProfile
   end
 
   def existing_taste_profile
+    return current_user.taste_profile if current_user
+
     token = cookies.signed[SESSION_COOKIE]
     TasteProfile.find_by(session_token: token) if token
+  end
+
+  def account_taste_profile
+    current_user.taste_profile || current_user.create_taste_profile!
   end
 
   def taste_session_token
