@@ -12,6 +12,8 @@
       <%= render Organisms::SwipeHistoryPanelComponent.new(recommendations_href: recommendations_path) %>
     </div>
   </div>
+<% elsif @deck_finished %>
+  <%= render Molecules::DeckFinishedComponent.new(recommendations_href: recommendations_path) %>
 <% else %>
   <p class="text-body-secondary text-center"><%= t("swipes.deck.empty") %></p>
 <% end %>
