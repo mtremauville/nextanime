@@ -19,15 +19,14 @@
           title: "Supprimer ton compte ?",
           confirm_label: "Supprimer définitivement",
           confirm_url: styleguide_path,
-          icon: "trash",
           trigger_label: "Supprimer mon compte",
           confirmation_word: "SUPPRIMER"
         ) do %>
       <p>Cette action est définitive. Seront effacés :</p>
       <ul>
-        <li>ton compte et tes identifiants,</li>
-        <li>ton profil de goûts et tous tes swipes,</li>
-        <li>ta watchlist.</li>
+        <li>ton profil de goûts et tes 24 swipes</li>
+        <li>ta watchlist (6 anime)</li>
+        <li>tes préférences de notification</li>
       </ul>
     <% end %>
 
@@ -36,10 +35,10 @@
           title: "Retirer Frieren de ta watchlist ?",
           confirm_label: "Retirer",
           confirm_url: styleguide_path,
-          icon: "bookmark-x",
+          icon: "trash",
           trigger_label: "Retirer de la watchlist"
         ) do %>
-      Tu pourras la rajouter à tout moment depuis le catalogue.
+      Ta progression (épisode 14 sur 28) sera perdue. Tu pourras le rajouter plus tard depuis les recommandations.
     <% end %>
   </div>
 </section>
