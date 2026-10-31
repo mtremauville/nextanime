@@ -4,7 +4,6 @@ RSpec.describe "Swiping the deck", type: :system, js: true do
   let(:visible_slot) { ".na-swipe-deck__slot:not([hidden])" }
 
   before do
-    page.current_window.resize_to(1400, 900)
     create_list(:anime, 3, cover_image_url: "https://img.test/cover.jpg")
     visit root_path
   end

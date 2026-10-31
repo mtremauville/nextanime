@@ -45,6 +45,8 @@ begin
 rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
+DESKTOP_WINDOW = [ 1400, 900 ].freeze
+
 RSpec.configure do |config|
   config.include Devise::Test::IntegrationHelpers, type: :request
   config.include ActiveSupport::Testing::TimeHelpers, type: :request
@@ -57,7 +59,9 @@ RSpec.configure do |config|
   end
 
   config.before(:each, type: :system, js: true) do
-    driven_by :selenium, using: :headless_chrome, screen_size: [ 1400, 900 ]
+    driven_by :selenium, using: :headless_chrome, screen_size: DESKTOP_WINDOW
+    # The browser is reused: undo the resizing of a previous (mobile) spec.
+    page.current_window.resize_to(*DESKTOP_WINDOW)
   end
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_paths = [
