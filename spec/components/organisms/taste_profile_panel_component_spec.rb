@@ -29,4 +29,16 @@ RSpec.describe Organisms::TasteProfilePanelComponent, type: :component do
       expect(page).to have_link("Voir mon profil complet", href: "/profile")
     end
   end
+
+  context "with a custom label" do
+    before { render_inline(described_class.new(href: "/users/sign_up", label: "Sauvegarder mon profil →")) }
+
+    it "uses the label for the link" do
+      expect(page).to have_link("Sauvegarder mon profil →", href: "/users/sign_up")
+    end
+
+    it "no longer offers the default label" do
+      expect(page).to have_no_link("Voir mon profil complet")
+    end
+  end
 end
