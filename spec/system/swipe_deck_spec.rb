@@ -131,4 +131,15 @@ RSpec.describe "Swiping the deck", type: :system, js: true do
       expect(Swipe.count).to eq(0)
     end
   end
+
+  it "ends the deck with a link to the recommendations" do
+    3.times { click_button "J'aime cet anime" }
+
+    within("#swipe-deck") do
+      expect(page).to have_text(/tu as tout vu/i)
+      expect(page).to have_link("Voir mes recommandations", href: recommendations_path)
+    end
+    expect(page).to have_no_button("J'aime cet anime")
+    expect(Swipe.count).to eq(3)
+  end
 end
