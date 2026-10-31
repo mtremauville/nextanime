@@ -1,20 +1,32 @@
-<div data-controller="confirm-modal">
+<%= tag.div(data: controller_data) do %>
+  <% if trigger_label %>
+    <%= render Atoms::ButtonComponent.new(variant: trigger_variant, data: { action: "confirm-modal#open" }) do %><%= trigger_label %><% end %>
+  <% end %>
+
   <dialog id="<%= modal_id %>" class="na-modal" aria-labelledby="<%= title_id %>"
           data-confirm-modal-target="dialog" data-action="click->confirm-modal#backdrop">
     <div class="na-modal__panel">
       <div class="na-modal__header">
-        <span class="na-modal__icon" aria-hidden="true"><i class="bi bi-<%= icon %>"></i></span>
+        <span class="na-modal__icon na-modal__icon--<%= tone %>" aria-hidden="true"><i class="bi bi-<%= icon %>"></i></span>
         <h2 id="<%= title_id %>" class="na-modal__title"><%= title %></h2>
       </div>
 
       <div class="na-modal__body"><%= content %></div>
 
+      <% if confirmation_word %>
+        <div class="na-modal__confirmation">
+          <label for="<%= word_input_id %>" class="na-modal__label">Tape <span class="na-modal__word"><%= confirmation_word %></span> pour confirmer</label>
+          <input id="<%= word_input_id %>" type="text" autocomplete="off" class="form-control"
+                 data-confirm-modal-target="word" data-action="input->confirm-modal#check">
+        </div>
+      <% end %>
+
       <div class="na-modal__actions">
         <%= render Atoms::ButtonComponent.new(variant: :outline, autofocus: true, data: { action: "confirm-modal#close" }) do %>Annuler<% end %>
         <%= form_with url: confirm_url, method: confirm_method, class: "na-modal__confirm" do %>
-          <%= render Atoms::ButtonComponent.new(type: "submit", class: "w-100") do %><%= confirm_label %><% end %>
+          <%= render Atoms::ButtonComponent.new(type: "submit", class: "w-100", **confirm_attributes) do %><%= confirm_label %><% end %>
         <% end %>
       </div>
     </div>
   </dialog>
-</div>
+<% end %>
