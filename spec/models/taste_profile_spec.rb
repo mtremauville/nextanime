@@ -100,4 +100,27 @@ RSpec.describe TasteProfile, type: :model do
       expect(profile.swipes.find_by(anime: anime).liked).to be(true)
     end
   end
+
+  describe "#swiped_anime_ids" do
+    let(:profile) { create(:taste_profile) }
+
+    it "lists the anime the visitor liked or passed" do
+      liked = create(:anime)
+      passed = create(:anime)
+      profile.record_swipe(liked, liked: true)
+      profile.record_swipe(passed, liked: false)
+
+      expect(profile.swiped_anime_ids).to contain_exactly(liked.id, passed.id)
+    end
+
+    it "is empty before the first swipe" do
+      expect(profile.swiped_anime_ids).to eq([])
+    end
+
+    it "ignores the swipes of other profiles" do
+      create(:swipe)
+
+      expect(profile.swiped_anime_ids).to be_empty
+    end
+  end
 end

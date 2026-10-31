@@ -84,4 +84,25 @@ RSpec.describe SwipeDeckQuery do
       expect(described_class.new.call).to eq([])
     end
   end
+
+  describe "excluding anime already swiped" do
+    let!(:animes) { create_list(:anime, 3, cover_image_url: "https://img.test/cover.jpg") }
+
+    it "keeps every anime when nothing is excluded" do
+      expect(described_class.new.call).to include(*animes)
+    end
+
+    it "leaves the excluded anime out of the deck" do
+      deck = described_class.new(excluding: [ animes.first.id ]).call
+
+      expect(deck).not_to include(animes.first)
+      expect(deck).to include(*animes.drop(1))
+    end
+
+    it "leaves nothing of the catalog when everything is excluded" do
+      deck = described_class.new(excluding: animes.map(&:id)).call
+
+      expect(deck.map(&:id) & animes.map(&:id)).to be_empty
+    end
+  end
 end

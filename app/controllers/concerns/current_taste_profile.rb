@@ -8,8 +8,19 @@ module CurrentTasteProfile
 
   private
 
+  # Creates the profile when the visitor has none yet: use it when a swipe is recorded.
   def current_taste_profile
     @current_taste_profile ||= TasteProfile.for_session(taste_session_token)
+  end
+
+  # Looking at the deck must not create anything, so this only reads.
+  def swiped_anime_ids
+    existing_taste_profile&.swiped_anime_ids || []
+  end
+
+  def existing_taste_profile
+    token = cookies.signed[SESSION_COOKIE]
+    TasteProfile.find_by(session_token: token) if token
   end
 
   def taste_session_token
