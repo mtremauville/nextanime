@@ -15,6 +15,9 @@ Rails.application.routes.draw do
   get "styleguide", to: "styleguide#show"
   root "swipes#index"
   resources :swipes, only: :create
+  resource :taste_profile, only: [] do
+    delete :reset
+  end
   get "catalogue", to: "animes#index", as: :catalogue
   get "recos", to: "recommendations#index", as: :recommendations
   get "watchlist", to: "watchlist_entries#index", as: :watchlist
