@@ -1,0 +1,45 @@
+<section class="mb-5" aria-labelledby="modals-title">
+  <h2 id="modals-title" class="h4 mb-3">Modals de confirmation</h2>
+
+  <div class="d-flex flex-wrap gap-3">
+    <%= render Organisms::ConfirmationModalComponent.new(
+          id: "reset-profile",
+          title: "Réinitialiser ton profil de goûts ?",
+          confirm_label: "Réinitialiser",
+          confirm_url: styleguide_path,
+          icon: "arrow-counterclockwise",
+          tone: :cyan,
+          trigger_label: "Réinitialiser mon profil"
+        ) do %>
+      Tes swipes seront effacés et tes recommandations recalculées à partir de zéro. Ta watchlist et ton compte ne changent pas.
+    <% end %>
+
+    <%= render Organisms::ConfirmationModalComponent.new(
+          id: "delete-account",
+          title: "Supprimer ton compte ?",
+          confirm_label: "Supprimer définitivement",
+          confirm_url: styleguide_path,
+          icon: "trash",
+          trigger_label: "Supprimer mon compte",
+          confirmation_word: "SUPPRIMER"
+        ) do %>
+      <p>Cette action est définitive. Seront effacés :</p>
+      <ul>
+        <li>ton compte et tes identifiants,</li>
+        <li>ton profil de goûts et tous tes swipes,</li>
+        <li>ta watchlist.</li>
+      </ul>
+    <% end %>
+
+    <%= render Organisms::ConfirmationModalComponent.new(
+          id: "remove-watchlist",
+          title: "Retirer Frieren de ta watchlist ?",
+          confirm_label: "Retirer",
+          confirm_url: styleguide_path,
+          icon: "bookmark-x",
+          trigger_label: "Retirer de la watchlist"
+        ) do %>
+      Tu pourras la rajouter à tout moment depuis le catalogue.
+    <% end %>
+  </div>
+</section>
