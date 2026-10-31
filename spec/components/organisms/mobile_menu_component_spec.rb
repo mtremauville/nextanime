@@ -56,7 +56,7 @@ RSpec.describe Organisms::MobileMenuComponent, type: :component do
 
       it "announces the guest mode" do
         expect(page).to have_css(".na-menu__guest", text: "Mode invité")
-        expect(page).to have_text("Ton profil n'est pas sauvegardé : il disparaît si tu fermes la page.")
+        expect(page).to have_text("Ton profil est gardé sur cet appareil. Crée un compte pour le retrouver partout.")
       end
 
       it "offers to create an account and to sign in" do

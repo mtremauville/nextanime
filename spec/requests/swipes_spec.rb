@@ -27,6 +27,20 @@ RSpec.describe "Swipes", type: :request do
       expect(response.body).not_to include("Voir mon profil complet")
     end
 
+    it "offers a visitor to save the profile by creating an account" do
+      get root_path
+
+      expect(Capybara.string(response.body)).to have_link("Sauvegarder mon profil →", href: new_user_registration_path)
+    end
+
+    it "offers no account link to a signed in user" do
+      sign_in create(:user)
+
+      get root_path
+
+      expect(Capybara.string(response.body)).to have_no_link("Sauvegarder mon profil →")
+    end
+
     it "shows the history panel linking to the recommendations" do
       get root_path
 

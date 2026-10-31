@@ -43,7 +43,7 @@ RSpec.describe "Account access", type: :system do
 
     click_button "Ouvrir le menu"
     within("#mobile-menu") do
-      expect(page).to have_text("Ton profil n'est pas sauvegardé")
+      expect(page).to have_text("Ton profil est gardé sur cet appareil")
       click_link "Connexion"
     end
 
