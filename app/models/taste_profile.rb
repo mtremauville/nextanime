@@ -29,6 +29,15 @@ class TasteProfile < ApplicationRecord
     swipes.pluck(:anime_id)
   end
 
+  # Starts the profile from scratch: the owner, the session and the watchlist stay untouched.
+  def reset!
+    transaction do
+      swipes.destroy_all
+      recommendations.destroy_all
+      update!(genre_weights: {}, tag_weights: {})
+    end
+  end
+
   private
 
   def owner_present
