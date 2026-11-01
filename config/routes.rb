@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   resource :taste_profile, only: [] do
     delete :reset
   end
+  resource :profile, only: :show, path: "profil"
   get "catalogue", to: "animes#index", as: :catalogue
   get "recos", to: "recommendations#index", as: :recommendations
   get "watchlist", to: "watchlist_entries#index", as: :watchlist
