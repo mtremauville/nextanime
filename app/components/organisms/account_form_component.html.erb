@@ -1,0 +1,15 @@
+<section class="na-account-form" aria-labelledby="account-form-title">
+  <h2 id="account-form-title" class="na-account-form__title">Mon compte</h2>
+
+  <% if error_summary %>
+    <%= render Molecules::AlertComponent.new(message: error_summary, variant: :alert) %>
+  <% end %>
+
+  <%= form_with scope: :user, url: profile_path, method: :patch, class: "na-account-form__form" do %>
+    <%= render Molecules::FormFieldComponent.new(name: "user[email]", label: "Adresse e-mail", type: "email", value: resource.email, error: error_for(:email), autocomplete: "email") %>
+    <%= render Molecules::FormFieldComponent.new(name: "user[password]", label: "Nouveau mot de passe", type: "password", hint: password_hint, error: error_for(:password), autocomplete: "new-password") %>
+    <%= render Molecules::FormFieldComponent.new(name: "user[current_password]", label: "Mot de passe actuel", type: "password", error: error_for(:current_password), autocomplete: "current-password") %>
+
+    <%= render Atoms::ButtonComponent.new(variant: :outline, type: "submit", class: "w-100") do %>Enregistrer<% end %>
+  <% end %>
+</section>

@@ -9,3 +9,12 @@
     max-width: 56rem;
   }
 }
+
+.na-profile-grid__side {
+  display: flex;
+  flex: 1 1 25rem;
+  flex-direction: column;
+  gap: 2rem;
+  min-width: 0;
+  max-width: 32.5rem;
+}
