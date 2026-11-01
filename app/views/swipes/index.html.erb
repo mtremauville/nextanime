@@ -5,7 +5,7 @@
 <% if @animes.any? %>
   <div class="na-swipe-page">
     <div class="na-swipe-page__side na-swipe-page__side--start">
-      <%= render Organisms::TasteProfilePanelComponent.new(**guest_link) %>
+      <%= render Organisms::TasteProfilePanelComponent.new(**guest_link, reset_href: reset_taste_profile_path) %>
     </div>
     <div class="na-swipe-page__main">
       <%= render Organisms::SwipeDeckComponent.new(animes: @animes) %>
