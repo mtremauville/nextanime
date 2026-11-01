@@ -5,19 +5,4 @@
   <% if href %>
     <%= link_to label, href, class: "na-side-panel__link" %>
   <% end %>
-  <% if reset_href %>
-    <div class="na-side-panel__reset">
-      <%= render Organisms::ConfirmationModalComponent.new(
-            id: "reset-profile",
-            title: I18n.t("swipes.taste_profile.reset.title"),
-            confirm_label: I18n.t("swipes.taste_profile.reset.confirm"),
-            confirm_url: reset_href,
-            icon: "arrow-counterclockwise",
-            tone: :cyan,
-            trigger_label: I18n.t("swipes.taste_profile.reset.trigger")
-          ) do %>
-        <%= I18n.t("swipes.taste_profile.reset.body") %>
-      <% end %>
-    </div>
-  <% end %>
 </aside>

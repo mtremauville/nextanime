@@ -1,11 +1,11 @@
 <h1 class="visually-hidden">Découvrir</h1>
 
-<% guest_link = current_user ? {} : { href: new_user_registration_path, label: t("swipes.taste_profile.save_link") } %>
+<% panel_link = current_user ? { href: profile_path } : { href: new_user_registration_path, label: t("swipes.taste_profile.save_link") } %>
 
 <% if @animes.any? %>
   <div class="na-swipe-page">
     <div class="na-swipe-page__side na-swipe-page__side--start">
-      <%= render Organisms::TasteProfilePanelComponent.new(**guest_link, reset_href: reset_taste_profile_path) %>
+      <%= render Organisms::TasteProfilePanelComponent.new(**panel_link) %>
     </div>
     <div class="na-swipe-page__main">
       <%= render Organisms::SwipeDeckComponent.new(animes: @animes) %>

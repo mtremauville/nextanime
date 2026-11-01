@@ -42,33 +42,3 @@ RSpec.describe Organisms::TasteProfilePanelComponent, type: :component do
     end
   end
 end
-
-RSpec.describe Organisms::TasteProfilePanelComponent, "with a way to reset", type: :component do
-  before { render_inline(described_class.new(reset_href: "/taste_profile/reset")) }
-
-  it "offers a button that opens the confirmation" do
-    expect(page).to have_css("button[data-action='confirm-modal#open']", text: "Réinitialiser mon profil")
-  end
-
-  it "asks before erasing anything" do
-    expect(page).to have_css("dialog h2", text: "Réinitialiser ton profil de goûts ?")
-  end
-
-  it "explains that the watchlist and the account stay" do
-    expect(page).to have_css("dialog", text: "Ta watchlist et ton compte ne changent pas.")
-  end
-
-  it "confirms with a DELETE request to the given address" do
-    expect(page).to have_css("dialog form[action='/taste_profile/reset']")
-    expect(page).to have_css("dialog form input[name='_method'][value='delete']", visible: :all)
-  end
-end
-
-RSpec.describe Organisms::TasteProfilePanelComponent, "without a way to reset", type: :component do
-  before { render_inline(described_class.new) }
-
-  it "offers no confirmation" do
-    expect(page).to have_no_css("dialog")
-    expect(page).to have_no_button("Réinitialiser mon profil")
-  end
-end

@@ -33,15 +33,15 @@
     <%= render Atoms::ButtonComponent.new(href: swipe_href) do %><%= t("profiles.taste_card.keep_swiping") %><% end %>
     <%= render Organisms::ConfirmationModalComponent.new(
           id: "reset-profile",
-          title: t("swipes.taste_profile.reset.title"),
-          confirm_label: t("swipes.taste_profile.reset.confirm"),
+          title: t("profiles.taste_card.reset.title"),
+          confirm_label: t("profiles.taste_card.reset.confirm"),
           confirm_url: reset_href,
           icon: "arrow-counterclockwise",
           tone: :cyan,
-          trigger_label: t("swipes.taste_profile.reset.trigger"),
+          trigger_label: t("profiles.taste_card.reset.trigger"),
           trigger_variant: :ghost
         ) do %>
-      <%= t("swipes.taste_profile.reset.body") %>
+      <%= t("profiles.taste_card.reset.body") %>
     <% end %>
   </div>
 </section>

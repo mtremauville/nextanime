@@ -17,3 +17,8 @@ fr:
       genres: Genres
       tags: Tags les plus marqués
       keep_swiping: Continuer à swiper
+      reset:
+        trigger: Réinitialiser mon profil
+        title: "Réinitialiser ton profil de goûts ?"
+        body: Tes swipes seront effacés et tes recommandations recalculées à partir de zéro. Ta watchlist et ton compte ne changent pas.
+        confirm: Réinitialiser
