@@ -40,6 +40,16 @@ class TasteProfile < ApplicationRecord
     swipes.pluck(:anime_id)
   end
 
+  # The swipes of a guest profile join this one. For an anime swiped on both sides
+  # this profile keeps its own verdict. The guest profile disappears afterwards.
+  def absorb(guest_profile)
+    transaction do
+      guest_profile.swipes.where.not(anime_id: swiped_anime_ids).update_all(taste_profile_id: id)
+      guest_profile.destroy!
+      refresh_weights!
+    end
+  end
+
   # Starts the profile from scratch: the owner, the session and the watchlist stay untouched.
   def reset!
     transaction do
