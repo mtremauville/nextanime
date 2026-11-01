@@ -330,4 +330,115 @@ RSpec.describe TasteProfile, type: :model do
       expect(taste_profile.top_tags.first).to eq([ "Tag 10", 1.0 ])
     end
   end
+
+  describe "#absorb" do
+    subject(:account_profile) { create(:taste_profile, :with_user) }
+
+    let(:guest_profile) { create(:taste_profile) }
+    let(:shared_anime) { create(:anime) }
+
+    it "takes the swipes of the guest that the account does not know yet" do
+      new_anime = create(:anime)
+      create(:swipe, taste_profile: guest_profile, anime: new_anime)
+
+      account_profile.absorb(guest_profile)
+
+      expect(account_profile.swiped_anime_ids).to eq([ new_anime.id ])
+    end
+
+    it "keeps the verdict of the account for an anime swiped on both sides" do
+      create(:swipe, taste_profile: account_profile, anime: shared_anime, liked: true)
+      create(:swipe, :passed, taste_profile: guest_profile, anime: shared_anime)
+
+      account_profile.absorb(guest_profile)
+
+      expect(account_profile.swipes.find_by(anime: shared_anime)).to be_liked
+    end
+
+    it "forgets the swipes of the guest that are in conflict" do
+      create(:swipe, taste_profile: account_profile, anime: shared_anime)
+      create(:swipe, :passed, taste_profile: guest_profile, anime: shared_anime)
+
+      expect { account_profile.absorb(guest_profile) }.to change(Swipe, :count).from(2).to(1)
+    end
+
+    it "computes the weights again from the swipes of both profiles" do
+      action = create(:genre, name: "Action")
+      create(:swipe, taste_profile: account_profile, anime: create(:anime, genres: [ action ]))
+      create(:swipe, taste_profile: guest_profile, anime: create(:anime, genres: [ action ]))
+
+      account_profile.absorb(guest_profile)
+
+      expect(account_profile.reload.genre_weights).to eq({ "Action" => 0.5 })
+    end
+
+    it "removes the guest profile" do
+      account_profile.absorb(guest_profile)
+
+      expect(described_class.exists?(guest_profile.id)).to be(false)
+    end
+
+    it "leaves the other profiles alone" do
+      other_profile = create(:taste_profile)
+      create(:swipe, taste_profile: other_profile)
+
+      account_profile.absorb(guest_profile)
+
+      expect(other_profile.reload.swipes.count).to eq(1)
+    end
+  end
+
+  describe ".merge_session_profile" do
+    let(:user) { create(:user) }
+    let!(:guest_profile) { described_class.for_session("visitor-token") }
+
+    context "when the account has no profile yet" do
+      it "gives the guest profile to the account" do
+        described_class.merge_session_profile("visitor-token", into: user)
+
+        expect(user.reload.taste_profile).to eq(guest_profile)
+      end
+    end
+
+    context "when the account already has a profile" do
+      let!(:account_profile) { create(:taste_profile, :with_user, user: user) }
+
+      it "returns the profile of the account" do
+        expect(described_class.merge_session_profile("visitor-token", into: user)).to eq(account_profile)
+      end
+
+      it "brings the swipes of the guest into the profile of the account" do
+        anime = create(:anime)
+        guest_profile.record_swipe(anime, liked: true)
+
+        described_class.merge_session_profile("visitor-token", into: user)
+
+        expect(account_profile.reload.swiped_anime_ids).to eq([ anime.id ])
+      end
+
+      it "removes the guest profile" do
+        described_class.merge_session_profile("visitor-token", into: user)
+
+        expect(described_class.find_by(session_token: "visitor-token")).to be_nil
+      end
+    end
+
+    it "does nothing without a token" do
+      expect(described_class.merge_session_profile(nil, into: user)).to be_nil
+      expect(user.reload.taste_profile).to be_nil
+    end
+
+    it "does nothing for an unknown token" do
+      expect(described_class.merge_session_profile("other-token", into: user)).to be_nil
+      expect(user.reload.taste_profile).to be_nil
+    end
+
+    it "leaves alone a profile that already belongs to another account" do
+      owner = create(:user)
+      guest_profile.update!(user: owner)
+
+      expect(described_class.merge_session_profile("visitor-token", into: user)).to be_nil
+      expect(guest_profile.reload.user).to eq(owner)
+    end
+  end
 end
