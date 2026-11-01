@@ -1,7 +1,25 @@
 .btn-na-primary,
-.btn-na-outline {
+.btn-na-outline,
+.btn-na-ghost {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: .5rem;
+}
+
+// Neutral button: same size as the others, no color of its own.
+.btn-na-ghost {
+  --bs-btn-color: var(--na-text);
+  --bs-btn-border-color: var(--na-border);
+  --bs-btn-hover-color: var(--na-text);
+  --bs-btn-hover-bg: var(--na-surface-2);
+  --bs-btn-hover-border-color: var(--na-border);
+  --bs-btn-active-color: var(--na-text);
+  --bs-btn-active-bg: var(--na-surface-2);
+  --bs-btn-active-border-color: var(--na-border);
+
+  min-height: 52px;
+  padding-inline: 1.75rem;
+  font-family: $na-font-heading;
+  font-weight: 700;
 }

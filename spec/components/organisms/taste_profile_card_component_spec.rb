@@ -114,4 +114,10 @@ RSpec.describe Organisms::TasteProfileCardComponent, type: :component do
       expect(page).to have_no_css("[data-list]")
     end
   end
+
+  it "gives the reset button a neutral look" do
+    render_card
+
+    expect(page).to have_css("button.btn-na-ghost", text: "Réinitialiser mon profil")
+  end
 end
