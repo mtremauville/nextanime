@@ -1,5 +1,7 @@
 fr:
   profiles:
+    update:
+      notice: Tes informations ont été mises à jour.
     show:
       stats:
         swipes: Cartes swipées
