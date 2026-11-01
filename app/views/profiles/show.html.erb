@@ -1,1 +1,19 @@
-<h1><%= t(".title") %></h1>
+<p><%= t(".title") %></p>
+<h1><%= current_user.display_name %></h1>
+<p><%= current_user.email %></p>
+
+<p data-stat="swipes"><%= @taste_profile.swipes.count %></p>
+<p data-stat="likes"><%= @taste_profile.likes_count %></p>
+<p data-stat="watchlist"><%= @watchlist_count %></p>
+
+<ul data-list="genres">
+  <% @taste_profile.top_genres.each do |name, weight| %>
+    <li><%= name %> <%= weight %></li>
+  <% end %>
+</ul>
+
+<ul data-list="tags">
+  <% @taste_profile.top_tags.each do |name, weight| %>
+    <li><%= name %> <%= weight %></li>
+  <% end %>
+</ul>
