@@ -142,4 +142,37 @@ RSpec.describe "Account settings", type: :request do
       expect(document).to have_no_css("input[type='password'][value]")
     end
   end
+
+  describe "the error messages" do
+    before { sign_in user }
+
+    def error_next_to(field)
+      Capybara.string(response.body).find("#field_user_#{field}_error").text
+    end
+
+    it "tells that the current password is wrong" do
+      update_account(current_password: "wrong-password-123")
+
+      expect(error_next_to("current_password")).to eq("Ce mot de passe actuel est incorrect.")
+    end
+
+    it "asks for the current password when it is missing" do
+      update_account(current_password: "")
+
+      expect(error_next_to("current_password")).to eq("Saisis ton mot de passe actuel pour valider.")
+    end
+
+    it "tells that the e-mail address is already used" do
+      create(:user, email: "taken@example.com")
+      update_account(email: "taken@example.com")
+
+      expect(error_next_to("email")).to eq("Cette adresse est déjà utilisée.")
+    end
+
+    it "explains a new password that is too short" do
+      update_account(password: "short")
+
+      expect(error_next_to("password")).to eq("Ce mot de passe est trop court (12 caractères minimum).")
+    end
+  end
 end
