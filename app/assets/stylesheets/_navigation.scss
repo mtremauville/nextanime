@@ -220,10 +220,16 @@
   justify-content: center;
   width: 2.25rem;
   height: 2.25rem;
+  flex-shrink: 0;
+  aspect-ratio: 1;
+  border: 2px solid var(--na-magenta);
   border-radius: 50%;
-  background: var(--na-magenta);
-  color: var(--na-on-magenta);
-  font-weight: 800;
+  background: transparent;
+  box-shadow: 0 0 16px color-mix(in srgb, var(--na-magenta) 45%, transparent);
+  color: var(--na-magenta);
+  font-family: $na-font-heading;
+  font-size: 1rem;
+  font-weight: 700;
 }
 
 .na-account {
