@@ -272,4 +272,62 @@ RSpec.describe TasteProfile, type: :model do
       expect(profile.reload.genre_weights).to eq("Action" => -0.3333)
     end
   end
+
+  describe "#likes_count" do
+    let(:taste_profile) { create(:taste_profile) }
+
+    it "counts the likes only" do
+      create_list(:swipe, 2, taste_profile: taste_profile, liked: true)
+      create(:swipe, taste_profile: taste_profile, liked: false)
+
+      expect(taste_profile.likes_count).to eq(2)
+    end
+
+    it "is zero before the first swipe" do
+      expect(taste_profile.likes_count).to eq(0)
+    end
+  end
+
+  describe "#top_genres" do
+    let(:taste_profile) do
+      build(:taste_profile, genre_weights: { "Drama" => 0.2, "Thriller" => 0.8, "Comedy" => 0.5, "Action" => -0.5, "Romance" => 0.0 })
+    end
+
+    it "lists the best genres first with their weight" do
+      expect(taste_profile.top_genres).to eq([ [ "Thriller", 0.8 ], [ "Comedy", 0.5 ], [ "Drama", 0.2 ] ])
+    end
+
+    it "leaves out the genres that are avoided or neutral" do
+      expect(taste_profile.top_genres.map(&:first)).not_to include("Action", "Romance")
+    end
+
+    it "keeps only the requested number of genres" do
+      expect(taste_profile.top_genres(2).map(&:first)).to eq(%w[Thriller Comedy])
+    end
+
+    it "keeps the five best genres by default" do
+      taste_profile.genre_weights = (1..7).to_h { |index| [ "Genre #{index}", index / 10.0 ] }
+
+      expect(taste_profile.top_genres.map(&:first)).to eq([ "Genre 7", "Genre 6", "Genre 5", "Genre 4", "Genre 3" ])
+    end
+
+    it "is empty without any weight" do
+      expect(build(:taste_profile).top_genres).to eq([])
+    end
+  end
+
+  describe "#top_tags" do
+    it "lists the best tags first and leaves out the avoided ones" do
+      taste_profile = build(:taste_profile, tag_weights: { "Gore" => -0.4, "Mystery" => 0.3, "Time travel" => 0.6 })
+
+      expect(taste_profile.top_tags).to eq([ [ "Time travel", 0.6 ], [ "Mystery", 0.3 ] ])
+    end
+
+    it "keeps the eight best tags by default" do
+      taste_profile = build(:taste_profile, tag_weights: (1..10).to_h { |index| [ "Tag #{index}", index / 10.0 ] })
+
+      expect(taste_profile.top_tags.size).to eq(8)
+      expect(taste_profile.top_tags.first).to eq([ "Tag 10", 1.0 ])
+    end
+  end
 end
