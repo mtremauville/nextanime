@@ -22,6 +22,22 @@ class TasteProfile < ApplicationRecord
     profile&.tap { |found| found.update!(user: to, session_token: nil) }
   end
 
+  # Brings the swipes of a guest session into the account that just signed in or up.
+  # An account without a profile takes the guest profile as it is, an account that
+  # already has one absorbs it.
+  def self.merge_session_profile(token, into:)
+    return if token.blank?
+
+    guest_profile = find_by(session_token: token, user_id: nil)
+    return unless guest_profile
+
+    if (account_profile = into.taste_profile)
+      account_profile.absorb(guest_profile)
+    else
+      attach_session_profile(token, to: into)
+    end
+  end
+
   def record_swipe(anime, liked:)
     transaction do
       swipe = swipes.find_or_initialize_by(anime: anime)
@@ -48,6 +64,7 @@ class TasteProfile < ApplicationRecord
       guest_profile.destroy!
       refresh_weights!
     end
+    self
   end
 
   # Starts the profile from scratch: the owner, the session and the watchlist stay untouched.

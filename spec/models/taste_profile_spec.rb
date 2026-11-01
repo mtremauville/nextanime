@@ -387,4 +387,58 @@ RSpec.describe TasteProfile, type: :model do
       expect(other_profile.reload.swipes.count).to eq(1)
     end
   end
+
+  describe ".merge_session_profile" do
+    let(:user) { create(:user) }
+    let!(:guest_profile) { described_class.for_session("visitor-token") }
+
+    context "when the account has no profile yet" do
+      it "gives the guest profile to the account" do
+        described_class.merge_session_profile("visitor-token", into: user)
+
+        expect(user.reload.taste_profile).to eq(guest_profile)
+      end
+    end
+
+    context "when the account already has a profile" do
+      let!(:account_profile) { create(:taste_profile, :with_user, user: user) }
+
+      it "returns the profile of the account" do
+        expect(described_class.merge_session_profile("visitor-token", into: user)).to eq(account_profile)
+      end
+
+      it "brings the swipes of the guest into the profile of the account" do
+        anime = create(:anime)
+        guest_profile.record_swipe(anime, liked: true)
+
+        described_class.merge_session_profile("visitor-token", into: user)
+
+        expect(account_profile.reload.swiped_anime_ids).to eq([ anime.id ])
+      end
+
+      it "removes the guest profile" do
+        described_class.merge_session_profile("visitor-token", into: user)
+
+        expect(described_class.find_by(session_token: "visitor-token")).to be_nil
+      end
+    end
+
+    it "does nothing without a token" do
+      expect(described_class.merge_session_profile(nil, into: user)).to be_nil
+      expect(user.reload.taste_profile).to be_nil
+    end
+
+    it "does nothing for an unknown token" do
+      expect(described_class.merge_session_profile("other-token", into: user)).to be_nil
+      expect(user.reload.taste_profile).to be_nil
+    end
+
+    it "leaves alone a profile that already belongs to another account" do
+      owner = create(:user)
+      guest_profile.update!(user: owner)
+
+      expect(described_class.merge_session_profile("visitor-token", into: user)).to be_nil
+      expect(guest_profile.reload.user).to eq(owner)
+    end
+  end
 end
