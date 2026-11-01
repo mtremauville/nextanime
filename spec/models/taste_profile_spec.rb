@@ -226,4 +226,50 @@ RSpec.describe TasteProfile, type: :model do
       expect(Swipe.exists?(other_swipe.id)).to be(true)
     end
   end
+
+  describe "#refresh_weights!" do
+    subject(:profile) { create(:taste_profile) }
+
+    it "stores the weights computed from the swipes" do
+      anime = create(:anime)
+      create(:anime_genre, anime: anime, genre: create(:genre, name: "Action"))
+      create(:anime_tag, anime: anime, tag: create(:tag, name: "Démons"), rank: 80)
+      create(:swipe, taste_profile: profile, anime: anime, liked: true)
+
+      profile.refresh_weights!
+
+      expect(profile.reload.genre_weights).to eq("Action" => 0.3333)
+      expect(profile.tag_weights).to eq("Démons" => 0.2857)
+    end
+
+    it "forgets the weights of swipes that no longer exist" do
+      profile.update!(genre_weights: { "Action" => 0.5 }, tag_weights: { "Démons" => 0.5 })
+
+      profile.refresh_weights!
+
+      expect(profile.reload.genre_weights).to eq({})
+      expect(profile.tag_weights).to eq({})
+    end
+  end
+
+  describe "taste weights" do
+    subject(:profile) { create(:taste_profile) }
+
+    let(:anime) do
+      create(:anime).tap { |action| create(:anime_genre, anime: action, genre: create(:genre, name: "Action")) }
+    end
+
+    it "follow a like" do
+      profile.record_swipe(anime, liked: true)
+
+      expect(profile.reload.genre_weights).to eq("Action" => 0.3333)
+    end
+
+    it "follow a change of mind instead of adding up" do
+      profile.record_swipe(anime, liked: true)
+      profile.record_swipe(anime, liked: false)
+
+      expect(profile.reload.genre_weights).to eq("Action" => -0.3333)
+    end
+  end
 end

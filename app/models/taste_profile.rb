@@ -20,9 +20,17 @@ class TasteProfile < ApplicationRecord
   end
 
   def record_swipe(anime, liked:)
-    swipe = swipes.find_or_initialize_by(anime: anime)
-    swipe.update!(liked: liked)
-    swipe
+    transaction do
+      swipe = swipes.find_or_initialize_by(anime: anime)
+      swipe.update!(liked: liked)
+      refresh_weights!
+      swipe
+    end
+  end
+
+  # Recomputed from every swipe, so a change of mind never leaves stale weights behind.
+  def refresh_weights!
+    update!(TasteProfileCalculator.new(self).call)
   end
 
   def swiped_anime_ids
@@ -34,7 +42,7 @@ class TasteProfile < ApplicationRecord
     transaction do
       swipes.destroy_all
       recommendations.destroy_all
-      update!(genre_weights: {}, tag_weights: {})
+      refresh_weights!
     end
   end
 
