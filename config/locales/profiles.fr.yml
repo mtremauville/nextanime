@@ -5,3 +5,12 @@ fr:
     header:
       eyebrow: Mon profil
       member_since: "membre depuis %{date}"
+    taste_card:
+      title: Mon profil de goûts
+      intro:
+        one: Calculé à partir de ton swipe. Plus tu swipes, plus il s'affine.
+        other: Calculé à partir de tes %{count} swipes. Plus tu swipes, plus il s'affine.
+      empty: Swipe quelques anime pour que ton profil de goûts se dessine.
+      genres: Genres
+      tags: Tags les plus marqués
+      keep_swiping: Continuer à swiper
