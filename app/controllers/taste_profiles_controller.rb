@@ -1,9 +1,9 @@
 class TasteProfilesController < ApplicationController
-  include CurrentTasteProfile
+  before_action :authenticate_user!
 
-  # Only ever touches the profile the visitor already owns, never one picked by an id.
+  # Only ever touches the profile of the signed in account, never one picked by an id.
   def reset
-    existing_taste_profile&.reset!
-    redirect_to root_path, notice: t(".notice")
+    current_user.taste_profile&.reset!
+    redirect_to profile_path, notice: t(".notice")
   end
 end

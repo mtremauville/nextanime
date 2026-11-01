@@ -26,7 +26,6 @@ RSpec.describe "Resetting the taste profile", type: :system, js: true do
     within("dialog#reset-profile") { click_button "Réinitialiser" }
 
     expect(page).to have_text("Ton profil de goûts a été réinitialisé.")
-    visit profile_path
     expect(page).to have_css("[data-stat=swipes]", exact_text: "0")
   end
 
