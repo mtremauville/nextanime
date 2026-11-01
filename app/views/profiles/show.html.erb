@@ -6,4 +6,7 @@
 
 <div class="na-profile-grid">
   <%= render Organisms::TasteProfileCardComponent.new(genres: @taste_profile.top_genres, tags: @taste_profile.top_tags, swipes_count: @swipes_count, swipe_href: root_path, reset_href: reset_taste_profile_path) %>
+  <div class="na-profile-grid__side">
+    <%= render Organisms::AccountFormComponent.new(resource: @account) %>
+  </div>
 </div>

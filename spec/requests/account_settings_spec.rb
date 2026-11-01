@@ -115,4 +115,31 @@ RSpec.describe "Account settings", type: :request do
       it_behaves_like "a refused update"
     end
   end
+
+  describe "the account form" do
+    before { sign_in user }
+
+    it "is offered on the profile page with the saved e-mail address" do
+      get profile_path
+
+      expect(Capybara.string(response.body)).to have_css("form[action='/profil'] input[name='user[email]'][value='me@example.com']")
+    end
+
+    it "explains a refusal next to the fields and keeps what was typed" do
+      update_account(email: "bad", current_password: "")
+      document = Capybara.string(response.body)
+
+      expect(document).to have_css("input[name='user[email]'][value='bad'][aria-invalid='true']")
+      expect(document).to have_css("input[name='user[current_password]'][aria-invalid='true']")
+      expect(document).to have_css("[role='alert']", text: "2 erreurs empêchent l'enregistrement.")
+    end
+
+    it "never sends the passwords back after a refusal" do
+      update_account(email: "bad", password: new_password)
+      document = Capybara.string(response.body)
+
+      expect(document).to have_css("input[type='password']", count: 2)
+      expect(document).to have_no_css("input[type='password'][value]")
+    end
+  end
 end

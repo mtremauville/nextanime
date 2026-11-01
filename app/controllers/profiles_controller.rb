@@ -4,6 +4,7 @@ class ProfilesController < ApplicationController
   # Only ever reads the profile of the signed in account; a profile that was
   # never created is built in memory so the page can show zeros without writing.
   def show
+    @account = current_user
     load_profile
   end
 
