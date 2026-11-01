@@ -179,4 +179,51 @@ RSpec.describe TasteProfile, type: :model do
       expect(profile.reload.session_token).to eq("visitor-token")
     end
   end
+
+  describe "#reset!" do
+    subject(:profile) do
+      create(:taste_profile, genre_weights: { "Action" => 0.8 }, tag_weights: { "Isekai" => 0.4 })
+    end
+
+    it "removes the swipes" do
+      create_list(:swipe, 2, taste_profile: profile)
+
+      expect { profile.reset! }.to change { profile.swipes.count }.from(2).to(0)
+    end
+
+    it "removes the recommendations" do
+      create(:recommendation, taste_profile: profile)
+
+      expect { profile.reset! }.to change { profile.recommendations.count }.from(1).to(0)
+    end
+
+    it "forgets the weights learned from the swipes" do
+      profile.reset!
+
+      expect(profile.reload.genre_weights).to eq({})
+      expect(profile.reload.tag_weights).to eq({})
+    end
+
+    it "keeps the profile and its owner" do
+      expect { profile.reset! }.not_to change { profile.reload.session_token }
+      expect(described_class.exists?(profile.id)).to be(true)
+    end
+
+    it "keeps the watchlist of the account" do
+      account_profile = create(:taste_profile, :with_user)
+      entry = create(:watchlist_entry, user: account_profile.user)
+
+      account_profile.reset!
+
+      expect(WatchlistEntry.exists?(entry.id)).to be(true)
+    end
+
+    it "leaves the swipes of other profiles alone" do
+      other_swipe = create(:swipe)
+
+      profile.reset!
+
+      expect(Swipe.exists?(other_swipe.id)).to be(true)
+    end
+  end
 end

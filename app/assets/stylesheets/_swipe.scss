@@ -274,3 +274,9 @@ $na-cover-dark: #0B0A14;
   margin: 0 0 1.5rem;
   color: var(--na-muted);
 }
+
+.na-side-panel__reset {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--na-border);
+}
