@@ -328,3 +328,22 @@
 }
 
 .na-header__burger { margin-right: -.625rem; }
+
+.na-account__profile {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 44px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--na-text);
+  text-decoration: none;
+}
+
+.na-menu__profile-link {
+  margin-left: auto;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--na-cyan);
+  text-decoration: none;
+}

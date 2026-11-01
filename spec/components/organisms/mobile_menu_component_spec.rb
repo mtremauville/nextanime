@@ -91,4 +91,22 @@ RSpec.describe Organisms::MobileMenuComponent, type: :component do
       end
     end
   end
+
+  describe "profile link" do
+    def render_menu(user: nil)
+      render_inline(described_class.new(items: [], countries: { "FR" => "France" }, selected_country: "FR", user: user))
+    end
+
+    it "leads a signed in user to the profile page" do
+      render_menu(user: build_stubbed(:user))
+
+      expect(page).to have_link("Mon profil", href: "/profil")
+    end
+
+    it "offers no profile to a visitor" do
+      render_menu
+
+      expect(page).to have_no_link("Mon profil")
+    end
+  end
 end

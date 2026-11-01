@@ -44,4 +44,33 @@ RSpec.describe Molecules::AccountActionsComponent, type: :component do
       expect(page).to have_no_link("Créer un compte")
     end
   end
+
+  describe "profile link" do
+    let(:user) { build_stubbed(:user, email: "mickael@example.com") }
+
+    it "leads a signed in user to the profile page with the avatar and a label" do
+      render_inline(described_class.new(user: user))
+
+      expect(page).to have_css("a.na-account__profile[href='/profil']", text: "Mon profil")
+      expect(page).to have_css("a.na-account__profile span.na-avatar")
+    end
+
+    it "is not marked as current on other pages" do
+      render_inline(described_class.new(user: user))
+
+      expect(page).to have_no_css("a.na-account__profile[aria-current]")
+    end
+
+    it "is marked as the current page on the profile page" do
+      with_request_url("/profil") { render_inline(described_class.new(user: user)) }
+
+      expect(page).to have_css("a.na-account__profile[aria-current='page']")
+    end
+
+    it "is not offered to a visitor" do
+      render_inline(described_class.new)
+
+      expect(page).to have_no_link("Mon profil")
+    end
+  end
 end

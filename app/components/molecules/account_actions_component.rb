@@ -8,5 +8,7 @@ module Molecules
     private
 
     attr_reader :user
+
+    def profile_aria_current = ("page" if helpers.current_page?(profile_path))
   end
 end
