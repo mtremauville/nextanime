@@ -7,4 +7,8 @@ RSpec.describe "Profile routing", type: :routing do
   it "does not let the profile page be posted to" do
     expect(post: "/profil").not_to be_routable
   end
+
+  it "routes PATCH /profil to profiles#update" do
+    expect(patch: "/profil").to route_to("profiles#update")
+  end
 end
