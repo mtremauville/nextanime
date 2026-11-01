@@ -5,4 +5,6 @@ class User < ApplicationRecord
     has_many :watchlist_entries, dependent: :destroy
     has_many :animes, through: :watchlist_entries
   validates :privacy_policy, acceptance: { allow_nil: false }, on: :create
+
+  def display_name = username.presence || email.split("@").first
 end
