@@ -1,0 +1,11 @@
+.na-profile-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 2rem;
+
+  > .na-taste-card {
+    flex: 1 1 35rem;
+    max-width: 56rem;
+  }
+}

@@ -1,7 +1,10 @@
 fr:
   profiles:
     show:
-      title: Mon profil
+      stats:
+        swipes: Cartes swipées
+        likes: Likes
+        watchlist: Dans la watchlist
     header:
       eyebrow: Mon profil
       member_since: "membre depuis %{date}"

@@ -30,6 +30,26 @@ RSpec.describe "Profile page", type: :request do
         expect(html).to have_text("mika@example.com")
       end
 
+      it "names the three stats" do
+        get profile_path
+
+        expect(html).to have_text("Cartes swipées")
+        expect(html).to have_text("Likes")
+        expect(html).to have_text("Dans la watchlist")
+      end
+
+      it "offers to keep swiping" do
+        get profile_path
+
+        expect(html).to have_link("Continuer à swiper", href: root_path)
+      end
+
+      it "offers to reset the taste profile after a confirmation" do
+        get profile_path
+
+        expect(html).to have_css("dialog#reset-profile form[action='#{reset_taste_profile_path}']", visible: :all)
+      end
+
       context "with a taste profile" do
         let(:genre_weights) { { "Thriller" => 0.8, "Comedy" => -0.3 } }
         let(:tag_weights) { { "Mystery" => 0.5 } }
