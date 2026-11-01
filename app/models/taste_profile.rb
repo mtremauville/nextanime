@@ -1,4 +1,7 @@
 class TasteProfile < ApplicationRecord
+  TOP_GENRES_LIMIT = 5
+  TOP_TAGS_LIMIT = 8
+
   belongs_to :user, optional: true
   has_many :swipes, dependent: :destroy
   has_many :recommendations, dependent: :destroy
@@ -46,7 +49,17 @@ class TasteProfile < ApplicationRecord
     end
   end
 
+  def likes_count = swipes.where(liked: true).count
+
+  def top_genres(limit = TOP_GENRES_LIMIT) = best_weights(genre_weights, limit)
+
+  def top_tags(limit = TOP_TAGS_LIMIT) = best_weights(tag_weights, limit)
+
   private
+
+  def best_weights(weights, limit)
+    weights.select { |_name, weight| weight.positive? }.max_by(limit) { |_name, weight| weight }
+  end
 
   def owner_present
     return if user.present? || session_token.present?

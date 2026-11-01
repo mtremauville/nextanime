@@ -46,4 +46,10 @@ RSpec.describe Atoms::ButtonComponent, type: :component do
   it "raises for an unknown variant" do
     expect { described_class.new(variant: :neon) }.to raise_error(ArgumentError, /Unknown variant/)
   end
+
+  it "supports the ghost variant" do
+    render_inline(described_class.new(variant: :ghost)) { "Réinitialiser" }
+
+    expect(page).to have_css("button.btn.btn-na-ghost")
+  end
 end

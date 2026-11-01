@@ -1,0 +1,47 @@
+<section class="na-taste-card" aria-labelledby="taste-card-title">
+  <h2 class="na-taste-card__title" id="taste-card-title"><%= t("profiles.taste_card.title") %></h2>
+
+  <% if without_taste? %>
+    <p class="na-taste-card__intro"><%= t("profiles.taste_card.empty") %></p>
+  <% else %>
+    <p class="na-taste-card__intro"><%= t("profiles.taste_card.intro", count: swipes_count) %></p>
+
+    <% if genres.any? %>
+      <h3 class="na-taste-card__label"><%= t("profiles.taste_card.genres") %></h3>
+      <ul class="na-taste-card__genres" data-list="genres">
+        <% genres.each_with_index do |(name, weight), index| %>
+          <li class="na-taste-card__genre">
+            <span class="na-taste-card__genre-name"><%= name %></span>
+            <div class="na-taste-card__bar"><%= render Atoms::MeterComponent.new(value: percentage(weight), label: name, tone: tone_at(index)) %></div>
+            <span class="na-taste-card__genre-weight"><%= percentage(weight) %>%</span>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+
+    <% if tags.any? %>
+      <h3 class="na-taste-card__label"><%= t("profiles.taste_card.tags") %></h3>
+      <ul class="na-taste-card__tags" data-list="tags">
+        <% tags.each_with_index do |(name, _weight), index| %>
+          <li><%= render Atoms::TagComponent.new(label: name, tone: tone_at(index)) %></li>
+        <% end %>
+      </ul>
+    <% end %>
+  <% end %>
+
+  <div class="na-taste-card__actions">
+    <%= render Atoms::ButtonComponent.new(href: swipe_href) do %><%= t("profiles.taste_card.keep_swiping") %><% end %>
+    <%= render Organisms::ConfirmationModalComponent.new(
+          id: "reset-profile",
+          title: t("profiles.taste_card.reset.title"),
+          confirm_label: t("profiles.taste_card.reset.confirm"),
+          confirm_url: reset_href,
+          icon: "arrow-counterclockwise",
+          tone: :cyan,
+          trigger_label: t("profiles.taste_card.reset.trigger"),
+          trigger_variant: :ghost
+        ) do %>
+      <%= t("profiles.taste_card.reset.body") %>
+    <% end %>
+  </div>
+</section>

@@ -20,11 +20,6 @@ fr:
       empty: Swipe quelques animes pour dessiner ton profil.
       link: Voir mon profil complet →
       save_link: Sauvegarder mon profil →
-      reset:
-        trigger: Réinitialiser mon profil
-        title: "Réinitialiser ton profil de goûts ?"
-        body: Tes swipes seront effacés et tes recommandations recalculées à partir de zéro. Ta watchlist et ton compte ne changent pas.
-        confirm: Réinitialiser
     history:
       eyebrow: Derniers swipes
       title: Ton historique

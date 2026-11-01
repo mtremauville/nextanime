@@ -1,0 +1,9 @@
+<%= render Organisms::ProfileHeaderComponent.new(user: current_user) do %>
+  <%= render Molecules::StatCardComponent.new(stat: :swipes, value: @swipes_count, label: t(".stats.swipes"), tone: :cyan) %>
+  <%= render Molecules::StatCardComponent.new(stat: :likes, value: @taste_profile.likes_count, label: t(".stats.likes"), tone: :magenta) %>
+  <%= render Molecules::StatCardComponent.new(stat: :watchlist, value: @watchlist_count, label: t(".stats.watchlist")) %>
+<% end %>
+
+<div class="na-profile-grid">
+  <%= render Organisms::TasteProfileCardComponent.new(genres: @taste_profile.top_genres, tags: @taste_profile.top_tags, swipes_count: @swipes_count, swipe_href: root_path, reset_href: reset_taste_profile_path) %>
+</div>

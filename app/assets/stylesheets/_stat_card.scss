@@ -1,0 +1,28 @@
+.na-stat-card {
+  min-width: 7.5rem;
+  padding: 1rem 1.25rem;
+  background: var(--na-surface);
+  border: 1px solid var(--na-border);
+  border-radius: $na-radius-md;
+}
+
+.na-stat-card__value {
+  font-family: $na-font-accent;
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--na-text);
+
+  &--cyan {
+    color: var(--na-cyan);
+  }
+
+  &--magenta {
+    color: var(--na-magenta);
+  }
+}
+
+.na-stat-card__label {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--na-muted);
+}

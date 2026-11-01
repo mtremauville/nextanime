@@ -2,7 +2,8 @@ module Atoms
   class ButtonComponent < ViewComponent::Base
     VARIANTS = {
       primary: "btn btn-na-primary",
-      outline: "btn btn-na-outline"
+      outline: "btn btn-na-outline",
+      ghost: "btn btn-na-ghost"
     }.freeze
 
     def initialize(variant: :primary, type: "button", href: nil, **attributes)
