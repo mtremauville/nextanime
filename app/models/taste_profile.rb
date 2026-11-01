@@ -42,7 +42,7 @@ class TasteProfile < ApplicationRecord
     transaction do
       swipes.destroy_all
       recommendations.destroy_all
-      update!(genre_weights: {}, tag_weights: {})
+      refresh_weights!
     end
   end
 
