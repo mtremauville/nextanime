@@ -1,0 +1,53 @@
+// Top of the recommendations page: title, taste of the person, way back to swiping.
+.na-recos-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: map-get($na-spacers, 5);
+  margin-bottom: map-get($na-spacers, 6);
+
+  &__intro {
+    flex: 1 1 20rem;
+    min-width: 0;
+  }
+
+  &__eyebrow {
+    margin: 0 0 map-get($na-spacers, 2);
+  }
+
+  &__title {
+    margin: 0 0 map-get($na-spacers, 4);
+    font-family: $na-font-heading;
+    font-size: map-get($na-font-sizes, 48);
+    font-weight: 700;
+    line-height: 1.1;
+
+    @include media-breakpoint-down(sm) {
+      font-size: map-get($na-font-sizes, 32);
+    }
+  }
+
+  &__taste {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: map-get($na-spacers, 2);
+  }
+
+  &__profile-link {
+    margin-right: map-get($na-spacers, 2);
+    font-size: map-get($na-font-sizes, 14);
+    color: var(--na-cyan);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--na-cyan);
+      outline-offset: 2px;
+    }
+  }
+}
