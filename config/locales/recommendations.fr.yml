@@ -1,0 +1,12 @@
+fr:
+  recommendations:
+    index:
+      title: Tes recommandations
+      invite:
+        title: Swipe quelques animes pour recevoir tes recommandations
+        text: Plus tu swipes, plus elles te ressemblent.
+        link: Commencer à swiper
+      empty:
+        title: Aucune recommandation pour le moment
+        text: Tu as tout vu, ou aucun anime de ce format ne colle à ton profil.
+        link: Continuer à swiper

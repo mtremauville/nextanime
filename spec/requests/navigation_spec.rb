@@ -9,6 +9,9 @@ RSpec.describe "Navigation", type: :request do
     "/calendrier" => "Calendrier"
   }
 
+  # Pages whose title differs from the label of their tab.
+  headings = { "/recos" => "Tes recommandations" }
+
   let(:document) { Capybara.string(response.body) }
 
   pages.each do |path, title|
@@ -23,7 +26,7 @@ RSpec.describe "Navigation", type: :request do
       end
 
       it "shows the page title" do
-        expect(document).to have_css("main h1", text: title)
+        expect(document).to have_css("main h1", text: headings.fetch(path, title))
       end
 
       it "marks the page as current in the tab bar" do

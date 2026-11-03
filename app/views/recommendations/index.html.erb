@@ -1,2 +1,23 @@
-<h1 class="h3">Recos</h1>
-<p class="text-body-secondary">Cette page arrive bientôt.</p>
+<h1 class="h2 mb-4"><%= t(".title") %></h1>
+
+<% if @recommendations.nil? %>
+  <section class="na-card p-4 text-center">
+    <h2 class="h4"><%= t(".invite.title") %></h2>
+    <p class="text-body-secondary"><%= t(".invite.text") %></p>
+    <%= link_to t(".invite.link"), root_path, class: "btn btn-na-primary" %>
+  </section>
+<% elsif @recommendations.empty? %>
+  <section class="na-card p-4 text-center">
+    <h2 class="h4"><%= t(".empty.title") %></h2>
+    <p class="text-body-secondary"><%= t(".empty.text") %></p>
+    <%= link_to t(".empty.link"), root_path, class: "btn btn-na-outline" %>
+  </section>
+<% else %>
+  <ul class="list-unstyled d-flex flex-column gap-3">
+    <% @recommendations.each do |recommendation| %>
+      <li data-role="recommendation">
+        <%= recommendation.anime.display_title %> <%= recommendation.match_percentage %>%
+      </li>
+    <% end %>
+  </ul>
+<% end %>
