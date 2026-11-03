@@ -1,0 +1,5 @@
+<section class="na-card p-4 text-center">
+  <h2 class="h4"><%= title %></h2>
+  <p class="text-body-secondary"><%= text %></p>
+  <%= render(Atoms::ButtonComponent.new(variant: link_variant, href: link_href)) { link_label } %>
+</section>

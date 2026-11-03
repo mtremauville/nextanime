@@ -1,2 +1,36 @@
-<h1 class="h3">Recos</h1>
-<p class="text-body-secondary">Cette page arrive bientôt.</p>
+<%= render Organisms::RecommendationsHeaderComponent.new(
+      tags: @tag_names,
+      genres: @genre_names,
+      swipe_href: root_path,
+      profile_href: (profile_path if current_user)
+    ) %>
+
+<% if @recommendations.nil? %>
+  <%= render Molecules::EmptyStateComponent.new(
+        title: t(".invite.title"),
+        text: t(".invite.text"),
+        link_label: t(".invite.link"),
+        link_href: root_path
+      ) %>
+<% else %>
+  <% choices = { nil => t(".filter.all"), "series" => t(".filter.series"), "movies" => t(".filter.movies") }.map do |kind, label|
+       { label: label, href: recommendations_path(kind: kind), current: kind == @kind }
+     end %>
+  <%= render Molecules::ResultFilterComponent.new(
+        label: t(".filter.label"),
+        choices: choices,
+        summary: t(".summary", count: @recommendations.size)
+      ) %>
+
+  <% if @recommendations.empty? %>
+    <%= render Molecules::EmptyStateComponent.new(
+          title: t(".empty.title"),
+          text: t(".empty.text"),
+          link_label: t(".empty.link"),
+          link_href: root_path,
+          link_variant: :outline
+        ) %>
+  <% else %>
+    <%= render Organisms::RecommendationGridComponent.new(recommendations: @recommendations) %>
+  <% end %>
+<% end %>

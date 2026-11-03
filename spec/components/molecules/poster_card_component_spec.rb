@@ -64,4 +64,12 @@ RSpec.describe Molecules::PosterCardComponent, type: :component do
     expect { described_class.new(title: "X", href: "/", poster: :pink) }
       .to raise_error(ArgumentError, /Unknown poster/)
   end
+
+  it "renders the title as plain text when there is no link" do
+    attributes.delete(:href)
+    render_card
+
+    expect(page).to have_css("h2", text: "Perfect Blue")
+    expect(page).to have_no_link
+  end
 end

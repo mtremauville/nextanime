@@ -1,0 +1,41 @@
+// Recommendations as a grid of poster cards on a wide screen, as a list of rows on a phone.
+.na-reco-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16.25rem, 1fr));
+  gap: map-get($na-spacers, 5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  &__item {
+    min-width: 0;
+  }
+
+  .na-poster-card__badge {
+    left: auto;
+    right: map-get($na-spacers, 3);
+  }
+
+  @include media-breakpoint-down(sm) {
+    grid-template-columns: 1fr;
+    gap: map-get($na-spacers, 4);
+
+    .na-poster-card {
+      display: flex;
+    }
+
+    .na-poster-card__frame {
+      flex: 0 0 6rem;
+      align-self: flex-start;
+      margin: map-get($na-spacers, 3) 0 map-get($na-spacers, 3) map-get($na-spacers, 3);
+      border-radius: $na-radius-md;
+      overflow: hidden;
+    }
+
+    .na-poster-card__badge {
+      top: map-get($na-spacers, 2);
+      left: map-get($na-spacers, 2);
+      right: auto;
+    }
+  }
+}

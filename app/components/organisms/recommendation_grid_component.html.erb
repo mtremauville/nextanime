@@ -1,0 +1,15 @@
+<ul class="na-reco-grid">
+  <% recommendations.each do |recommendation| %>
+    <% anime = recommendation.anime %>
+    <% summary = summary_for(anime) %>
+    <li class="na-reco-grid__item" data-role="recommendation">
+      <%= render Molecules::PosterCardComponent.new(
+            title: anime.display_title,
+            meta: summary.line,
+            tags: summary.genre_labels,
+            match: recommendation.match_percentage,
+            image_url: anime.cover_image_url
+          ) %>
+    </li>
+  <% end %>
+</ul>
