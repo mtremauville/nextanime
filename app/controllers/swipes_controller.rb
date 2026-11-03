@@ -8,7 +8,7 @@ class SwipesController < ApplicationController
 
   def index
     swiped_ids = swiped_anime_ids
-    @animes = SwipeDeckQuery.new(excluding: swiped_ids).call
+    @animes = SwipeSession.new(session, swiped_anime_ids: swiped_ids).animes
     @deck_finished = @animes.empty? && swiped_ids.any?
   end
 
