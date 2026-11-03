@@ -102,7 +102,7 @@ RSpec.describe "Swipes", type: :request do
     it "keeps the profile in a signed cookie that scripts cannot read" do
       post swipes_path, params: { anime_id: anime.id, liked: true }
 
-      expect(response.headers["Set-Cookie"]).to match(/taste_session=[^;]+;.*HttpOnly/i)
+      expect(Array(response.headers["Set-Cookie"]).join("\n")).to match(/taste_session=[^;]+;.*HttpOnly/i)
     end
 
     it "ignores a forged cookie and starts a new profile" do
