@@ -5,4 +5,6 @@ class Recommendation < ApplicationRecord
   validates :anime_id, uniqueness: { scope: :taste_profile_id }
   validates :score, presence: true,
                     numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
+
+  def match_percentage = (score * 100).round
 end
