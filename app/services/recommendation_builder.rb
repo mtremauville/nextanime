@@ -11,18 +11,31 @@ class RecommendationBuilder
 
   def call
     scores = best_scores
+    digest = current_digest
 
     taste_profile.transaction do
       taste_profile.recommendations.where.not(anime_id: scores.keys).delete_all
       save(scores) if scores.any?
+      taste_profile.update_column(:digest, digest)
     end
 
     taste_profile.recommendations
   end
 
+  # The recommendations only change with the taste and with what was swiped.
+  def stale?
+    taste_profile.digest != current_digest
+  end
+
   private
 
   attr_reader :taste_profile
+
+  def current_digest
+    state = [ taste_profile.genre_weights.sort, taste_profile.tag_weights.sort, taste_profile.swiped_anime_ids.sort ]
+
+    Digest::SHA256.hexdigest(state.to_json)
+  end
 
   def best_scores
     scorer = MatchScorer.new(taste_profile)

@@ -91,4 +91,30 @@ RSpec.describe RecommendationBuilder do
 
     expect(profile.recommendations).to be_empty
   end
+
+  describe "#stale?" do
+    it "is stale before the first run" do
+      expect(described_class.new(profile)).to be_stale
+    end
+
+    it "is fresh right after a run" do
+      described_class.new(profile).call
+
+      expect(described_class.new(profile.reload)).not_to be_stale
+    end
+
+    it "is stale again once the profile swiped another anime" do
+      described_class.new(profile).call
+      profile.swipes.create!(anime: anime_of(action), liked: true)
+
+      expect(described_class.new(profile.reload)).to be_stale
+    end
+
+    it "is stale again once the taste of the profile changed" do
+      described_class.new(profile).call
+      profile.update!(genre_weights: { "Action" => 0.2 })
+
+      expect(described_class.new(profile.reload)).to be_stale
+    end
+  end
 end
