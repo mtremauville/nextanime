@@ -1,9 +1,7 @@
 .na-data-card {
   min-width: 0;
   padding: 2rem;
-  background: var(--na-surface);
-  border: 1px solid var(--na-magenta);
-  border-radius: $na-radius-lg;
+  border-color: var(--na-magenta);
 }
 
 .na-data-card__title {
