@@ -1,23 +1,36 @@
-<h1 class="h2 mb-4"><%= t(".title") %></h1>
+<%= render Organisms::RecommendationsHeaderComponent.new(
+      tags: @tag_names,
+      genres: @genre_names,
+      swipe_href: root_path,
+      profile_href: (profile_path if current_user)
+    ) %>
 
 <% if @recommendations.nil? %>
-  <section class="na-card p-4 text-center">
-    <h2 class="h4"><%= t(".invite.title") %></h2>
-    <p class="text-body-secondary"><%= t(".invite.text") %></p>
-    <%= link_to t(".invite.link"), root_path, class: "btn btn-na-primary" %>
-  </section>
-<% elsif @recommendations.empty? %>
-  <section class="na-card p-4 text-center">
-    <h2 class="h4"><%= t(".empty.title") %></h2>
-    <p class="text-body-secondary"><%= t(".empty.text") %></p>
-    <%= link_to t(".empty.link"), root_path, class: "btn btn-na-outline" %>
-  </section>
+  <%= render Molecules::EmptyStateComponent.new(
+        title: t(".invite.title"),
+        text: t(".invite.text"),
+        link_label: t(".invite.link"),
+        link_href: root_path
+      ) %>
 <% else %>
-  <ul class="list-unstyled d-flex flex-column gap-3">
-    <% @recommendations.each do |recommendation| %>
-      <li data-role="recommendation">
-        <%= recommendation.anime.display_title %> <%= recommendation.match_percentage %>%
-      </li>
-    <% end %>
-  </ul>
+  <% choices = { nil => t(".filter.all"), "series" => t(".filter.series"), "movies" => t(".filter.movies") }.map do |kind, label|
+       { label: label, href: recommendations_path(kind: kind), current: kind == @kind }
+     end %>
+  <%= render Molecules::ResultFilterComponent.new(
+        label: t(".filter.label"),
+        choices: choices,
+        summary: t(".summary", count: @recommendations.size)
+      ) %>
+
+  <% if @recommendations.empty? %>
+    <%= render Molecules::EmptyStateComponent.new(
+          title: t(".empty.title"),
+          text: t(".empty.text"),
+          link_label: t(".empty.link"),
+          link_href: root_path,
+          link_variant: :outline
+        ) %>
+  <% else %>
+    <%= render Organisms::RecommendationGridComponent.new(recommendations: @recommendations) %>
+  <% end %>
 <% end %>

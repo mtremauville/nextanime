@@ -1,7 +1,14 @@
 fr:
   recommendations:
     index:
-      title: Tes recommandations
+      summary:
+        one: "Trié par match · %{count} résultat"
+        other: "Trié par match · %{count} résultats"
+      filter:
+        label: Filtrer par format
+        all: Tous
+        series: Séries
+        movies: Films
       invite:
         title: Swipe quelques animes pour recevoir tes recommandations
         text: Plus tu swipes, plus elles te ressemblent.

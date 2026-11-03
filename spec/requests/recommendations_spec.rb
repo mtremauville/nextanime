@@ -134,4 +134,71 @@ RSpec.describe "Recommendations", type: :request do
       end
     end
   end
+
+  describe "GET /recos, the page as a whole" do
+    let!(:liked) { create(:anime, genres: [ thriller ], format: :tv) }
+    let!(:series) { create(:anime, genres: [ thriller ], format: :tv) }
+    let!(:movie) { create(:anime, genres: [ thriller ], format: :movie) }
+
+    before do
+      sign_in user
+      user.create_taste_profile!.record_swipe(liked, liked: true)
+    end
+
+    it "names the strongest genres of the taste in the header" do
+      get recommendations_path
+
+      expect(page).to have_css(".na-recos-header span.na-tag--cyan", text: "Thriller")
+    end
+
+    it "links to the profile of a signed in person" do
+      get recommendations_path
+
+      expect(page).to have_link("Ton profil", href: profile_path)
+    end
+
+    it "offers the formats, all of them being shown at first" do
+      get recommendations_path
+
+      expect(page).to have_css("[role='group'][aria-label='Filtrer par format'] a[aria-current='true']", text: "Tous")
+      expect(page).to have_link("Séries", href: recommendations_path(kind: "series"))
+      expect(page).to have_link("Films", href: recommendations_path(kind: "movies"))
+    end
+
+    it "marks the chosen format" do
+      get recommendations_path, params: { kind: "movies" }
+
+      expect(page).to have_css("a[aria-current='true']", text: "Films")
+    end
+
+    it "counts the results" do
+      get recommendations_path
+
+      expect(page).to have_text("2 résultats")
+    end
+
+    it "counts a single result in the singular" do
+      get recommendations_path, params: { kind: "movies" }
+
+      expect(page).to have_text(/1 résultat(?!s)/)
+    end
+
+    it "keeps the filter when no anime has the chosen format" do
+      user.taste_profile.record_swipe(series, liked: false)
+
+      get recommendations_path, params: { kind: "series" }
+
+      expect(page).to have_text("Aucune recommandation")
+      expect(page).to have_link("Tous", href: recommendations_path)
+    end
+
+    it "has no link to the profile for a visitor" do
+      sign_out user
+      post swipes_path, params: { anime_id: liked.id, liked: true, position: 1, total: 24 }
+
+      get recommendations_path
+
+      expect(page).to have_no_link("Ton profil")
+    end
+  end
 end
