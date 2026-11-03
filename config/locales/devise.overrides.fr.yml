@@ -11,3 +11,5 @@ fr:
       send_paranoid_instructions: "Si ton adresse e-mail est connue, tu vas recevoir un lien pour choisir un nouveau mot de passe."
       updated: "Ton mot de passe a bien été changé. Tu es connecté."
       updated_not_active: "Ton mot de passe a bien été changé."
+    registrations:
+      destroyed: "Ton compte et tes données ont été supprimés. À bientôt !"
