@@ -52,4 +52,10 @@ RSpec.describe Atoms::ButtonComponent, type: :component do
 
     expect(page).to have_css("button.btn.btn-na-ghost")
   end
+
+  it "supports the danger variant" do
+    render_inline(described_class.new(variant: :danger)) { "Supprimer" }
+
+    expect(page).to have_css("button.btn.btn-na-danger", text: "Supprimer")
+  end
 end

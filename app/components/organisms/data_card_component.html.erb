@@ -1,8 +1,21 @@
 <section class="na-card na-data-card" aria-labelledby="data-card-title">
   <h2 id="data-card-title" class="na-data-card__title">Mes données</h2>
-  <p class="na-data-card__intro">Tu peux récupérer tes données à tout moment.</p>
+  <p class="na-data-card__intro">Tu peux récupérer tes données ou supprimer ton compte à tout moment.</p>
   <p class="na-data-card__hint">Le fichier JSON contient ton compte, tes swipes et ta watchlist.</p>
   <div class="na-data-card__actions">
     <%= render Atoms::ButtonComponent.new(variant: :outline, href: export_href, data: { turbo: false }) do %>Exporter mes données<% end %>
+    <%= render Organisms::ConfirmationModalComponent.new(
+          id: "delete-account",
+          title: "Supprimer mon compte ?",
+          confirm_label: "Supprimer définitivement",
+          confirm_url: delete_href,
+          icon: "trash",
+          tone: :magenta,
+          trigger_label: "Supprimer mon compte",
+          trigger_variant: :danger,
+          confirmation_word: "SUPPRIMER"
+        ) do %>
+      Cette action est définitive. Elle efface ton compte, ton profil de goûts, tes swipes et ta watchlist.
+    <% end %>
   </div>
 </section>
