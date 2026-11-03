@@ -16,10 +16,10 @@ RSpec.describe SwipeDeckQuery do
       expect(described_class.new(size: 3).call.size).to eq(3)
     end
 
-    it "builds a deck of 24 anime by default" do
+    it "builds a deck of 20 anime by default" do
       create_list(:anime, 30, cover_image_url: "https://img.test/cover.jpg")
 
-      expect(described_class.new.call.size).to eq(24)
+      expect(described_class.new.call.size).to eq(20)
     end
 
     it "ignores the anime without a cover" do
@@ -29,43 +29,38 @@ RSpec.describe SwipeDeckQuery do
       expect(described_class.new.call).to eq([ with_cover ])
     end
 
-    it "puts the most popular anime first when nothing sets them apart" do
-      low = anime(popularity: 10)
+    it "draws only from the most popular anime" do
+      stub_const("SwipeDeckQuery::CANDIDATES_LIMIT", 2)
       top = anime(popularity: 100)
       middle = anime(popularity: 50)
+      anime(popularity: 10)
+      anime(popularity: nil)
 
-      expect(described_class.new.call).to eq([ top, middle, low ])
-    end
-
-    it "puts the anime without popularity last" do
-      unknown = anime(popularity: nil)
-      known = anime(popularity: 1)
-
-      expect(described_class.new.call).to eq([ known, unknown ])
+      expect(described_class.new.call).to contain_exactly(top, middle)
     end
 
     it "mixes the genres before repeating one" do
-      first = anime(popularity: 100, genres: [ action ])
-      anime(popularity: 90, genres: [ action ])
-      other_genre = anime(popularity: 10, genres: [ romance ])
+      anime(genres: [ action ])
+      anime(genres: [ action ])
+      other_genre = anime(genres: [ romance ])
 
-      expect(described_class.new(size: 2).call).to contain_exactly(first, other_genre)
+      expect(described_class.new(size: 2).call).to include(other_genre)
     end
 
     it "mixes the formats" do
-      first = anime(popularity: 100, format: :tv)
-      anime(popularity: 90, format: :tv)
-      movie = anime(popularity: 10, format: :movie)
+      anime(format: :tv)
+      anime(format: :tv)
+      movie = anime(format: :movie)
 
-      expect(described_class.new(size: 2).call).to contain_exactly(first, movie)
+      expect(described_class.new(size: 2).call).to include(movie)
     end
 
     it "mixes the decades" do
-      first = anime(popularity: 100, start_date: Date.new(2021, 4, 1))
-      anime(popularity: 90, start_date: Date.new(2023, 4, 1))
-      older = anime(popularity: 10, start_date: Date.new(1995, 4, 1))
+      anime(start_date: Date.new(2021, 4, 1))
+      anime(start_date: Date.new(2023, 4, 1))
+      older = anime(start_date: Date.new(1995, 4, 1))
 
-      expect(described_class.new(size: 2).call).to contain_exactly(first, older)
+      expect(described_class.new(size: 2).call).to include(older)
     end
 
     it "copes with an anime that has no start date nor format" do
@@ -82,6 +77,24 @@ RSpec.describe SwipeDeckQuery do
 
     it "returns an empty deck for an empty catalog" do
       expect(described_class.new.call).to eq([])
+    end
+  end
+
+  describe "randomness" do
+    before { Array.new(10) { |index| anime(popularity: index + 1) } }
+
+    it "draws the same deck from the same random source" do
+      first_draw = described_class.new(random: Random.new(1)).call
+      second_draw = described_class.new(random: Random.new(1)).call
+
+      expect(first_draw).to eq(second_draw)
+    end
+
+    it "draws a different deck from another random source" do
+      first_draw = described_class.new(random: Random.new(1)).call
+      second_draw = described_class.new(random: Random.new(2)).call
+
+      expect(first_draw).not_to eq(second_draw)
     end
   end
 

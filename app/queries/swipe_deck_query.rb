@@ -1,16 +1,18 @@
 # Builds the deck shown to a visitor: popular anime that differ from each other,
-# so that a few swipes already say a lot about the taste.
+# so that a few swipes already say a lot about the taste. The popular ones are
+# drawn in a random order, so that each swipe session is a new deck.
 class SwipeDeckQuery
-  DEFAULT_SIZE = 24
+  DEFAULT_SIZE = 20
   CANDIDATES_LIMIT = 200
 
-  def initialize(size: DEFAULT_SIZE, excluding: [])
+  def initialize(size: DEFAULT_SIZE, excluding: [], random: Random.new)
     @size = size
     @excluding = excluding
+    @random = random
   end
 
   def call
-    pool = candidates.to_a
+    pool = candidates.to_a.shuffle(random: random)
     covered = Set.new
 
     Array.new([ size, pool.size ].min) do
@@ -23,7 +25,7 @@ class SwipeDeckQuery
 
   private
 
-  attr_reader :size, :excluding
+  attr_reader :size, :excluding, :random
 
   def candidates
     Anime.where.not(cover_image_url: nil)
