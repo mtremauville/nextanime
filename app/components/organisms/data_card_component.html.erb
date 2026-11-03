@@ -1,0 +1,8 @@
+<section class="na-data-card" aria-labelledby="data-card-title">
+  <h2 id="data-card-title" class="na-data-card__title">Mes données</h2>
+  <p class="na-data-card__intro">Tu peux récupérer tes données à tout moment.</p>
+  <p class="na-data-card__hint">Le fichier JSON contient ton compte, tes swipes et ta watchlist.</p>
+  <div class="na-data-card__actions">
+    <%= render Atoms::ButtonComponent.new(variant: :outline, href: export_href, data: { turbo: false }) do %>Exporter mes données<% end %>
+  </div>
+</section>
