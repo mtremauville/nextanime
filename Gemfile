@@ -67,7 +67,7 @@ gem "capybara", "~> 3.40", group: :test
 gem "selenium-webdriver", "~> 4.51", group: :test
 gem "simplecov", "~> 1.3", group: :test
 
-gem "view_component", "~> 4.19"
+gem "view_component", "~> 4.20"
 
 gem "devise", "~> 5.0"
 
