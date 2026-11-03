@@ -1,0 +1,18 @@
+<header class="na-recos-header">
+  <div class="na-recos-header__intro">
+    <p class="na-recos-header__eyebrow"><%= I18n.t("recommendations.header.eyebrow") %></p>
+    <h1 class="na-recos-header__title"><%= I18n.t("recommendations.header.title") %></h1>
+    <div class="na-recos-header__taste">
+      <% if profile_href %>
+        <%= link_to I18n.t("recommendations.header.profile_link"), profile_href, class: "na-recos-header__profile-link" %>
+      <% end %>
+      <% tags.each do |name| %>
+        <%= render Atoms::TagComponent.new(label: name) %>
+      <% end %>
+      <% genres.each do |name| %>
+        <%= render Atoms::TagComponent.new(label: name, tone: :cyan) %>
+      <% end %>
+    </div>
+  </div>
+  <%= render(Atoms::ButtonComponent.new(variant: :outline, href: swipe_href)) { I18n.t("recommendations.header.swipe_link") } %>
+</header>
