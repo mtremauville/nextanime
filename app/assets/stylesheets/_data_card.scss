@@ -1,0 +1,32 @@
+.na-data-card {
+  min-width: 0;
+  padding: 2rem;
+  background: var(--na-surface);
+  border: 1px solid var(--na-magenta);
+  border-radius: $na-radius-lg;
+}
+
+.na-data-card__title {
+  margin: 0 0 0.5rem;
+  font-family: $na-font-heading;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.na-data-card__intro,
+.na-data-card__hint {
+  margin: 0 0 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--na-muted);
+}
+
+.na-data-card__hint {
+  margin-bottom: 1.25rem;
+}
+
+.na-data-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
