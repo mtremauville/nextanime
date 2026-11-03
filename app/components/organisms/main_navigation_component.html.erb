@@ -1,0 +1,48 @@
+<header class="na-header" data-controller="menu">
+  <div class="na-header__bar">
+    <%= render Atoms::BrandLogoComponent.new %>
+
+    <nav class="na-header__nav d-none d-md-flex" aria-label="Navigation principale">
+      <% nav_items.each do |item| %>
+        <%= render Molecules::NavItemComponent.new(**item) %>
+      <% end %>
+    </nav>
+
+    <div class="na-header__tools">
+      <div class="d-none d-md-block">
+        <label for="country" class="visually-hidden">Pays</label>
+        <%= select_tag "country", country_options, id: "country", class: "form-select na-country" %>
+      </div>
+
+      <button type="button" class="na-icon-button na-icon-button--plain na-theme-toggle d-none d-md-inline-flex"
+              data-controller="theme" data-action="theme#toggle"
+              aria-label="Changer de thème">
+        <i class="bi bi-sun na-theme-toggle__sun" aria-hidden="true"></i>
+        <i class="bi bi-moon-stars na-theme-toggle__moon" aria-hidden="true"></i>
+      </button>
+
+      <div class="d-none d-md-block">
+        <%= render Molecules::AccountActionsComponent.new(user: user) %>
+      </div>
+
+      <% unless user %>
+        <%= link_to "Connexion", new_user_session_path, class: "na-header__signin d-md-none" %>
+      <% end %>
+
+      <button type="button" class="na-icon-button na-icon-button--plain na-header__burger d-md-none"
+              data-menu-target="opener" data-action="menu#open"
+              aria-label="Ouvrir le menu" aria-haspopup="dialog" aria-expanded="false"
+              aria-controls="<%= Organisms::MobileMenuComponent::DOM_ID %>">
+        <i class="bi bi-list" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+
+  <%= render Organisms::MobileMenuComponent.new(items: nav_items, countries: COUNTRIES, selected_country: DEFAULT_COUNTRY, user: user) %>
+</header>
+
+<nav class="na-tabbar d-md-none" aria-label="Onglets">
+  <% nav_items.each do |item| %>
+    <%= render Molecules::NavItemComponent.new(**item) %>
+  <% end %>
+</nav>

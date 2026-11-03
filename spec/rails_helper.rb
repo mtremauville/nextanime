@@ -14,6 +14,9 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 # that will avoid rails generators crashing because migrations haven't been run yet
 # return unless Rails.env.test?
 require 'rspec/rails'
+require "webmock/rspec"
+
+WebMock.disable_net_connect!(allow_localhost: true)
 
 Capybara.enable_aria_label = true
 # Add additional requires below this line. Rails is not loaded until this point!
@@ -42,15 +45,23 @@ begin
 rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
+DESKTOP_WINDOW = [ 1400, 900 ].freeze
+
 RSpec.configure do |config|
+  config.include Devise::Test::IntegrationHelpers, type: :request
+  config.include ActiveSupport::Testing::TimeHelpers, type: :request
   config.include FactoryBot::Syntax::Methods
+  config.include ViewComponent::TestHelpers, type: :component
+  config.include Capybara::RSpecMatchers, type: :component
 
   config.before(:each, type: :system) do
     driven_by :rack_test
   end
 
   config.before(:each, type: :system, js: true) do
-    driven_by :selenium, using: :headless_chrome, screen_size: [ 1400, 900 ]
+    driven_by :selenium, using: :headless_chrome, screen_size: DESKTOP_WINDOW
+    # The browser is reused: undo the resizing of a previous (mobile) spec.
+    page.current_window.resize_to(*DESKTOP_WINDOW)
   end
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_paths = [

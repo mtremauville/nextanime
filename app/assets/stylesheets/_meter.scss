@@ -1,0 +1,6 @@
+// Fill widths as classes (0..100) so no inline style is needed (CSP friendly).
+@for $i from 0 through 100 {
+  .na-meter__fill--#{$i} { width: $i * 1%; }
+}
+
+.na-meter .na-meter__fill--cyan { background: var(--na-cyan); }

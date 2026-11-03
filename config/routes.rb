@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users, controllers: { registrations: "users/registrations", sessions: "users/sessions" }
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -12,4 +13,15 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
   get "styleguide", to: "styleguide#show"
+  root "swipes#index"
+  resources :swipes, only: :create
+  resource :taste_profile, only: [] do
+    delete :reset
+  end
+  resource :profile, only: %i[show update], path: "profil"
+  resource :data_export, only: :show, path: "profil/export"
+  get "catalogue", to: "animes#index", as: :catalogue
+  get "recos", to: "recommendations#index", as: :recommendations
+  get "watchlist", to: "watchlist_entries#index", as: :watchlist
+  get "calendrier", to: "calendar#show", as: :calendar
 end

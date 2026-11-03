@@ -1,0 +1,5 @@
+<% %i[notice alert].each do |type| %>
+  <% if flash[type].present? %>
+    <%= render Molecules::AlertComponent.new(message: flash[type], variant: type) %>
+  <% end %>
+<% end %>

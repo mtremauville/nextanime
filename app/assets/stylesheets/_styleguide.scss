@@ -13,3 +13,7 @@ $na-swatch-names: bg, surface, surface-2, border, text, muted, magenta, cyan;
 .na-font-heading { font-family: $na-font-heading; font-weight: 700; }
 .na-font-body    { font-family: $na-font-body; }
 .na-font-accent  { font-family: $na-font-accent; }
+
+.na-styleguide-narrow {
+  max-width: 32rem;
+}

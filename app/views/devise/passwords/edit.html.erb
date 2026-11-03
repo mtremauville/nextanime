@@ -1,0 +1,5 @@
+<% content_for :title, "Nouveau mot de passe · Next Anime" %>
+
+<%= render Molecules::AuthHeadingComponent.new(title: "Nouveau mot de passe", subtitle: "Choisis un mot de passe solide : tu l'utiliseras dès ta prochaine connexion.") %>
+
+<%= render Organisms::ResetPasswordFormComponent.new(resource: resource) %>

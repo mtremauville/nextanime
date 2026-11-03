@@ -1,0 +1,8 @@
+<% content_for :title, "Mot de passe oublié · Next Anime" %>
+
+<%= render Molecules::AuthHeadingComponent.new(
+      title: "Mot de passe oublié ?",
+      subtitle: "Indique ton adresse e-mail. Si elle correspond à un compte, tu recevras un lien pour choisir un nouveau mot de passe, valable #{distance_of_time_in_words(Time.current, Devise.reset_password_within.from_now)}."
+    ) %>
+
+<%= render Organisms::ForgotPasswordFormComponent.new(resource: resource) %>

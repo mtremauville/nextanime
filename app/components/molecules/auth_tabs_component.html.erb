@@ -1,0 +1,7 @@
+<nav class="na-auth-tabs" aria-label="Connexion ou inscription">
+  <% tabs.each do |key, label, href| %>
+    <%= link_to label, href,
+          class: class_names("na-auth-tabs__link", "na-auth-tabs__link--active": current?(key)),
+          aria: { current: ("page" if current?(key)) } %>
+  <% end %>
+</nav>

@@ -1,0 +1,8 @@
+<div class="form-check mb-3">
+  <%= tag.input(type: "hidden", name: name, value: "0", autocomplete: "off") %>
+  <%= tag.input(**input_options) %>
+  <%= label_tag input_id, label, class: "form-check-label" %>
+  <% if error %>
+    <div id="<%= error_id %>" class="invalid-feedback d-block" role="alert"><%= error %></div>
+  <% end %>
+</div>

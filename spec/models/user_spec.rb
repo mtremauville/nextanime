@@ -1,0 +1,198 @@
+require "rails_helper"
+
+RSpec.describe User, type: :model do
+  include ActiveSupport::Testing::TimeHelpers
+
+  include ActiveSupport::Testing::TimeHelpers
+
+  subject(:user) { build(:user) }
+
+  it "has a valid factory" do
+    expect(user).to be_valid
+  end
+
+  describe "columns" do
+    it { is_expected.to have_db_column(:email).of_type(:string).with_options(null: false) }
+    it { is_expected.to have_db_column(:country).of_type(:string).with_options(default: "FR") }
+    it { is_expected.to have_db_index(:email).unique(true) }
+    it { is_expected.to have_db_index(:reset_password_token).unique(true) }
+    it { is_expected.to have_db_index(:unlock_token).unique(true) }
+  end
+
+  describe "validations" do
+    it { is_expected.to validate_presence_of(:email) }
+    it { is_expected.to validate_uniqueness_of(:email).ignoring_case_sensitivity }
+    it { is_expected.to validate_presence_of(:password) }
+    it { is_expected.to validate_length_of(:password).is_at_least(12) }
+  end
+
+  describe "password storage" do
+    it "never stores the password in clear" do
+      user = create(:user, password: "correct horse battery staple")
+
+      expect(user.encrypted_password).not_to include("correct horse")
+    end
+  end
+
+  describe "account locking" do
+    it "locks the account after 5 failed attempts" do
+      user = create(:user)
+
+      4.times { user.valid_for_authentication? { false } }
+      expect(user).not_to be_access_locked
+
+      user.valid_for_authentication? { false }
+      expect(user).to be_access_locked
+    end
+
+    it "unlocks the account after one hour" do
+      user = create(:user)
+      user.lock_access!(send_instructions: false)
+
+      expect(user.locked_at).to be_present
+      travel_to(61.minutes.from_now) { expect(user).not_to be_access_locked }
+    end
+  end
+
+  describe "privacy policy" do
+    it "is valid when accepted" do
+      expect(build(:user, privacy_policy: "1")).to be_valid
+    end
+
+    it "is required, even when the field is missing" do
+      user = build(:user, privacy_policy: nil)
+      user.validate
+
+      expect(user.errors[:privacy_policy]).to include("Tu dois accepter la politique de confidentialité.")
+    end
+
+    it "is refused when the box is unchecked" do
+      user = build(:user, privacy_policy: "0")
+      user.validate
+
+      expect(user.errors[:privacy_policy]).to include("Tu dois accepter la politique de confidentialité.")
+    end
+
+    it "is not asked again when the account is updated" do
+      user = User.find(create(:user).id)
+
+      expect(user.update(country: "BE")).to be(true)
+    end
+  end
+
+  describe "password reset" do
+    let(:user) { create(:user, password: "old password is long enough") }
+    let(:new_password) { "brand new password is long" }
+
+    def reset_with(token)
+      User.reset_password_by_token(
+        reset_password_token: token,
+        password: new_password,
+        password_confirmation: new_password
+      )
+    end
+
+    it "keeps the reset link valid for two hours" do
+      expect(Devise.reset_password_within).to eq(2.hours)
+    end
+
+    it "changes the password with a valid token" do
+      token = user.send_reset_password_instructions
+
+      reset_with(token)
+
+      expect(user.reload.valid_password?(new_password)).to be(true)
+    end
+
+    it "refuses an expired token and keeps the old password" do
+      token = user.send_reset_password_instructions
+
+      travel_to(3.hours.from_now) do
+        expect(reset_with(token).errors[:reset_password_token]).to be_present
+      end
+
+      expect(user.reload.valid_password?(new_password)).to be(false)
+    end
+
+    it "refuses an unknown token" do
+      expect(reset_with("not-a-token").errors[:reset_password_token]).to be_present
+    end
+
+    it "cannot be used twice" do
+      token = user.send_reset_password_instructions
+      reset_with(token)
+
+      expect(reset_with(token).errors[:reset_password_token]).to be_present
+    end
+  end
+describe "associations" do
+  it { is_expected.to have_one(:taste_profile).dependent(:destroy) }
+    it { is_expected.to have_many(:watchlist_entries).dependent(:destroy) }
+    it { is_expected.to have_many(:animes).through(:watchlist_entries) }
+end
+  describe "error messages" do
+    def first_error(attribute, **overrides)
+      user = User.new({
+        email: "ayako@example.com",
+        password: "a long enough password",
+        password_confirmation: "a long enough password",
+        privacy_policy: true
+      }.merge(overrides))
+      user.validate
+      user.errors[attribute].first
+    end
+
+    it "asks for the e-mail address" do
+      expect(first_error(:email, email: "")).to eq("Saisis ton adresse e-mail.")
+    end
+
+    it "refuses a malformed e-mail address" do
+      expect(first_error(:email, email: "not-an-address")).to eq("Cette adresse e-mail n'est pas valide.")
+    end
+
+    it "tells that the e-mail address is already used" do
+      create(:user, email: "ayako@example.com")
+
+      expect(first_error(:email)).to eq("Cette adresse est déjà utilisée.")
+    end
+
+    it "asks for a password" do
+      expect(first_error(:password, password: "", password_confirmation: "")).to eq("Saisis un mot de passe.")
+    end
+
+    it "explains the minimum length of the password" do
+      expect(first_error(:password, password: "short", password_confirmation: "short"))
+        .to eq("Ce mot de passe est trop court (12 caractères minimum).")
+    end
+
+    it "tells that the passwords differ" do
+      expect(first_error(:password_confirmation, password_confirmation: "another long enough password"))
+        .to eq("Les mots de passe ne correspondent pas.")
+    end
+
+    it "asks to accept the privacy policy" do
+      expect(first_error(:privacy_policy, privacy_policy: false))
+        .to eq("Tu dois accepter la politique de confidentialité.")
+    end
+  end
+
+  describe "#display_name" do
+    it "is the username when there is one" do
+      user = build(:user, username: "Mika", email: "mickael@example.com")
+
+      expect(user.display_name).to eq("Mika")
+    end
+
+    it "falls back to the part of the e-mail address before the @" do
+      user = build(:user, username: nil, email: "mickael@example.com")
+
+      expect(user.display_name).to eq("mickael")
+    end
+
+    it "falls back the same way when the username is blank" do
+      user = build(:user, username: "  ", email: "mickael@example.com")
+
+      expect(user.display_name).to eq("mickael")
+    end
+  end
+end

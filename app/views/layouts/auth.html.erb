@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fr" data-bs-theme="dark">
+  <%= render "layouts/head" %>
+
+  <body data-controller="theme">
+    <a class="visually-hidden-focusable" href="#main">Aller au contenu</a>
+
+    <div class="na-auth">
+      <header class="na-auth__header">
+        <%= render Atoms::BrandLogoComponent.new %>
+
+        <%= link_to root_path, class: "na-auth__back" do %>
+          <i class="bi bi-arrow-left" aria-hidden="true"></i>
+          <span class="na-auth__back-full">Retour à l'accueil</span>
+          <span class="na-auth__back-short">Accueil</span>
+        <% end %>
+      </header>
+
+      <main id="main" class="na-auth__main">
+        <section class="na-auth__brand" aria-label="Présentation">
+          <p class="na-auth__eyebrow" lang="ja">次のアニメを見つけよう</p>
+          <h2 class="na-auth__title">Ton prochain anime se cache dans <span class="na-auth__accent">tes goûts</span>.</h2>
+          <p class="na-auth__lead">Un compte te permet de garder ton profil, ta watchlist et tes notifications de sorties.</p>
+          <%= render Organisms::AuthShowcaseComponent.new %>
+        </section>
+
+        <section class="na-auth__card">
+          <%= render "shared/flash" %>
+          <%= yield %>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

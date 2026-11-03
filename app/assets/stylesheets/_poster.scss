@@ -1,0 +1,18 @@
+.na-poster-card { position: relative; overflow: hidden; }
+
+.na-poster-card__frame { position: relative; }
+
+.na-poster-card__poster,
+.na-poster-card__image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+}
+
+.na-poster-card__image { object-fit: cover; }
+
+.na-poster-card__badge { position: absolute; top: .75rem; left: .75rem; }
+
+@each $name in (violet, magenta, cyan, green, orange, indigo) {
+  .na-poster--#{$name} { background: var(--na-poster-#{$name}); }
+}

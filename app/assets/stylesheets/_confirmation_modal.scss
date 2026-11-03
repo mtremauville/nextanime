@@ -1,0 +1,125 @@
+.na-modal {
+  width: min(25rem, calc(100% - 2rem));
+  max-width: none;
+  padding: 0;
+  border: 1px solid var(--na-border);
+  border-radius: 1rem;
+  background: var(--na-surface);
+  color: var(--na-text);
+  box-shadow: 0 0 2rem color-mix(in srgb, var(--na-magenta) 25%, transparent);
+
+  &::backdrop {
+    background: rgba(11, 10, 20, 0.7);
+  }
+}
+
+// The padding lives here, not on the dialog: a click on the dialog itself is a click on the backdrop.
+.na-modal__panel {
+  padding: 1.75rem;
+}
+
+.na-modal__header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.na-modal__icon {
+  display: inline-flex;
+  flex: 0 0 3rem;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  font-size: 1.5rem;
+
+  &--magenta {
+    color: var(--na-magenta);
+    background: var(--na-magenta-soft);
+    border: 1px solid var(--na-magenta);
+  }
+
+  &--cyan {
+    color: var(--na-cyan);
+    background: color-mix(in srgb, var(--na-cyan) 12%, transparent);
+    border: 1px solid var(--na-cyan);
+  }
+}
+
+.na-modal__title {
+  margin: 0;
+  font-family: "Chakra Petch", sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.na-modal__body {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--na-muted);
+
+  p { margin: 0 0 0.75rem; }
+
+  ul {
+    margin: 0 0 1.25rem;
+    padding-left: 1.25rem;
+    line-height: 1.8;
+    color: var(--na-text);
+  }
+
+  > :last-child { margin-bottom: 0; }
+}
+
+.na-modal__confirmation {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+
+  .form-control {
+    min-height: 3rem;
+    padding: 0 1rem;
+    border: 1px solid var(--na-border);
+    border-radius: 0.5rem;
+    background: var(--na-bg);
+    color: var(--na-text);
+    font-size: 1rem;
+  }
+}
+
+.na-modal__label {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.na-modal__word {
+  font-family: "DotGothic16", monospace;
+  color: var(--na-magenta);
+}
+
+.na-modal__actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+
+  > * {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+}
+
+.na-modal__confirm {
+  margin: 0;
+
+  .btn:disabled {
+    opacity: 1;
+    cursor: not-allowed;
+    color: var(--na-muted);
+    background: var(--na-magenta-soft);
+    border-color: var(--na-magenta);
+    box-shadow: none;
+  }
+}

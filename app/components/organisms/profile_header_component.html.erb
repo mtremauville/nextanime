@@ -1,0 +1,11 @@
+<div class="na-profile-header">
+  <div class="na-profile-header__avatar" aria-hidden="true"><%= initial %></div>
+  <div class="na-profile-header__identity">
+    <p class="na-profile-header__eyebrow"><%= t("profiles.header.eyebrow") %></p>
+    <h1 class="na-profile-header__name"><%= name %></h1>
+    <p class="na-profile-header__meta"><%= user.email %> · <%= t("profiles.header.member_since", date: member_since) %></p>
+  </div>
+  <% if content? %>
+    <div class="na-profile-header__stats"><%= content %></div>
+  <% end %>
+</div>

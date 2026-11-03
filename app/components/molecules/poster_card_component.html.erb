@@ -1,0 +1,25 @@
+<article class="na-card na-poster-card">
+  <div class="na-poster-card__frame">
+    <% if image_url %>
+      <img class="na-poster-card__image" src="<%= image_url %>" alt="" loading="lazy">
+    <% else %>
+      <div class="<%= poster_class %>"></div>
+    <% end %>
+    <% if match %>
+      <div class="na-poster-card__badge"><%= render Atoms::MatchBadgeComponent.new(percent: match) %></div>
+    <% end %>
+  </div>
+  <div class="p-3 d-flex flex-column gap-2">
+    <h2 class="h5 mb-0"><%= link_to title, href, class: "stretched-link text-reset text-decoration-none" %></h2>
+    <% if meta %>
+      <p class="text-secondary small mb-0"><%= meta %></p>
+    <% end %>
+    <% if tags.any? %>
+      <div class="d-flex flex-wrap gap-2">
+        <% tags.each do |tag_label| %>
+          <%= render Atoms::TagComponent.new(label: tag_label) %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</article>
