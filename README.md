@@ -1,6 +1,6 @@
 # NextAnime
 
-Application de recommandation d'anime par swipe, inspirée d'AnimeSphere. Projet portfolio.
+Application de recommandation d'anime par swipe. Projet portfolio.
 
 ## Stack
 Rails 8, PostgreSQL, Hotwire (Turbo + Stimulus), Bootstrap + SCSS, Devise, RSpec.
