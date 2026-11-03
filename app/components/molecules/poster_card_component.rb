@@ -2,7 +2,7 @@ module Molecules
   class PosterCardComponent < ViewComponent::Base
     POSTERS = %i[violet magenta cyan green orange indigo].freeze
 
-    def initialize(title:, href:, meta: nil, tags: [], match: nil, poster: :violet, image_url: nil)
+    def initialize(title:, href: nil, meta: nil, tags: [], match: nil, poster: :violet, image_url: nil)
       raise ArgumentError, "Unknown poster: #{poster.inspect}" unless POSTERS.include?(poster)
 
       @title = title
