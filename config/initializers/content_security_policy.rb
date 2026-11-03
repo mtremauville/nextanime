@@ -18,7 +18,7 @@ Rails.application.configure do
 
   # The importmap tags are inline scripts: they carry the nonce of the session.
   config.content_security_policy_nonce_generator = ->(request) { request.session[:csp_nonce] ||= SecureRandom.base64(16) }
-  config.content_security_policy_nonce_directives = %w[script-src]
+  config.content_security_policy_nonce_directives = %w[script-src style-src]
 
   # Reports the violations in the browser console without blocking anything yet.
   config.content_security_policy_report_only = true

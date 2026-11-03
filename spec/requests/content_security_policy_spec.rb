@@ -41,4 +41,12 @@ RSpec.describe "Content security policy", type: :request do
     expect(first_nonce).to be_present
     expect(response.headers["Content-Security-Policy-Report-Only"][/'nonce-([^']+)'/, 1]).to eq(first_nonce)
   end
+
+  it "gives the styles the same nonce, so that the Turbo progress bar is allowed" do
+    expect(policy).to match(/style-src 'self' https:\/\/fonts\.googleapis\.com 'nonce-#{Regexp.escape(nonce)}'/)
+  end
+
+  it "exposes the nonce to Turbo through the csp-nonce meta tag" do
+    expect(Capybara.string(response.body)).to have_css("meta[name='csp-nonce'][content='#{nonce}']", visible: :all)
+  end
 end
