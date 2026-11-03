@@ -50,7 +50,7 @@
 
   <section class="mb-5" aria-labelledby="meters-title">
     <h2 id="meters-title" class="h4 mb-3">Jauges</h2>
-    <div class="d-flex flex-column gap-3" style="max-width: 32rem;">
+    <div class="d-flex flex-column gap-3 na-styleguide-narrow">
       <%= render Atoms::MeterComponent.new(value: 82, label: "Thriller") %>
       <%= render Atoms::MeterComponent.new(value: 45, label: "Action", tone: :cyan) %>
     </div>
@@ -58,7 +58,7 @@
 
   <section class="mb-5" aria-labelledby="fields-title">
     <h2 id="fields-title" class="h4 mb-3">Champs de formulaire</h2>
-    <div style="max-width: 32rem;">
+    <div class="na-styleguide-narrow">
       <%= render Molecules::FormFieldComponent.new(name: "demo_email", label: "Adresse e-mail", type: "email", value: "mickael@exemple.fr") %>
       <%= render Molecules::FormFieldComponent.new(name: "demo_password", label: "Mot de passe", type: "password", hint: "12 caractères minimum") %>
       <%= render Molecules::FormFieldComponent.new(name: "demo_invalid", label: "Pseudo", value: "x", error: "est trop court (2 caractères minimum)") %>
