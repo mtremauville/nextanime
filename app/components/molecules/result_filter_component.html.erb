@@ -1,0 +1,8 @@
+<div class="na-result-filter">
+  <div class="na-result-filter__choices" role="group" aria-label="<%= label %>">
+    <% choices.each do |choice| %>
+      <%= link_to choice[:label], choice[:href], class: choice_class(choice), aria: { current: choice[:current] || nil } %>
+    <% end %>
+  </div>
+  <p class="na-result-filter__summary"><%= summary %></p>
+</div>
