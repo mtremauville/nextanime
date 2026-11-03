@@ -56,7 +56,7 @@ RSpec.describe Organisms::MobileMenuComponent, type: :component do
 
       it "announces the guest mode" do
         expect(page).to have_css(".na-menu__guest", text: "Mode invité")
-        expect(page).to have_text("Ton profil n'est pas sauvegardé : il disparaît si tu fermes la page.")
+        expect(page).to have_text("Ton profil est gardé sur cet appareil. Crée un compte pour le retrouver partout.")
       end
 
       it "offers to create an account and to sign in" do
@@ -89,6 +89,24 @@ RSpec.describe Organisms::MobileMenuComponent, type: :component do
         expect(page).to have_no_css(".na-menu__guest")
         expect(page).to have_no_link("Connexion")
       end
+    end
+  end
+
+  describe "profile link" do
+    def render_menu(user: nil)
+      render_inline(described_class.new(items: [], countries: { "FR" => "France" }, selected_country: "FR", user: user))
+    end
+
+    it "leads a signed in user to the profile page" do
+      render_menu(user: build_stubbed(:user))
+
+      expect(page).to have_link("Mon profil", href: "/profil")
+    end
+
+    it "offers no profile to a visitor" do
+      render_menu
+
+      expect(page).to have_no_link("Mon profil")
     end
   end
 end

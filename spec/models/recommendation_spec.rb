@@ -35,4 +35,14 @@ RSpec.describe Recommendation, type: :model do
       expect(recommendation).to be_valid
     end
   end
+
+  describe "#match_percentage" do
+    it "shows the score as a whole percentage" do
+      expect(described_class.new(score: 0.8).match_percentage).to eq(80)
+    end
+
+    it "rounds to the nearest percent" do
+      expect(described_class.new(score: 0.6849).match_percentage).to eq(68)
+    end
+  end
 end

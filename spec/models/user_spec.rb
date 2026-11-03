@@ -175,4 +175,24 @@ end
         .to eq("Tu dois accepter la politique de confidentialité.")
     end
   end
+
+  describe "#display_name" do
+    it "is the username when there is one" do
+      user = build(:user, username: "Mika", email: "mickael@example.com")
+
+      expect(user.display_name).to eq("Mika")
+    end
+
+    it "falls back to the part of the e-mail address before the @" do
+      user = build(:user, username: nil, email: "mickael@example.com")
+
+      expect(user.display_name).to eq("mickael")
+    end
+
+    it "falls back the same way when the username is blank" do
+      user = build(:user, username: "  ", email: "mickael@example.com")
+
+      expect(user.display_name).to eq("mickael")
+    end
+  end
 end

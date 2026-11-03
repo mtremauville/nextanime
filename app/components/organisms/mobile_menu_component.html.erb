@@ -13,11 +13,12 @@
       <div class="na-menu__account">
         <%= render Atoms::AvatarComponent.new(name: user.email) %>
         <span class="na-menu__account-email"><%= user.email %></span>
+        <%= link_to "Mon profil →", profile_path, class: "na-menu__profile-link" %>
       </div>
     <% else %>
       <div class="na-menu__guest">
         <p class="na-menu__guest-title">Mode invité</p>
-        <p class="na-menu__guest-text">Ton profil n'est pas sauvegardé : il disparaît si tu fermes la page.</p>
+        <p class="na-menu__guest-text">Ton profil est gardé sur cet appareil. Crée un compte pour le retrouver partout.</p>
       </div>
     <% end %>
 

@@ -7,7 +7,9 @@ class SwipesController < ApplicationController
   rescue_from ActiveRecord::RecordInvalid, ArgumentError, with: :unprocessable
 
   def index
-    @animes = SwipeDeckQuery.new.call
+    swiped_ids = swiped_anime_ids
+    @animes = SwipeDeckQuery.new(excluding: swiped_ids).call
+    @deck_finished = @animes.empty? && swiped_ids.any?
   end
 
   def create

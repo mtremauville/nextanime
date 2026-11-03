@@ -27,6 +27,20 @@ RSpec.describe "Swipes", type: :request do
       expect(response.body).not_to include("Voir mon profil complet")
     end
 
+    it "offers a visitor to save the profile by creating an account" do
+      get root_path
+
+      expect(Capybara.string(response.body)).to have_link("Sauvegarder mon profil →", href: new_user_registration_path)
+    end
+
+    it "offers no account link to a signed in user" do
+      sign_in create(:user)
+
+      get root_path
+
+      expect(Capybara.string(response.body)).to have_no_link("Sauvegarder mon profil →")
+    end
+
     it "shows the history panel linking to the recommendations" do
       get root_path
 
@@ -88,7 +102,7 @@ RSpec.describe "Swipes", type: :request do
     it "keeps the profile in a signed cookie that scripts cannot read" do
       post swipes_path, params: { anime_id: anime.id, liked: true }
 
-      expect(response.headers["Set-Cookie"]).to match(/taste_session=[^;]+;.*HttpOnly/i)
+      expect(Array(response.headers["Set-Cookie"]).join("\n")).to match(/taste_session=[^;]+;.*HttpOnly/i)
     end
 
     it "ignores a forged cookie and starts a new profile" do
@@ -159,6 +173,70 @@ RSpec.describe "Swipes", type: :request do
       expect(response.body).to include('<turbo-stream action="replace" target="swipe-deck">')
       expect(response.body).to include("Tu as tout vu !")
       expect(response.body).to include(%(href="#{recommendations_path}"))
+    end
+  end
+
+  describe "GET / for a returning visitor" do
+    let!(:animes) { create_list(:anime, 3, cover_image_url: "https://img.test/cover.jpg") }
+
+    def swipe(anime, liked: true)
+      post swipes_path, params: { anime_id: anime.id, liked: liked }
+    end
+
+    it "does not offer the anime already swiped again" do
+      swipe(animes.first)
+
+      get root_path
+
+      expect(response.body).not_to include(%(data-anime-id="#{animes.first.id}"))
+      expect(response.body).to include(%(data-anime-id="#{animes.second.id}"))
+      expect(response.body).to include(%(data-anime-id="#{animes.third.id}"))
+    end
+
+    it "also leaves out the anime that were passed" do
+      swipe(animes.first, liked: false)
+
+      get root_path
+
+      expect(response.body).not_to include(%(data-anime-id="#{animes.first.id}"))
+    end
+
+    it "counts the progress over the remaining anime" do
+      swipe(animes.first)
+
+      get root_path
+
+      expect(response.body).to include("Anime 1 / 2")
+    end
+
+    it "tells the visitor that every anime was seen" do
+      animes.each { |anime| swipe(anime) }
+
+      get root_path
+
+      expect(response.body).to include("Tu as tout vu !")
+      expect(response.body).not_to include("Le catalogue est vide")
+    end
+
+    it "gives the whole deck to a visitor with a forged cookie" do
+      cookies[:taste_session] = "forged"
+
+      get root_path
+
+      animes.each { |anime| expect(response.body).to include(%(data-anime-id="#{anime.id}")) }
+    end
+
+    it "gives the whole deck back when the profile no longer exists" do
+      swipe(animes.first)
+      TasteProfile.destroy_all
+
+      get root_path
+
+      expect(response.body).to include(%(data-anime-id="#{animes.first.id}"))
+    end
+
+    it "does not create a profile just by looking at the deck" do
+      expect { get root_path }.not_to change(TasteProfile, :count)
     end
   end
 end

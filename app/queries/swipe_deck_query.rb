@@ -4,8 +4,9 @@ class SwipeDeckQuery
   DEFAULT_SIZE = 24
   CANDIDATES_LIMIT = 200
 
-  def initialize(size: DEFAULT_SIZE)
+  def initialize(size: DEFAULT_SIZE, excluding: [])
     @size = size
+    @excluding = excluding
   end
 
   def call
@@ -22,10 +23,11 @@ class SwipeDeckQuery
 
   private
 
-  attr_reader :size
+  attr_reader :size, :excluding
 
   def candidates
     Anime.where.not(cover_image_url: nil)
+         .where.not(id: excluding)
          .includes(:genres, :main_studio)
          .order(Anime.arel_table[:popularity].desc.nulls_last)
          .limit(CANDIDATES_LIMIT)

@@ -1,6 +1,9 @@
 <div class="na-account">
   <% if user %>
-    <%= render Atoms::AvatarComponent.new(name: user.email) %>
+    <%= link_to profile_path, class: "na-account__profile", aria: { current: profile_aria_current } do %>
+      <%= render Atoms::AvatarComponent.new(name: user.email) %>
+      <span>Mon profil</span>
+    <% end %>
     <span class="visually-hidden">Connecté en tant que <%= user.email %></span>
     <%= button_to "Déconnexion", destroy_user_session_path, method: :delete, class: "btn na-account__signout" %>
   <% else %>

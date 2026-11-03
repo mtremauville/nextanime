@@ -1,4 +1,7 @@
 class TasteProfile < ApplicationRecord
+  TOP_GENRES_LIMIT = 5
+  TOP_TAGS_LIMIT = 8
+
   belongs_to :user, optional: true
   has_many :swipes, dependent: :destroy
   has_many :recommendations, dependent: :destroy
@@ -11,13 +14,79 @@ class TasteProfile < ApplicationRecord
     find_or_create_by!(session_token: token)
   end
 
-  def record_swipe(anime, liked:)
-    swipe = swipes.find_or_initialize_by(anime: anime)
-    swipe.update!(liked: liked)
-    swipe
+  # Turns the profile of a visitor into the profile of the account it just created.
+  def self.attach_session_profile(token, to:)
+    return if token.blank? || to.taste_profile
+
+    profile = find_by(session_token: token, user_id: nil)
+    profile&.tap { |found| found.update!(user: to, session_token: nil) }
   end
 
+  # Brings the swipes of a guest session into the account that just signed in or up.
+  # An account without a profile takes the guest profile as it is, an account that
+  # already has one absorbs it.
+  def self.merge_session_profile(token, into:)
+    return if token.blank?
+
+    guest_profile = find_by(session_token: token, user_id: nil)
+    return unless guest_profile
+
+    if (account_profile = into.taste_profile)
+      account_profile.absorb(guest_profile)
+    else
+      attach_session_profile(token, to: into)
+    end
+  end
+
+  def record_swipe(anime, liked:)
+    transaction do
+      swipe = swipes.find_or_initialize_by(anime: anime)
+      swipe.update!(liked: liked)
+      refresh_weights!
+      swipe
+    end
+  end
+
+  # Recomputed from every swipe, so a change of mind never leaves stale weights behind.
+  def refresh_weights!
+    update!(TasteProfileCalculator.new(self).call)
+  end
+
+  def swiped_anime_ids
+    swipes.pluck(:anime_id)
+  end
+
+  # The swipes of a guest profile join this one. For an anime swiped on both sides
+  # this profile keeps its own verdict. The guest profile disappears afterwards.
+  def absorb(guest_profile)
+    transaction do
+      guest_profile.swipes.where.not(anime_id: swiped_anime_ids).update_all(taste_profile_id: id)
+      guest_profile.destroy!
+      refresh_weights!
+    end
+    self
+  end
+
+  # Starts the profile from scratch: the owner, the session and the watchlist stay untouched.
+  def reset!
+    transaction do
+      swipes.destroy_all
+      recommendations.destroy_all
+      refresh_weights!
+    end
+  end
+
+  def likes_count = swipes.where(liked: true).count
+
+  def top_genres(limit = TOP_GENRES_LIMIT) = best_weights(genre_weights, limit)
+
+  def top_tags(limit = TOP_TAGS_LIMIT) = best_weights(tag_weights, limit)
+
   private
+
+  def best_weights(weights, limit)
+    weights.select { |_name, weight| weight.positive? }.max_by(limit) { |_name, weight| weight }
+  end
 
   def owner_present
     return if user.present? || session_token.present?

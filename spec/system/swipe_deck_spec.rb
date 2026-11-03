@@ -4,7 +4,6 @@ RSpec.describe "Swiping the deck", type: :system, js: true do
   let(:visible_slot) { ".na-swipe-deck__slot:not([hidden])" }
 
   before do
-    page.current_window.resize_to(1400, 900)
     create_list(:anime, 3, cover_image_url: "https://img.test/cover.jpg")
     visit root_path
   end
@@ -141,5 +140,17 @@ RSpec.describe "Swiping the deck", type: :system, js: true do
     end
     expect(page).to have_no_button("J'aime cet anime")
     expect(Swipe.count).to eq(3)
+  end
+
+  it "resumes the deck after a reload without the cards already swiped" do
+    first_id = displayed_anime_id
+
+    click_button "J'aime cet anime"
+    expect(page).to have_progress(2)
+
+    visit root_path
+
+    expect(page).to have_text(%r{anime 1 / 2}i)
+    expect(displayed_anime_id).not_to eq(first_id)
   end
 end
