@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     delete :reset
   end
   resource :profile, only: %i[show update], path: "profil"
+  resource :data_export, only: :show, path: "profil/export"
   get "catalogue", to: "animes#index", as: :catalogue
   get "recos", to: "recommendations#index", as: :recommendations
   get "watchlist", to: "watchlist_entries#index", as: :watchlist
