@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "Content security policy", type: :request do
-  let(:policy) { response.headers["Content-Security-Policy-Report-Only"] }
+  let(:policy) { response.headers["Content-Security-Policy"] }
   let(:nonce) { policy[/'nonce-([^']+)'/, 1] }
 
   before { get root_path }
@@ -39,7 +39,7 @@ RSpec.describe "Content security policy", type: :request do
     get root_path
 
     expect(first_nonce).to be_present
-    expect(response.headers["Content-Security-Policy-Report-Only"][/'nonce-([^']+)'/, 1]).to eq(first_nonce)
+    expect(response.headers["Content-Security-Policy"][/'nonce-([^']+)'/, 1]).to eq(first_nonce)
   end
 
   it "gives the styles the same nonce, so that the Turbo progress bar is allowed" do
@@ -48,5 +48,9 @@ RSpec.describe "Content security policy", type: :request do
 
   it "exposes the nonce to Turbo through the csp-nonce meta tag" do
     expect(Capybara.string(response.body)).to have_css("meta[name='csp-nonce'][content='#{nonce}']", visible: :all)
+  end
+
+  it "is enforced, not only reported" do
+    expect(response.headers["Content-Security-Policy-Report-Only"]).to be_nil
   end
 end
