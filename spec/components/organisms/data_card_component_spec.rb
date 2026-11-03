@@ -55,4 +55,8 @@ RSpec.describe Organisms::DataCardComponent, type: :component do
       expect(card).to have_css("dialog#delete-account form[action='/users'] input[name='_method'][value='delete']", visible: :all)
     end
   end
+
+  it "styles the deletion trigger as a destructive action" do
+    expect(card).to have_css("button.btn-na-danger", text: "Supprimer mon compte")
+  end
 end
