@@ -26,6 +26,6 @@
 
     <%= render Molecules::FilterGroupComponent.new(name: "statuses", legend: t("catalogue.filters.status"), options: status_options, selected: filters.statuses) %>
 
-    <%= submit_tag t("catalogue.filters.apply"), name: nil, class: "btn btn-primary w-100", data: { auto_submit_target: "submit" } %>
+    <%= submit_tag t("catalogue.filters.apply"), name: nil, class: "btn btn-primary w-100 na-filters__apply" %>
   <% end %>
 </aside>

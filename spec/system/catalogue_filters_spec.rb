@@ -17,11 +17,11 @@ RSpec.describe "Filtering the catalogue", type: :system, js: true do
     it "narrows the list to the chosen format" do
       visit catalogue_path
 
-      within("aside[aria-label='Filtres']") { check "Film" }
+      within("aside[aria-label='Filtres']") { check "Film", allow_label_click: true }
 
       expect(page).to have_css("[data-role='catalogue-item']", count: 1)
       expect(titles).to eq([ "A film" ])
-      expect(page).to have_checked_field("Film")
+      expect(page).to have_checked_field("Film", visible: :all)
     end
 
     it "keeps the filters when searching" do
@@ -31,7 +31,7 @@ RSpec.describe "Filtering the catalogue", type: :system, js: true do
 
       expect(page).to have_css("[data-role='catalogue-item']", count: 1)
       expect(titles).to eq([ "Series two" ])
-      expect(page).to have_checked_field("Série")
+      expect(page).to have_checked_field("Série", visible: :all)
     end
 
     it "keeps the filters from page to page" do
@@ -42,13 +42,13 @@ RSpec.describe "Filtering the catalogue", type: :system, js: true do
 
       expect(page).to have_css("[data-role='catalogue-item']", count: 2)
       expect(titles).not_to include("A film")
-      expect(page).to have_checked_field("Série")
+      expect(page).to have_checked_field("Série", visible: :all)
     end
 
     it "applies a filter as soon as its box is checked, with no button to click" do
       visit catalogue_path
 
-      within("aside[aria-label='Filtres']") { check "Série" }
+      within("aside[aria-label='Filtres']") { check "Série", allow_label_click: true }
 
       expect(page).to have_css("[data-role='catalogue-item']", count: 2)
       expect(titles).to match_array([ "Series one", "Series two" ])

@@ -364,3 +364,13 @@
     outline-offset: 2px;
   }
 }
+
+// The filters apply as soon as they change. The button is only for visitors without scripts,
+// so it is hidden from the start, which avoids a flash before the controller starts.
+.btn.na-filters__apply {
+  display: none;
+
+  @media (scripting: none) {
+    display: block;
+  }
+}
