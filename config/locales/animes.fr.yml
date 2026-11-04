@@ -30,3 +30,7 @@ fr:
       season: Saison
       status: Statut
       score: Note moyenne
+    show:
+      back: "← Retour aux recommandations"
+      synopsis: Synopsis
+      tags: Tags
