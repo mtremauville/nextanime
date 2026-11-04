@@ -409,3 +409,18 @@
     display: inline-block;
   }
 }
+
+// The sort sits above the results: on the right of a wide screen, over the whole width of a phone.
+.na-catalogue-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+
+  @include media-breakpoint-down(sm) {
+    .na-sort,
+    .na-sort__select {
+      flex: 1 1 auto;
+      width: 100%;
+    }
+  }
+}

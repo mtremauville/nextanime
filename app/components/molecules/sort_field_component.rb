@@ -18,8 +18,7 @@ module Molecules
     attr_reader :action, :selected, :hidden
 
     def choices
-      keys = @offer_match ? CatalogueQuery::SORTS : CatalogueQuery::SORTS - [ "match" ]
-      keys.map { |key| [ I18n.t("catalogue.sort.#{key}"), key ] }
+      CatalogueQuery.sorts(match: @offer_match).map { |key| [ I18n.t("catalogue.sort.#{key}"), key ] }
     end
   end
 end

@@ -6,6 +6,9 @@ class CatalogueQuery
   FIRST_PAGE = 1
   SORTS = %w[match popularity score recent title].freeze
   TITLE_ORDER = "LOWER(COALESCE(NULLIF(animes.title_english, ''), animes.title_romaji))".freeze
+
+  # The sorts that can be offered: the match needs a scorer.
+  def self.sorts(match:) = match ? SORTS : SORTS - [ "match" ]
   CARD_ASSOCIATIONS = [ :genres, :main_studio, { anime_tags: :tag } ].freeze
 
   # Any studio of the anime counts, not only the main one. EXISTS keeps an anime

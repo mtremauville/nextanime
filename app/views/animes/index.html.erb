@@ -10,7 +10,7 @@
         label: t("catalogue.search.label"),
         placeholder: t("catalogue.search.placeholder"),
         value: @search,
-        hidden: @filters.to_query_params
+        hidden: @filters.to_query_params.merge(sort: @requested_sort)
       ) %>
 </div>
 
@@ -21,11 +21,21 @@
           filters: @filters,
           genres: @genres,
           genre_counts: @genre_counts,
-          search: @search
+          search: @search,
+          sort: @requested_sort
         ) %>
   </div>
 
   <div class="na-catalogue-layout__results">
+    <div class="na-catalogue-toolbar">
+      <%= render Molecules::SortFieldComponent.new(
+            action: catalogue_path,
+            selected: @sort,
+            offer_match: @scorer.present?,
+            hidden: @filters.to_query_params.merge(q: @search)
+          ) %>
+    </div>
+
     <%= render Organisms::CatalogueGridComponent.new(animes: @page.animes, scorer: @scorer) %>
 
     <div class="d-none d-md-block">

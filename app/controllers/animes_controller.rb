@@ -33,10 +33,10 @@ class AnimesController < ApplicationController
     text.is_a?(String) ? text.strip : ""
   end
 
-  # Only a known sort is kept: anything else, an array for instance, is ignored.
+  # Only a sort that can be offered is kept: anything else, an array for instance, is ignored.
   def sort_choice
     requested = params[:sort]
-    requested if requested.is_a?(String) && CatalogueQuery::SORTS.include?(requested)
+    requested if requested.is_a?(String) && CatalogueQuery.sorts(match: @scorer.present?).include?(requested)
   end
 
   # The closest match first for whoever has liked something, the most popular otherwise.
