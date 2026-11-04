@@ -99,7 +99,7 @@ RSpec.describe CatalogueQuery, "sorting" do
     end
   end
 
-  describe ".sorts" do # offered sorts
+  describe ".sorts" do
     it "offers every sort when the match can be told" do
       expect(described_class.sorts(match: true)).to eq(%w[match popularity score recent title])
     end
