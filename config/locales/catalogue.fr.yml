@@ -1,0 +1,17 @@
+fr:
+  catalogue:
+    pagination:
+      label: Pagination
+      previous: "← Précédent"
+      next: "Suivant →"
+      page: "Page %{number}"
+    load_more:
+      progress: "%{shown} sur %{total}"
+      label: "Anime affichés"
+      button: "Voir plus"
+    index:
+      eyebrow: EXPLORER
+      title: Catalogue
+      results:
+        one: "%{count} résultat"
+        other: "%{count} résultats"

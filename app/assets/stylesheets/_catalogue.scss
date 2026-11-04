@@ -1,0 +1,141 @@
+// The catalogue: a header, a grid of poster cards and, under it, the pagination on a wide screen
+// or the "load more" block on a phone.
+.na-catalogue-header {
+  margin-bottom: map-get($na-spacers, 4);
+
+  &__title {
+    margin: 0 0 map-get($na-spacers, 2);
+  }
+
+  &__results {
+    margin: 0;
+    font-family: $na-font-accent;
+    font-size: 0.875rem;
+    color: var(--na-muted);
+  }
+}
+
+.na-catalogue-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11.875rem, 1fr));
+  gap: map-get($na-spacers, 4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  &__item {
+    display: flex;
+    min-width: 0;
+
+    > .na-poster-card {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+
+  .na-poster-card h2 {
+    font-size: 1rem;
+  }
+
+  .na-poster-card__badge {
+    left: auto;
+    right: map-get($na-spacers, 2);
+  }
+
+  @include media-breakpoint-down(sm) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: map-get($na-spacers, 3);
+
+    .na-poster-card h2 {
+      font-size: 0.875rem;
+    }
+  }
+}
+
+.na-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: map-get($na-spacers, 2);
+  margin-top: map-get($na-spacers, 5);
+
+  &__page,
+  &__edge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.75rem;
+    border: 1px solid var(--na-border);
+    border-radius: $na-radius-md;
+    font-size: 0.875rem;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  &__page {
+    min-width: 2.75rem;
+    font-family: $na-font-accent;
+  }
+
+  &__page--current {
+    border-color: var(--na-magenta);
+    background: color-mix(in srgb, var(--na-magenta) 12%, transparent);
+  }
+
+  &__edge {
+    padding: 0 map-get($na-spacers, 3);
+    font-weight: 600;
+    color: var(--na-muted);
+  }
+
+  &__edge--next {
+    border-color: var(--na-cyan);
+    color: var(--na-cyan);
+  }
+
+  &__edge--disabled {
+    opacity: 0.5;
+  }
+
+  &__gap {
+    color: var(--na-muted);
+  }
+}
+
+.na-load-more {
+  margin-top: map-get($na-spacers, 4);
+  text-align: center;
+
+  &__progress {
+    margin: 0 0 map-get($na-spacers, 3);
+    font-family: $na-font-accent;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--na-muted);
+  }
+
+  .na-meter {
+    max-width: 12.5rem;
+    margin: 0 auto map-get($na-spacers, 4);
+  }
+
+  &__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 3.25rem;
+    padding: 0 1.75rem;
+    border: 1px solid var(--na-cyan);
+    border-radius: $na-radius-md;
+    font-family: $na-font-heading;
+    font-weight: 700;
+    color: var(--na-cyan);
+    text-decoration: none;
+
+    &:hover {
+      background: color-mix(in srgb, var(--na-cyan) 12%, transparent);
+    }
+  }
+}

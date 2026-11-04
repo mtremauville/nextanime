@@ -1,0 +1,7 @@
+<div id="<%= DOM_ID %>" class="na-load-more">
+  <p class="na-load-more__progress" data-role="progress"><%= t("catalogue.load_more.progress", shown: shown, total: total) %></p>
+  <%= render Atoms::MeterComponent.new(value: percent, label: t("catalogue.load_more.label")) %>
+  <% if next_url %>
+    <%= link_to t("catalogue.load_more.button"), next_url, class: "na-load-more__button", data: { turbo_stream: true } %>
+  <% end %>
+</div>
