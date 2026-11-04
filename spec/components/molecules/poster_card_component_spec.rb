@@ -72,4 +72,18 @@ RSpec.describe Molecules::PosterCardComponent, type: :component do
     expect(page).to have_css("h2", text: "Perfect Blue")
     expect(page).to have_no_link
   end
+
+  describe "reason" do
+    it "tells why the anime fits, under the title" do
+      render_inline(described_class.new(title: "Monster", reason: "Parce que tu aimes Thriller."))
+
+      expect(page).to have_css("p.na-poster-card__reason", text: "Parce que tu aimes Thriller.")
+    end
+
+    it "shows no reason when there is none" do
+      render_inline(described_class.new(title: "Monster"))
+
+      expect(page).to have_no_css(".na-poster-card__reason")
+    end
+  end
 end

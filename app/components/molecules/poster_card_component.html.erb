@@ -20,6 +20,9 @@
     <% if meta %>
       <p class="text-secondary small mb-0"><%= meta %></p>
     <% end %>
+    <% if reason %>
+      <p class="na-poster-card__reason small mb-0"><%= reason %></p>
+    <% end %>
     <% if tags.any? %>
       <div class="d-flex flex-wrap gap-2">
         <% tags.each do |tag_label| %>
