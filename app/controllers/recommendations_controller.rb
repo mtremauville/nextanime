@@ -11,7 +11,10 @@ class RecommendationsController < ApplicationController
     @kind = params[:kind] if KINDS.key?(params[:kind])
     @tag_names = names_of(taste_profile&.top_tags(TASTE_PILLS))
     @genre_names = names_of(taste_profile&.top_genres(TASTE_PILLS))
-    @recommendations = ranked_recommendations(taste_profile) if recommendable?(taste_profile)
+    return unless recommendable?(taste_profile)
+
+    @recommendations = ranked_recommendations(taste_profile)
+    @explainer = MatchExplainer.new(taste_profile)
   end
 
   private
@@ -26,7 +29,7 @@ class RecommendationsController < ApplicationController
     builder = RecommendationBuilder.new(taste_profile)
     builder.call if builder.stale?
 
-    recommendations = taste_profile.recommendations.preload(anime: [ :genres, :main_studio ])
+    recommendations = taste_profile.recommendations.preload(anime: [ :genres, :main_studio, { anime_tags: :tag } ])
     formats = KINDS[@kind]
     recommendations = recommendations.joins(:anime).merge(Anime.where(format: formats)) if formats
 

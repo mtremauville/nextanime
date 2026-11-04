@@ -16,3 +16,4 @@
 @each $name in (violet, magenta, cyan, green, orange, indigo) {
   .na-poster--#{$name} { background: var(--na-poster-#{$name}); }
 }
+.na-poster-card__reason { color: var(--na-cyan); }
