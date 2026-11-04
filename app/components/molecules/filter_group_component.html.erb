@@ -1,0 +1,9 @@
+<fieldset class="na-filter-group">
+  <legend class="na-filter-group__legend"><%= legend %></legend>
+  <% options.each do |value, label| %>
+    <div class="form-check">
+      <%= check_box_tag "#{name}[]", value, checked?(value), id: input_id(value), class: "form-check-input" %>
+      <%= label_tag input_id(value), label, class: "form-check-label" %>
+    </div>
+  <% end %>
+</fieldset>
