@@ -1,0 +1,7 @@
+fr:
+  catalogue:
+    pagination:
+      label: Pagination
+      previous: "← Précédent"
+      next: "Suivant →"
+      page: "Page %{number}"
