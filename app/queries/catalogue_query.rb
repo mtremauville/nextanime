@@ -4,6 +4,8 @@
 class CatalogueQuery
   PER_PAGE = 12
   FIRST_PAGE = 1
+  SORTS = %w[match popularity score recent title].freeze
+  TITLE_ORDER = "LOWER(COALESCE(NULLIF(animes.title_english, ''), animes.title_romaji))".freeze
   CARD_ASSOCIATIONS = [ :genres, :main_studio, { anime_tags: :tag } ].freeze
 
   # Any studio of the anime counts, not only the main one. EXISTS keeps an anime
@@ -30,11 +32,13 @@ class CatalogueQuery
     def shown_count = (number - 1) * per_page + animes.size
   end
 
-  def initialize(page: FIRST_PAGE, per_page: PER_PAGE, search: nil, filters: CatalogueFilters.from_params(nil))
+  def initialize(page: FIRST_PAGE, per_page: PER_PAGE, search: nil, filters: CatalogueFilters.from_params(nil), sort: nil, scorer: nil)
     @requested_page = page
     @per_page = per_page
     @search = search.to_s.strip
     @filters = filters
+    @sort = sort.to_s
+    @scorer = scorer
   end
 
   def call
@@ -70,9 +74,36 @@ class CatalogueQuery
   end
 
   # Without popularity an anime goes last: PostgreSQL would put it first in a descending order.
-  def ranked_animes = matching_animes.order(Anime.arel_table[:popularity].desc.nulls_last, :id)
+  def ranked_animes = matching_animes.order(*order_clauses)
 
-  attr_reader :filters
+  attr_reader :filters, :sort, :scorer
+
+  def order_clauses
+    case sort
+    when "score" then [ column(:average_score).desc.nulls_last, column(:popularity).desc.nulls_last, :id ]
+    when "recent" then [ column(:start_date).desc.nulls_last, :id ]
+    when "title" then [ Arel.sql(TITLE_ORDER), :id ]
+    when "match" then scorer ? [ match_order, :id ] : popularity_clauses
+    else popularity_clauses
+    end
+  end
+
+  def popularity_clauses = [ column(:popularity).desc.nulls_last, :id ]
+
+  def column(name) = Anime.arel_table[name]
+
+  # The scorer ranks the anime in Ruby, then the database gets the ids in that order,
+  # so that the page is still cut by the database.
+  def match_order
+    Arel.sql(Anime.sanitize_sql_array([ "array_position(ARRAY[?]::bigint[], animes.id)", match_ranked_ids ]))
+  end
+
+  def match_ranked_ids
+    matching_animes.preload(*CARD_ASSOCIATIONS).sort_by { |anime| match_rank_key(anime) }.map(&:id)
+  end
+
+  # The closest first, then the most popular (the anime without popularity last), then a stable order.
+  def match_rank_key(anime) = [ -scorer.call(anime), -(anime.popularity || -1), anime.id ]
 
   def matching_animes
     scope = searched_animes
