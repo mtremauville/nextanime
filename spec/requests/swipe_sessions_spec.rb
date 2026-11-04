@@ -19,6 +19,13 @@ RSpec.describe "Swipe sessions", type: :request do
     expect(deck_ids.size).to eq(20)
   end
 
+  it "starts a new session at 0 %" do
+    get root_path
+
+    expect(response.body).to include("0 %")
+    expect(response.body).to include(%(data-swipe-deck-offset-value="0"))
+  end
+
   it "resumes the same cards when the page is reloaded" do
     get root_path
     first_visit = deck_ids
@@ -36,6 +43,17 @@ RSpec.describe "Swipe sessions", type: :request do
     get root_path
 
     expect(deck_ids).to eq(drawn.drop(1))
+  end
+
+  it "keeps the progress of the whole session after a reload" do
+    get root_path
+    swipe(deck_ids.first)
+
+    get root_path
+
+    expect(response.body).to include("5 %")
+    expect(response.body).to include(%(data-swipe-deck-offset-value="1"))
+    expect(response.body).to include(%(data-swipe-deck-total-value="20"))
   end
 
   it "draws a new session once the 20 cards have been swiped" do

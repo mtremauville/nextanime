@@ -22,7 +22,7 @@ $na-cover-dark: #0B0A14;
   color: var(--na-muted);
 }
 
-.na-deck-progress__remaining { color: var(--na-cyan); }
+.na-deck-progress__percent { color: var(--na-cyan); }
 
 // Two cards peeking out behind the current one.
 .na-swipe-deck__stack {

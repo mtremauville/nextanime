@@ -5,7 +5,9 @@ const SWIPE_DISTANCE = 100 // px a card must travel to count as a decision
 const TILT_DIVIDER = 20 // px of travel per degree of tilt
 const DRAGGING_CLASS = "na-swipe-deck__slot--dragging"
 
-// Swipes the cards of the deck. `position` is the card on screen, from 1.
+// Swipes the cards of the deck. `position` is the card on screen, from 1, and `offset`
+// the cards of the session already swiped when the page loaded: the server gets the
+// position in the whole session.
 // Each decision hides the current card, shows the next one and records the
 // swipe; the server answers with a Turbo Stream that redraws the progress.
 export default class extends Controller {
@@ -13,6 +15,7 @@ export default class extends Controller {
   static values = {
     url: String,
     total: Number,
+    offset: { type: Number, default: 0 },
     position: { type: Number, default: 1 }
   }
   static keyActions = { ArrowLeft: "pass", ArrowRight: "like" }
@@ -97,7 +100,7 @@ export default class extends Controller {
       body: new URLSearchParams({
         anime_id: animeId,
         liked: liked,
-        position: this.positionValue,
+        position: this.offsetValue + this.positionValue,
         total: this.totalValue
       })
     })

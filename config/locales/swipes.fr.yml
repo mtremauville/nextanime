@@ -4,10 +4,9 @@ fr:
       label: Deck de cartes
       empty: Le catalogue est vide pour le moment. Reviens bientôt !
     progress:
-      position: "Anime %{position} / %{total}"
-      remaining: "Plus que %{remaining}"
-      last: Dernier anime
-      label: Progression dans le deck
+      session: Ta session
+      percent: "%{percent} %"
+      label: Progression de la session
     actions:
       pass: Passer
       pass_label: Passer cet anime
@@ -28,5 +27,7 @@ fr:
       link: Voir mes recommandations
     finished:
       title: Tu as tout vu !
+      session_title: Session terminée !
       text: Tes swipes ont affiné tes recommandations.
       link: Voir mes recommandations
+      new_session: Nouvelle session

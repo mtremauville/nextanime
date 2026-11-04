@@ -9,16 +9,16 @@ RSpec.describe "Keeping the guest swipes after sign in", type: :system, js: true
     create_list(:anime, 4, cover_image_url: "https://img.test/cover.jpg")
   end
 
-  # The progress is shown in capitals by the stylesheet, and the browser returns the rendered text.
-  def have_progress(position, total)
-    have_text(%r{anime #{position} / #{total}}i)
+  # The guard keeps "0 %" from matching inside "100 %".
+  def have_percent(value)
+    have_text(/(?<!\d)#{value} %/)
   end
 
   def swipe_as_a_guest
     visit root_path
     guest_swiped_id = find(visible_slot)["data-anime-id"].to_i
     click_button "J'aime cet anime"
-    expect(page).to have_progress(2, 4)
+    expect(page).to have_percent(25)
     guest_swiped_id
   end
 
@@ -42,7 +42,7 @@ RSpec.describe "Keeping the guest swipes after sign in", type: :system, js: true
     sign_in
 
     expect(page).to have_current_path(root_path)
-    expect(page).to have_progress(1, 2)
+    expect(page).to have_percent(50)
     expect(page).to have_no_css("[data-anime-id='#{guest_swiped_id}']", visible: :all)
     expect(page).to have_no_css("[data-anime-id='#{account_swiped_id}']", visible: :all)
   end

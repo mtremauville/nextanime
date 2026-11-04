@@ -8,9 +8,9 @@ RSpec.describe "Swiping the deck", type: :system, js: true do
     visit root_path
   end
 
-  # The progress is shown in capitals by the stylesheet, and the browser returns the rendered text.
-  def have_progress(position)
-    have_text(%r{anime #{position} / 3}i)
+  # The guard keeps "0 %" from matching inside "100 %".
+  def have_percent(value)
+    have_text(/(?<!\d)#{value} %/)
   end
 
   def displayed_anime_id
@@ -18,7 +18,7 @@ RSpec.describe "Swiping the deck", type: :system, js: true do
   end
 
   it "starts on the first card" do
-    expect(page).to have_progress(1)
+    expect(page).to have_percent(0)
     expect(page).to have_css(visible_slot, count: 1)
   end
 
@@ -27,7 +27,7 @@ RSpec.describe "Swiping the deck", type: :system, js: true do
 
     click_button "J'aime cet anime"
 
-    expect(page).to have_progress(2)
+    expect(page).to have_percent(33)
     expect(page).to have_css(visible_slot, count: 1)
     expect(displayed_anime_id).not_to eq(first_id)
   end
@@ -36,7 +36,7 @@ RSpec.describe "Swiping the deck", type: :system, js: true do
     first_id = displayed_anime_id
 
     click_button "J'aime cet anime"
-    expect(page).to have_progress(2)
+    expect(page).to have_percent(33)
 
     expect(Swipe.last).to have_attributes(anime_id: first_id, liked: true)
   end
@@ -45,17 +45,17 @@ RSpec.describe "Swiping the deck", type: :system, js: true do
     first_id = displayed_anime_id
 
     click_button "Passer cet anime"
-    expect(page).to have_progress(2)
+    expect(page).to have_percent(33)
 
     expect(Swipe.last).to have_attributes(anime_id: first_id, liked: false)
   end
 
-  it "keeps counting down while the visitor swipes" do
+  it "moves the progress up while the visitor swipes" do
     click_button "Passer cet anime"
-    expect(page).to have_progress(2)
+    expect(page).to have_percent(33)
 
     click_button "J'aime cet anime"
-    expect(page).to have_text(/dernier anime/i)
+    expect(page).to have_percent(67)
     expect(Swipe.count).to eq(2)
   end
 
@@ -65,7 +65,7 @@ RSpec.describe "Swiping the deck", type: :system, js: true do
 
       find("body").send_keys(:arrow_right)
 
-      expect(page).to have_progress(2)
+      expect(page).to have_percent(33)
       expect(Swipe.last).to have_attributes(anime_id: first_id, liked: true)
     end
 
@@ -74,7 +74,7 @@ RSpec.describe "Swiping the deck", type: :system, js: true do
 
       find("body").send_keys(:arrow_left)
 
-      expect(page).to have_progress(2)
+      expect(page).to have_percent(33)
       expect(Swipe.last).to have_attributes(anime_id: first_id, liked: false)
     end
 
@@ -108,7 +108,7 @@ RSpec.describe "Swiping the deck", type: :system, js: true do
 
       drag_card_by(180)
 
-      expect(page).to have_progress(2)
+      expect(page).to have_percent(33)
       expect(Swipe.last).to have_attributes(anime_id: first_id, liked: true)
     end
 
@@ -117,7 +117,7 @@ RSpec.describe "Swiping the deck", type: :system, js: true do
 
       drag_card_by(-180)
 
-      expect(page).to have_progress(2)
+      expect(page).to have_percent(33)
       expect(Swipe.last).to have_attributes(anime_id: first_id, liked: false)
     end
 
@@ -131,26 +131,61 @@ RSpec.describe "Swiping the deck", type: :system, js: true do
     end
   end
 
-  it "ends the deck with a link to the recommendations" do
+  it "ends the session with a link to the recommendations and a new session" do
     3.times { click_button "J'aime cet anime" }
 
     within("#swipe-deck") do
-      expect(page).to have_text(/tu as tout vu/i)
+      expect(page).to have_text(/session terminée/i)
       expect(page).to have_link("Voir mes recommandations", href: recommendations_path)
+      expect(page).to have_link("Nouvelle session", href: root_path)
     end
     expect(page).to have_no_button("J'aime cet anime")
     expect(Swipe.count).to eq(3)
   end
 
-  it "resumes the deck after a reload without the cards already swiped" do
-    first_id = displayed_anime_id
+  it "starts a new session from the end of the previous one" do
+    create_list(:anime, 2, cover_image_url: "https://img.test/cover.jpg")
+    3.times { click_button "J'aime cet anime" }
 
-    click_button "J'aime cet anime"
-    expect(page).to have_progress(2)
+    click_link "Nouvelle session"
 
-    visit root_path
+    expect(page).to have_percent(0)
+    expect(page).to have_css(visible_slot, count: 1)
+    expect(page).to have_no_text(/session terminée/i)
+  end
 
-    expect(page).to have_text(%r{anime 1 / 2}i)
-    expect(displayed_anime_id).not_to eq(first_id)
+  describe "after a reload" do
+    it "resumes the session without the cards already swiped" do
+      first_id = displayed_anime_id
+
+      click_button "J'aime cet anime"
+      expect(page).to have_percent(33)
+
+      visit root_path
+
+      expect(page).to have_percent(33)
+      expect(displayed_anime_id).not_to eq(first_id)
+    end
+
+    it "keeps counting from where the session was" do
+      click_button "J'aime cet anime"
+      expect(page).to have_percent(33)
+
+      visit root_path
+      click_button "J'aime cet anime"
+
+      expect(page).to have_percent(67)
+    end
+
+    it "still ends the session on the last card" do
+      click_button "J'aime cet anime"
+      expect(page).to have_percent(33)
+
+      visit root_path
+      2.times { click_button "J'aime cet anime" }
+
+      within("#swipe-deck") { expect(page).to have_text(/session terminée/i) }
+      expect(Swipe.count).to eq(3)
+    end
   end
 end
