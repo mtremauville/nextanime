@@ -275,6 +275,13 @@ $na-cover-dark: #0B0A14;
   color: var(--na-muted);
 }
 
+.na-swipe-deck__finished-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  justify-content: center;
+}
+
 .na-side-panel__reset {
   margin-top: 1rem;
   padding-top: 1rem;

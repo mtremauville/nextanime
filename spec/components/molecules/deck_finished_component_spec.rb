@@ -37,6 +37,12 @@ RSpec.describe Molecules::DeckFinishedComponent, type: :component do
 
       expect(page).to have_link("Nouvelle session", href: "/")
     end
+
+    it "groups both links in one actions area" do
+      render_finished
+
+      expect(page).to have_css(".na-swipe-deck__finished-actions a", count: 2)
+    end
   end
 
   context "when there is nothing new to draw" do
@@ -52,6 +58,12 @@ RSpec.describe Molecules::DeckFinishedComponent, type: :component do
       render_finished
 
       expect(page).to have_no_link("Nouvelle session")
+    end
+
+    it "keeps the only link in the actions area" do
+      render_finished
+
+      expect(page).to have_css(".na-swipe-deck__finished-actions a", count: 1)
     end
   end
 end

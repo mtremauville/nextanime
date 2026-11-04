@@ -1,8 +1,10 @@
 <section id="swipe-deck" class="na-swipe-deck na-swipe-deck--finished" role="status">
   <h2 class="na-swipe-deck__finished-title"><%= title %></h2>
   <p class="na-swipe-deck__finished-text"><%= I18n.t("swipes.finished.text") %></p>
-  <%= link_to I18n.t("swipes.finished.link"), recommendations_href, class: "btn btn-na-primary" %>
-  <% if new_session_href %>
-    <%= link_to I18n.t("swipes.finished.new_session"), new_session_href, class: "btn btn-na-outline" %>
-  <% end %>
+  <div class="na-swipe-deck__finished-actions">
+    <%= link_to I18n.t("swipes.finished.link"), recommendations_href, class: "btn btn-na-primary" %>
+    <% if new_session_href %>
+      <%= link_to I18n.t("swipes.finished.new_session"), new_session_href, class: "btn btn-na-outline" %>
+    <% end %>
+  </div>
 </section>
