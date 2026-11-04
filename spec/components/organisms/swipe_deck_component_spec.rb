@@ -1,9 +1,10 @@
 require "rails_helper"
 
 RSpec.describe Organisms::SwipeDeckComponent, type: :component do
-  subject(:render_deck) { render_inline(described_class.new(animes: animes)) }
+  subject(:render_deck) { render_inline(described_class.new(animes: animes, completed: completed)) }
 
   let(:animes) { create_list(:anime, 3, cover_image_url: "https://img.test/cover.jpg") }
+  let(:completed) { 0 }
 
   it "is a labelled region" do
     render_deck
@@ -24,10 +25,10 @@ RSpec.describe Organisms::SwipeDeckComponent, type: :component do
     expect(page).to have_css(".na-swipe-deck__slot[hidden]", count: 2, visible: :all)
   end
 
-  it "starts the progress at the first anime" do
+  it "starts the progress at 0 %" do
     render_deck
 
-    expect(page).to have_text("Anime 1 / 3")
+    expect(page).to have_text("0 %")
   end
 
   it "offers to pass or like the current anime" do
@@ -41,7 +42,8 @@ RSpec.describe Organisms::SwipeDeckComponent, type: :component do
     render_deck
 
     expect(page).to have_css(
-      "section[data-controller='swipe-deck'][data-swipe-deck-url-value='/swipes'][data-swipe-deck-total-value='3']"
+      "section[data-controller='swipe-deck'][data-swipe-deck-url-value='/swipes']" \
+      "[data-swipe-deck-total-value='3'][data-swipe-deck-offset-value='0']"
     )
   end
 
@@ -75,5 +77,23 @@ RSpec.describe Organisms::SwipeDeckComponent, type: :component do
     render_deck
 
     expect(page).to have_css("section#swipe-deck.na-swipe-deck")
+  end
+
+  context "when the session is already under way" do
+    let(:completed) { 2 }
+
+    it "shows the progress of the whole session" do
+      render_deck
+
+      expect(page).to have_text("40 %")
+    end
+
+    it "tells the controller how many cards were already swiped" do
+      render_deck
+
+      expect(page).to have_css(
+        "section[data-swipe-deck-total-value='5'][data-swipe-deck-offset-value='2']"
+      )
+    end
   end
 end

@@ -8,7 +8,9 @@ class SwipesController < ApplicationController
 
   def index
     swiped_ids = swiped_anime_ids
-    @animes = SwipeDeckQuery.new(excluding: swiped_ids).call
+    swipe_session = SwipeSession.new(session, swiped_anime_ids: swiped_ids)
+    @animes = swipe_session.animes
+    @completed = swipe_session.completed
     @deck_finished = @animes.empty? && swiped_ids.any?
   end
 
@@ -40,12 +42,14 @@ class SwipesController < ApplicationController
     swipe_params[:total].to_i
   end
 
-  # The position is the next card to show: one past the total means the deck is done.
+  # The position is the next card to show: one past the total means the session is over,
+  # and the cards already swiped are the ones before the position.
   def deck_stream
     if position_param == total_param + 1
-      turbo_stream.replace(DECK_TARGET, Molecules::DeckFinishedComponent.new(recommendations_href: recommendations_path))
+      turbo_stream.replace(DECK_TARGET, Molecules::DeckFinishedComponent.new(recommendations_href: recommendations_path,
+                                                                             new_session_href: root_path))
     else
-      turbo_stream.replace(PROGRESS_TARGET, Molecules::DeckProgressComponent.new(position: position_param, total: total_param))
+      turbo_stream.replace(PROGRESS_TARGET, Molecules::DeckProgressComponent.new(completed: position_param - 1, total: total_param))
     end
   end
 

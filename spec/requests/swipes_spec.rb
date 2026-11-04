@@ -54,7 +54,7 @@ RSpec.describe "Swipes", type: :request do
 
       it "shows the deck with its progress" do
         expect(document).to have_css("section[aria-label='Deck de cartes']")
-        expect(document).to have_text("Anime 1 / 3")
+        expect(document).to have_text("0 %")
       end
 
       it "shows one card per anime" do
@@ -139,14 +139,14 @@ RSpec.describe "Swipes", type: :request do
     let(:anime) { create(:anime) }
     let(:turbo_stream_headers) { { "Accept" => "text/vnd.turbo-stream.html" } }
 
-    it "replaces the progress with the next position" do
+    it "replaces the progress with the share of the session already swiped" do
       post swipes_path,
-           params: { anime_id: anime.id, liked: true, position: 2, total: 24 },
+           params: { anime_id: anime.id, liked: true, position: 8, total: 20 },
            headers: turbo_stream_headers
 
       expect(response.media_type).to eq("text/vnd.turbo-stream.html")
       expect(response.body).to include('<turbo-stream action="replace" target="deck-progress">')
-      expect(response.body).to include("Anime 2 / 24")
+      expect(response.body).to include("35 %")
     end
 
     it "refuses a position outside the deck" do
@@ -171,7 +171,8 @@ RSpec.describe "Swipes", type: :request do
            headers: { "Accept" => "text/vnd.turbo-stream.html" }
 
       expect(response.body).to include('<turbo-stream action="replace" target="swipe-deck">')
-      expect(response.body).to include("Tu as tout vu !")
+      expect(response.body).to include("Session terminée !")
+      expect(response.body).to include(%(href="#{root_path}"))
       expect(response.body).to include(%(href="#{recommendations_path}"))
     end
   end
@@ -201,12 +202,13 @@ RSpec.describe "Swipes", type: :request do
       expect(response.body).not_to include(%(data-anime-id="#{animes.first.id}"))
     end
 
-    it "counts the progress over the remaining anime" do
+    it "starts a new session over the remaining anime" do
       swipe(animes.first)
 
       get root_path
 
-      expect(response.body).to include("Anime 1 / 2")
+      expect(response.body).to include("0 %")
+      expect(response.body).to include(%(data-swipe-deck-total-value="2"))
     end
 
     it "tells the visitor that every anime was seen" do

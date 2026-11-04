@@ -8,7 +8,7 @@
       <%= render Organisms::TasteProfilePanelComponent.new(**panel_link) %>
     </div>
     <div class="na-swipe-page__main">
-      <%= render Organisms::SwipeDeckComponent.new(animes: @animes) %>
+      <%= render Organisms::SwipeDeckComponent.new(animes: @animes, completed: @completed) %>
     </div>
     <div class="na-swipe-page__side na-swipe-page__side--end">
       <%= render Organisms::SwipeHistoryPanelComponent.new(recommendations_href: recommendations_path) %>
