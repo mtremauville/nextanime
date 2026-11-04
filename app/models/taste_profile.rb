@@ -1,6 +1,10 @@
 class TasteProfile < ApplicationRecord
   TOP_GENRES_LIMIT = 5
   TOP_TAGS_LIMIT = 8
+  DOMINANT_LIMIT = 8
+
+  # One genre or tag the profile loves, with the weight of its affinity.
+  Taste = Data.define(:name, :weight, :kind)
 
   belongs_to :user, optional: true
   has_many :swipes, dependent: :destroy
@@ -81,6 +85,14 @@ class TasteProfile < ApplicationRecord
   def top_genres(limit = TOP_GENRES_LIMIT) = best_weights(genre_weights, limit)
 
   def top_tags(limit = TOP_TAGS_LIMIT) = best_weights(tag_weights, limit)
+
+  # The genres and the tags the profile loves most, mixed, the most loved first.
+  def dominant_tastes(limit = DOMINANT_LIMIT)
+    genres = top_genres(limit).map { |name, weight| Taste.new(name: name, weight: weight, kind: :genre) }
+    tags = top_tags(limit).map { |name, weight| Taste.new(name: name, weight: weight, kind: :tag) }
+
+    (genres + tags).max_by(limit, &:weight)
+  end
 
   private
 
