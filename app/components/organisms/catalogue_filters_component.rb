@@ -1,27 +1,38 @@
 module Organisms
   # The filters of the catalogue, in a form that sends them with a GET. The search under way
   # rides along in a hidden field, so that filtering does not erase it.
+  # genre_counts maps a genre id to the number of anime it has; without it no count is shown.
   class CatalogueFiltersComponent < ViewComponent::Base
-    def initialize(action:, filters:, genres:, search: nil)
+    def initialize(action:, filters:, genres:, search: nil, genre_counts: nil)
       @action = action
       @filters = filters
       @genres = genres
       @search = search
+      @genre_counts = genre_counts
       super()
     end
 
     private
 
-    attr_reader :action, :filters, :genres, :search
+    attr_reader :action, :filters, :genres, :search, :genre_counts
 
-    def genre_options = genres.map { |genre| [ genre.id, genre.name ] }
+    def genre_options = genres.map { |genre| [ genre.id, genre.name, count_of(genre) ] }
 
     def format_options = named("animes.formats", CatalogueFilters::FORMATS)
 
-    def status_options = named("animes.statuses", CatalogueFilters::STATUSES)
+    def status_options = named("catalogue.filters.statuses", CatalogueFilters::STATUSES)
 
     def season_options = named("animes.seasons", CatalogueFilters::SEASONS)
 
     def named(scope, keys) = keys.map { |key| [ key, I18n.t("#{scope}.#{key}") ] }
+
+    def count_of(genre)
+      genre_counts.fetch(genre.id, 0) if genre_counts
+    end
+
+    # Resetting clears the filters but not the search.
+    def reset_path
+      search.present? ? "#{action}?#{{ Molecules::SearchFieldComponent::PARAM => search }.to_query}" : action
+    end
   end
 end

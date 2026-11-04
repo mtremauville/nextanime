@@ -43,7 +43,7 @@ RSpec.describe Organisms::CatalogueFiltersComponent, type: :component do
     expect(page).to have_css("input[type='checkbox'][name='statuses[]']", count: CatalogueFilters::STATUSES.size)
     expect(page).to have_field("Terminé", with: "finished")
     expect(page).to have_field("En cours de diffusion", with: "releasing")
-    expect(page).to have_field("Pas encore diffusé", with: "not_yet_released")
+    expect(page).to have_field("À venir", with: "not_yet_released")
   end
 
   it "offers the seasons, starting with all of them" do
@@ -55,8 +55,8 @@ RSpec.describe Organisms::CatalogueFiltersComponent, type: :component do
   it "offers a first and a last year" do
     render_filters
 
-    expect(page).to have_field("Depuis", type: "number")
-    expect(page).to have_field("Jusqu'à", type: "number")
+    expect(page).to have_field("Année minimale", type: "number")
+    expect(page).to have_field("Année maximale", type: "number")
     expect(page).to have_css("input[name='year_from']")
     expect(page).to have_css("input[name='year_to']")
   end
@@ -94,8 +94,8 @@ RSpec.describe Organisms::CatalogueFiltersComponent, type: :component do
     end
 
     it "fills in the chosen years" do
-      expect(page).to have_field("Depuis", with: "1990")
-      expect(page).to have_field("Jusqu'à", with: "2005")
+      expect(page).to have_field("Année minimale", with: "1990")
+      expect(page).to have_field("Année maximale", with: "2005")
     end
   end
 
@@ -118,5 +118,60 @@ RSpec.describe Organisms::CatalogueFiltersComponent, type: :component do
 
     expect(page).to have_no_css("fieldset legend", text: "Genres")
     expect(page).to have_css("fieldset legend", text: "Format")
+  end
+
+  describe "header" do
+    it "offers to reset the filters" do
+      render_filters
+
+      expect(page).to have_link("Réinitialiser", href: "/catalogue")
+    end
+
+    it "keeps the search under way when resetting" do
+      render_filters(search: "monster")
+
+      expect(page).to have_link("Réinitialiser", href: "/catalogue?q=monster")
+    end
+  end
+
+  describe "pills" do
+    it "draws the formats as pills" do
+      render_filters
+
+      expect(page).to have_css("fieldset.na-filter-group--pills legend", text: "Format")
+    end
+
+    it "keeps the genres and the statuses as lists" do
+      render_filters
+
+      expect(page).to have_no_css("fieldset.na-filter-group--pills legend", text: "Genres")
+      expect(page).to have_no_css("fieldset.na-filter-group--pills legend", text: "Statut")
+    end
+  end
+
+  describe "genre counts" do
+    def render_counted(counts)
+      render_inline(described_class.new(action: "/catalogue", filters: no_filter, genres: genres, genre_counts: counts))
+    end
+
+    it "shows how many anime each genre has" do
+      render_counted(3 => 38, 5 => 12)
+
+      expect(page).to have_css("[data-role='count']", count: 2)
+      expect(page).to have_css("label", text: "Action 38", normalize_ws: true)
+      expect(page).to have_css("label", text: "Comédie 12", normalize_ws: true)
+    end
+
+    it "shows zero for a genre without anime" do
+      render_counted(3 => 38)
+
+      expect(page).to have_css("label", text: "Comédie 0", normalize_ws: true)
+    end
+
+    it "shows no count when none is given" do
+      render_filters
+
+      expect(page).to have_no_css("[data-role='count']")
+    end
   end
 end

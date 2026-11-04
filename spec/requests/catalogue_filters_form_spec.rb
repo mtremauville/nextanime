@@ -50,8 +50,8 @@ RSpec.describe "Catalogue filters form", type: :request do
       get catalogue_path, params: { season: "fall", year_from: "1990", year_to: "2005" }
 
       expect(filters_form).to have_select("Saison", selected: "Automne")
-      expect(filters_form).to have_field("Depuis", with: "1990")
-      expect(filters_form).to have_field("Jusqu'à", with: "2005")
+      expect(filters_form).to have_field("Année minimale", with: "1990")
+      expect(filters_form).to have_field("Année maximale", with: "2005")
     end
 
     it "keeps the search under way in the filters form" do

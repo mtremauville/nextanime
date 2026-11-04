@@ -8,9 +8,14 @@ fr:
       season: Saison
       all_seasons: Toutes les saisons
       years: Année
-      year_from: Depuis
-      year_to: "Jusqu'à"
+      year_from: Année minimale
+      year_to: Année maximale
       apply: Appliquer
+      reset: Réinitialiser
+      statuses:
+        finished: Terminé
+        releasing: En cours de diffusion
+        not_yet_released: À venir
     pagination:
       label: Pagination
       previous: "← Précédent"
