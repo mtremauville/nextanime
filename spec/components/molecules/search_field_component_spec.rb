@@ -66,4 +66,36 @@ RSpec.describe Molecules::SearchFieldComponent, type: :component do
 
     expect(page).to have_no_css("input[type='hidden']")
   end
+
+  describe "hidden fields" do
+    def render_search(**given)
+      render_inline(described_class.new(action: "/catalogue", label: "Rechercher", placeholder: "Titre", **given))
+    end
+
+    it "adds none by default" do
+      render_search
+
+      expect(page).to have_no_css("input[type='hidden']", visible: :all)
+    end
+
+    it "keeps a single value in a hidden field" do
+      render_search(hidden: { season: "fall" })
+
+      expect(page).to have_css("input[type='hidden'][name='season'][value='fall']", visible: :all)
+    end
+
+    it "keeps a list of values, one hidden field for each" do
+      render_search(hidden: { formats: %w[tv movie] })
+
+      values = page.all("input[type='hidden'][name='formats[]']", visible: :all).map { |input| input[:value] }
+
+      expect(values).to eq(%w[tv movie])
+    end
+
+    it "keeps numbers as texts" do
+      render_search(hidden: { year_from: 1990 })
+
+      expect(page).to have_css("input[type='hidden'][name='year_from'][value='1990']", visible: :all)
+    end
+  end
 end
