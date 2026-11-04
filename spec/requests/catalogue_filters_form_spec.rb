@@ -105,4 +105,18 @@ RSpec.describe "Catalogue filters form", type: :request do
       expect(filters_form).to have_css("label", text: "Action 2", normalize_ws: true)
     end
   end
+
+  describe "the layout" do
+    before { get catalogue_path }
+
+    it "puts the search above the two columns, not inside them" do
+      expect(page_of(response)).to have_css("form[role='search']")
+      expect(page_of(response)).to have_no_css(".na-catalogue-layout form[role='search']")
+    end
+
+    it "keeps the filters and the results side by side" do
+      expect(page_of(response)).to have_css(".na-catalogue-layout > .na-catalogue-layout__filters aside[aria-label='Filtres']")
+      expect(page_of(response)).to have_css(".na-catalogue-layout > .na-catalogue-layout__results [data-role='catalogue-item']", count: 0)
+    end
+  end
 end

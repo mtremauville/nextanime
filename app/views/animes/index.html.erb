@@ -4,6 +4,16 @@
   <p class="na-catalogue-header__results" data-role="results" role="status"><%= t("catalogue.index.results", count: @page.total_count) %></p>
 </header>
 
+<div class="na-catalogue-search">
+  <%= render Molecules::SearchFieldComponent.new(
+        action: catalogue_path,
+        label: t("catalogue.search.label"),
+        placeholder: t("catalogue.search.placeholder"),
+        value: @search,
+        hidden: @filters.to_query_params
+      ) %>
+</div>
+
 <div class="na-catalogue-layout">
   <div class="na-catalogue-layout__filters d-none d-md-block">
     <%= render Organisms::CatalogueFiltersComponent.new(
@@ -16,14 +26,6 @@
   </div>
 
   <div class="na-catalogue-layout__results">
-    <%= render Molecules::SearchFieldComponent.new(
-          action: catalogue_path,
-          label: t("catalogue.search.label"),
-          placeholder: t("catalogue.search.placeholder"),
-          value: @search,
-          hidden: @filters.to_query_params
-        ) %>
-
     <%= render Organisms::CatalogueGridComponent.new(animes: @page.animes, scorer: @scorer) %>
 
     <div class="d-none d-md-block">
