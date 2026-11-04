@@ -7,6 +7,7 @@ class AnimesController < ApplicationController
     taste_profile = existing_taste_profile
     @search = search_text
     @filters = CatalogueFilters.from_params(params)
+    @genres = Genre.order(:name)
     @page = CatalogueQuery.new(page: params[:page], search: @search, filters: @filters).call
     @scorer = MatchScorer.new(taste_profile) if liked_something?(taste_profile)
   end
