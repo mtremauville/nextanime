@@ -30,10 +30,11 @@ class CatalogueQuery
     def shown_count = (number - 1) * per_page + animes.size
   end
 
-  def initialize(page: FIRST_PAGE, per_page: PER_PAGE, search: nil)
+  def initialize(page: FIRST_PAGE, per_page: PER_PAGE, search: nil, filters: CatalogueFilters.from_params(nil))
     @requested_page = page
     @per_page = per_page
     @search = search.to_s.strip
+    @filters = filters
   end
 
   def call
@@ -71,7 +72,32 @@ class CatalogueQuery
   # Without popularity an anime goes last: PostgreSQL would put it first in a descending order.
   def ranked_animes = matching_animes.order(Anime.arel_table[:popularity].desc.nulls_last, :id)
 
+  attr_reader :filters
+
   def matching_animes
+    scope = searched_animes
+    scope = scope.where(format: filters.formats) if filters.formats.any?
+    scope = scope.where(airing_status: filters.statuses) if filters.statuses.any?
+    scope = scope.where(season: filters.season) if filters.season
+    scope = scope.where(season_year: year_range) if year_range
+    scope = scope.where(id: with_every_genre) if filters.genre_ids.any?
+    scope
+  end
+
+  def year_range
+    return if filters.year_from.nil? && filters.year_to.nil?
+
+    filters.year_from..filters.year_to
+  end
+
+  def with_every_genre
+    AnimeGenre.where(genre_id: filters.genre_ids)
+              .group(:anime_id)
+              .having("COUNT(*) = ?", filters.genre_ids.size)
+              .select(:anime_id)
+  end
+
+  def searched_animes
     return Anime.all if search.empty?
 
     Anime.where(MATCHING_SEARCH, pattern: "%#{Anime.sanitize_sql_like(search)}%")
