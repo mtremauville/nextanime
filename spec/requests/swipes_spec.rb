@@ -241,4 +241,86 @@ RSpec.describe "Swipes", type: :request do
       expect { get root_path }.not_to change(TasteProfile, :count)
     end
   end
+
+  describe "GET / dominant tastes" do
+    let(:thriller) { create(:genre, name: "Thriller") }
+    let(:liked) { create(:anime, genres: [ thriller ]) }
+
+    before { create(:anime, cover_image_url: "https://img.test/cover.jpg") }
+
+    it "shows the tastes a signed in person loves in the side panel" do
+      user = create(:user)
+      sign_in user
+      user.create_taste_profile!.record_swipe(liked, liked: true)
+
+      get root_path
+
+      expect(document).to have_css("#taste-profile-panel [data-role='taste']", text: "Thriller")
+    end
+
+    it "shows the tastes of a visitor, found through the cookie" do
+      post swipes_path, params: { anime_id: liked.id, liked: true, position: 1, total: 20 }
+
+      get root_path
+
+      expect(document).to have_css("#taste-profile-panel [data-role='taste']", text: "Thriller")
+    end
+
+    it "keeps the empty message while the person has not swiped" do
+      get root_path
+
+      expect(document).to have_text("Swipe quelques animes pour dessiner ton profil.")
+      expect(document).to have_no_css("[data-role='taste']")
+    end
+
+    it "does not create a taste profile just to look" do
+      expect { get root_path }.not_to change(TasteProfile, :count)
+    end
+  end
+
+  describe "POST /swipes asking for a Turbo Stream, the taste panel" do
+    let(:liked) { create(:anime, genres: [ create(:genre, name: "Thriller") ]) }
+    let(:stream_headers) { { "Accept" => "text/vnd.turbo-stream.html" } }
+
+    def swipe(position: 2, total: 20)
+      post swipes_path, params: { anime_id: liked.id, liked: true, position: position, total: total },
+                        headers: stream_headers
+    end
+
+    it "replaces the side panel with the tastes learned so far" do
+      swipe
+
+      expect(response.body).to include('target="taste-profile-panel"')
+      expect(response.body).to include('data-role="taste"')
+      expect(response.body).to include("Thriller")
+    end
+
+    it "offers a visitor to save the profile" do
+      swipe
+
+      expect(response.body).to include("Sauvegarder mon profil")
+    end
+
+    it "links a signed in person to the full profile" do
+      sign_in create(:user)
+
+      swipe
+
+      expect(response.body).to include("Voir mon profil complet")
+      expect(response.body).not_to include("Sauvegarder mon profil")
+    end
+
+    it "still replaces the progress" do
+      swipe
+
+      expect(response.body).to include('target="deck-progress"')
+    end
+
+    it "refreshes the panel together with the end of the deck on the last card" do
+      swipe(position: 21)
+
+      expect(response.body).to include('target="swipe-deck"')
+      expect(response.body).to include('target="taste-profile-panel"')
+    end
+  end
 end

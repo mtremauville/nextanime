@@ -441,4 +441,34 @@ RSpec.describe TasteProfile, type: :model do
       expect(guest_profile.reload.user).to eq(owner)
     end
   end
+
+  describe "#dominant_tastes" do
+    let(:profile) do
+      build(:taste_profile,
+            genre_weights: { "Thriller" => 0.9, "Comedy" => -0.4, "Drama" => 0.3 },
+            tag_weights: { "Mind Games" => 0.6, "Gore" => 0.1, "Ecchi" => -0.2 })
+    end
+
+    it "mixes the genres and the tags the profile loves, the most loved first" do
+      expect(profile.dominant_tastes.map(&:name)).to eq([ "Thriller", "Mind Games", "Drama", "Gore" ])
+    end
+
+    it "tells whether each taste is a genre or a tag" do
+      expect(profile.dominant_tastes.map(&:kind)).to eq(%i[genre tag genre tag])
+    end
+
+    it "keeps the weight of each taste" do
+      expect(profile.dominant_tastes.first.weight).to eq(0.9)
+    end
+
+    it "stops at the limit" do
+      expect(profile.dominant_tastes(2).map(&:name)).to eq([ "Thriller", "Mind Games" ])
+    end
+
+    it "is empty while the profile loves nothing" do
+      empty_profile = build(:taste_profile, genre_weights: {}, tag_weights: {})
+
+      expect(empty_profile.dominant_tastes).to eq([])
+    end
+  end
 end
