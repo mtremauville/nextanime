@@ -12,6 +12,14 @@
         link_label: t(".invite.link"),
         link_href: root_path
       ) %>
+<% elsif @recommendations.empty? && @kind.nil? %>
+  <%= render Molecules::EmptyStateComponent.new(
+        title: t(".exhausted.title"),
+        text: t(".exhausted.text"),
+        link_label: current_user ? t(".exhausted.profile_link") : t(".exhausted.sign_up_link"),
+        link_href: current_user ? profile_path : new_user_registration_path,
+        link_variant: :outline
+      ) %>
 <% else %>
   <% choices = { nil => t(".filter.all"), "series" => t(".filter.series"), "movies" => t(".filter.movies") }.map do |kind, label|
        { label: label, href: recommendations_path(kind: kind), current: kind == @kind }
