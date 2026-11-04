@@ -92,7 +92,7 @@ RSpec.describe "Recommendations", type: :request do
         get recommendations_path
 
         expect(cards).to be_empty
-        expect(page).to have_text("Aucune recommandation")
+        expect(page).to have_text("Tu as tout swipé")
       end
 
       it "only shows the best ones" do
@@ -199,6 +199,49 @@ RSpec.describe "Recommendations", type: :request do
       get recommendations_path
 
       expect(page).to have_no_link("Ton profil")
+    end
+  end
+
+  describe "GET /recos once every anime has been swiped" do
+    let!(:liked) { create(:anime, genres: [ thriller ]) }
+    let!(:passed) { create(:anime, genres: [ cooking ]) }
+
+    before do
+      sign_in user
+      profile = user.create_taste_profile!
+      profile.record_swipe(liked, liked: true)
+      profile.record_swipe(passed, liked: false)
+    end
+
+    it "tells that nothing is left to recommend" do
+      get recommendations_path
+
+      expect(page).to have_text("Tu as tout swipé")
+      expect(cards).to be_empty
+    end
+
+    it "sends a signed in person to the profile" do
+      get recommendations_path
+
+      expect(page).to have_link("Voir mon profil", href: profile_path)
+    end
+
+    it "offers a visitor to create an account" do
+      sign_out user
+      post swipes_path, params: { anime_id: liked.id, liked: true }
+      post swipes_path, params: { anime_id: passed.id, liked: false }
+
+      get recommendations_path
+
+      expect(page).to have_text("Tu as tout swipé")
+      expect(page).to have_link("Créer un compte pour garder ton profil", href: new_user_registration_path)
+    end
+
+    it "keeps the message of the format when a format is chosen" do
+      get recommendations_path, params: { kind: "series" }
+
+      expect(page).to have_no_text("Tu as tout swipé")
+      expect(page).to have_text("Aucune recommandation")
     end
   end
 end

@@ -13,9 +13,14 @@ fr:
         title: Swipe quelques animes pour recevoir tes recommandations
         text: Plus tu swipes, plus elles te ressemblent.
         link: Commencer à swiper
+      exhausted:
+        title: Tu as tout swipé
+        text: Il n'y a plus d'anime à te recommander pour l'instant. De nouveaux animes arrivent au fil du temps.
+        profile_link: Voir mon profil
+        sign_up_link: Créer un compte pour garder ton profil
       empty:
-        title: Aucune recommandation pour le moment
-        text: Tu as tout vu, ou aucun anime de ce format ne colle à ton profil.
+        title: Aucune recommandation dans ce format
+        text: Essaie un autre format, ou continue à swiper pour affiner ton profil.
         link: Continuer à swiper
     header:
       eyebrow: Ton match
