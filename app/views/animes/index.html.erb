@@ -4,13 +4,20 @@
   <p class="na-catalogue-header__results" data-role="results" role="status"><%= t("catalogue.index.results", count: @page.total_count) %></p>
 </header>
 
+<%= render Molecules::SearchFieldComponent.new(
+      action: catalogue_path,
+      label: t("catalogue.search.label"),
+      placeholder: t("catalogue.search.placeholder"),
+      value: @search
+    ) %>
+
 <%= render Organisms::CatalogueGridComponent.new(animes: @page.animes, scorer: @scorer) %>
 
 <div class="d-none d-md-block">
   <%= render Molecules::PaginationComponent.new(
         current: @page.number,
         total: @page.total_pages,
-        url: ->(number) { catalogue_path(page: number) }
+        url: ->(number) { catalogue_page_path(number) }
       ) %>
 </div>
 
