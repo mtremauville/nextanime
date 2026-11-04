@@ -8,6 +8,7 @@ class AnimesController < ApplicationController
     @search = search_text
     @filters = CatalogueFilters.from_params(params)
     @genres = Genre.order(:name)
+    @genre_counts = AnimeGenre.group(:genre_id).count
     @page = CatalogueQuery.new(page: params[:page], search: @search, filters: @filters).call
     @scorer = MatchScorer.new(taste_profile) if liked_something?(taste_profile)
   end

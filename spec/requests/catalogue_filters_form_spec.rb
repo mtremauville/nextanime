@@ -82,4 +82,27 @@ RSpec.describe "Catalogue filters form", type: :request do
       expect(page_of(response).find("form[role='search']")).to have_no_css("input[type='hidden']", visible: :all)
     end
   end
+
+  describe "genre counts" do
+    it "shows how many anime each genre has" do
+      action = create(:genre, name: "Action")
+      create(:genre, name: "Comédie")
+      create_list(:anime, 2, genres: [ action ])
+
+      get catalogue_path
+
+      expect(filters_form).to have_css("label", text: "Action 2", normalize_ws: true)
+      expect(filters_form).to have_css("label", text: "Comédie 0", normalize_ws: true)
+    end
+
+    it "counts the whole catalogue, whatever the filters" do
+      action = create(:genre, name: "Action")
+      create(:anime, format: :tv, genres: [ action ])
+      create(:anime, format: :movie, genres: [ action ])
+
+      get catalogue_path, params: { formats: %w[movie] }
+
+      expect(filters_form).to have_css("label", text: "Action 2", normalize_ws: true)
+    end
+  end
 end
