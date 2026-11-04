@@ -49,10 +49,11 @@ RSpec.describe Organisms::RecommendationGridComponent, type: :component do
     expect(page).to have_css("img.na-poster-card__image[src='/perfect-blue.jpg']")
   end
 
-  it "does not link to a page that does not exist yet" do
+  it "links each card to the page of its anime" do
     render_grid
 
-    expect(page).to have_no_link
+    expect(page).to have_link("Perfect Blue", href: "/anime/#{perfect_blue.id}")
+    expect(page).to have_link("Monster", href: "/anime/#{monster.id}")
   end
 
   it "shows no reason without an explainer" do

@@ -5,6 +5,7 @@
     <li class="na-reco-grid__item" data-role="recommendation">
       <%= render Molecules::PosterCardComponent.new(
             title: anime.display_title,
+            href: anime_path(anime),
             meta: summary.line,
             tags: summary.genre_labels,
             match: recommendation.match_percentage,
