@@ -11,6 +11,7 @@ class SwipesController < ApplicationController
     swipe_session = SwipeSession.new(session, swiped_anime_ids: swiped_ids)
     @animes = swipe_session.animes
     @completed = swipe_session.completed
+    @dominant_tastes = existing_taste_profile&.dominant_tastes || []
     @deck_finished = @animes.empty? && swiped_ids.any?
   end
 
