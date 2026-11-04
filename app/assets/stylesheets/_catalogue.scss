@@ -139,3 +139,40 @@
     }
   }
 }
+
+.na-search {
+  position: relative;
+  margin-bottom: map-get($na-spacers, 4);
+
+  &__icon {
+    position: absolute;
+    top: 50%;
+    left: map-get($na-spacers, 3);
+    display: flex;
+    transform: translateY(-50%);
+    color: var(--na-muted);
+    pointer-events: none;
+  }
+
+  &__input {
+    width: 100%;
+    min-height: 3.25rem;
+    padding: 0 map-get($na-spacers, 3) 0 2.75rem;
+    border: 1px solid var(--na-border);
+    border-radius: $na-radius-md;
+    background: var(--na-surface);
+    color: inherit;
+    font-size: 1rem;
+    appearance: none;
+
+    &::placeholder {
+      color: var(--na-muted);
+    }
+
+    &:focus {
+      border-color: var(--na-cyan);
+      outline: 2px solid var(--na-cyan);
+      outline-offset: 2px;
+    }
+  }
+}
