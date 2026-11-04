@@ -1,9 +1,14 @@
-<fieldset class="na-filter-group">
+<fieldset class="<%= class_names("na-filter-group", "na-filter-group--pills": pills?) %>">
   <legend class="na-filter-group__legend"><%= legend %></legend>
-  <% options.each do |value, label| %>
+  <% options.each do |value, label, count| %>
     <div class="form-check">
       <%= check_box_tag "#{name}[]", value, checked?(value), id: input_id(value), class: "form-check-input" %>
-      <%= label_tag input_id(value), label, class: "form-check-label" %>
+      <%= label_tag input_id(value), class: "form-check-label" do %>
+        <span><%= label %></span>
+        <% unless count.nil? %>
+          <span class="na-filter-group__count" data-role="count"><%= count %></span>
+        <% end %>
+      <% end %>
     </div>
   <% end %>
 </fieldset>

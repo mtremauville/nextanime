@@ -62,4 +62,56 @@ RSpec.describe Molecules::FilterGroupComponent, type: :component do
 
     expect(page).to have_no_css("fieldset")
   end
+
+  describe "pills variant" do
+    it "is a plain list by default" do
+      render_group
+
+      expect(page).to have_css("fieldset.na-filter-group")
+      expect(page).to have_no_css("fieldset.na-filter-group--pills")
+    end
+
+    it "draws the choices as pills when asked" do
+      render_group(variant: :pills)
+
+      expect(page).to have_css("fieldset.na-filter-group--pills")
+    end
+
+    it "keeps the checkboxes, so that the keyboard and the form still work" do
+      render_group(variant: :pills, selected: %w[ova])
+
+      expect(page).to have_css("input[type='checkbox'][name='formats[]']", count: 3)
+      expect(page).to have_checked_field("OVA")
+    end
+  end
+
+  describe "counts" do
+    def render_counted
+      render_inline(described_class.new(name: "genre_ids", legend: "Genres", options: [ [ 3, "Action", 38 ], [ 5, "Comédie" ] ], selected: []))
+    end
+
+    it "shows the count of a choice that has one" do
+      render_counted
+
+      expect(page).to have_css("[data-role='count']", count: 1, text: "38")
+    end
+
+    it "shows the count inside the label, so that it is read with the choice" do
+      render_counted
+
+      expect(page).to have_css("label [data-role='count']", text: "38")
+    end
+
+    it "shows no count for a choice without one" do
+      render_group
+
+      expect(page).to have_no_css("[data-role='count']")
+    end
+
+    it "shows a count of zero" do
+      render_inline(described_class.new(name: "genre_ids", legend: "Genres", options: [ [ 3, "Action", 0 ] ], selected: []))
+
+      expect(page).to have_css("[data-role='count']", text: "0")
+    end
+  end
 end
