@@ -6,7 +6,10 @@ class AnimesController < ApplicationController
   def index
     taste_profile = existing_taste_profile
     @search = search_text
-    @page = CatalogueQuery.new(page: params[:page], search: @search).call
+    @filters = CatalogueFilters.from_params(params)
+    @genres = Genre.order(:name)
+    @genre_counts = AnimeGenre.group(:genre_id).count
+    @page = CatalogueQuery.new(page: params[:page], search: @search, filters: @filters).call
     @scorer = MatchScorer.new(taste_profile) if liked_something?(taste_profile)
   end
 
@@ -20,7 +23,7 @@ class AnimesController < ApplicationController
 
   # The one place that builds the address of a page of the catalogue, so that the pagination
   # and the "load more" link both keep the search that is under way.
-  def catalogue_page_path(number) = catalogue_path(page: number, q: @search.presence)
+  def catalogue_page_path(number) = catalogue_path(page: number, q: @search.presence, **@filters.to_query_params)
 
   # Only a text is a search: anything else sent as q, an array for instance, is ignored.
   def search_text

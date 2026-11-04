@@ -176,3 +176,201 @@
     }
   }
 }
+
+// The search takes the whole width, then two columns on a wide screen: the filters, the results.
+// On a phone only the results are shown; the filters get their own sheet in a later story.
+.na-catalogue-search {
+  margin-bottom: 1.5rem;
+}
+
+.na-catalogue-layout {
+  @include media-breakpoint-up(md) {
+    display: grid;
+    grid-template-columns: 17.5rem minmax(0, 1fr);
+    gap: 2rem;
+    align-items: start;
+  }
+}
+
+.na-catalogue-layout__results {
+  min-width: 0;
+}
+
+.na-filters {
+  padding: 1.5rem;
+  background: var(--na-surface);
+  border: 1px solid var(--na-border);
+  border-radius: $na-radius-lg;
+
+  .form-control,
+  .form-select {
+    min-height: 2.75rem;
+    font-size: 0.875rem;
+    background-color: var(--bs-body-bg);
+    border-color: var(--na-border);
+    border-radius: $na-radius-md;
+  }
+
+  .form-label {
+    margin-bottom: 0.75rem;
+    font-family: $na-font-accent;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--na-cyan);
+  }
+}
+
+.na-filters__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.na-filters__title {
+  margin: 0;
+  font-family: $na-font-heading;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.na-filters__reset {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--na-cyan);
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    text-decoration: underline;
+  }
+}
+
+.na-filters__years {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  span {
+    color: var(--na-muted);
+  }
+}
+
+.na-filter-group {
+  min-width: 0;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  border: 0;
+}
+
+.na-filter-group__legend {
+  float: none;
+  width: auto;
+  margin-bottom: 0.75rem;
+  padding: 0;
+  font-family: $na-font-accent;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--na-cyan);
+}
+
+.na-filter-group__options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  .form-check {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 2.25rem;
+    margin: 0;
+    padding: 0;
+    font-size: 0.875rem;
+  }
+
+  .form-check-input {
+    flex: none;
+    float: none;
+    width: 1.125rem;
+    height: 1.125rem;
+    margin: 0;
+    background-color: var(--bs-body-bg);
+    border-color: var(--na-border);
+
+    &:checked {
+      background-color: var(--na-magenta);
+      border-color: var(--na-magenta);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--na-cyan);
+      outline-offset: 2px;
+      box-shadow: none;
+    }
+  }
+
+  .form-check-label {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    cursor: pointer;
+  }
+}
+
+.na-filter-group__count {
+  font-family: $na-font-accent;
+  font-size: 0.75rem;
+  color: var(--na-muted);
+}
+
+// The formats are pills: the checkbox stays in the page for the keyboard but is not drawn.
+.na-filter-group--pills .na-filter-group__options {
+  flex-flow: row wrap;
+  gap: 0.5rem;
+
+  .form-check {
+    position: relative;
+    min-height: 0;
+  }
+
+  .form-check-input {
+    position: absolute;
+    opacity: 0;
+  }
+
+  .form-check-label {
+    min-height: 2.75rem;
+    padding: 0 1rem;
+    font-weight: 600;
+    border: 1px solid var(--na-border);
+    border-radius: $na-radius-pill;
+  }
+
+  .form-check-input:checked + .form-check-label {
+    border-color: var(--na-magenta);
+    background: rgba(255, 46, 147, 0.12);
+  }
+
+  .form-check-input:focus-visible + .form-check-label {
+    outline: 2px solid var(--na-cyan);
+    outline-offset: 2px;
+  }
+}
+
+// The filters apply as soon as they change. The button is only for visitors without scripts,
+// so it is hidden from the start, which avoids a flash before the controller starts.
+.btn.na-filters__apply {
+  display: none;
+
+  @media (scripting: none) {
+    display: block;
+  }
+}

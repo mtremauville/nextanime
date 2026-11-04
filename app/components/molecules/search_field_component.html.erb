@@ -2,4 +2,7 @@
   <label class="visually-hidden" for="<%= field_id %>"><%= label %></label>
   <span class="na-search__icon" aria-hidden="true"><i class="bi bi-search"></i></span>
   <%= search_field_tag PARAM, value, id: field_id, class: "na-search__input", placeholder: placeholder, enterkeyhint: "search" %>
+  <% hidden_fields.each do |name, value| %>
+    <%= hidden_field_tag name, value, id: nil %>
+  <% end %>
 <% end %>
