@@ -1,0 +1,246 @@
+// Page of one anime: hero, synopsis, tags with gauges and the information card.
+
+.na-anime-page__back {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  margin: 0.5rem 0 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--na-muted);
+  text-decoration: none;
+}
+
+.na-anime-page__columns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3rem;
+  margin-top: 4rem;
+}
+
+.na-anime-page__main {
+  flex: 1 1 32rem;
+  min-width: 0;
+
+  > section { margin-bottom: 2.5rem; }
+}
+
+.na-anime-page__heading {
+  margin: 0 0 1rem;
+  font-family: $na-font-heading;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.na-anime-page__synopsis {
+  max-width: 40rem;
+  line-height: 1.7;
+  color: var(--na-muted);
+}
+
+// Hero
+
+.na-anime-hero__banner {
+  height: 12.5rem;
+  overflow: hidden;
+  background: var(--na-poster-magenta);
+  border-radius: $na-radius-lg;
+}
+
+.na-anime-hero__banner-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.na-anime-hero__body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem 3rem;
+  align-items: flex-start;
+  margin-top: -3rem;
+  padding: 0 1.5rem;
+}
+
+.na-anime-hero__cover {
+  display: block;
+  flex: 0 0 17.5rem;
+  width: 17.5rem;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border: 1px solid var(--na-magenta);
+  border-radius: $na-radius-lg;
+}
+
+.na-anime-hero__text {
+  flex: 1 1 32rem;
+  min-width: 0;
+  padding-top: 3.5rem;
+}
+
+.na-anime-hero__eyebrow {
+  margin: 0 0 0.5rem;
+  font-family: $na-font-accent;
+  font-size: 0.875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--na-cyan);
+}
+
+.na-anime-hero__title {
+  margin: 0 0 0.5rem;
+  font-family: $na-font-heading;
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.na-anime-hero__meta {
+  margin: 0 0 1.5rem;
+  color: var(--na-muted);
+}
+
+.na-anime-hero__genres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0 0 2rem;
+  list-style: none;
+}
+
+@media (max-width: 767.98px) {
+  .na-anime-hero__banner { height: 8.75rem; }
+  .na-anime-hero__body { margin-top: -4.5rem; padding: 0 1rem; gap: 1.5rem; }
+  .na-anime-hero__cover { flex-basis: 7.5rem; width: 7.5rem; }
+  .na-anime-hero__text { padding-top: 0; }
+  .na-anime-hero__title { font-size: 2rem; }
+}
+
+// Match panel
+
+.na-match-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 1.5rem;
+  background: var(--na-surface);
+  border: 1px solid var(--na-border);
+  border-radius: $na-radius-lg;
+}
+
+.na-match-panel__percent {
+  margin: 0;
+  font-family: $na-font-accent;
+  font-size: 3rem;
+  line-height: 1;
+  color: var(--na-cyan);
+  text-shadow: 0 0 1.25rem rgba(25, 227, 242, 0.35);
+}
+
+.na-match-panel__label {
+  margin: 0.25rem 0 0;
+  font-family: $na-font-accent;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--na-muted);
+}
+
+.na-match-panel__reason {
+  flex: 1 1 17rem;
+  min-width: 0;
+}
+
+.na-match-panel__why {
+  margin: 0 0 0.25rem;
+  font-family: $na-font-accent;
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--na-cyan);
+}
+
+.na-match-panel__text {
+  margin: 0;
+  line-height: 1.5;
+}
+
+// Tags with gauges
+
+.na-tag-gauges {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 32.5rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.na-tag-gauges__item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.na-tag-gauges__name {
+  flex: 0 0 8.75rem;
+  font-size: 0.875rem;
+}
+
+.na-tag-gauges__bar {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.na-tag-gauges__rank {
+  flex: 0 0 2.75rem;
+  font-family: $na-font-accent;
+  font-size: 0.875rem;
+  color: var(--na-muted);
+  text-align: right;
+}
+
+// Information card
+
+.na-info-card {
+  flex: 0 1 22.5rem;
+  align-self: flex-start;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 1.5rem;
+  background: var(--na-surface);
+  border: 1px solid var(--na-border);
+  border-radius: $na-radius-lg;
+}
+
+.na-info-card__title {
+  margin: 0 0 1rem;
+  font-family: $na-font-heading;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.na-info-card__list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem 1.5rem;
+  margin: 0;
+}
+
+.na-info-card__label {
+  margin: 0 0 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--na-muted);
+}
+
+.na-info-card__value {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
