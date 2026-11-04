@@ -41,4 +41,40 @@ RSpec.describe Organisms::TasteProfilePanelComponent, type: :component do
       expect(page).to have_no_link("Voir mon profil complet")
     end
   end
+
+  context "with dominant tastes" do
+    let(:tastes) do
+      [
+        TasteProfile::Taste.new(name: "Thriller", weight: 0.9, kind: :genre),
+        TasteProfile::Taste.new(name: "Mind Games", weight: 0.6, kind: :tag)
+      ]
+    end
+
+    before { render_inline(described_class.new(tastes: tastes)) }
+
+    it "lists each taste with its name and its percentage" do
+      expect(page).to have_css("[data-role='taste']", count: 2)
+      expect(page).to have_css("[data-role='taste']", text: "Thriller")
+      expect(page).to have_css("[data-role='taste']", text: "90 %")
+      expect(page).to have_css("[data-role='taste']", text: "60 %")
+    end
+
+    it "draws a gauge for each taste" do
+      expect(page).to have_css("[role='progressbar'][aria-valuenow='90'][aria-label='Thriller']")
+      expect(page).to have_css("[role='progressbar'][aria-valuenow='60'][aria-label='Mind Games']")
+    end
+
+    it "colours a genre in magenta and a tag in cyan" do
+      expect(page.find("[data-role='taste']", text: "Thriller")).to have_no_css(".na-meter__fill--cyan")
+      expect(page.find("[data-role='taste']", text: "Mind Games")).to have_css(".na-meter__fill--cyan")
+    end
+
+    it "no longer shows the empty message" do
+      expect(page).to have_no_text("Swipe quelques animes pour dessiner ton profil.")
+    end
+
+    it "can be replaced thanks to its id" do
+      expect(page).to have_css("aside#taste-profile-panel")
+    end
+  end
 end

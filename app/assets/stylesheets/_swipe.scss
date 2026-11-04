@@ -287,3 +287,25 @@ $na-cover-dark: #0B0A14;
   padding-top: 1rem;
   border-top: 1px solid var(--na-border);
 }
+
+.na-side-panel__tastes {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+}
+
+.na-side-panel__taste {
+  align-items: baseline;
+  display: grid;
+  gap: .25rem .75rem;
+  grid-template-columns: 1fr auto;
+}
+
+.na-side-panel__taste-name { font-size: .875rem; overflow-wrap: anywhere; }
+
+.na-side-panel__taste-weight { color: var(--bs-secondary-color); font-size: .8125rem; }
+
+.na-side-panel__taste-bar { grid-column: 1 / -1; }

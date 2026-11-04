@@ -1,7 +1,19 @@
-<aside class="na-side-panel" aria-labelledby="taste-profile-title">
+<aside class="na-side-panel" id="taste-profile-panel" aria-labelledby="taste-profile-title">
   <p class="na-eyebrow"><%= I18n.t("swipes.taste_profile.eyebrow") %></p>
   <h2 class="na-side-panel__title" id="taste-profile-title"><%= I18n.t("swipes.taste_profile.title") %></h2>
-  <p class="na-side-panel__empty"><%= I18n.t("swipes.taste_profile.empty") %></p>
+  <% if tastes.any? %>
+    <ul class="na-side-panel__tastes" data-list="tastes">
+      <% tastes.each do |taste| %>
+        <li class="na-side-panel__taste" data-role="taste">
+          <span class="na-side-panel__taste-name"><%= taste.name %></span>
+          <span class="na-side-panel__taste-weight"><%= I18n.t("swipes.taste_profile.percent", percent: percentage(taste)) %></span>
+          <div class="na-side-panel__taste-bar"><%= render Atoms::MeterComponent.new(value: percentage(taste), label: taste.name, tone: tone_for(taste)) %></div>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="na-side-panel__empty"><%= I18n.t("swipes.taste_profile.empty") %></p>
+  <% end %>
   <% if href %>
     <%= link_to label, href, class: "na-side-panel__link" %>
   <% end %>

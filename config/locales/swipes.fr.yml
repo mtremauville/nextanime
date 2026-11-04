@@ -19,6 +19,7 @@ fr:
       empty: Swipe quelques animes pour dessiner ton profil.
       link: Voir mon profil complet →
       save_link: Sauvegarder mon profil →
+      percent: "%{percent} %"
     history:
       eyebrow: Derniers swipes
       title: Ton historique
