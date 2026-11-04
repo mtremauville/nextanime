@@ -177,4 +177,71 @@ RSpec.describe "Catalogue", type: :request do
       expect(block).to have_no_css("a")
     end
   end
+
+  describe "GET /catalogue with a search" do
+    before do
+      create_ranked_animes(3)
+      13.times do |index|
+        create(:anime, title_romaji: "Monster #{index}", title_english: nil, popularity: 500 - index)
+      end
+    end
+
+    it "lists only the anime that match" do
+      get catalogue_path(q: "monster")
+
+      expect(titles.size).to eq(12)
+      expect(titles).to all(start_with("Monster"))
+    end
+
+    it "counts the matches only" do
+      get catalogue_path(q: "monster")
+
+      expect(document).to have_css("[data-role='results']", text: "13 résultats")
+    end
+
+    it "shows the text that was searched in the field" do
+      get catalogue_path(q: "monster")
+
+      expect(document).to have_field("Rechercher un anime", with: "monster")
+    end
+
+    it "keeps the search in the links of the pagination" do
+      get catalogue_path(q: "monster")
+
+      expect(document).to have_css("nav[aria-label='Pagination'] a[rel='next'][href='/catalogue?page=2&q=monster']")
+    end
+
+    it "keeps the search in the load more link" do
+      get catalogue_path(q: "monster")
+
+      expect(document).to have_css("#load-more a[href='/catalogue?page=2&q=monster']")
+    end
+
+    it "shows the next matches on the next page" do
+      get catalogue_path(q: "monster", page: 2)
+
+      expect(titles).to eq([ "Monster 12" ])
+    end
+
+    it "keeps the search when more anime are loaded with a turbo stream" do
+      get catalogue_path(q: "monster", page: 1), headers: { "Accept" => "text/vnd.turbo-stream.html" }
+
+      expect(response.body).to include('href="/catalogue?page=2&amp;q=monster"')
+    end
+
+    it "shows an empty grid, not an error, when nothing matches" do
+      get catalogue_path(q: "zzz")
+
+      expect(response).to have_http_status(:ok)
+      expect(titles).to be_empty
+      expect(document).to have_css("[data-role='results']", text: "0 résultat")
+    end
+
+    it "ignores a search that is not a text" do
+      get catalogue_path(q: [ "monster" ])
+
+      expect(response).to have_http_status(:ok)
+      expect(titles.size).to eq(12)
+    end
+  end
 end

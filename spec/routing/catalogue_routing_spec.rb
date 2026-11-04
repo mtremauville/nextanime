@@ -12,4 +12,8 @@ RSpec.describe "Catalogue routing", type: :routing do
   it "names the route catalogue_path" do
     expect(catalogue_path).to eq("/catalogue")
   end
+
+  it "keeps the search text as a parameter" do
+    expect(get: "/catalogue?q=monster").to route_to("animes#index", q: "monster")
+  end
 end

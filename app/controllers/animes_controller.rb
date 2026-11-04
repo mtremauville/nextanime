@@ -1,9 +1,12 @@
 class AnimesController < ApplicationController
   include CurrentTasteProfile
 
+  helper_method :catalogue_page_path
+
   def index
     taste_profile = existing_taste_profile
-    @page = CatalogueQuery.new(page: params[:page]).call
+    @search = search_text
+    @page = CatalogueQuery.new(page: params[:page], search: @search).call
     @scorer = MatchScorer.new(taste_profile) if liked_something?(taste_profile)
   end
 
@@ -14,6 +17,16 @@ class AnimesController < ApplicationController
   end
 
   private
+
+  # The one place that builds the address of a page of the catalogue, so that the pagination
+  # and the "load more" link both keep the search that is under way.
+  def catalogue_page_path(number) = catalogue_path(page: number, q: @search.presence)
+
+  # Only a text is a search: anything else sent as q, an array for instance, is ignored.
+  def search_text
+    text = params[:q]
+    text.is_a?(String) ? text.strip : ""
+  end
 
   # Without any like there is nothing to compare the anime with: no match is shown then.
   def liked_something?(taste_profile)

@@ -15,3 +15,6 @@ fr:
       results:
         one: "%{count} résultat"
         other: "%{count} résultats"
+    search:
+      label: Rechercher un anime
+      placeholder: "Rechercher un titre, un studio…"

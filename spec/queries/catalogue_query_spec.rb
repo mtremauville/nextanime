@@ -109,4 +109,100 @@ RSpec.describe CatalogueQuery, type: :query do
       expect(anime.association(:anime_tags)).to be_loaded
     end
   end
+
+  describe "#call with a search" do
+    def create_anime(title, **attributes)
+      create(:anime, title_romaji: title, title_english: nil, title_native: nil, **attributes)
+    end
+
+    def search_titles(text) = titles(described_class.new(search: text).call)
+
+    it "finds an anime by a part of its title, whatever the case" do
+      create_anime("Monster")
+      create_anime("Frieren")
+
+      expect(search_titles("MONST")).to eq(%w[Monster])
+    end
+
+    it "finds an anime by its English title" do
+      create_anime("Sousou no Frieren", title_english: "Frieren: Beyond Journey's End")
+      create_anime("Monster")
+
+      expect(search_titles("beyond")).to eq([ "Sousou no Frieren" ])
+    end
+
+    it "finds an anime by its native title" do
+      create_anime("Sousou no Frieren", title_native: "葬送のフリーレン")
+      create_anime("Monster")
+
+      expect(search_titles("フリーレン")).to eq([ "Sousou no Frieren" ])
+    end
+
+    it "finds an anime by the name of one of its studios, not only the main one" do
+      mappa = create(:studio, name: "MAPPA")
+      create_anime("Jujutsu Kaisen", studios: [ mappa ])
+      create_anime("Monster")
+
+      expect(search_titles("mappa")).to eq([ "Jujutsu Kaisen" ])
+    end
+
+    it "lists an anime once even when several things match" do
+      studios = [ create(:studio, name: "MAPPA"), create(:studio, name: "MAPPA Pro") ]
+      create_anime("Mappa Story", studios: studios)
+
+      page = described_class.new(search: "mappa").call
+
+      expect(titles(page)).to eq([ "Mappa Story" ])
+      expect(page.total_count).to eq(1)
+    end
+
+    it "ignores the blanks around the text" do
+      create_anime("Monster")
+
+      expect(search_titles("  monster ")).to eq(%w[Monster])
+    end
+
+    it "gives the whole catalogue for a blank text" do
+      create_anime("Monster")
+      create_anime("Frieren")
+
+      [ nil, "", "   " ].each { |blank| expect(search_titles(blank).size).to eq(2) }
+    end
+
+    it "reads % and _ as simple characters" do
+      create_anime("100% Pure")
+      create_anime("Death_Note")
+      create_anime("DeathXNote")
+
+      expect(search_titles("%")).to eq([ "100% Pure" ])
+      expect(search_titles("death_n")).to eq([ "Death_Note" ])
+    end
+
+    it "keeps the most popular first among the results" do
+      create_anime("Monster Quiet", popularity: 1)
+      create_anime("Monster Famous", popularity: 900)
+      create_anime("Frieren", popularity: 500)
+
+      expect(search_titles("monster")).to eq([ "Monster Famous", "Monster Quiet" ])
+    end
+
+    it "pages through the results only" do
+      5.times { |index| create_anime("Monster #{index}", popularity: 100 - index) }
+      create_anime("Frieren")
+
+      page = described_class.new(search: "monster", page: 3, per_page: 2).call
+
+      expect(titles(page)).to eq([ "Monster 4" ])
+      expect([ page.total_count, page.total_pages ]).to eq([ 5, 3 ])
+    end
+
+    it "gives one empty page when nothing matches" do
+      create_anime("Monster")
+
+      page = described_class.new(search: "zzz").call
+
+      expect(page.animes).to be_empty
+      expect([ page.number, page.total_pages, page.total_count ]).to eq([ 1, 1, 0 ])
+    end
+  end
 end
