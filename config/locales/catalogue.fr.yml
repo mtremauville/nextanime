@@ -1,5 +1,16 @@
 fr:
   catalogue:
+    filters:
+      title: Filtres
+      genres: Genres
+      format: Format
+      status: Statut
+      season: Saison
+      all_seasons: Toutes les saisons
+      years: Année
+      year_from: Depuis
+      year_to: "Jusqu'à"
+      apply: Appliquer
     pagination:
       label: Pagination
       previous: "← Précédent"
