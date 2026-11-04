@@ -1,0 +1,33 @@
+<header class="na-anime-hero">
+  <div class="na-anime-hero__banner" aria-hidden="true">
+    <% if anime.banner_image_url %>
+      <img class="na-anime-hero__banner-image" src="<%= anime.banner_image_url %>" alt="" loading="lazy">
+    <% end %>
+  </div>
+  <div class="na-anime-hero__body">
+    <% if anime.cover_image_url %>
+      <img class="na-anime-hero__cover" src="<%= anime.cover_image_url %>" alt="">
+    <% else %>
+      <div class="na-anime-hero__cover na-poster--violet" aria-hidden="true"></div>
+    <% end %>
+    <div class="na-anime-hero__text">
+      <% if details.eyebrow %>
+        <p class="na-anime-hero__eyebrow"><%= details.eyebrow %></p>
+      <% end %>
+      <h1 class="na-anime-hero__title"><%= anime.display_title %></h1>
+      <% if details.meta %>
+        <p class="na-anime-hero__meta"><%= details.meta %></p>
+      <% end %>
+      <% if details.genre_labels.any? %>
+        <ul class="na-anime-hero__genres">
+          <% details.genre_labels.each do |genre| %>
+            <li><%= render Atoms::TagComponent.new(label: genre) %></li>
+          <% end %>
+        </ul>
+      <% end %>
+      <% if match_percent %>
+        <%= render Molecules::MatchPanelComponent.new(percent: match_percent, reason: reason) %>
+      <% end %>
+    </div>
+  </div>
+</header>

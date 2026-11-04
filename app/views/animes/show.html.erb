@@ -1,0 +1,23 @@
+<div class="na-anime-page">
+  <%= link_to t(".back"), recommendations_path, class: "na-anime-page__back" %>
+
+  <%= render Organisms::AnimeHeroComponent.new(anime: @anime, details: @details, match_percent: @match_percent, reason: @reason) %>
+
+  <div class="na-anime-page__columns">
+    <div class="na-anime-page__main">
+      <% if @details.synopsis %>
+        <section>
+          <h2 class="na-anime-page__heading"><%= t(".synopsis") %></h2>
+          <div class="na-anime-page__synopsis"><%= sanitize(@details.synopsis, tags: %w[br i b em strong], attributes: []) %></div>
+        </section>
+      <% end %>
+      <% if @details.tags.any? %>
+        <section>
+          <h2 class="na-anime-page__heading"><%= t(".tags") %></h2>
+          <%= render Molecules::TagGaugeListComponent.new(tags: @details.tags) %>
+        </section>
+      <% end %>
+    </div>
+    <%= render Molecules::InfoCardComponent.new(rows: @details.information) %>
+  </div>
+</div>

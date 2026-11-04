@@ -1,0 +1,13 @@
+<% if rows.any? %>
+  <aside class="na-info-card" aria-labelledby="anime-info-title">
+    <h2 class="na-info-card__title" id="anime-info-title"><%= t("anime_page.information.title") %></h2>
+    <dl class="na-info-card__list">
+      <% rows.each do |label, value| %>
+        <div class="na-info-card__row">
+          <dt class="na-info-card__label"><%= label %></dt>
+          <dd class="na-info-card__value"><%= value %></dd>
+        </div>
+      <% end %>
+    </dl>
+  </aside>
+<% end %>

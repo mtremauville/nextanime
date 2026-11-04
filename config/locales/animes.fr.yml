@@ -11,3 +11,26 @@ fr:
     episodes:
       one: "%{count} épisode"
       other: "%{count} épisodes"
+    statuses:
+      finished: Terminé
+      releasing: En cours de diffusion
+      not_yet_released: Pas encore diffusé
+      cancelled: Annulé
+      hiatus: En pause
+    seasons:
+      winter: Hiver
+      spring: Printemps
+      summer: Été
+      fall: Automne
+    score: "%{score} / 100"
+    information:
+      format: Format
+      episodes: Épisodes
+      studio: Studio
+      season: Saison
+      status: Statut
+      score: Note moyenne
+    show:
+      back: "← Retour aux recommandations"
+      synopsis: Synopsis
+      tags: Tags
