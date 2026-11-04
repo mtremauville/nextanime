@@ -129,5 +129,11 @@ RSpec.describe AnimeDetails do
     it "leaves out what is unknown" do
       expect(details_of(anime_with(format: :movie)).information).to eq([ [ "Format", "Film" ] ])
     end
+
+    it "leaves out the format when it is unknown" do
+      details = described_class.new(build(:anime, format: nil))
+
+      expect(details.information.map(&:first)).not_to include(I18n.t("animes.information.format"))
+    end
   end
 end
