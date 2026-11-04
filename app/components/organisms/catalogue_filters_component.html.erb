@@ -4,7 +4,7 @@
     <%= link_to t("catalogue.filters.reset"), reset_path, class: "na-filters__reset" %>
   </div>
 
-  <%= form_with url: action, method: :get do %>
+  <%= form_with url: action, method: :get, data: { controller: "auto-submit", action: "change->auto-submit#submit" } do %>
     <% if search.present? %>
       <%= hidden_field_tag Molecules::SearchFieldComponent::PARAM, search, id: nil %>
     <% end %>
@@ -26,6 +26,6 @@
 
     <%= render Molecules::FilterGroupComponent.new(name: "statuses", legend: t("catalogue.filters.status"), options: status_options, selected: filters.statuses) %>
 
-    <%= submit_tag t("catalogue.filters.apply"), name: nil, class: "btn btn-primary w-100" %>
+    <%= submit_tag t("catalogue.filters.apply"), name: nil, class: "btn btn-primary w-100", data: { auto_submit_target: "submit" } %>
   <% end %>
 </aside>

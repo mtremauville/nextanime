@@ -17,10 +17,7 @@ RSpec.describe "Filtering the catalogue", type: :system, js: true do
     it "narrows the list to the chosen format" do
       visit catalogue_path
 
-      within("aside[aria-label='Filtres']") do
-        check "Film"
-        click_button "Appliquer"
-      end
+      within("aside[aria-label='Filtres']") { check "Film" }
 
       expect(page).to have_css("[data-role='catalogue-item']", count: 1)
       expect(titles).to eq([ "A film" ])
@@ -46,6 +43,33 @@ RSpec.describe "Filtering the catalogue", type: :system, js: true do
       expect(page).to have_css("[data-role='catalogue-item']", count: 2)
       expect(titles).not_to include("A film")
       expect(page).to have_checked_field("Série")
+    end
+
+    it "applies a filter as soon as its box is checked, with no button to click" do
+      visit catalogue_path
+
+      within("aside[aria-label='Filtres']") { check "Série" }
+
+      expect(page).to have_css("[data-role='catalogue-item']", count: 2)
+      expect(titles).to match_array([ "Series one", "Series two" ])
+    end
+
+    it "applies the first year as soon as the field is left" do
+      create(:anime, title_romaji: "Old", season_year: 1990)
+      create(:anime, title_romaji: "New", season_year: 2010)
+      visit catalogue_path
+
+      fill_in "Année minimale", with: "2000"
+      find_field("Année minimale").send_keys(:tab)
+
+      expect(page).to have_css("[data-role='catalogue-item']", count: 1)
+      expect(titles).to eq([ "New" ])
+    end
+
+    it "hides the button that only visitors without scripts need" do
+      visit catalogue_path
+
+      expect(page).to have_no_button("Appliquer")
     end
   end
 

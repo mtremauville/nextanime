@@ -174,4 +174,16 @@ RSpec.describe Organisms::CatalogueFiltersComponent, type: :component do
       expect(page).to have_no_css("[data-role='count']")
     end
   end
+
+  describe "auto-submit controller" do
+    before { render_filters }
+
+    it "sends the form whenever a field changes" do
+      expect(page).to have_css("form[data-controller='auto-submit'][data-action='change->auto-submit#submit']")
+    end
+
+    it "lets the controller hide the button, which stays for visitors without scripts" do
+      expect(page).to have_css("input[type='submit'][data-auto-submit-target='submit']")
+    end
+  end
 end
