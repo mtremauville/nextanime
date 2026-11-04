@@ -1,0 +1,5 @@
+<%= render Molecules::LoadMoreComponent.new(
+      shown: page.shown_count,
+      total: page.total_count,
+      next_url: (catalogue_path(page: page.next_number) if page.next_number)
+    ) %>

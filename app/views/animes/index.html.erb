@@ -1,2 +1,19 @@
-<h1 class="h3">Catalogue</h1>
-<p class="text-body-secondary">Cette page arrive bientôt.</p>
+<header class="na-catalogue-header">
+  <p class="na-eyebrow"><%= t("catalogue.index.eyebrow") %></p>
+  <h1 class="na-catalogue-header__title"><%= t("catalogue.index.title") %></h1>
+  <p class="na-catalogue-header__results" data-role="results" role="status"><%= t("catalogue.index.results", count: @page.total_count) %></p>
+</header>
+
+<%= render Organisms::CatalogueGridComponent.new(animes: @page.animes, scorer: @scorer) %>
+
+<div class="d-none d-md-block">
+  <%= render Molecules::PaginationComponent.new(
+        current: @page.number,
+        total: @page.total_pages,
+        url: ->(number) { catalogue_path(page: number) }
+      ) %>
+</div>
+
+<div class="d-md-none">
+  <%= render "load_more", page: @page %>
+</div>
