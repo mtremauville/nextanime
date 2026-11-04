@@ -8,7 +8,8 @@
             meta: summary.line,
             tags: summary.genre_labels,
             match: recommendation.match_percentage,
-            image_url: anime.cover_image_url
+            image_url: anime.cover_image_url,
+            reason: explainer&.call(anime)
           ) %>
     </li>
   <% end %>

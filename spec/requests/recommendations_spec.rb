@@ -244,4 +244,44 @@ RSpec.describe "Recommendations", type: :request do
       expect(page).to have_text("Aucune recommandation")
     end
   end
+
+  describe "GET /recos explanation of the match" do
+    let(:mind_games) { create(:tag, name: "Mind Games") }
+    let(:liked) { create(:anime, genres: [ thriller ]) }
+    let!(:candidates) do
+      Array.new(3) do |index|
+        create(:anime, title_romaji: "Candidate #{index}", title_english: nil, genres: [ thriller ]).tap do |anime|
+          create(:anime_tag, anime: anime, tag: mind_games, rank: 70)
+        end
+      end
+    end
+
+    def tag_query_count
+      count = 0
+      counter = lambda do |*, payload|
+        count += 1 if payload[:sql].match?(/FROM "(anime_tags|tags)"/)
+      end
+      ActiveSupport::Notifications.subscribed(counter, "sql.active_record") { yield }
+      count
+    end
+
+    before do
+      create(:anime_tag, anime: liked, tag: mind_games, rank: 80)
+      sign_in user
+      user.create_taste_profile!.record_swipe(liked, liked: true)
+    end
+
+    it "tells why each anime fits, from the tags and genres in common" do
+      get recommendations_path
+
+      expect(cards.size).to eq(3)
+      expect(page).to have_css(".na-poster-card__reason", text: "Parce que tu aimes Mind Games et Thriller.", count: 3)
+    end
+
+    it "loads the tags of all the recommendations at once" do
+      get recommendations_path
+
+      expect(tag_query_count { get recommendations_path }).to be <= 2
+    end
+  end
 end

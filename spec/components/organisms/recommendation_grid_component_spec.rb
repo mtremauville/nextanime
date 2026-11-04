@@ -54,4 +54,36 @@ RSpec.describe Organisms::RecommendationGridComponent, type: :component do
 
     expect(page).to have_no_link
   end
+
+  it "shows no reason without an explainer" do
+    render_grid
+
+    expect(page).to have_no_css(".na-poster-card__reason")
+  end
+
+  context "with an explainer" do
+    subject(:render_grid) do
+      render_inline(described_class.new(recommendations: recommendations, explainer: explainer))
+    end
+
+    let(:explainer) { instance_double(MatchExplainer) }
+
+    before do
+      allow(explainer).to receive(:call).with(perfect_blue).and_return("Parce que tu aimes Thriller.")
+      allow(explainer).to receive(:call).with(monster).and_return(nil)
+    end
+
+    it "shows the reason of the cards that have one" do
+      render_grid
+
+      expect(page).to have_css("p.na-poster-card__reason", text: "Parce que tu aimes Thriller.", count: 1)
+    end
+
+    it "leaves a card without reason when nothing is said about it" do
+      render_grid
+
+      expect(page).to have_css("[data-role='recommendation']", count: 2)
+      expect(page).to have_css(".na-poster-card__reason", count: 1)
+    end
+  end
 end

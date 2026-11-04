@@ -39,6 +39,6 @@
           link_variant: :outline
         ) %>
   <% else %>
-    <%= render Organisms::RecommendationGridComponent.new(recommendations: @recommendations) %>
+    <%= render Organisms::RecommendationGridComponent.new(recommendations: @recommendations, explainer: @explainer) %>
   <% end %>
 <% end %>
