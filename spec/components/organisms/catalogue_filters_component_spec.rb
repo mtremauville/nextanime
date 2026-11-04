@@ -186,4 +186,30 @@ RSpec.describe Organisms::CatalogueFiltersComponent, type: :component do
       expect(page).to have_css("input[type='submit'].na-filters__apply")
     end
   end
+
+  describe "the sort under way" do
+    it "is kept in a hidden field, so that filtering does not erase it" do
+      render_inline(described_class.new(action: "/catalogue", filters: no_filter, genres: genres, sort: "score"))
+
+      expect(page).to have_css("form input[type='hidden'][name='sort'][value='score']", visible: :all)
+    end
+
+    it "adds no field when none was chosen" do
+      render_filters
+
+      expect(page).to have_no_css("input[name='sort']", visible: :all)
+    end
+
+    it "is kept when resetting the filters" do
+      render_inline(described_class.new(action: "/catalogue", filters: no_filter, genres: genres, sort: "score"))
+
+      expect(page).to have_link("Réinitialiser", href: "/catalogue?sort=score")
+    end
+
+    it "is kept next to the search when resetting the filters" do
+      render_inline(described_class.new(action: "/catalogue", filters: no_filter, genres: genres, search: "monster", sort: "score"))
+
+      expect(page).to have_link("Réinitialiser", href: "/catalogue?q=monster&sort=score")
+    end
+  end
 end

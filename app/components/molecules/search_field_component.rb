@@ -17,13 +17,6 @@ module Molecules
 
     attr_reader :action, :label, :placeholder, :value, :hidden
 
-    # One [name, value] pair for each hidden input; a list is sent as name[].
-    def hidden_fields
-      hidden.flat_map do |name, value|
-        Array.wrap(value).map { |item| [ value.is_a?(Array) ? "#{name}[]" : name, item ] }
-      end
-    end
-
     def field_id = "search-#{PARAM}"
   end
 end

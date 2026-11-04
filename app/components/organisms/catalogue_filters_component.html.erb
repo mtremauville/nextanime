@@ -5,9 +5,7 @@
   </div>
 
   <%= form_with url: action, method: :get, data: { controller: "auto-submit", action: "change->auto-submit#submit" } do %>
-    <% if search.present? %>
-      <%= hidden_field_tag Molecules::SearchFieldComponent::PARAM, search, id: nil %>
-    <% end %>
+    <%= render Atoms::HiddenFieldsComponent.new(fields: carried) %>
 
     <%= render Molecules::FilterGroupComponent.new(name: "genre_ids", legend: t("catalogue.filters.genres"), options: genre_options, selected: filters.genre_ids) %>
     <%= render Molecules::FilterGroupComponent.new(name: "formats", legend: t("catalogue.filters.format"), options: format_options, selected: filters.formats, variant: :pills) %>

@@ -1,20 +1,21 @@
 module Organisms
-  # The filters of the catalogue, in a form that sends them with a GET. The search under way
-  # rides along in a hidden field, so that filtering does not erase it.
+  # The filters of the catalogue, in a form that sends them with a GET. The search and the sort
+  # under way ride along in hidden fields, so that filtering does not erase them.
   # genre_counts maps a genre id to the number of anime it has; without it no count is shown.
   class CatalogueFiltersComponent < ViewComponent::Base
-    def initialize(action:, filters:, genres:, search: nil, genre_counts: nil)
+    def initialize(action:, filters:, genres:, search: nil, sort: nil, genre_counts: nil)
       @action = action
       @filters = filters
       @genres = genres
       @search = search
+      @sort = sort
       @genre_counts = genre_counts
       super()
     end
 
     private
 
-    attr_reader :action, :filters, :genres, :search, :genre_counts
+    attr_reader :action, :filters, :genres, :search, :sort, :genre_counts
 
     def genre_options = genres.map { |genre| [ genre.id, genre.name, count_of(genre) ] }
 
@@ -30,9 +31,14 @@ module Organisms
       genre_counts.fetch(genre.id, 0) if genre_counts
     end
 
-    # Resetting clears the filters but not the search.
+    # What a change of filters must not lose: the search and the sort.
+    def carried
+      { Molecules::SearchFieldComponent::PARAM => search.presence, sort: sort.presence }.compact
+    end
+
+    # Resetting clears the filters but keeps the search and the sort.
     def reset_path
-      search.present? ? "#{action}?#{{ Molecules::SearchFieldComponent::PARAM => search }.to_query}" : action
+      carried.empty? ? action : "#{action}?#{carried.to_query}"
     end
   end
 end

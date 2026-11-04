@@ -374,3 +374,53 @@
     display: block;
   }
 }
+
+// The sort list. On a phone the label is only for screen readers, as in the mockup.
+.na-sort {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.na-sort__label {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--na-muted);
+
+  @include media-breakpoint-down(sm) {
+    @include visually-hidden;
+  }
+}
+
+.na-sort__select {
+  width: auto;
+  min-height: 2.75rem;
+  font-size: 0.875rem;
+  background-color: var(--na-surface);
+  border-color: var(--na-border);
+  border-radius: $na-radius-md;
+}
+
+// Like the filters: the button is only for visitors without scripts.
+.btn.na-sort__apply {
+  display: none;
+
+  @media (scripting: none) {
+    display: inline-block;
+  }
+}
+
+// The sort sits above the results: on the right of a wide screen, over the whole width of a phone.
+.na-catalogue-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+
+  @include media-breakpoint-down(sm) {
+    .na-sort,
+    .na-sort__select {
+      flex: 1 1 auto;
+      width: 100%;
+    }
+  }
+}

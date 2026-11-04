@@ -1,5 +1,13 @@
 fr:
   catalogue:
+    sort:
+      label: Trier par
+      apply: Trier
+      match: Meilleur match
+      popularity: Popularité
+      score: Note
+      recent: Plus récents
+      title: Titre A–Z
     filters:
       title: Filtres
       genres: Genres
