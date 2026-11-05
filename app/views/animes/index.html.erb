@@ -1,3 +1,5 @@
+<% filters_sheet_id = "filters-sheet" %>
+
 <header class="na-catalogue-header">
   <p class="na-eyebrow"><%= t("catalogue.index.eyebrow") %></p>
   <h1 class="na-catalogue-header__title"><%= t("catalogue.index.title") %></h1>
@@ -28,6 +30,25 @@
 
   <div class="na-catalogue-layout__results">
     <div class="na-catalogue-toolbar">
+      <div class="na-catalogue-toolbar__filters d-md-none">
+        <%= render Organisms::BottomSheetComponent.new(
+              id: filters_sheet_id,
+              title: t("catalogue.filters.title"),
+              close_label: t("catalogue.filters.close")
+            ) do |sheet| %>
+          <% sheet.with_trigger do %>
+            <%= render Molecules::FiltersTriggerComponent.new(count: @active_filters.size, controls: filters_sheet_id) %>
+          <% end %>
+          <%= render Organisms::CatalogueFiltersComponent.new(
+                action: catalogue_path,
+                filters: @filters,
+                genres: @genres,
+                search: @search,
+                sort: @requested_sort,
+                variant: :sheet
+              ) %>
+        <% end %>
+      </div>
       <%= render Molecules::ActiveFiltersComponent.new(chips: @active_filters) %>
       <%= render Molecules::SortFieldComponent.new(
             action: catalogue_path,
