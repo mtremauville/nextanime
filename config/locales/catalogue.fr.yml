@@ -25,6 +25,7 @@ fr:
         releasing: En cours de diffusion
         not_yet_released: À venir
     active_filters:
+      remove: "Retirer le filtre %{label}"
       years:
         range: "%{from}–%{to}"
         from: "Depuis %{year}"
