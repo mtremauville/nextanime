@@ -143,4 +143,53 @@ RSpec.describe CatalogueFilters do
       expect(described_class.from_params(nil)).not_to be_active
     end
   end
+
+  describe "#without" do
+    subject(:filters) do
+      described_class.from_params(
+        genre_ids: %w[1 2],
+        formats: %w[tv movie],
+        statuses: %w[finished releasing],
+        season: "winter",
+        year_from: "2000",
+        year_to: "2010"
+      )
+    end
+
+    it "drops one genre and keeps the others" do
+      expect(filters.without(:genre_ids, 1).genre_ids).to eq([ 2 ])
+    end
+
+    it "drops one format and keeps the others" do
+      expect(filters.without(:formats, "tv").formats).to eq([ "movie" ])
+    end
+
+    it "drops one status and keeps the others" do
+      expect(filters.without(:statuses, "finished").statuses).to eq([ "releasing" ])
+    end
+
+    it "drops the season" do
+      expect(filters.without(:season).season).to be_nil
+    end
+
+    it "drops both years together" do
+      without_years = filters.without(:years)
+
+      expect([ without_years.year_from, without_years.year_to ]).to eq([ nil, nil ])
+    end
+
+    it "keeps every other filter" do
+      expect(filters.without(:season).to_query_params).to eq(filters.to_query_params.except(:season))
+    end
+
+    it "leaves the filters it is called on as they were" do
+      filters.without(:genre_ids, 1)
+
+      expect(filters.genre_ids).to eq([ 1, 2 ])
+    end
+
+    it "refuses a filter it does not know" do
+      expect { filters.without(:studio) }.to raise_error(ArgumentError, /Unknown filter/)
+    end
+  end
 end
