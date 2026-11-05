@@ -13,6 +13,7 @@ class AnimesController < ApplicationController
     @requested_sort = sort_choice
     @sort = @requested_sort || default_sort
     @page = CatalogueQuery.new(page: params[:page], search: @search, filters: @filters, sort: @sort, scorer: @scorer).call
+    @active_filters = active_filter_chips
   end
 
   def show
@@ -25,7 +26,19 @@ class AnimesController < ApplicationController
 
   # The one place that builds the address of a page of the catalogue, so that the pagination
   # and the "load more" link both keep the search that is under way.
-  def catalogue_page_path(number) = catalogue_path(page: number, q: @search.presence, sort: @requested_sort, **@filters.to_query_params)
+  def catalogue_page_path(number) = catalogue_path_for(@filters, page: number)
+
+  # The address of the catalogue with the given filters, the search and the sort being kept.
+  def catalogue_path_for(filters, **extra)
+    catalogue_path(**extra, q: @search.presence, sort: @requested_sort, **filters.to_query_params)
+  end
+
+  # One chip per active filter, linked to the catalogue without that filter.
+  def active_filter_chips
+    CatalogueFilterChips.new(filters: @filters, genres: @genres).call.map do |chip|
+      { label: chip.label, href: catalogue_path_for(chip.remaining) }
+    end
+  end
 
   # Only a text is a search: anything else sent as q, an array for instance, is ignored.
   def search_text

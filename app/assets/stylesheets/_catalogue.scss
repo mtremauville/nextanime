@@ -410,11 +410,19 @@
   }
 }
 
-// The sort sits above the results: on the right of a wide screen, over the whole width of a phone.
+// The active filters and the sort sit above the results: the chips on the left and the sort on the
+// right of a wide screen, one under the other over the whole width of a phone.
 .na-catalogue-toolbar {
   display: flex;
-  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 1rem;
+
+  .na-sort {
+    margin-left: auto;
+  }
 
   @include media-breakpoint-down(sm) {
     .na-sort,
@@ -422,5 +430,52 @@
       flex: 1 1 auto;
       width: 100%;
     }
+  }
+}
+
+// The filters under way, one chip each. The cross removes that filter only.
+.na-active-filters {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+
+  @include media-breakpoint-down(sm) {
+    flex-basis: 100%;
+  }
+}
+
+.na-filter-chip {
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0 0.5rem 0 0.75rem;
+  font-size: 0.75rem;
+  border: 1px solid var(--na-magenta);
+  border-radius: 999px;
+}
+
+.na-filter-chip__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 0.875rem;
+  color: var(--na-muted);
+  text-decoration: none;
+  border-radius: 999px;
+
+  &:hover {
+    color: var(--na-cyan);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--na-cyan);
+    outline-offset: 2px;
   }
 }
