@@ -114,4 +114,19 @@ RSpec.describe Molecules::FilterGroupComponent, type: :component do
       expect(page).to have_css("[data-role='count']", text: "0")
     end
   end
+
+  describe "id_prefix" do
+    it "builds the ids of the checkboxes from the prefix, so that the group can be on a page twice" do
+      render_inline(described_class.new(name: "formats", legend: "Format", options: [ [ "tv", "TV" ] ], id_prefix: "sheet-filter"))
+
+      expect(page).to have_css("input#sheet-filter-formats-tv")
+      expect(page).to have_css("label[for='sheet-filter-formats-tv']")
+    end
+
+    it "keeps the ids it always had without a prefix" do
+      render_inline(described_class.new(name: "formats", legend: "Format", options: [ [ "tv", "TV" ] ]))
+
+      expect(page).to have_css("input#filter-formats-tv")
+    end
+  end
 end
