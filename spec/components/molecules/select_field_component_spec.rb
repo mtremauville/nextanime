@@ -42,4 +42,19 @@ RSpec.describe Molecules::SelectFieldComponent, type: :component do
 
     expect(page).to have_select("Saison", selected: "Automne")
   end
+
+  describe "id_prefix" do
+    it "builds the id of the list from the prefix, so that the field can be on a page twice" do
+      render_inline(described_class.new(name: "season", label: "Saison", options: [ [ "winter", "Hiver" ] ], id_prefix: "sheet-filter"))
+
+      expect(page).to have_css("select#sheet-filter-season")
+      expect(page).to have_css("label[for='sheet-filter-season']")
+    end
+
+    it "keeps the id it always had without a prefix" do
+      render_inline(described_class.new(name: "season", label: "Saison", options: [ [ "winter", "Hiver" ] ]))
+
+      expect(page).to have_css("select#filter-season")
+    end
+  end
 end
