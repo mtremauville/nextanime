@@ -145,7 +145,11 @@ RSpec.describe "Swiping the deck", type: :system, js: true do
 
   it "starts a new session from the end of the previous one" do
     create_list(:anime, 2, cover_image_url: "https://img.test/cover.jpg")
-    3.times { click_button "J'aime cet anime" }
+    click_button "J'aime cet anime"
+    expect(page).to have_percent(33)
+    click_button "J'aime cet anime"
+    expect(page).to have_percent(67)
+    click_button "J'aime cet anime"
 
     click_link "Nouvelle session"
 
