@@ -16,8 +16,6 @@ module Molecules
 
     def choices = options.map { |value, label| [ label, value ] }
 
-    def choices = options.map { |value, label| [ label, value ] }
-
     def input_id = "filter-#{name.to_s.dasherize}"
   end
 end
