@@ -28,6 +28,7 @@
 
   <div class="na-catalogue-layout__results">
     <div class="na-catalogue-toolbar">
+      <%= render Molecules::ActiveFiltersComponent.new(chips: @active_filters) %>
       <%= render Molecules::SortFieldComponent.new(
             action: catalogue_path,
             selected: @sort,
@@ -36,18 +37,27 @@
           ) %>
     </div>
 
-    <%= render Organisms::CatalogueGridComponent.new(animes: @page.animes, scorer: @scorer) %>
-
-    <div class="d-none d-md-block">
-      <%= render Molecules::PaginationComponent.new(
-            current: @page.number,
-            total: @page.total_pages,
-            url: ->(number) { catalogue_page_path(number) }
+    <% if @page.total_count.zero? %>
+      <%= render Molecules::EmptyStateComponent.new(
+            title: t("catalogue.empty.title"),
+            text: t("catalogue.empty.text"),
+            link_label: t("catalogue.empty.reset"),
+            link_href: catalogue_path
           ) %>
-    </div>
+    <% else %>
+      <%= render Organisms::CatalogueGridComponent.new(animes: @page.animes, scorer: @scorer) %>
 
-    <div class="d-md-none">
-      <%= render "load_more", page: @page %>
-    </div>
+      <div class="d-none d-md-block">
+        <%= render Molecules::PaginationComponent.new(
+              current: @page.number,
+              total: @page.total_pages,
+              url: ->(number) { catalogue_page_path(number) }
+            ) %>
+      </div>
+
+      <div class="d-md-none">
+        <%= render "load_more", page: @page %>
+      </div>
+    <% end %>
   </div>
 </div>

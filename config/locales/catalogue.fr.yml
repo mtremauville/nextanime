@@ -24,6 +24,10 @@ fr:
         finished: Terminé
         releasing: En cours de diffusion
         not_yet_released: À venir
+    empty:
+      title: "Aucun anime ne correspond"
+      text: "Essaie d'enlever un filtre ou de chercher autre chose."
+      reset: "Voir tout le catalogue"
     active_filters:
       title: "Filtres actifs"
       remove: "Retirer le filtre %{label}"
