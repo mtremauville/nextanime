@@ -24,6 +24,11 @@ fr:
         finished: Terminé
         releasing: En cours de diffusion
         not_yet_released: À venir
+    active_filters:
+      years:
+        range: "%{from}–%{to}"
+        from: "Depuis %{year}"
+        to: "Jusqu'en %{year}"
     pagination:
       label: Pagination
       previous: "← Précédent"
