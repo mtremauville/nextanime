@@ -212,4 +212,69 @@ RSpec.describe Organisms::CatalogueFiltersComponent, type: :component do
       expect(page).to have_link("Réinitialiser", href: "/catalogue?q=monster&sort=score")
     end
   end
+
+  describe "as a sheet" do
+    def render_sheet(**options)
+      render_inline(described_class.new(
+        action: "/catalogue",
+        filters: CatalogueFilters.from_params(formats: %w[movie]),
+        genres: [ Genre.new(id: 4, name: "Thriller") ],
+        genre_counts: { 4 => 12 },
+        search: "mon",
+        sort: "recent",
+        variant: :sheet,
+        **options
+      ))
+    end
+
+    it "sends itself with its button, not at each change" do
+      render_sheet
+
+      expect(page).to have_no_css("form[data-controller='auto-submit']")
+      expect(page).to have_button("Voir les résultats")
+      expect(page).to have_no_button("Appliquer")
+    end
+
+    it "has no title of its own, the sheet already has one" do
+      render_sheet
+
+      expect(page).to have_no_css("h2", text: "Filtres")
+    end
+
+    it "offers the genres, the formats and the statuses as pills, without counts" do
+      render_sheet
+
+      expect(page).to have_css(".na-filter-group--pills", count: 3)
+      expect(page).to have_no_css("[data-role='count']")
+    end
+
+    it "prefixes every id, so that none is the same as in the column" do
+      render_sheet
+
+      expect(page).to have_css("input#sheet-filter-formats-movie")
+      expect(page).to have_css("input#sheet-filter-genre-ids-4")
+      expect(page).to have_css("select#sheet-filter-season")
+      expect(page).to have_css("input#sheet-filter-year-from")
+      expect(page).to have_css("label[for='sheet-filter-year-to']", visible: :all)
+    end
+
+    it "keeps what is selected" do
+      render_sheet
+
+      expect(page).to have_css("input#sheet-filter-formats-movie[checked]")
+    end
+
+    it "carries the search and the sort" do
+      render_sheet
+
+      expect(page).to have_css("input[type='hidden'][name='q'][value='mon']", visible: :all)
+      expect(page).to have_css("input[type='hidden'][name='sort'][value='recent']", visible: :all)
+    end
+
+    it "resets from a link that keeps the search and the sort" do
+      render_sheet
+
+      expect(page).to have_link("Réinitialiser", href: "/catalogue?q=mon&sort=recent")
+    end
+  end
 end
