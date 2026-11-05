@@ -556,7 +556,8 @@
 }
 
 // The page behind an open sheet does not scroll.
-html:has(.na-sheet__dialog[open]) {
+html:has(.na-sheet__dialog[open]),
+body:has(.na-sheet__dialog[open]) {
   overflow: hidden;
 }
 
@@ -602,6 +603,7 @@ html:has(.na-sheet__dialog[open]) {
   color: var(--na-muted);
   background: none;
   border: 0;
+  border-radius: $na-radius-md;
 
   &:focus-visible {
     outline: 2px solid var(--na-cyan);
@@ -638,6 +640,7 @@ html:has(.na-sheet__dialog[open]) {
     flex: 1 1 auto;
     padding: 0.5rem 1rem 1rem;
     overflow-y: auto;
+    overscroll-behavior: contain;
   }
 
   .na-filter-group--pills .form-check-label {
@@ -658,6 +661,8 @@ html:has(.na-sheet__dialog[open]) {
 
     > :first-child {
       flex: 1 1 0;
+      color: var(--na-text);
+      border-color: var(--na-border);
     }
 
     .na-filters__show {
