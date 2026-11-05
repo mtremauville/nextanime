@@ -1,0 +1,19 @@
+<%= tag.div(class: "na-sheet", data: { controller: "sheet" }) do %>
+  <% if trigger? %>
+    <div class="na-sheet__trigger" data-action="click->sheet#open"><%= trigger %></div>
+  <% end %>
+
+  <dialog id="<%= sheet_id %>" class="na-sheet__dialog" aria-labelledby="<%= title_id %>"
+          data-sheet-target="dialog" data-action="click->sheet#backdrop">
+    <div class="na-sheet__panel">
+      <div class="na-sheet__handle" aria-hidden="true"></div>
+      <div class="na-sheet__header">
+        <h2 id="<%= title_id %>" class="na-sheet__title"><%= title %></h2>
+        <button type="button" class="na-sheet__close" aria-label="<%= close_label %>" data-action="sheet#close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="na-sheet__content"><%= content %></div>
+    </div>
+  </dialog>
+<% end %>
