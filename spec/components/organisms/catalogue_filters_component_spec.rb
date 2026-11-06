@@ -326,4 +326,21 @@ RSpec.describe Organisms::CatalogueFiltersComponent, type: :component do
       end
     end
   end
+
+  describe "studio search" do
+    let(:studios) { [ CatalogueStudios::Option.new(id: 3, name: "MAPPA", count: 38) ] }
+
+    it "lets the studios be searched in the column, and only them" do
+      render_filters(studios: studios)
+
+      expect(page).to have_css("input[type='search']", visible: :all, count: 1)
+      expect(page).to have_css("fieldset[data-controller='filter-search'] input[name='studio_ids[]']")
+    end
+
+    it "lets the studios be searched in the sheet too" do
+      render_inline(described_class.new(action: "/catalogue", filters: no_filter, genres: genres, studios: studios, variant: :sheet))
+
+      expect(page).to have_css("fieldset[data-controller='filter-search'] input[type='search']", visible: :all, count: 1)
+    end
+  end
 end

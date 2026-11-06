@@ -1,8 +1,17 @@
-<fieldset class="<%= class_names("na-filter-group", "na-filter-group--pills": pills?) %>">
+<%= tag.fieldset class: class_names("na-filter-group", "na-filter-group--pills": pills?, "na-filter-group--searchable": searchable?), data: { controller: ("filter-search" if searchable?) } do %>
   <legend class="na-filter-group__legend"><%= legend %></legend>
+  <% if searchable? %>
+    <div class="na-filter-group__search" data-filter-search-target="field" hidden>
+      <input type="search" class="form-control" autocomplete="off"
+             aria-label="<%= search_label %>" placeholder="<%= search_label %>…"
+             data-filter-search-target="input"
+             data-action="input->filter-search#filter change->filter-search#stop keydown.enter->filter-search#prevent">
+    </div>
+    <p class="na-filter-group__no-match" role="status" data-filter-search-target="empty" data-filter-search-message="<%= no_match_text %>"></p>
+  <% end %>
   <div class="na-filter-group__options">
     <% options.each do |value, label, count| %>
-      <div class="form-check">
+      <%= tag.div class: "form-check", data: item_data(label) do %>
         <%= check_box_tag "#{name}[]", value, checked?(value), id: input_id(value), class: "form-check-input" %>
         <%= label_tag input_id(value), class: "form-check-label" do %>
           <span><%= label %></span>
@@ -10,7 +19,7 @@
             <span class="na-filter-group__count" data-role="count"><%= count %></span>
           <% end %>
         <% end %>
-      </div>
+      <% end %>
     <% end %>
   </div>
-</fieldset>
+<% end %>
