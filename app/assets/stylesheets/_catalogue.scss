@@ -479,3 +479,194 @@
     outline-offset: 2px;
   }
 }
+
+// The button of a phone that opens the filters.
+.na-filters-trigger {
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 3rem;
+  padding: 0 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--na-text);
+  background: color-mix(in srgb, var(--na-magenta) 12%, transparent);
+  border: 1px solid var(--na-magenta);
+  border-radius: $na-radius-md;
+
+  &:focus-visible {
+    outline: 2px solid var(--na-cyan);
+    outline-offset: 2px;
+  }
+}
+
+.na-filters-trigger__count {
+  font-family: $na-font-accent;
+  color: var(--na-magenta);
+}
+
+// A phone has two rows above the results: the filters button beside the sort, then the chips.
+.na-catalogue-toolbar {
+  @include media-breakpoint-down(md) {
+    .na-catalogue-toolbar__filters {
+      flex: 1 1 0;
+      order: 1;
+      min-width: 0;
+    }
+
+    .na-sort {
+      flex: 1 1 0;
+      order: 2;
+      width: auto;
+      min-width: 0;
+    }
+
+    .na-active-filters {
+      flex: 1 1 100%;
+      order: 3;
+    }
+  }
+}
+
+// A sheet that rises from the bottom of the screen, up to 6rem from the top. The dialog only
+// becomes a flex box once open, or it would show while closed. The padding lives on the panel,
+// not on the dialog: a click on the dialog itself is a click on the backdrop.
+.na-sheet__dialog {
+  width: 100%;
+  max-width: none;
+  height: calc(100% - 6rem);
+  max-height: none;
+  padding: 0;
+  margin: auto 0 0;
+  color: var(--na-text);
+  background: var(--na-surface);
+  border: 0;
+  border-top: 1px solid var(--na-border);
+  border-radius: 1rem 1rem 0 0;
+
+  &[open] {
+    display: flex;
+  }
+
+  &::backdrop {
+    background: rgba(11, 10, 20, 0.7);
+  }
+}
+
+// The page behind an open sheet does not scroll.
+html:has(.na-sheet__dialog[open]),
+body:has(.na-sheet__dialog[open]) {
+  overflow: hidden;
+}
+
+.na-sheet__panel {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  padding-top: 0.75rem;
+}
+
+.na-sheet__handle {
+  flex: none;
+  width: 2.5rem;
+  height: 0.25rem;
+  margin: 0 auto 1rem;
+  background: var(--na-border);
+  border-radius: 999px;
+}
+
+.na-sheet__header {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem 0.5rem;
+}
+
+.na-sheet__title {
+  margin: 0;
+  font-size: 1.375rem;
+  font-weight: 700;
+}
+
+.na-sheet__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  font-size: 1.5rem;
+  color: var(--na-muted);
+  background: none;
+  border: 0;
+  border-radius: $na-radius-md;
+
+  &:focus-visible {
+    outline: 2px solid var(--na-cyan);
+    outline-offset: 2px;
+  }
+}
+
+.na-sheet__content {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+}
+
+// The filters in the sheet: no card around them, a body that scrolls and a footer that stays.
+.na-filters--sheet {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+
+  .na-filters__form {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .na-filters__body {
+    flex: 1 1 auto;
+    padding: 0.5rem 1rem 1rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .na-filter-group--pills .form-check-label {
+    min-height: 2.75rem;
+  }
+
+  .na-filters__footer {
+    display: flex;
+    flex: none;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem 1.5rem;
+    background: var(--na-surface);
+    border-top: 1px solid var(--na-border);
+
+    .btn {
+      min-height: 3.25rem;
+    }
+
+    > :first-child {
+      flex: 1 1 0;
+      color: var(--na-text);
+      border-color: var(--na-border);
+    }
+
+    .na-filters__show {
+      flex: 2 1 0;
+    }
+  }
+}

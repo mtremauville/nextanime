@@ -19,6 +19,8 @@ fr:
       year_from: Année minimale
       year_to: Année maximale
       apply: Appliquer
+      show_results: Voir les résultats
+      close: Fermer les filtres
       reset: Réinitialiser
       statuses:
         finished: Terminé

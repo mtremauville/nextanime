@@ -16,7 +16,7 @@ RSpec.describe "Catalogue filters form", type: :request do
       expect(page_of(response)).to have_css("aside[aria-label='Filtres'] form[method='get'][action='/catalogue']")
     end
 
-    it "hides the filters on a phone, where a later story brings its own sheet" do
+    it "keeps the column of filters for wide screens, the sheet being for phones" do
       get catalogue_path
 
       expect(page_of(response)).to have_css("div.d-none.d-md-block > aside[aria-label='Filtres']")

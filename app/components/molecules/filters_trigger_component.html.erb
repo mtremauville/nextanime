@@ -1,0 +1,7 @@
+<button type="button" class="na-filters-trigger" aria-haspopup="dialog" aria-controls="<%= controls %>">
+  <i class="bi bi-sliders" aria-hidden="true"></i>
+  <%= t("catalogue.filters.title") %>
+  <% if count.positive? %>
+    <span class="na-filters-trigger__count">(<%= count %>)</span>
+  <% end %>
+</button>
