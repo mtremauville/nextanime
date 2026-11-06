@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe CatalogueQuery, "with filters" do
   def filters(**given)
-    CatalogueFilters.new(**{ genre_ids: [], formats: [], statuses: [], season: nil, year_from: nil, year_to: nil }.merge(given))
+    CatalogueFilters.new(**{ genre_ids: [], studio_ids: [], formats: [], statuses: [], season: nil, year_from: nil, year_to: nil }.merge(given))
   end
 
   def titles_for(search: nil, **given)

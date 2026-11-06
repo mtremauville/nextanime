@@ -75,7 +75,7 @@ RSpec.describe Organisms::CatalogueFiltersComponent, type: :component do
 
   describe "with filters already chosen" do
     let(:chosen) do
-      CatalogueFilters.new(genre_ids: [ 5 ], formats: %w[movie], statuses: %w[finished], season: "fall", year_from: 1990, year_to: 2005)
+      CatalogueFilters.new(genre_ids: [ 5 ], studio_ids: [], formats: %w[movie], statuses: %w[finished], season: "fall", year_from: 1990, year_to: 2005)
     end
 
     before { render_filters(filters: chosen) }

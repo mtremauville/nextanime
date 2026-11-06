@@ -192,4 +192,34 @@ RSpec.describe CatalogueFilters do
       expect { filters.without(:studio) }.to raise_error(ArgumentError, /Unknown filter/)
     end
   end
+
+  describe "studio filter" do
+    it "reads the studio ids as positive integers, once each" do
+      filters = described_class.from_params({ studio_ids: [ "3", "3", "x", "0", "-2", "7" ] })
+
+      expect(filters.studio_ids).to eq([ 3, 7 ])
+    end
+
+    it "has no studio by default" do
+      expect(described_class.from_params(nil).studio_ids).to eq([])
+    end
+
+    it "ignores a value that is not a list of texts" do
+      expect(described_class.from_params({ studio_ids: { "a" => "1" } }).studio_ids).to eq([])
+    end
+
+    it "counts as an active filter" do
+      expect(described_class.from_params({ studio_ids: [ "4" ] })).to be_active
+    end
+
+    it "is part of the query params" do
+      expect(described_class.from_params({ studio_ids: [ "4" ] }).to_query_params).to eq({ studio_ids: [ 4 ] })
+    end
+
+    it "drops one studio and keeps the others" do
+      filters = described_class.from_params({ studio_ids: [ "4", "5" ] })
+
+      expect(filters.without(:studio_ids, 4).studio_ids).to eq([ 5 ])
+    end
+  end
 end
