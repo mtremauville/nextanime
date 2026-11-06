@@ -471,4 +471,15 @@ RSpec.describe TasteProfile, type: :model do
       expect(empty_profile.dominant_tastes).to eq([])
     end
   end
+
+  describe ".for_session when two requests create the profile together" do
+    [ ActiveRecord::RecordNotUnique, ActiveRecord::RecordInvalid ].each do |error|
+      it "returns the profile the other request just created (#{error.name})" do
+        existing = described_class.create!(session_token: "shared-token")
+        allow(described_class).to receive(:find_or_create_by!).and_raise(error)
+
+        expect(described_class.for_session("shared-token")).to eq(existing)
+      end
+    end
+  end
 end

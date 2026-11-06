@@ -14,8 +14,12 @@ class TasteProfile < ApplicationRecord
   validates :session_token, uniqueness: true, allow_nil: true
   validate :owner_present
 
+  # Two requests of a new visitor can create the profile together: the one that loses
+  # the race takes the profile the other has just saved.
   def self.for_session(token)
     find_or_create_by!(session_token: token)
+  rescue ActiveRecord::RecordNotUnique, ActiveRecord::RecordInvalid
+    find_by!(session_token: token)
   end
 
   # Turns the profile of a visitor into the profile of the account it just created.
