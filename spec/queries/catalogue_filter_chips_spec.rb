@@ -4,9 +4,12 @@ RSpec.describe CatalogueFilterChips do
   let(:thriller) { Genre.new(id: 4, name: "Thriller") }
   let(:drama) { Genre.new(id: 7, name: "Drame") }
   let(:genres) { [ thriller, drama ] }
+  let(:mappa) { CatalogueStudios::Option.new(id: 3, name: "MAPPA", count: 38) }
+  let(:bones) { CatalogueStudios::Option.new(id: 8, name: "Bones", count: 41) }
+  let(:studios) { [ mappa, bones ] }
 
   def chips_for(params)
-    described_class.new(filters: CatalogueFilters.from_params(params), genres: genres).call
+    described_class.new(filters: CatalogueFilters.from_params(params), genres: genres, studios: studios).call
   end
 
   def labels_for(params) = chips_for(params).map(&:label)
@@ -63,5 +66,23 @@ RSpec.describe CatalogueFilterChips do
     chip = chips_for(year_from: "2000", year_to: "2010", season: "winter").find { |each| each.label == "2000–2010" }
 
     expect(chip.remaining.to_query_params).to eq(season: "winter")
+  end
+
+  describe "studio chips" do
+    it "gives one chip per selected studio, named after the studio" do
+      expect(labels_for(studio_ids: %w[3 8])).to eq(%w[MAPPA Bones])
+    end
+
+    it "gives no chip to a studio that is not listed" do
+      expect(labels_for(studio_ids: %w[3 99])).to eq(%w[MAPPA])
+    end
+
+    it "gives, with a studio chip, the filters that remain once it is removed" do
+      expect(chips_for(studio_ids: %w[3 8]).first.remaining.studio_ids).to eq([ 8 ])
+    end
+
+    it "puts the studios after the genres and before the formats" do
+      expect(labels_for(genre_ids: %w[4], studio_ids: %w[3], formats: %w[movie])).to eq(%w[Thriller MAPPA Film])
+    end
   end
 end

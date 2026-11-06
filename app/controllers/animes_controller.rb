@@ -13,6 +13,7 @@ class AnimesController < ApplicationController
     @requested_sort = sort_choice
     @sort = @requested_sort || default_sort
     @page = CatalogueQuery.new(page: params[:page], search: @search, filters: @filters, sort: @sort, scorer: @scorer).call
+    @studios = CatalogueStudios.new(selected_ids: @filters.studio_ids).call
     @active_filters = active_filter_chips
   end
 
@@ -35,7 +36,7 @@ class AnimesController < ApplicationController
 
   # One chip per active filter, linked to the catalogue without that filter.
   def active_filter_chips
-    CatalogueFilterChips.new(filters: @filters, genres: @genres).call.map do |chip|
+    CatalogueFilterChips.new(filters: @filters, genres: @genres, studios: @studios).call.map do |chip|
       { label: chip.label, href: catalogue_path_for(chip.remaining) }
     end
   end
