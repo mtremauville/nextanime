@@ -4,8 +4,8 @@ RSpec.describe Organisms::CatalogueFiltersComponent, type: :component do
   let(:genres) { [ build_stubbed(:genre, id: 3, name: "Action"), build_stubbed(:genre, id: 5, name: "Comédie") ] }
   let(:no_filter) { CatalogueFilters.from_params(nil) }
 
-  def render_filters(filters: no_filter, genres: self.genres, search: nil)
-    render_inline(described_class.new(action: "/catalogue", filters: filters, genres: genres, search: search))
+  def render_filters(filters: no_filter, genres: self.genres, search: nil, studios: [])
+    render_inline(described_class.new(action: "/catalogue", filters: filters, genres: genres, search: search, studios: studios))
   end
 
   it "is a landmark named after the filters" do
@@ -275,6 +275,55 @@ RSpec.describe Organisms::CatalogueFiltersComponent, type: :component do
       render_sheet
 
       expect(page).to have_link("Réinitialiser", href: "/catalogue?q=mon&sort=recent")
+    end
+  end
+
+  describe "studios" do
+    let(:mappa) { CatalogueStudios::Option.new(id: 3, name: "MAPPA", count: 38) }
+    let(:bones) { CatalogueStudios::Option.new(id: 8, name: "Bones", count: 41) }
+    let(:studios) { [ mappa, bones ] }
+
+    it "offers the studios as checkboxes, with their number of anime" do
+      render_filters(studios: studios)
+
+      expect(page).to have_css("fieldset legend", text: "Studio")
+      expect(page).to have_css("input[type='checkbox'][name='studio_ids[]'][value='3']")
+      expect(page).to have_field("MAPPA", type: "checkbox")
+      expect(page).to have_css("fieldset", text: "MAPPA") { |group| group.has_css?("[data-role='count']", text: "38") }
+    end
+
+    it "checks the chosen studios only" do
+      render_filters(studios: studios, filters: CatalogueFilters.from_params(studio_ids: %w[3]))
+
+      expect(page).to have_checked_field("MAPPA")
+      expect(page).to have_unchecked_field("Bones")
+    end
+
+    it "leaves out the studios when there is none" do
+      render_filters
+
+      expect(page).to have_no_css("input[name='studio_ids[]']")
+    end
+
+    it "puts the studios after the formats and before the season" do
+      render_filters(studios: studios)
+
+      expect(page.text).to match(/Format.*Studio.*Saison/m)
+    end
+
+    describe "as a sheet" do
+      before do
+        render_inline(described_class.new(action: "/catalogue", filters: no_filter, genres: genres, studios: studios, variant: :sheet))
+      end
+
+      it "draws the studios as pills, without counts" do
+        expect(page).to have_css(".na-filter-group--pills input[name='studio_ids[]']", count: 2)
+        expect(page).to have_no_css("[data-role='count']")
+      end
+
+      it "gives the studios their own ids, apart from the column" do
+        expect(page).to have_css("input#sheet-filter-studio-ids-3")
+      end
     end
   end
 end
