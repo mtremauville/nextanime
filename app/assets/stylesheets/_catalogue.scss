@@ -670,3 +670,25 @@ body:has(.na-sheet__dialog[open]) {
     }
   }
 }
+
+// A group that can be searched: the field above the choices, and a list that scrolls instead of growing.
+.na-filter-group--searchable {
+  .na-filter-group__search {
+    margin-bottom: 0.5rem;
+  }
+
+  .na-filter-group__options {
+    max-height: 16rem;
+    overflow-y: auto;
+  }
+}
+
+.na-filter-group__no-match {
+  margin: 0 0 0.5rem;
+  font-size: 0.875rem;
+  color: var(--bs-secondary-color);
+
+  &:empty {
+    display: none;
+  }
+}
