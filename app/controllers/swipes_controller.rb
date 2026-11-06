@@ -9,6 +9,7 @@ class SwipesController < ApplicationController
   helper_method :taste_panel_link
 
   def index
+    ensure_taste_session
     swiped_ids = swiped_anime_ids
     swipe_session = SwipeSession.new(session, swiped_anime_ids: swiped_ids)
     @animes = swipe_session.animes

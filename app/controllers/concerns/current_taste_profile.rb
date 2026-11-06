@@ -25,6 +25,12 @@ module CurrentTasteProfile
     TasteProfile.find_by(session_token: token) if token
   end
 
+  # A visitor gets the cookie as soon as the deck is shown, so that swipes sent
+  # together share one token, and so one profile, instead of one each.
+  def ensure_taste_session
+    taste_session_token unless current_user
+  end
+
   def account_taste_profile
     current_user.taste_profile || current_user.create_taste_profile!
   end
