@@ -3,13 +3,15 @@
 class CatalogueFilterChips
   Chip = Data.define(:label, :remaining)
 
-  def initialize(filters:, genres:)
+  def initialize(filters:, genres:, studios:)
     @filters = filters
     @genres = genres
+    @studios = studios
   end
 
   def call
-    genre_chips +
+    listed_chips(:genre_ids, genres) +
+      listed_chips(:studio_ids, studios) +
       named_chips(:formats, "animes.formats") +
       season_chips +
       years_chips +
@@ -18,15 +20,15 @@ class CatalogueFilterChips
 
   private
 
-  attr_reader :filters, :genres
+  attr_reader :filters, :genres, :studios
 
-  # A genre the catalogue does not know has no name to show, so it gets no chip.
-  def genre_chips
-    by_id = genres.index_by(&:id)
+  # A genre or a studio the catalogue does not list has no name to show, so it gets no chip.
+  def listed_chips(name, items)
+    by_id = items.index_by(&:id)
 
-    filters.genre_ids.filter_map do |id|
-      genre = by_id[id]
-      chip(genre.name, :genre_ids, id) if genre
+    filters.public_send(name).filter_map do |id|
+      item = by_id[id]
+      chip(item.name, name, id) if item
     end
   end
 

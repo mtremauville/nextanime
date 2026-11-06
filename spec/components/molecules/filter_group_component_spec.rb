@@ -129,4 +129,59 @@ RSpec.describe Molecules::FilterGroupComponent, type: :component do
       expect(page).to have_css("input#filter-formats-tv")
     end
   end
+
+  describe "search" do
+    let(:options) { [ [ 3, "MAPPA", 38 ], [ 8, "Bones", 41 ] ] }
+
+    def render_searchable
+      render_inline(described_class.new(
+        name: "studio_ids", legend: "Studio", options: options,
+        search_label: "Rechercher un studio", no_match_text: "Aucun studio ne correspond"
+      ))
+    end
+
+    it "offers no search by default" do
+      render_inline(described_class.new(name: "studio_ids", legend: "Studio", options: options))
+
+      expect(page).to have_no_css("input[type='search']", visible: :all)
+    end
+
+    it "offers a search field named for screen readers" do
+      render_searchable
+
+      expect(page).to have_css("input[type='search'][aria-label='Rechercher un studio']", visible: :all)
+    end
+
+    it "keeps the field out of the data sent by the form" do
+      render_searchable
+
+      expect(page).to have_no_css("input[type='search'][name]", visible: :all)
+    end
+
+    it "hides the field until the script is there" do
+      render_searchable
+
+      expect(page).to have_css("[data-filter-search-target='field'][hidden]", visible: :all)
+    end
+
+    it "marks each choice with the text to search" do
+      render_searchable
+
+      expect(page).to have_css("[data-filter-search-target='item'][data-filter-search-text='MAPPA']", count: 1)
+      expect(page).to have_css("[data-filter-search-target='item'][data-filter-search-text='Bones']", count: 1)
+    end
+
+    it "keeps an empty status for the message, so that it is announced when it appears" do
+      render_searchable
+
+      expect(page).to have_css("p[role='status'][data-filter-search-target='empty'][data-filter-search-message='Aucun studio ne correspond']", text: "", visible: :all)
+    end
+
+    it "is driven by the filter search controller" do
+      render_searchable
+
+      expect(page).to have_css("fieldset[data-controller='filter-search']")
+      expect(page).to have_css("input[data-action~='input->filter-search#filter'][data-action~='change->filter-search#stop'][data-action~='keydown.enter->filter-search#prevent']", visible: :all)
+    end
+  end
 end

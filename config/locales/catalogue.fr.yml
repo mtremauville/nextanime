@@ -12,6 +12,9 @@ fr:
       title: Filtres
       genres: Genres
       format: Format
+      studios: Studio
+      studio_search: Rechercher un studio
+      no_studio: Aucun studio ne correspond
       status: Statut
       season: Saison
       all_seasons: Toutes les saisons

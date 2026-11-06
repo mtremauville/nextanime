@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe CatalogueQuery, "with filters" do
   def filters(**given)
-    CatalogueFilters.new(**{ genre_ids: [], formats: [], statuses: [], season: nil, year_from: nil, year_to: nil }.merge(given))
+    CatalogueFilters.new(**{ genre_ids: [], studio_ids: [], formats: [], statuses: [], season: nil, year_from: nil, year_to: nil }.merge(given))
   end
 
   def titles_for(search: nil, **given)
@@ -143,6 +143,46 @@ RSpec.describe CatalogueQuery, "with filters" do
       page = described_class.new(filters: filters(formats: %w[tv]), per_page: 2).call
 
       expect([ page.total_count, page.total_pages, page.animes.size ]).to eq([ 3, 2, 2 ])
+    end
+  end
+
+  describe "studios" do
+    let(:mappa) { create(:studio, name: "MAPPA") }
+    let(:bones) { create(:studio, name: "Bones") }
+
+    before do
+      by_both = create(:anime, title_romaji: "By both")
+      create(:anime_studio, anime: by_both, studio: mappa, main: true)
+      create(:anime_studio, anime: by_both, studio: bones)
+      create(:anime, title_romaji: "Only MAPPA", studios: [ mappa ])
+      create(:anime, title_romaji: "Only Bones", studios: [ bones ])
+      create(:anime, title_romaji: "No studio")
+    end
+
+    it "keeps the anime of one studio" do
+      expect(titles_for(studio_ids: [ mappa.id ])).to match_array([ "By both", "Only MAPPA" ])
+    end
+
+    it "keeps the anime of any of several studios, once each" do
+      expect(titles_for(studio_ids: [ mappa.id, bones.id ])).to match_array([ "By both", "Only MAPPA", "Only Bones" ])
+    end
+
+    it "counts an anime once in the page when several of its studios are selected" do
+      page = described_class.new(filters: filters(studio_ids: [ mappa.id, bones.id ])).call
+
+      expect(page.total_count).to eq(3)
+    end
+
+    it "keeps the anime whose selected studio is not the main one" do
+      expect(titles_for(studio_ids: [ bones.id ])).to match_array([ "By both", "Only Bones" ])
+    end
+
+    it "finds nothing for a studio that does not exist" do
+      expect(titles_for(studio_ids: [ 0 ])).to eq([])
+    end
+
+    it "works with the search" do
+      expect(titles_for(search: "only", studio_ids: [ mappa.id ])).to eq([ "Only MAPPA" ])
     end
   end
 end
