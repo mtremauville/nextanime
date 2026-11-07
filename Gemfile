@@ -64,7 +64,7 @@ gem "faker", "~> 3.8", groups: [ :development, :test ]
 
 gem "shoulda-matchers", "~> 8.0", group: :test
 gem "capybara", "~> 3.40", group: :test
-gem "selenium-webdriver", "~> 4.51", group: :test
+gem "selenium-webdriver", "~> 4.52", group: :test
 gem "simplecov", "~> 1.3", group: :test
 
 gem "view_component", "~> 4.20"
