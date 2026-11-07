@@ -23,6 +23,7 @@
           filters: @filters,
           genres: @genres,
           genre_counts: @genre_counts,
+          studios: @studios,
           search: @search,
           sort: @requested_sort
         ) %>
@@ -45,6 +46,7 @@
                 genres: @genres,
                 search: @search,
                 sort: @requested_sort,
+                studios: @studios,
                 variant: :sheet
               ) %>
         <% end %>

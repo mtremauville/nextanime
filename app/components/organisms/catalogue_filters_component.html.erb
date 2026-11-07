@@ -12,6 +12,7 @@
 
       <%= render Molecules::FilterGroupComponent.new(name: "genre_ids", legend: t("catalogue.filters.genres"), options: genre_options, selected: filters.genre_ids, variant: group_variant, id_prefix: id_prefix) %>
       <%= render Molecules::FilterGroupComponent.new(name: "formats", legend: t("catalogue.filters.format"), options: format_options, selected: filters.formats, variant: :pills, id_prefix: id_prefix) %>
+      <%= render Molecules::FilterGroupComponent.new(name: "studio_ids", legend: t("catalogue.filters.studios"), search_label: t("catalogue.filters.studio_search"), no_match_text: t("catalogue.filters.no_studio"), options: studio_options, selected: filters.studio_ids, variant: group_variant, id_prefix: id_prefix) %>
       <%= render Molecules::SelectFieldComponent.new(name: "season", label: t("catalogue.filters.season"), options: season_options, selected: filters.season, blank: t("catalogue.filters.all_seasons"), id_prefix: id_prefix) %>
 
       <fieldset class="na-filter-group">

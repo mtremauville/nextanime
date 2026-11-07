@@ -670,3 +670,35 @@ body:has(.na-sheet__dialog[open]) {
     }
   }
 }
+
+// A group that can be searched: the field above the choices, and a list that scrolls instead of growing.
+.na-filter-group--searchable {
+  .na-filter-group__search {
+    margin-bottom: 0.5rem;
+  }
+
+  .na-filter-group__options {
+    max-height: 16rem;
+    overflow-y: auto;
+    // The scrollbar sits in the margin of the panel, so that the counts stay in line with the other groups.
+    margin-right: -0.5rem;
+    padding-right: 0.5rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--bs-border-color) transparent;
+  }
+
+  // Four rows and a half of pills: the last row is cut, which tells that the list scrolls.
+  &.na-filter-group--pills .na-filter-group__options {
+    max-height: 14.5rem;
+  }
+}
+
+.na-filter-group__no-match {
+  margin: 0 0 0.5rem;
+  font-size: 0.875rem;
+  color: var(--bs-secondary-color);
+
+  &:empty {
+    display: none;
+  }
+}

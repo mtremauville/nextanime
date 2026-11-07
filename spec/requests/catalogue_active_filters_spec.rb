@@ -49,4 +49,26 @@ RSpec.describe "Catalogue active filters", type: :request do
       expect(query_of(removal_href("2000–2010"))).to eq({})
     end
   end
+
+  describe "selected studios" do
+    let(:mappa) { create(:studio, name: "MAPPA") }
+    let(:bones) { create(:studio, name: "Bones") }
+
+    before do
+      create(:anime, studios: [ mappa ])
+      create(:anime, studios: [ bones ])
+    end
+
+    it "shows a chip named after the selected studio" do
+      get catalogue_path, params: { studio_ids: [ mappa.id ] }
+
+      expect(Capybara.string(response.body)).to have_link("Retirer le filtre MAPPA", href: catalogue_path)
+    end
+
+    it "links the chip of a studio to the catalogue with the other studios kept" do
+      get catalogue_path, params: { studio_ids: [ mappa.id, bones.id ] }
+
+      expect(Capybara.string(response.body)).to have_link("Retirer le filtre MAPPA", href: catalogue_path(studio_ids: [ bones.id ]))
+    end
+  end
 end

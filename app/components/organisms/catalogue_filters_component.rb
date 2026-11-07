@@ -8,13 +8,14 @@ module Organisms
   class CatalogueFiltersComponent < ViewComponent::Base
     ID_PREFIXES = { column: "filter", sheet: "sheet-filter" }.freeze
 
-    def initialize(action:, filters:, genres:, search: nil, sort: nil, genre_counts: nil, variant: :column)
+    def initialize(action:, filters:, genres:, search: nil, sort: nil, genre_counts: nil, studios: [], variant: :column)
       @action = action
       @filters = filters
       @genres = genres
       @search = search
       @sort = sort
       @genre_counts = genre_counts
+      @studios = studios
       @variant = variant
       @id_prefix = ID_PREFIXES.fetch(variant)
       super()
@@ -22,7 +23,7 @@ module Organisms
 
     private
 
-    attr_reader :action, :filters, :genres, :search, :sort, :genre_counts, :id_prefix
+    attr_reader :action, :filters, :genres, :search, :sort, :genre_counts, :studios, :id_prefix
 
     def sheet? = @variant == :sheet
 
@@ -35,6 +36,8 @@ module Organisms
     def form_data = sheet? ? {} : { controller: "auto-submit", action: "change->auto-submit#submit" }
 
     def genre_options = genres.map { |genre| [ genre.id, genre.name, count_of(genre) ] }
+
+    def studio_options = studios.map { |studio| [ studio.id, studio.name, (studio.count unless sheet?) ] }
 
     def format_options = named("animes.formats", CatalogueFilters::FORMATS)
 
