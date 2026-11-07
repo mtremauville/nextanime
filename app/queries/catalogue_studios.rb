@@ -1,7 +1,7 @@
 # The studios offered by the catalogue filter, each with its number of anime: the most
 # prolific ones, plus the ones already selected so that they can always be unchecked.
 class CatalogueStudios
-  DEFAULT_LIMIT = 50
+  DEFAULT_LIMIT = 200
 
   Option = Data.define(:id, :name, :count)
 

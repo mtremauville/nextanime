@@ -51,4 +51,10 @@ RSpec.describe CatalogueStudios do
   it "ignores a selected id that is not a studio with anime" do
     expect(options_for(limit: 1, selected_ids: [ 0, idle.id ])).to eq([ [ "MAPPA", 3 ] ])
   end
+
+  it "keeps the most prolific studios up to the default limit" do
+    stub_const("CatalogueStudios::DEFAULT_LIMIT", 2)
+
+    expect(options_for).to eq([ [ "MAPPA", 3 ], [ "Bones", 2 ] ])
+  end
 end
