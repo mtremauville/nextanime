@@ -60,7 +60,9 @@ RSpec.describe CatalogueQuery, "sorting" do
     let(:scores) { { "Low" => 0.2, "Top" => 0.9, "Tie, less popular" => 0.5, "Tie, more popular" => 0.5 } }
     let(:scorer) do
       instance_double(MatchScorer).tap do |double|
-        allow(double).to receive(:call) { |anime| scores.fetch(anime.title_romaji) }
+        allow(double).to receive(:scores) do |ids|
+          Anime.where(id: ids).to_h { |anime| [ anime.id, scores.fetch(anime.title_romaji) ] }
+        end
       end
     end
 
@@ -106,6 +108,25 @@ RSpec.describe CatalogueQuery, "sorting" do
 
     it "leaves out the match when it cannot be told" do
       expect(described_class.sorts(match: false)).to eq(%w[popularity score recent title])
+    end
+  end
+
+  describe "the sort by match on a larger catalogue" do
+    it "only builds the tags of the anime of the page" do
+      profile = TasteProfile.new(genre_weights: {}, tag_weights: { "Time Loop" => 1.0 })
+      tag = create(:tag, name: "Time Loop")
+      5.times do |index|
+        anime = create(:anime, popularity: 100 - index)
+        create(:anime_tag, anime: anime, tag: tag, rank: 100)
+      end
+      built = Hash.new(0)
+      counter = ->(*, payload) { built[payload[:class_name]] += payload[:record_count] }
+
+      ActiveSupport::Notifications.subscribed(counter, "instantiation.active_record") do
+        CatalogueQuery.new(per_page: 2, sort: "match", scorer: MatchScorer.new(profile)).call
+      end
+
+      expect(built["AnimeTag"]).to eq(2)
     end
   end
 end

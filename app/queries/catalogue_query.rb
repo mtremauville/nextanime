@@ -102,11 +102,13 @@ class CatalogueQuery
   end
 
   def match_ranked_ids
-    matching_animes.preload(*CARD_ASSOCIATIONS).sort_by { |anime| match_rank_key(anime) }.map(&:id)
+    rows = matching_animes.pluck(:id, :popularity)
+    scores = scorer.scores(rows.map(&:first))
+    rows.sort_by { |id, popularity| match_rank_key(scores.fetch(id), popularity, id) }.map(&:first)
   end
 
   # The closest first, then the most popular (the anime without popularity last), then a stable order.
-  def match_rank_key(anime) = [ -scorer.call(anime), -(anime.popularity || -1), anime.id ]
+  def match_rank_key(score, popularity, id) = [ -score, -(popularity || -1), id ]
 
   def matching_animes
     scope = searched_animes
