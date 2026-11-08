@@ -76,4 +76,51 @@ RSpec.describe MatchScorer do
       expect(described_class.new(profile).percentage(anime)).to eq(80)
     end
   end
+
+  describe "#scores" do
+    let(:profile) do
+      profile_with(
+        genres: { "Action" => 1.0, "Drama" => -0.5, "Comedy" => 0.3 },
+        tags: { "Time Loop" => 0.8, "School" => -0.6 }
+      )
+    end
+    let(:scorer) { described_class.new(profile) }
+    let!(:animes) do
+      [
+        anime_with(genres: [ "Action", "Drama" ], tags: { "Time Loop" => 100, "School" => 40 }),
+        anime_with(genres: [ "Comedy" ]),
+        anime_with(tags: { "Mecha" => 10 }),
+        anime_with
+      ]
+    end
+
+    it "gives each anime the score that #call gives it" do
+      expected = animes.to_h { |anime| [ anime.id, scorer.call(anime) ] }
+
+      expect(scorer.scores(animes.map(&:id))).to eq(expected)
+    end
+
+    it "gives 0.5 to an anime without genres and tags" do
+      expect(scorer.scores([ animes.last.id ])).to eq(animes.last.id => 0.5)
+    end
+
+    it "only scores the anime it is given" do
+      expect(scorer.scores([ animes.first.id ]).keys).to eq([ animes.first.id ])
+    end
+
+    it "scores nothing when it is given nothing" do
+      expect(scorer.scores([])).to eq({})
+    end
+
+    it "reads the genres and the tags in two queries, whatever the number of anime" do
+      queries = []
+      counter = ->(*, payload) { queries << payload[:sql] unless payload[:name] == "SCHEMA" }
+
+      ActiveSupport::Notifications.subscribed(counter, "sql.active_record") do
+        scorer.scores(animes.map(&:id))
+      end
+
+      expect(queries.size).to eq(2)
+    end
+  end
 end
