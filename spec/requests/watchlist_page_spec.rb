@@ -145,4 +145,29 @@ RSpec.describe "The watchlist page", type: :request do
       expect(html).to have_link("Tous · 1", href: watchlist_path)
     end
   end
+
+  describe "the progress buttons" do
+    let(:member) { create(:user) }
+    let(:html) { Capybara.string(response.body) }
+
+    before { sign_in member }
+
+    it "puts the two buttons on each row" do
+      create(:watchlist_entry, :watching, user: member)
+      create(:watchlist_entry, user: member)
+
+      get watchlist_path
+
+      expect(html).to have_css("li.na-watch-row .na-stepper", count: 2)
+      expect(html).to have_css("li.na-watch-row .na-stepper__button", count: 4)
+    end
+
+    it "keeps the chosen filter when a button is pressed" do
+      create(:watchlist_entry, :watching, user: member)
+
+      get watchlist_path(status: "watching")
+
+      expect(html).to have_css("form[action$='?status=watching']", count: 2)
+    end
+  end
 end

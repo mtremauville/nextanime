@@ -23,7 +23,11 @@
     <% else %>
       <ul class="na-watch-page__list">
         <% entries.each do |entry| %>
-          <%= render Molecules::WatchlistRowComponent.new(entry: entry) %>
+          <%= render Molecules::WatchlistRowComponent.new(entry: entry) do |row| %>
+            <% row.with_actions do %>
+              <%= render Molecules::ProgressStepperComponent.new(entry: entry, status: @status) %>
+            <% end %>
+          <% end %>
         <% end %>
       </ul>
     <% end %>
