@@ -47,4 +47,34 @@ RSpec.describe WatchlistEntry, type: :model do
       expect(entry.errors[:status]).to be_present
     end
   end
+
+  describe "#total_episodes" do
+    it "is the episode count of the anime" do
+      entry = build(:watchlist_entry, anime: build(:anime, episodes: 28))
+
+      expect(entry.total_episodes).to eq(28)
+    end
+  end
+
+  describe "#percent" do
+    def entry_with(progress:, episodes:)
+      build(:watchlist_entry, progress: progress, anime: build(:anime, episodes: episodes))
+    end
+
+    it "is the share of episodes watched" do
+      expect(entry_with(progress: 14, episodes: 28).percent).to eq(50)
+    end
+
+    it "is rounded to the nearest whole number" do
+      expect(entry_with(progress: 1, episodes: 3).percent).to eq(33)
+    end
+
+    it "never goes above 100" do
+      expect(entry_with(progress: 30, episodes: 28).percent).to eq(100)
+    end
+
+    it "is unknown while the anime has no episode count" do
+      expect(entry_with(progress: 5, episodes: nil).percent).to be_nil
+    end
+  end
 end
