@@ -1,11 +1,13 @@
 module Organisms
   # A native modal <dialog> asking the person to confirm a destructive action.
   # The body is the block given to the component.
+  # The trigger shows a label, an icon, or both; an icon alone needs an aria label.
   class ConfirmationModalComponent < ViewComponent::Base
     TONES = %i[magenta cyan].freeze
 
     def initialize(id:, title:, confirm_label:, confirm_url:, confirm_method: :delete, icon: "exclamation-triangle",
-                   tone: :magenta, trigger_label: nil, trigger_variant: :outline, confirmation_word: nil)
+                   tone: :magenta, trigger_label: nil, trigger_variant: :outline, trigger_icon: nil,
+                   trigger_aria_label: nil, confirmation_word: nil)
       raise ArgumentError, "Unknown tone: #{tone.inspect}" unless TONES.include?(tone)
 
       @modal_id = id
@@ -17,6 +19,8 @@ module Organisms
       @tone = tone
       @trigger_label = trigger_label
       @trigger_variant = trigger_variant
+      @trigger_icon = trigger_icon
+      @trigger_aria_label = trigger_aria_label
       @confirmation_word = confirmation_word
       super()
     end
@@ -24,7 +28,7 @@ module Organisms
     private
 
     attr_reader :modal_id, :title, :confirm_label, :confirm_url, :confirm_method, :icon, :tone,
-                :trigger_label, :trigger_variant, :confirmation_word
+                :trigger_label, :trigger_variant, :trigger_icon, :trigger_aria_label, :confirmation_word
 
     def title_id
       "#{modal_id}-title"
@@ -36,6 +40,10 @@ module Organisms
 
     def controller_data
       { controller: "confirm-modal", confirm_modal_word_value: confirmation_word }.compact
+    end
+
+    def trigger_aria_attributes
+      { label: trigger_aria_label }.compact
     end
 
     # With a word to type, the confirmation stays disabled until the controller sees it.

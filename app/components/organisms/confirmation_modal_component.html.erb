@@ -1,6 +1,8 @@
 <%= tag.div(data: controller_data) do %>
-  <% if trigger_label %>
-    <%= render Atoms::ButtonComponent.new(variant: trigger_variant, data: { action: "confirm-modal#open" }) do %><%= trigger_label %><% end %>
+  <% if trigger_label || trigger_icon %>
+    <%= render Atoms::ButtonComponent.new(variant: trigger_variant, aria: trigger_aria_attributes, data: { action: "confirm-modal#open" }) do %>
+      <% if trigger_icon %><i class="bi bi-<%= trigger_icon %>" aria-hidden="true"></i><% end %><%= trigger_label %>
+    <% end %>
   <% end %>
 
   <dialog id="<%= modal_id %>" class="na-modal" aria-labelledby="<%= title_id %>"
@@ -22,7 +24,7 @@
       <% end %>
 
       <div class="na-modal__actions">
-        <%= render Atoms::ButtonComponent.new(variant: :outline, autofocus: true, data: { action: "confirm-modal#close" }) do %>Annuler<% end %>
+        <%= render Atoms::ButtonComponent.new(variant: :outline, autofocus: true, data: { action:"confirm-modal#close" }) do %>Annuler<% end %>
         <%= form_with url: confirm_url, method: confirm_method, class: "na-modal__confirm" do %>
           <%= render Atoms::ButtonComponent.new(type: "submit", class: "w-100", **confirm_attributes) do %><%= confirm_label %><% end %>
         <% end %>
