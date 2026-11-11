@@ -13,6 +13,7 @@ class AnimesController < ApplicationController
     @requested_sort = sort_choice
     @sort = @requested_sort || default_sort
     @page = CatalogueQuery.new(page: params[:page], search: @search, filters: @filters, sort: @sort, scorer: @scorer).call
+    @listed_ids = listed_anime_ids(@page.animes)
     @studios = CatalogueStudios.new(selected_ids: @filters.studio_ids).call
     @active_filters = active_filter_chips
   end
@@ -74,5 +75,13 @@ class AnimesController < ApplicationController
     return unless current_user
 
     @watchlist_entry = current_user.watchlist_entries.find_by(anime: @anime)
+  end
+
+  # The anime of this page that the signed in member has in their watchlist, found in one query for the
+  # whole page. A visitor has no watchlist.
+  def listed_anime_ids(animes)
+    return Set.new unless current_user
+
+    current_user.watchlist_entries.where(anime_id: animes.map(&:id)).pluck(:anime_id).to_set
   end
 end
