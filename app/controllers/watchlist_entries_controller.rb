@@ -30,7 +30,8 @@ class WatchlistEntriesController < ApplicationController
     entry = policy_scope(WatchlistEntry).find(params[:id])
     authorize entry
     entry.destroy!
-    redirect_to watchlist_path(status: status_filter), status: :see_other
+    redirect_to watchlist_path(status: status_filter),
+                notice: t(".removed", title: entry.anime.display_title), status: :see_other
   end
 
   private

@@ -53,4 +53,16 @@ RSpec.describe "Removing an entry from the watchlist", type: :request do
       expect(WatchlistEntry.exists?(entry.id)).to be(true)
     end
   end
+
+  describe "the confirmation" do
+    it "tells which anime was removed" do
+      sign_in member
+      frieren = create(:anime, title_romaji: "Sousou no Frieren", title_english: "Frieren")
+      titled = create(:watchlist_entry, user: member, anime: frieren)
+
+      delete watchlist_entry_path(titled)
+
+      expect(flash[:notice]).to eq("Frieren a été retiré de ta watchlist.")
+    end
+  end
 end

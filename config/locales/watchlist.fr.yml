@@ -2,6 +2,8 @@ fr:
   watchlist_entries:
     create:
       added: "Ajouté à ta watchlist."
+    destroy:
+      removed: "%{title} a été retiré de ta watchlist."
     statuses:
       plan_to_watch: "À voir"
       watching: "En cours"
