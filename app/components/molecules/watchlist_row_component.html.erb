@@ -1,0 +1,25 @@
+<li class="na-watch-row">
+  <% if anime.cover_image_url %>
+    <img class="na-watch-row__poster na-watch-row__image" src="<%= anime.cover_image_url %>" alt="" loading="lazy">
+  <% else %>
+    <div class="na-watch-row__poster na-poster--violet"></div>
+  <% end %>
+  <div class="na-watch-row__main">
+    <%= link_to title, anime_path(anime), class: "na-watch-row__title" %>
+    <% if meta %>
+      <p class="na-watch-row__meta"><%= meta %></p>
+    <% end %>
+    <%= render Atoms::TagComponent.new(label: status_label, tone: status_tone) %>
+  </div>
+  <div class="na-watch-row__progress">
+    <p class="na-watch-row__count">
+      <span><%= progress_label %></span>
+      <% if percent %>
+        <span><%= percent %>%</span>
+      <% end %>
+    </p>
+    <% if percent %>
+      <%= render Atoms::MeterComponent.new(value: percent, label: meter_label, tone: status_tone) %>
+    <% end %>
+  </div>
+</li>

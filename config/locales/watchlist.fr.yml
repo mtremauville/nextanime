@@ -2,3 +2,11 @@ fr:
   watchlist_entries:
     create:
       added: "Ajouté à ta watchlist."
+    statuses:
+      plan_to_watch: "À voir"
+      watching: "En cours"
+      completed: "Terminé"
+    row:
+      progress: "ÉP. %{seen} / %{total}"
+      progress_unknown: "ÉP. %{seen}"
+      meter_label: "Progression de %{title}"
