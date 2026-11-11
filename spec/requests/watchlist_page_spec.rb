@@ -170,4 +170,16 @@ RSpec.describe "The watchlist page", type: :request do
       expect(html).to have_css("form[action$='?status=watching']", count: 2)
     end
   end
+
+  describe "the page refresh" do
+    it "keeps the scroll position and morphs the page when the progress changes" do
+      sign_in create(:user)
+
+      get watchlist_path
+
+      html = Capybara.string(response.body)
+      expect(html).to have_css("meta[name='turbo-refresh-method'][content='morph']", visible: :all)
+      expect(html).to have_css("meta[name='turbo-refresh-scroll'][content='preserve']", visible: :all)
+    end
+  end
 end
