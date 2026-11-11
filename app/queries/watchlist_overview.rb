@@ -25,6 +25,11 @@ class WatchlistOverview
 
   def resume_entry = entries.watching.includes(:anime).order(updated_at: :desc).first
 
+  def listed(status)
+    by_recency = entries.preload(anime: :main_studio).order(updated_at: :desc, id: :desc)
+    status ? by_recency.where(status: status) : by_recency
+  end
+
   private
 
   attr_reader :entries

@@ -74,4 +74,28 @@ RSpec.describe WatchlistOverview do
       expect(overview.resume_entry).to be_nil
     end
   end
+
+  describe "#listed" do
+    it "lists every entry without a status, the one updated last first" do
+      older = add_entry(updated_at: 2.days.ago)
+      newer = add_entry(:watching, updated_at: 1.day.ago)
+
+      expect(overview.listed(nil)).to eq([ newer, older ])
+    end
+
+    it "keeps only the entries of the given status" do
+      add_entry
+      watching = add_entry(:watching)
+
+      expect(overview.listed("watching")).to eq([ watching ])
+    end
+
+    it "loads the anime and its studio along with the entries" do
+      add_entry
+      entry = overview.listed(nil).to_a.first
+
+      expect(entry.association(:anime)).to be_loaded
+      expect(entry.anime.association(:main_studio)).to be_loaded
+    end
+  end
 end
