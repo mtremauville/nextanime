@@ -57,4 +57,21 @@ RSpec.describe WatchlistEntryPolicy, type: :policy do
       expect(described_class.new(create(:user), entry)).not_to be_update
     end
   end
+
+  describe "#destroy?" do
+    let(:member) { create(:user) }
+    let(:entry) { build(:watchlist_entry, user: member) }
+
+    it "lets a member remove their own entry" do
+      expect(described_class.new(member, entry)).to be_destroy
+    end
+
+    it "refuses a visitor" do
+      expect(described_class.new(nil, entry)).not_to be_destroy
+    end
+
+    it "refuses to remove the entry of someone else" do
+      expect(described_class.new(create(:user), entry)).not_to be_destroy
+    end
+  end
 end
