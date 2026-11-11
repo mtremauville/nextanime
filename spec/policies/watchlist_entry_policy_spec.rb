@@ -24,4 +24,20 @@ RSpec.describe WatchlistEntryPolicy, type: :policy do
       expect(described_class.new(member, entry).create?).to be(false)
     end
   end
+
+  describe WatchlistEntryPolicy::Scope do
+    it "returns only the entries of the signed-in member" do
+      member = create(:user)
+      own_entry = create(:watchlist_entry, user: member)
+      create(:watchlist_entry)
+
+      expect(described_class.new(member, WatchlistEntry).resolve).to contain_exactly(own_entry)
+    end
+
+    it "returns nothing for a visitor" do
+      create(:watchlist_entry)
+
+      expect(described_class.new(nil, WatchlistEntry).resolve).to be_empty
+    end
+  end
 end
