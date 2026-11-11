@@ -2,8 +2,8 @@ class WatchlistEntriesController < ApplicationController
   PROGRESS_MOVES = %w[advance rewind].freeze
 
   before_action :authenticate_user!
-  after_action :verify_authorized, only: %i[create update]
-  after_action :verify_policy_scoped, only: %i[index update]
+  after_action :verify_authorized, only: %i[create update destroy]
+  after_action :verify_policy_scoped, only: %i[index update destroy]
 
   def index
     @overview = WatchlistOverview.new(policy_scope(WatchlistEntry))
@@ -20,15 +20,26 @@ class WatchlistEntriesController < ApplicationController
   end
 
   def update
-    entry = policy_scope(WatchlistEntry).find(params[:id])
-    authorize entry
+    entry = own_entry
     entry.public_send(progress_move)
     redirect_to watchlist_path(status: status_filter), status: :see_other
+  end
+
+  def destroy
+    entry = own_entry
+    entry.destroy!
+    redirect_to watchlist_path(status: status_filter),
+                notice: t(".removed", title: entry.anime.display_title), status: :see_other
   end
 
   private
 
   def status_filter = params[:status].presence_in(WatchlistEntry.statuses.keys)
+
+  # Looked up in the list of the member: the entry of someone else is simply not found.
+  def own_entry
+    policy_scope(WatchlistEntry).find(params[:id]).tap { |entry| authorize entry }
+  end
 
   def progress_move
     params.require(:move).presence_in(PROGRESS_MOVES) || raise(ActionController::BadRequest, "Unknown move")

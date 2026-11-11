@@ -2,6 +2,15 @@ fr:
   watchlist_entries:
     create:
       added: "Ajouté à ta watchlist."
+    destroy:
+      removed: "%{title} a été retiré de ta watchlist."
+    removal:
+      trigger: "Retirer %{title} de ta watchlist"
+      confirm: "Retirer"
+      title: "Retirer %{title} de ta watchlist ?"
+      progress_lost: "Ta progression (épisode %{seen} sur %{total}) sera perdue."
+      progress_lost_unknown: "Ta progression (épisode %{seen}) sera perdue."
+      come_back: "Tu pourras le rajouter plus tard depuis les recommandations."
     statuses:
       plan_to_watch: "À voir"
       watching: "En cours"

@@ -120,3 +120,22 @@ RSpec.describe Organisms::ConfirmationModalComponent, "with a word to type", typ
     expect(page).to have_css("[data-controller='confirm-modal'][data-confirm-modal-word-value='SUPPRIMER']")
   end
 end
+
+RSpec.describe Organisms::ConfirmationModalComponent, "with an icon as trigger", type: :component do
+  before do
+    render_inline(described_class.new(id: "remove", title: "Retirer ?", confirm_label: "Retirer", confirm_url: "/remove",
+                                      trigger_icon: "trash", trigger_aria_label: "Retirer Frieren de ta watchlist")) { "Sûr ?" }
+  end
+
+  it "opens the dialog from a button that shows the icon" do
+    expect(page).to have_css("button[data-action='confirm-modal#open'] i.bi.bi-trash[aria-hidden='true']")
+  end
+
+  it "names the button for assistive technologies" do
+    expect(page).to have_css("button[data-action='confirm-modal#open'][aria-label='Retirer Frieren de ta watchlist']")
+  end
+
+  it "shows no text beside the icon" do
+    expect(page).to have_no_css("button[data-action='confirm-modal#open']", text: /\S/)
+  end
+end

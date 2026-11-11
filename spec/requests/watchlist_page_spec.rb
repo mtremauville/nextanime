@@ -167,7 +167,7 @@ RSpec.describe "The watchlist page", type: :request do
 
       get watchlist_path(status: "watching")
 
-      expect(html).to have_css("form[action$='?status=watching']", count: 2)
+      expect(html).to have_css("form[class*='na-stepper__form'][action$='?status=watching']", count: 2)
     end
   end
 
@@ -180,6 +180,30 @@ RSpec.describe "The watchlist page", type: :request do
       html = Capybara.string(response.body)
       expect(html).to have_css("meta[name='turbo-refresh-method'][content='morph']", visible: :all)
       expect(html).to have_css("meta[name='turbo-refresh-scroll'][content='preserve']", visible: :all)
+    end
+  end
+
+  describe "the removal" do
+    let(:member) { create(:user) }
+    let(:html) { Capybara.string(response.body) }
+    let!(:first_entry) { create(:watchlist_entry, :watching, user: member) }
+    let!(:second_entry) { create(:watchlist_entry, user: member) }
+
+    before { sign_in member }
+
+    it "puts a confirmation on every row" do
+      get watchlist_path
+
+      [ first_entry, second_entry ].each do |entry|
+        expect(html).to have_css(".na-watch-page__list dialog#remove-entry-#{entry.id}")
+      end
+      expect(html).to have_css(".na-watch-page__list button[data-action='confirm-modal#open'][aria-label^='Retirer']", count: 2)
+    end
+
+    it "keeps the current filter in the removal request" do
+      get watchlist_path(status: "watching")
+
+      expect(html).to have_css("dialog form[action='/watchlist/#{first_entry.id}?status=watching']")
     end
   end
 end

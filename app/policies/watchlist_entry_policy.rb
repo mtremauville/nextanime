@@ -18,6 +18,7 @@ class WatchlistEntryPolicy < ApplicationPolicy
   def create? = owned_by_member?
 
   def update? = owned_by_member?
+  def destroy? = owned_by_member?
 
   private
 

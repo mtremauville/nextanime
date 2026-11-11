@@ -12,4 +12,8 @@ RSpec.describe "Watchlist routing", type: :routing do
   it "routes the progress change of an entry" do
     expect(patch: "/watchlist/12").to route_to(controller: "watchlist_entries", action: "update", id: "12")
   end
+
+  it "routes the removal of an entry to its controller" do
+    expect(delete: "/watchlist/1").to route_to("watchlist_entries#destroy", id: "1")
+  end
 end
