@@ -213,9 +213,24 @@
   }
 }
 
-// The buttons that move the progress of an entry.
+// The buttons of a row: the ones that move the progress, and the removal.
 .na-watch-row__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
   margin-top: 0.75rem;
+
+  // Removing is a rare action: a plain icon, as big as the progress buttons.
+  .btn-na-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: $na-touch-target;
+    height: $na-touch-target;
+    min-height: $na-touch-target;
+    padding: 0;
+  }
 }
 
 .na-stepper {
@@ -272,6 +287,9 @@
 
   .na-watch-row__actions {
     grid-column: 2;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.25rem;
     margin-top: 0;
   }
 }
