@@ -8,6 +8,9 @@
     <% if match %>
       <div class="na-poster-card__badge"><%= render Atoms::MatchBadgeComponent.new(percent: match) %></div>
     <% end %>
+    <% if listed %>
+      <span class="na-poster-card__listed">Dans ma liste</span>
+    <% end %>
   </div>
   <div class="p-3 d-flex flex-column gap-2">
     <h2 class="h5 mb-0">
