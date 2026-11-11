@@ -5,7 +5,7 @@ fr:
     destroy:
       removed: "%{title} a été retiré de ta watchlist."
     removal:
-      trigger: "Retirer"
+      trigger: "Retirer %{title} de ta watchlist"
       confirm: "Retirer"
       title: "Retirer %{title} de ta watchlist ?"
       progress_lost: "Ta progression (épisode %{seen} sur %{total}) sera perdue."

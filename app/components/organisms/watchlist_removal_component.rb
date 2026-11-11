@@ -15,7 +15,11 @@ module Organisms
 
     def confirm_url = watchlist_entry_path(entry, status: status)
 
-    def title = translate(:title, title: entry.anime.display_title)
+    def anime_title = entry.anime.display_title
+
+    def title = translate(:title, title: anime_title)
+
+    def trigger_aria_label = translate(:trigger, title: anime_title)
 
     def warning = [ progress_lost, translate(:come_back) ].compact.join(" ")
 

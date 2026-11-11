@@ -8,10 +8,10 @@ RSpec.describe Organisms::WatchlistRemovalComponent, type: :component do
     render_inline(described_class.new(entry: entry, status: status))
   end
 
-  it "opens the confirmation from a button" do
+  it "opens the confirmation from a trash button named after the anime" do
     removal
 
-    expect(page).to have_css("button[data-action='confirm-modal#open']", text: "Retirer")
+    expect(page).to have_css("button[data-action='confirm-modal#open'][aria-label='Retirer Frieren de ta watchlist'] i.bi-trash")
   end
 
   it "gives each entry its own dialog" do
@@ -72,6 +72,6 @@ RSpec.describe Organisms::WatchlistRemovalComponent, type: :component do
   it "keeps the trigger discreet, since removing an entry is a rare action" do
     removal
 
-    expect(page).to have_css("button.btn-na-ghost[data-action='confirm-modal#open']", text: "Retirer")
+    expect(page).to have_css("button.btn-na-ghost[data-action='confirm-modal#open']")
   end
 end
