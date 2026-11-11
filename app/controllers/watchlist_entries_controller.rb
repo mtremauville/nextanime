@@ -2,8 +2,8 @@ class WatchlistEntriesController < ApplicationController
   PROGRESS_MOVES = %w[advance rewind].freeze
 
   before_action :authenticate_user!
-  after_action :verify_authorized, only: %i[create update]
-  after_action :verify_policy_scoped, only: %i[index update]
+  after_action :verify_authorized, only: %i[create update destroy]
+  after_action :verify_policy_scoped, only: %i[index update destroy]
 
   def index
     @overview = WatchlistOverview.new(policy_scope(WatchlistEntry))
@@ -23,6 +23,13 @@ class WatchlistEntriesController < ApplicationController
     entry = policy_scope(WatchlistEntry).find(params[:id])
     authorize entry
     entry.public_send(progress_move)
+    redirect_to watchlist_path(status: status_filter), status: :see_other
+  end
+
+  def destroy
+    entry = policy_scope(WatchlistEntry).find(params[:id])
+    authorize entry
+    entry.destroy!
     redirect_to watchlist_path(status: status_filter), status: :see_other
   end
 
