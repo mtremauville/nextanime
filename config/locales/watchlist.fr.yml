@@ -31,6 +31,9 @@ fr:
       summary:
         one: "%{count} anime"
         other: "%{count} animes"
+    stepper:
+      rewind: "Un épisode de moins pour %{title}"
+      advance: "Un épisode de plus pour %{title}"
     summary:
       label: "Résumé"
       global_title: "Avancement global"
