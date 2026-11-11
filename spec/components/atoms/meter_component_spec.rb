@@ -41,4 +41,10 @@ RSpec.describe Atoms::MeterComponent, type: :component do
   it "raises for an unknown tone" do
     expect { described_class.new(value: 10, label: "Action", tone: :green) }.to raise_error(ArgumentError, /Unknown tone/)
   end
+
+  it "has a muted tone for what is done" do
+    render_inline(described_class.new(value: 100, label: "Terminé", tone: :muted))
+
+    expect(page).to have_css(".na-meter__fill.na-meter__fill--muted")
+  end
 end
