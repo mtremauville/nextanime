@@ -40,4 +40,21 @@ RSpec.describe WatchlistEntryPolicy, type: :policy do
       expect(described_class.new(nil, WatchlistEntry).resolve).to be_empty
     end
   end
+
+  describe "#update?" do
+    let(:member) { create(:user) }
+    let(:entry) { build(:watchlist_entry, user: member) }
+
+    it "lets a member change the progress of their own entry" do
+      expect(described_class.new(member, entry)).to be_update
+    end
+
+    it "refuses a visitor" do
+      expect(described_class.new(nil, entry)).not_to be_update
+    end
+
+    it "refuses to change the progress of the entry of someone else" do
+      expect(described_class.new(create(:user), entry)).not_to be_update
+    end
+  end
 end

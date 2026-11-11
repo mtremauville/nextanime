@@ -21,5 +21,8 @@
     <% if percent %>
       <%= render Atoms::MeterComponent.new(value: percent, label: meter_label, tone: status_tone) %>
     <% end %>
+    <% if actions? %>
+      <div class="na-watch-row__actions"><%= actions %></div>
+    <% end %>
   </div>
 </li>

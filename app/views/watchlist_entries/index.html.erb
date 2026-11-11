@@ -1,3 +1,4 @@
+<%= turbo_refreshes_with method: :morph, scroll: :preserve %>
 <div class="na-watch-page">
 <header class="na-watch-page__header">
   <p class="na-eyebrow"><%= t(".eyebrow") %></p>
@@ -23,7 +24,11 @@
     <% else %>
       <ul class="na-watch-page__list">
         <% entries.each do |entry| %>
-          <%= render Molecules::WatchlistRowComponent.new(entry: entry) %>
+          <%= render Molecules::WatchlistRowComponent.new(entry: entry) do |row| %>
+            <% row.with_actions do %>
+              <%= render Molecules::ProgressStepperComponent.new(entry: entry, status: @status) %>
+            <% end %>
+          <% end %>
         <% end %>
       </ul>
     <% end %>

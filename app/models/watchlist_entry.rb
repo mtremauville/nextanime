@@ -13,8 +13,32 @@ class WatchlistEntry < ApplicationRecord
 
   # Nil while the number of episodes is unknown (an anime still airing).
   def percent
-    return unless total_episodes.to_i.positive?
+    return unless known_total?
 
     [ (progress * FULL_PERCENT.to_f / total_episodes).round, FULL_PERCENT ].min
+  end
+
+  def fully_watched? = known_total? && progress >= total_episodes
+
+  def advance = move_to(progress + 1)
+
+  def rewind = move_to(progress - 1)
+
+  private
+
+  def known_total? = total_episodes.to_i.positive?
+
+  # The progress stays between zero and the last episode, and the status follows it.
+  def move_to(episode)
+    watched = [ episode, 0 ].max
+    watched = [ watched, total_episodes ].min if known_total?
+    update!(progress: watched, status: status_for(watched))
+  end
+
+  def status_for(watched)
+    return "plan_to_watch" if watched.zero?
+    return "completed" if known_total? && watched >= total_episodes
+
+    "watching"
   end
 end

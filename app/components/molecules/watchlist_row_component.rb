@@ -3,6 +3,8 @@ module Molecules
   class WatchlistRowComponent < ViewComponent::Base
     STATUS_TONES = { "plan_to_watch" => :cyan, "watching" => :magenta, "completed" => :muted }.freeze
 
+    renders_one :actions
+
     def initialize(entry:)
       @entry = entry
       super()

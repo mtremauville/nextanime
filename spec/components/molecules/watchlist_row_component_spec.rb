@@ -76,4 +76,18 @@ RSpec.describe Molecules::WatchlistRowComponent, type: :component do
     expect(page).to have_css(".na-watch-row__poster.na-poster--violet")
     expect(page).to have_no_css("img")
   end
+
+  it "shows what is put in its actions slot" do
+    entry = create(:watchlist_entry, :watching, anime: create(:anime, episodes: 12))
+
+    render_inline(described_class.new(entry: entry)) { |row| row.with_actions { "Mes boutons" } }
+
+    expect(page).to have_css(".na-watch-row__actions", text: "Mes boutons")
+  end
+
+  it "has no actions area without an actions slot" do
+    render_row
+
+    expect(page).to have_no_css(".na-watch-row__actions")
+  end
 end

@@ -8,4 +8,8 @@ RSpec.describe "Watchlist routing", type: :routing do
   it "names the route after the anime and its watchlist entry" do
     expect(anime_watchlist_entry_path(12)).to eq("/anime/12/watchlist")
   end
+
+  it "routes the progress change of an entry" do
+    expect(patch: "/watchlist/12").to route_to(controller: "watchlist_entries", action: "update", id: "12")
+  end
 end

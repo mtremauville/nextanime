@@ -212,3 +212,66 @@
     }
   }
 }
+
+// The buttons that move the progress of an entry.
+.na-watch-row__actions {
+  margin-top: 0.75rem;
+}
+
+.na-stepper {
+  display: flex;
+  gap: map-get($na-spacers, 2);
+
+  &__form {
+    margin: 0;
+  }
+
+  &__button {
+    width: $na-touch-target;
+    height: $na-touch-target;
+    border: 1px solid var(--na-border);
+    border-radius: 0.5rem;
+    background: transparent;
+    color: var(--na-text);
+    font-size: 1.25rem;
+    cursor: pointer;
+
+    &:hover:not(:disabled) {
+      background: var(--na-surface-2);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--na-cyan);
+      outline-offset: 2px;
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    &--advance {
+      border-color: var(--na-cyan);
+      color: var(--na-cyan);
+    }
+  }
+}
+
+// On small screens the buttons sit beside the bar, after the mobile mockup.
+@include media-breakpoint-down(md) {
+  .na-watch-row__progress {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    column-gap: 0.75rem;
+  }
+
+  .na-watch-row__count {
+    grid-column: 1 / -1;
+  }
+
+  .na-watch-row__actions {
+    grid-column: 2;
+    margin-top: 0;
+  }
+}
