@@ -1,5 +1,4 @@
-# frozen_string_literal: true
-
+# Everything is refused until a policy says otherwise: each policy opens only what it needs.
 class ApplicationPolicy
   attr_reader :user, :record
 
@@ -8,46 +7,17 @@ class ApplicationPolicy
     @record = record
   end
 
-  def index?
-    false
-  end
+  def index? = false
 
-  def show?
-    false
-  end
+  def show? = false
 
-  def create?
-    false
-  end
+  def create? = false
 
-  def new?
-    create?
-  end
+  def new? = create?
 
-  def update?
-    false
-  end
+  def update? = false
 
-  def edit?
-    update?
-  end
+  def edit? = update?
 
-  def destroy?
-    false
-  end
-
-  class Scope
-    def initialize(user, scope)
-      @user = user
-      @scope = scope
-    end
-
-    def resolve
-      raise NoMethodError, "You must define #resolve in #{self.class}"
-    end
-
-    private
-
-    attr_reader :user, :scope
-  end
+  def destroy? = false
 end
