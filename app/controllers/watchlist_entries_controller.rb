@@ -1,8 +1,12 @@
 class WatchlistEntriesController < ApplicationController
-  before_action :authenticate_user!, only: :create
+  before_action :authenticate_user!
   after_action :verify_authorized, only: :create
+  after_action :verify_policy_scoped, only: :index
 
   def index
+    @overview = WatchlistOverview.new(policy_scope(WatchlistEntry))
+    @status = params[:status].presence_in(WatchlistEntry.statuses.keys)
+    @entries = @overview.listed(@status)
   end
 
   def create

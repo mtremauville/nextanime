@@ -55,6 +55,7 @@ body { font-family: $na-font-body; background: var(--na-bg); color: var(--na-tex
 .na-card { background: var(--na-surface); border: 1px solid var(--na-border); border-radius: $na-radius-lg; }
 .na-tag  { padding: .25rem .75rem; border: 1px solid var(--na-magenta); border-radius: $na-radius-pill; font-size: .75rem; }
 .na-tag--cyan { border-color: var(--na-cyan); }
+.na-tag--muted { border-color: var(--na-muted); }
 .na-meter { height: 8px; border-radius: $na-radius-pill; background: var(--na-surface-2);
   > span { display: block; height: 100%; border-radius: inherit; background: var(--na-magenta); } }
 a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--na-cyan); outline-offset: 2px; }
@@ -80,3 +81,4 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid 
 @import "reco_grid";
 @import "anime_page";
 @import "catalogue";
+@import "watchlist";

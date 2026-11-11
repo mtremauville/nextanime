@@ -1,7 +1,7 @@
 module Atoms
   class MeterComponent < ViewComponent::Base
     RANGE = (0..100)
-    TONES = { magenta: nil, cyan: "na-meter__fill--cyan" }.freeze
+    TONES = { magenta: nil, cyan: "na-meter__fill--cyan", muted: "na-meter__fill--muted" }.freeze
 
     def initialize(value:, label:, tone: :magenta)
       raise ArgumentError, "Value must be between 0 and 100, got #{value.inspect}" unless RANGE.cover?(value)

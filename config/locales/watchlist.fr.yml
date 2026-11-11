@@ -2,3 +2,38 @@ fr:
   watchlist_entries:
     create:
       added: "Ajouté à ta watchlist."
+    statuses:
+      plan_to_watch: "À voir"
+      watching: "En cours"
+      completed: "Terminé"
+    row:
+      progress: "ÉP. %{seen} / %{total}"
+      progress_unknown: "ÉP. %{seen}"
+      meter_label: "Progression de %{title}"
+    index:
+      eyebrow: "Mon suivi"
+      title: "Ma watchlist"
+      stats:
+        plan_to_watch: "À voir"
+        watching: "En cours"
+        completed: "Terminés"
+      empty:
+        title: "Ta watchlist est vide"
+        text: "Ajoute des animes depuis le catalogue ou depuis tes recommandations."
+        link: "Parcourir le catalogue"
+      none: "Aucun anime avec ce statut pour le moment."
+      filter:
+        label: "Filtrer par statut"
+        all: "Tous · %{number}"
+        plan_to_watch: "À voir · %{number}"
+        watching: "En cours · %{number}"
+        completed: "Terminés · %{number}"
+      summary:
+        one: "%{count} anime"
+        other: "%{count} animes"
+    summary:
+      label: "Résumé"
+      global_title: "Avancement global"
+      resume_title: "Reprendre"
+      resume_prefix: "Tu en étais à l'épisode %{episode} de"
+      resume_link: "Voir la fiche"
