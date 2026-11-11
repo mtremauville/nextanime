@@ -55,4 +55,20 @@ RSpec.describe "Adding an anime to the watchlist", type: :request do
       expect(response).to redirect_to(new_user_session_path)
     end
   end
+
+  context "when a member double clicks" do
+    let(:member) { create(:user) }
+
+    before { sign_in member }
+
+    it "takes the second request for the anime that was just added" do
+      create(:watchlist_entry, user: member, anime: anime)
+      allow_any_instance_of(WatchlistEntry).to receive(:save!).and_raise(ActiveRecord::RecordNotUnique)
+
+      post anime_watchlist_entry_path(anime)
+
+      expect(response).to redirect_to(anime_path(anime))
+      expect(member.watchlist_entries.where(anime: anime).count).to eq(1)
+    end
+  end
 end
