@@ -77,4 +77,100 @@ RSpec.describe WatchlistEntry, type: :model do
       expect(entry_with(progress: 5, episodes: nil).percent).to be_nil
     end
   end
+
+  describe "moving the progress" do
+    def entry_at(progress:, episodes: 12, status: "watching")
+      create(:watchlist_entry, status: status, progress: progress, anime: create(:anime, episodes: episodes))
+    end
+
+    describe "#fully_watched?" do
+      it "is true once every episode is watched" do
+        expect(entry_at(progress: 12)).to be_fully_watched
+      end
+
+      it "is false before the last episode" do
+        expect(entry_at(progress: 11)).not_to be_fully_watched
+      end
+
+      it "is false while the episode count is unknown" do
+        expect(entry_at(progress: 5, episodes: nil)).not_to be_fully_watched
+      end
+    end
+
+    describe "#advance" do
+      it "watches one more episode" do
+        entry = entry_at(progress: 3)
+
+        entry.advance
+
+        expect(entry.reload).to have_attributes(progress: 4, status: "watching")
+      end
+
+      it "starts watching what was still to watch" do
+        entry = entry_at(progress: 0, status: "plan_to_watch")
+
+        entry.advance
+
+        expect(entry.reload).to have_attributes(progress: 1, status: "watching")
+      end
+
+      it "completes the anime on its last episode" do
+        entry = entry_at(progress: 11)
+
+        entry.advance
+
+        expect(entry.reload).to have_attributes(progress: 12, status: "completed")
+      end
+
+      it "stays on the last episode" do
+        entry = entry_at(progress: 12, status: "completed")
+
+        entry.advance
+
+        expect(entry.reload).to have_attributes(progress: 12, status: "completed")
+      end
+
+      it "never completes an anime whose episode count is unknown" do
+        entry = entry_at(progress: 5, episodes: nil)
+
+        entry.advance
+
+        expect(entry.reload).to have_attributes(progress: 6, status: "watching")
+      end
+    end
+
+    describe "#rewind" do
+      it "watches one episode less" do
+        entry = entry_at(progress: 4)
+
+        entry.rewind
+
+        expect(entry.reload).to have_attributes(progress: 3, status: "watching")
+      end
+
+      it "reopens a completed anime" do
+        entry = entry_at(progress: 12, status: "completed")
+
+        entry.rewind
+
+        expect(entry.reload).to have_attributes(progress: 11, status: "watching")
+      end
+
+      it "goes back to still to watch at the first episode" do
+        entry = entry_at(progress: 1)
+
+        entry.rewind
+
+        expect(entry.reload).to have_attributes(progress: 0, status: "plan_to_watch")
+      end
+
+      it "stays at zero" do
+        entry = entry_at(progress: 0, status: "plan_to_watch")
+
+        entry.rewind
+
+        expect(entry.reload).to have_attributes(progress: 0, status: "plan_to_watch")
+      end
+    end
+  end
 end
