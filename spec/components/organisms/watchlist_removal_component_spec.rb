@@ -68,4 +68,10 @@ RSpec.describe Organisms::WatchlistRemovalComponent, type: :component do
 
     expect(page).to have_css("dialog form[action='/watchlist/#{entry.id}?status=watching']")
   end
+
+  it "keeps the trigger discreet, since removing an entry is a rare action" do
+    removal
+
+    expect(page).to have_css("button.btn-na-ghost[data-action='confirm-modal#open']", text: "Retirer")
+  end
 end
