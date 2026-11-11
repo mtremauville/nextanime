@@ -79,3 +79,5 @@ gem "letter_opener", "~> 1.10", group: :development
 gem "webmock", "~> 3.34", group: :test
 
 gem "rack-attack", "~> 6.8"
+
+gem "pundit", "~> 2.5"
