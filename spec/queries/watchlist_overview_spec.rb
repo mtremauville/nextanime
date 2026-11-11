@@ -76,9 +76,10 @@ RSpec.describe WatchlistOverview do
   end
 
   describe "#listed" do
-    it "lists every entry without a status, the one updated last first" do
-      older = add_entry(updated_at: 2.days.ago)
-      newer = add_entry(:watching, updated_at: 1.day.ago)
+    it "lists the entry added last first, wherever the progress goes" do
+      older = add_entry(created_at: 2.days.ago)
+      newer = add_entry(:watching, created_at: 1.day.ago)
+      older.advance
 
       expect(overview.listed(nil)).to eq([ newer, older ])
     end
