@@ -21,6 +21,7 @@ class AnimesController < ApplicationController
     @anime = Anime.includes(:genres, :main_studio, anime_tags: :tag).find(params[:id])
     @details = AnimeDetails.new(@anime)
     assign_match(existing_taste_profile)
+    assign_watchlist_entry
   end
 
   private
@@ -66,5 +67,12 @@ class AnimesController < ApplicationController
 
     @match_percent = MatchScorer.new(taste_profile).percentage(@anime)
     @reason = MatchExplainer.new(taste_profile).call(@anime)
+  end
+
+  # What the member has already done with this anime, shown in place of the button to add it.
+  def assign_watchlist_entry
+    return unless current_user
+
+    @watchlist_entry = current_user.watchlist_entries.find_by(anime: @anime)
   end
 end
