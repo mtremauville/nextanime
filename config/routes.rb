@@ -26,5 +26,6 @@ Rails.application.routes.draw do
   end
   get "recos", to: "recommendations#index", as: :recommendations
   get "watchlist", to: "watchlist_entries#index", as: :watchlist
+  resources :watchlist_entries, only: :update, path: "watchlist"
   get "calendrier", to: "calendar#show", as: :calendar
 end
