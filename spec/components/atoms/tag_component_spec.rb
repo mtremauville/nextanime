@@ -23,4 +23,10 @@ RSpec.describe Atoms::TagComponent, type: :component do
     expect { described_class.new(label: "Thriller", tone: :green) }
       .to raise_error(ArgumentError, /Unknown tone/)
   end
+
+  it "has a muted tone for what is done" do
+    render_inline(described_class.new(label: "Terminé", tone: :muted))
+
+    expect(page).to have_css("span.na-tag.na-tag--muted", text: "Terminé")
+  end
 end

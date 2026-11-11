@@ -2,7 +2,8 @@ module Atoms
   class TagComponent < ViewComponent::Base
     TONES = {
       magenta: "na-tag",
-      cyan: "na-tag na-tag--cyan"
+      cyan: "na-tag na-tag--cyan",
+      muted: "na-tag na-tag--muted"
     }.freeze
 
     def initialize(label:, tone: :magenta)
