@@ -18,11 +18,15 @@
   <%= render Molecules::ResultFilterComponent.new(label: t(".filter.label"), choices: watchlist_filter_choices(@overview, @status), summary: t(".summary", count: entries.size)) %>
 
   <div class="na-watch-page__body">
-    <ul class="na-watch-page__list">
-      <% entries.each do |entry| %>
-        <%= render Molecules::WatchlistRowComponent.new(entry: entry) %>
-      <% end %>
-    </ul>
+    <% if entries.empty? %>
+      <p class="na-watch-page__none"><%= t(".none") %></p>
+    <% else %>
+      <ul class="na-watch-page__list">
+        <% entries.each do |entry| %>
+          <%= render Molecules::WatchlistRowComponent.new(entry: entry) %>
+        <% end %>
+      </ul>
+    <% end %>
     <%= render Organisms::WatchlistSummaryComponent.new(global_percent: @overview.global_percent, resume_entry: @overview.resume_entry) %>
   </div>
 <% end %>

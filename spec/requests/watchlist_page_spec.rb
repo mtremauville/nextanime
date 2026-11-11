@@ -122,4 +122,27 @@ RSpec.describe "The watchlist page", type: :request do
       end
     end
   end
+
+  describe "a status without any entry" do
+    let(:member) { create(:user) }
+    let(:html) { Capybara.string(response.body) }
+
+    before do
+      sign_in member
+      create(:watchlist_entry, user: member)
+    end
+
+    it "says so instead of showing an empty list" do
+      get watchlist_path(status: "completed")
+
+      expect(html).to have_text("Aucun anime avec ce statut pour le moment.")
+      expect(html).to have_no_css("li.na-watch-row")
+    end
+
+    it "keeps the filter, to go back to the other entries" do
+      get watchlist_path(status: "completed")
+
+      expect(html).to have_link("Tous · 1", href: watchlist_path)
+    end
+  end
 end

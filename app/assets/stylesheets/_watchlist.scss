@@ -28,6 +28,12 @@
     gap: map-get($na-spacers, 6);
   }
 
+  &__none {
+    flex: 1 1 40rem;
+    margin: 0;
+    color: var(--na-muted);
+  }
+
   &__list {
     flex: 1 1 40rem;
     min-width: 0;

@@ -21,6 +21,7 @@ fr:
         title: "Ta watchlist est vide"
         text: "Ajoute des animes depuis le catalogue ou depuis tes recommandations."
         link: "Parcourir le catalogue"
+      none: "Aucun anime avec ce statut pour le moment."
       filter:
         label: "Filtrer par statut"
         all: "Tous · %{number}"
