@@ -1,3 +1,4 @@
+<div class="na-watch-page">
 <header class="na-watch-page__header">
   <p class="na-eyebrow"><%= t(".eyebrow") %></p>
   <h1 class="na-watch-page__title"><%= t(".title") %></h1>
@@ -25,3 +26,4 @@
     <%= render Organisms::WatchlistSummaryComponent.new(global_percent: @overview.global_percent, resume_entry: @overview.resume_entry) %>
   </div>
 <% end %>
+</div>
