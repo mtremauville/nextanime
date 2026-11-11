@@ -6,7 +6,8 @@
           href: anime_path(anime),
           meta: summary.line,
           match: scorer&.percentage(anime),
-          image_url: anime.cover_image_url
+          image_url: anime.cover_image_url,
+          listed: listed_ids.include?(anime.id)
         ) %>
   </li>
 <% end %>

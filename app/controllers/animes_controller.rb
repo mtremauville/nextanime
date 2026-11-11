@@ -13,6 +13,7 @@ class AnimesController < ApplicationController
     @requested_sort = sort_choice
     @sort = @requested_sort || default_sort
     @page = CatalogueQuery.new(page: params[:page], search: @search, filters: @filters, sort: @sort, scorer: @scorer).call
+    @listed_ids = listed_anime_ids(@page.animes)
     @studios = CatalogueStudios.new(selected_ids: @filters.studio_ids).call
     @active_filters = active_filter_chips
   end
@@ -21,6 +22,7 @@ class AnimesController < ApplicationController
     @anime = Anime.includes(:genres, :main_studio, anime_tags: :tag).find(params[:id])
     @details = AnimeDetails.new(@anime)
     assign_match(existing_taste_profile)
+    assign_watchlist_entry
   end
 
   private
@@ -66,5 +68,20 @@ class AnimesController < ApplicationController
 
     @match_percent = MatchScorer.new(taste_profile).percentage(@anime)
     @reason = MatchExplainer.new(taste_profile).call(@anime)
+  end
+
+  # What the member has already done with this anime, shown in place of the button to add it.
+  def assign_watchlist_entry
+    return unless current_user
+
+    @watchlist_entry = current_user.watchlist_entries.find_by(anime: @anime)
+  end
+
+  # The anime of this page that the signed in member has in their watchlist, found in one query for the
+  # whole page. A visitor has no watchlist.
+  def listed_anime_ids(animes)
+    return Set.new unless current_user
+
+    current_user.watchlist_entries.where(anime_id: animes.map(&:id)).pluck(:anime_id).to_set
   end
 end

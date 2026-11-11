@@ -46,7 +46,8 @@
   color: #F2F0FF;
   background: linear-gradient(0deg, rgba(11, 10, 20, .92), rgba(11, 10, 20, 0));
 }
-.na-badge-match {
+.na-badge-match,
+.na-poster-card__listed {
   background: #0B0A14;
   color: #19E3F2;
   font-family: $na-font-accent;

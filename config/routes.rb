@@ -21,7 +21,9 @@ Rails.application.routes.draw do
   resource :profile, only: %i[show update], path: "profil"
   resource :data_export, only: :show, path: "profil/export"
   get "catalogue", to: "animes#index", as: :catalogue
-  resources :animes, only: :show, path: "anime"
+  resources :animes, only: :show, path: "anime" do
+    resource :watchlist_entry, only: :create, path: "watchlist"
+  end
   get "recos", to: "recommendations#index", as: :recommendations
   get "watchlist", to: "watchlist_entries#index", as: :watchlist
   get "calendrier", to: "calendar#show", as: :calendar

@@ -38,4 +38,16 @@ RSpec.describe Organisms::CatalogueItemsComponent, type: :component do
 
     expect(page).to have_no_css("li")
   end
+
+  describe "the anime of the watchlist" do
+    it "marks the anime whose id it is given, and only them" do
+      monster = create(:anime, title_romaji: "Monster", title_english: nil)
+      pluto = create(:anime, title_romaji: "Pluto", title_english: nil)
+
+      render_inline(described_class.new(animes: [ monster, pluto ], listed_ids: Set.new([ monster.id ])))
+
+      expect(page.find("li", text: "Monster")).to have_css(".na-poster-card__listed")
+      expect(page.find("li", text: "Pluto")).to have_no_css(".na-poster-card__listed")
+    end
+  end
 end

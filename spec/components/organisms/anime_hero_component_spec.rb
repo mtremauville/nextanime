@@ -64,4 +64,20 @@ RSpec.describe Organisms::AnimeHeroComponent, type: :component do
 
     expect(page).to have_no_css(".na-match-panel")
   end
+
+  describe "actions" do
+    it "shows the actions the page gives it" do
+      render_inline(described_class.new(anime: anime, details: AnimeDetails.new(anime))) do |hero|
+        hero.with_actions { "Do something" }
+      end
+
+      expect(page).to have_css(".na-anime-hero__actions", text: "Do something")
+    end
+
+    it "shows no area for the actions when the page gives none" do
+      render_hero
+
+      expect(page).to have_no_css(".na-anime-hero__actions")
+    end
+  end
 end

@@ -106,4 +106,44 @@ RSpec.describe "Anime page", type: :request do
       end
     end
   end
+
+  describe "the watchlist on the page of an anime" do
+    context "with a visitor" do
+      it "invites them to create an account and offers no addition" do
+        get anime_path(anime)
+
+        expect(document).to have_link("Créer un compte pour ajouter à ma watchlist", href: new_user_registration_path)
+        expect(document).to have_no_css("form[action='#{anime_watchlist_entry_path(anime)}']")
+      end
+    end
+
+    context "with a member" do
+      let(:member) { create(:user) }
+
+      before { sign_in member }
+
+      it "offers to add an anime that is not in their list" do
+        get anime_path(anime)
+
+        expect(document).to have_css("form[action='#{anime_watchlist_entry_path(anime)}'] button", text: "+ Ajouter à ma watchlist")
+      end
+
+      it "says an anime of their list is in it" do
+        create(:watchlist_entry, user: member, anime: anime)
+
+        get anime_path(anime)
+
+        expect(document).to have_link("Dans ma watchlist", href: watchlist_path)
+        expect(document).to have_no_button("+ Ajouter à ma watchlist")
+      end
+
+      it "does not count the watchlist of someone else" do
+        create(:watchlist_entry, user: create(:user), anime: anime)
+
+        get anime_path(anime)
+
+        expect(document).to have_button("+ Ajouter à ma watchlist")
+      end
+    end
+  end
 end

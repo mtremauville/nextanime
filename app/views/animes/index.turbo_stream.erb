@@ -1,5 +1,5 @@
 <%= turbo_stream.append Organisms::CatalogueGridComponent::DOM_ID do %>
-  <%= render Organisms::CatalogueItemsComponent.new(animes: @page.animes, scorer: @scorer) %>
+  <%= render Organisms::CatalogueItemsComponent.new(animes: @page.animes, scorer: @scorer, listed_ids: @listed_ids) %>
 <% end %>
 
 <%= turbo_stream.replace Molecules::LoadMoreComponent::DOM_ID do %>

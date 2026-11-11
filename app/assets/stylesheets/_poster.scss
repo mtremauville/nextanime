@@ -17,3 +17,13 @@
   .na-poster--#{$name} { background: var(--na-poster-#{$name}); }
 }
 .na-poster-card__reason { color: var(--na-cyan); }
+
+.na-poster-card__listed {
+  position: absolute;
+  top: map-get($na-spacers, 2);
+  left: map-get($na-spacers, 2);
+  color: var(--na-magenta);
+  font-size: .75rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}

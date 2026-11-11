@@ -1,7 +1,11 @@
 <div class="na-anime-page">
   <%= link_to t(".back"), recommendations_path, class: "na-anime-page__back" %>
 
-  <%= render Organisms::AnimeHeroComponent.new(anime: @anime, details: @details, match_percent: @match_percent, reason: @reason) %>
+  <%= render Organisms::AnimeHeroComponent.new(anime: @anime, details: @details, match_percent: @match_percent, reason: @reason) do |hero| %>
+    <% hero.with_actions do %>
+      <%= render Molecules::WatchlistButtonComponent.new(anime: @anime, member: current_user, entry: @watchlist_entry) %>
+    <% end %>
+  <% end %>
 
   <div class="na-anime-page__columns">
     <div class="na-anime-page__main">

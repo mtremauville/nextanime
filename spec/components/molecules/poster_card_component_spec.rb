@@ -86,4 +86,25 @@ RSpec.describe Molecules::PosterCardComponent, type: :component do
       expect(page).to have_no_css(".na-poster-card__reason")
     end
   end
+
+  describe "the mark of the watchlist" do
+    it "shows it for an anime that is in the list of the member" do
+      render_inline(described_class.new(title: "Monster", listed: true))
+
+      expect(page).to have_css(".na-poster-card__listed", text: "Dans ma liste")
+    end
+
+    it "shows nothing for an anime that is not" do
+      render_inline(described_class.new(title: "Monster"))
+
+      expect(page).to have_no_css(".na-poster-card__listed")
+    end
+
+    it "keeps the match next to it" do
+      render_inline(described_class.new(title: "Monster", listed: true, match: 87))
+
+      expect(page).to have_css(".na-poster-card__listed")
+      expect(page).to have_css(".na-poster-card__badge")
+    end
+  end
 end

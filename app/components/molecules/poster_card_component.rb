@@ -2,7 +2,7 @@ module Molecules
   class PosterCardComponent < ViewComponent::Base
     POSTERS = %i[violet magenta cyan green orange indigo].freeze
 
-    def initialize(title:, href: nil, meta: nil, tags: [], match: nil, poster: :violet, image_url: nil, reason: nil)
+    def initialize(title:, href: nil, meta: nil, tags: [], match: nil, poster: :violet, image_url: nil, reason: nil, listed: false)
       raise ArgumentError, "Unknown poster: #{poster.inspect}" unless POSTERS.include?(poster)
 
       @title = title
@@ -13,12 +13,13 @@ module Molecules
       @poster = poster
       @image_url = image_url
       @reason = reason
+      @listed = listed
       super()
     end
 
     private
 
-    attr_reader :title, :href, :meta, :tags, :match, :image_url, :reason
+    attr_reader :title, :href, :meta, :tags, :match, :image_url, :reason, :listed
 
     def poster_class
       "na-poster-card__poster na-poster--#{@poster}"
