@@ -17,6 +17,8 @@ class WatchlistEntryPolicy < ApplicationPolicy
 
   def create? = owned_by_member?
 
+  def update? = owned_by_member?
+
   private
 
   def owned_by_member? = user.present? && record.user_id == user.id
