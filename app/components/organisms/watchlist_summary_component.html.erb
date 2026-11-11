@@ -1,0 +1,16 @@
+<aside class="na-watch-summary" aria-label="<%= I18n.t("watchlist_entries.summary.label") %>">
+  <% if global_percent %>
+    <section class="na-watch-summary__card">
+      <p class="na-eyebrow na-watch-summary__eyebrow na-watch-summary__eyebrow--cyan"><%= I18n.t("watchlist_entries.summary.global_title") %></p>
+      <p class="na-watch-summary__percent"><%= global_percent %>%</p>
+      <%= render Atoms::MeterComponent.new(value: global_percent, label: I18n.t("watchlist_entries.summary.global_title")) %>
+    </section>
+  <% end %>
+  <% if resume_entry %>
+    <section class="na-watch-summary__card na-watch-summary__card--resume">
+      <p class="na-eyebrow na-watch-summary__eyebrow"><%= I18n.t("watchlist_entries.summary.resume_title") %></p>
+      <p class="na-watch-summary__text"><%= resume_prefix %> <strong><%= resume_anime.display_title %></strong>.</p>
+      <%= render(Atoms::ButtonComponent.new(href: anime_path(resume_anime))) { I18n.t("watchlist_entries.summary.resume_link") } %>
+    </section>
+  <% end %>
+</aside>

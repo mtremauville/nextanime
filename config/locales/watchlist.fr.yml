@@ -10,3 +10,9 @@ fr:
       progress: "ÉP. %{seen} / %{total}"
       progress_unknown: "ÉP. %{seen}"
       meter_label: "Progression de %{title}"
+    summary:
+      label: "Résumé"
+      global_title: "Avancement global"
+      resume_title: "Reprendre"
+      resume_prefix: "Tu en étais à l'épisode %{episode} de"
+      resume_link: "Voir la fiche"
