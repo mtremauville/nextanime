@@ -1,0 +1,9 @@
+<% if member.nil? %>
+  <%= render Atoms::ButtonComponent.new(variant: :outline, href: new_user_registration_path) do %>Créer un compte pour ajouter à ma watchlist<% end %>
+<% elsif entry %>
+  <%= render Atoms::ButtonComponent.new(variant: :outline, href: watchlist_path) do %>Dans ma watchlist<% end %>
+<% else %>
+  <%= form_with url: anime_watchlist_entry_path(anime), method: :post do %>
+    <%= render Atoms::ButtonComponent.new(type: "submit") do %>+ Ajouter à ma watchlist<% end %>
+  <% end %>
+<% end %>
