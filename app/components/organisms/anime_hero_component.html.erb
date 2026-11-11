@@ -28,6 +28,9 @@
       <% if match_percent %>
         <%= render Molecules::MatchPanelComponent.new(percent: match_percent, reason: reason) %>
       <% end %>
+      <% if actions? %>
+        <div class="na-anime-hero__actions"><%= actions %></div>
+      <% end %>
     </div>
   </div>
 </header>

@@ -110,6 +110,13 @@
   list-style: none;
 }
 
+.na-anime-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
 @media (max-width: 767.98px) {
   .na-anime-hero__banner { height: 8.75rem; }
   .na-anime-hero__body { margin-top: -4.5rem; padding: 0 1rem; gap: 1.5rem; }
