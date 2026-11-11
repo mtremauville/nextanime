@@ -1,2 +1,27 @@
-<h1 class="h3">Watchlist</h1>
-<p class="text-body-secondary">Cette page arrive bientôt.</p>
+<header class="na-watch-page__header">
+  <p class="na-eyebrow"><%= t(".eyebrow") %></p>
+  <h1 class="na-watch-page__title"><%= t(".title") %></h1>
+</header>
+
+<% if @overview.total.zero? %>
+  <%= render Molecules::EmptyStateComponent.new(title: t(".empty.title"), text: t(".empty.text"), link_label: t(".empty.link"), link_href: catalogue_path) %>
+<% else %>
+  <% counts = @overview.counts %>
+  <% entries = @entries.to_a %>
+  <div class="na-watch-page__stats">
+    <%= render Molecules::StatCardComponent.new(stat: :plan_to_watch, value: counts["plan_to_watch"], label: t(".stats.plan_to_watch"), tone: :cyan) %>
+    <%= render Molecules::StatCardComponent.new(stat: :watching, value: counts["watching"], label: t(".stats.watching"), tone: :magenta) %>
+    <%= render Molecules::StatCardComponent.new(stat: :completed, value: counts["completed"], label: t(".stats.completed")) %>
+  </div>
+
+  <%= render Molecules::ResultFilterComponent.new(label: t(".filter.label"), choices: watchlist_filter_choices(@overview, @status), summary: t(".summary", count: entries.size)) %>
+
+  <div class="na-watch-page__body">
+    <ul class="na-watch-page__list">
+      <% entries.each do |entry| %>
+        <%= render Molecules::WatchlistRowComponent.new(entry: entry) %>
+      <% end %>
+    </ul>
+    <%= render Organisms::WatchlistSummaryComponent.new(global_percent: @overview.global_percent, resume_entry: @overview.resume_entry) %>
+  </div>
+<% end %>
