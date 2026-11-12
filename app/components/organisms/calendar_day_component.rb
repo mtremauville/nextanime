@@ -6,14 +6,15 @@ module Organisms
     NUMBER_FORMAT = "%-d".freeze
     MONTH_FORMAT = "%b".freeze
 
-    def initialize(day:)
+    def initialize(day:, watched_anime_ids: [])
       @day = day
+      @watched_anime_ids = watched_anime_ids
       super()
     end
 
     private
 
-    attr_reader :day
+    attr_reader :day, :watched_anime_ids
 
     def anchor = "day-#{day.date.iso8601}"
 
@@ -36,6 +37,8 @@ module Organisms
     def number = I18n.l(day.date, format: NUMBER_FORMAT)
 
     def month = I18n.l(day.date, format: MONTH_FORMAT)
+
+    def in_watchlist?(anime) = watched_anime_ids.include?(anime.id)
 
     def nothing_airs_label = I18n.t("calendar.day.none")
   end

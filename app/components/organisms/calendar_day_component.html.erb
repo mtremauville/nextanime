@@ -5,7 +5,7 @@
   <% else %>
     <ul class="na-calendar-day__list">
       <% day.airings.each do |anime| %>
-        <%= render Molecules::AiringItemComponent.new(anime: anime) %>
+        <%= render Molecules::AiringItemComponent.new(anime: anime, in_watchlist: in_watchlist?(anime)) %>
       <% end %>
     </ul>
   <% end %>
