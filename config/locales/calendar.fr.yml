@@ -1,5 +1,16 @@
 fr:
   calendar:
+    season:
+      winter: "Hiver"
+      spring: "Printemps"
+      summer: "Été"
+      fall: "Automne"
+    header:
+      eyebrow: "Simulcast"
+      title: "%{season} %{year}"
+      range:
+        one_month: "Du %{from} au %{to} %{month}"
+        two_months: "Du %{from} au %{to}"
     item:
       episode: "Épisode %{number}"
     day:
