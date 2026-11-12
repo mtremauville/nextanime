@@ -7,9 +7,13 @@
     <%= render Molecules::DayChipsComponent.new(days: @calendar.days) %>
   </div>
 
+  <div class="d-none d-md-block">
+    <%= render Molecules::CalendarLegendComponent.new(watchlist: user_signed_in?) %>
+  </div>
+
   <div class="na-calendar__days">
     <% @calendar.days.each do |day| %>
-      <%= render Organisms::CalendarDayComponent.new(day: day) %>
+      <%= render Organisms::CalendarDayComponent.new(day: day, watched_anime_ids: @watched_anime_ids) %>
     <% end %>
   </div>
 <% end %>

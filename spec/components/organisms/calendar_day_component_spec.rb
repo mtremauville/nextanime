@@ -74,4 +74,27 @@ RSpec.describe Organisms::CalendarDayComponent, type: :component do
 
     expect(page).to have_no_css(".na-calendar-day__today-mark")
   end
+
+  describe "the anime that are in the watchlist" do
+    def render_with_watchlist(airings, watched_anime_ids)
+      day = AiringCalendar::Day.new(date: saturday, airings: airings)
+      render_inline(described_class.new(day: day, watched_anime_ids: watched_anime_ids))
+    end
+
+    it "marks only the cards of the anime of the watchlist" do
+      early = anime_airing("Early", 17)
+      late = anime_airing("Late", 22)
+
+      render_with_watchlist([ early, late ], [ early.id ])
+
+      expect(page).to have_css("li.na-airing--in-watchlist", count: 1)
+      expect(page.find("li.na-airing--in-watchlist .na-airing__title").text).to eq("Early")
+    end
+
+    it "marks nothing without a watchlist" do
+      render_day(airings: [ anime_airing("Early", 17) ])
+
+      expect(page).to have_no_css(".na-airing--in-watchlist")
+    end
+  end
 end

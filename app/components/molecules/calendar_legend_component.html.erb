@@ -1,0 +1,12 @@
+<ul class="na-calendar-legend" aria-label="<%= label %>">
+  <% if watchlist %>
+    <li class="na-calendar-legend__item">
+      <span class="na-calendar-legend__swatch na-calendar-legend__swatch--watchlist" aria-hidden="true"></span>
+      <%= watchlist_label %>
+    </li>
+  <% end %>
+  <li class="na-calendar-legend__item">
+    <span class="na-calendar-legend__swatch na-calendar-legend__swatch--today" aria-hidden="true"></span>
+    <%= today_label %>
+  </li>
+</ul>

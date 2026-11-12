@@ -39,4 +39,25 @@ RSpec.describe Molecules::AiringItemComponent, type: :component do
     expect(page).to have_no_css("img")
     expect(page).to have_css("div.na-airing__poster.na-poster--violet")
   end
+
+  describe "when the anime is in the watchlist" do
+    let(:anime) do
+      create(:anime, title_romaji: "Glitch Samurai", title_english: nil, next_episode: 4,
+                     next_airing_at: Time.zone.local(2026, 10, 23, 20, 0))
+    end
+
+    it "says so and marks the card" do
+      render_inline(described_class.new(anime: anime, in_watchlist: true))
+
+      expect(page).to have_css("li.na-airing.na-airing--in-watchlist")
+      expect(page).to have_css("li .na-airing__watchlist", text: "Dans ma watchlist")
+    end
+
+    it "is not marked by default" do
+      render_inline(described_class.new(anime: anime))
+
+      expect(page).to have_no_css(".na-airing--in-watchlist")
+      expect(page).to have_no_css(".na-airing__watchlist")
+    end
+  end
 end

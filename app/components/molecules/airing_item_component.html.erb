@@ -1,12 +1,15 @@
-<li class="na-airing">
+<%= tag.li(class: css_class) do %>
   <% if anime.cover_image_url %>
     <img class="na-airing__poster" src="<%= anime.cover_image_url %>" alt="" loading="lazy">
   <% else %>
     <div class="na-airing__poster na-poster--violet"></div>
   <% end %>
   <div class="na-airing__main">
+    <% if in_watchlist %>
+      <p class="na-airing__watchlist"><%= watchlist_label %></p>
+    <% end %>
     <%= link_to title, anime_path(anime), class: "na-airing__title" %>
     <p class="na-airing__episode"><%= episode_label %></p>
   </div>
   <time class="na-airing__time" datetime="<%= airing_time.iso8601 %>"><%= clock %></time>
-</li>
+<% end %>
