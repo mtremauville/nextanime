@@ -35,16 +35,23 @@ module Anilist
       studios { edges { isMain node { id name isAnimationStudio } } }
     GRAPHQL
 
-    TOP_ANIME_QUERY = <<~GRAPHQL.freeze
-      query ($page: Int!, $perPage: Int!) {
-        Page(page: $page, perPage: $perPage) {
-          pageInfo { currentPage hasNextPage }
-          media(type: ANIME, sort: POPULARITY_DESC) {
-            #{MEDIA_FIELDS}
+    # A page of anime: the media filtered and sorted by the given GraphQL arguments.
+    def self.anime_page_query(media_arguments)
+      <<~GRAPHQL.freeze
+        query ($page: Int!, $perPage: Int!) {
+          Page(page: $page, perPage: $perPage) {
+            pageInfo { currentPage hasNextPage }
+            media(#{media_arguments}) {
+              #{MEDIA_FIELDS}
+            }
           }
         }
-      }
-    GRAPHQL
+      GRAPHQL
+    end
+    private_class_method :anime_page_query
+
+    TOP_ANIME_QUERY = anime_page_query("type: ANIME, sort: POPULARITY_DESC")
+    AIRING_ANIME_QUERY = anime_page_query("type: ANIME, status: RELEASING, sort: POPULARITY_DESC")
 
     MEDIA_BY_IDS_QUERY = <<~GRAPHQL.freeze
       query ($ids: [Int], $perPage: Int!) {
@@ -57,15 +64,11 @@ module Anilist
     GRAPHQL
 
     def top_anime(page: 1, per_page: DEFAULT_PER_PAGE)
-      page_from(TOP_ANIME_QUERY, page: page, perPage: per_page) do |page_data|
-        page_info = page_data.fetch("pageInfo")
+      anime_page(TOP_ANIME_QUERY, page: page, per_page: per_page)
+    end
 
-        Page.new(
-          number: page_info.fetch("currentPage"),
-          has_next_page: page_info.fetch("hasNextPage"),
-          media: page_data.fetch("media")
-        )
-      end
+    def airing_anime(page: 1, per_page: DEFAULT_PER_PAGE)
+      anime_page(AIRING_ANIME_QUERY, page: page, per_page: per_page)
     end
 
     def media_by_ids(ids)
@@ -79,6 +82,18 @@ module Anilist
     end
 
     private
+
+    def anime_page(query, page:, per_page:)
+      page_from(query, page: page, perPage: per_page) do |page_data|
+        page_info = page_data.fetch("pageInfo")
+
+        Page.new(
+          number: page_info.fetch("currentPage"),
+          has_next_page: page_info.fetch("hasNextPage"),
+          media: page_data.fetch("media")
+        )
+      end
+    end
 
     def page_from(query, variables)
       yield execute(query, variables).fetch("Page")
