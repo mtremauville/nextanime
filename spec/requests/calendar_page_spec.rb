@@ -77,4 +77,53 @@ RSpec.describe "The calendar page", type: :request do
     expect(html).to have_text("Aucune sortie annoncée pour les 7 prochains jours")
     expect(html).to have_no_css("section[aria-label]")
   end
+
+  describe "the watchlist of a member" do
+    let(:member) { create(:user) }
+    let(:watched) { anime_airing("Glitch Samurai", 23, 20, 0, 4) }
+
+    before { anime_airing("Neon Requiem", 24, 18, 30, 3) }
+
+    it "marks the airing anime that are in the watchlist of the member" do
+      member.watchlist_entries.create!(anime: watched)
+      sign_in member
+
+      show_calendar
+
+      expect(html).to have_css("li.na-airing--in-watchlist", count: 1)
+      expect(html.find("li.na-airing--in-watchlist")).to have_text("Glitch Samurai")
+    end
+
+    it "explains the mark in the legend" do
+      sign_in member
+
+      show_calendar
+
+      expect(html).to have_css(".na-calendar-legend__item", text: "Dans ma watchlist")
+    end
+
+    it "does not mark the anime that are in the watchlist of another member" do
+      create(:user).watchlist_entries.create!(anime: watched)
+      sign_in member
+
+      show_calendar
+
+      expect(html).to have_no_css(".na-airing--in-watchlist")
+    end
+
+    it "shows a visitor no mark and no watchlist legend" do
+      member.watchlist_entries.create!(anime: watched)
+
+      show_calendar
+
+      expect(html).to have_no_css(".na-airing--in-watchlist")
+      expect(html).to have_no_text("Dans ma watchlist")
+    end
+
+    it "explains today in the legend to everyone" do
+      show_calendar
+
+      expect(html).to have_css(".na-calendar-legend__item", text: "Aujourd'hui")
+    end
+  end
 end
