@@ -20,6 +20,10 @@ fr:
       none: "Aucune sortie ce jour-là"
     chips:
       label: "Choisir un jour"
+    legend:
+      label: "Légende"
+      today: "Aujourd'hui"
+      watchlist: "Dans ma watchlist"
     show:
       empty:
         title: "Aucune sortie annoncée pour les 7 prochains jours"
