@@ -1,4 +1,4 @@
-// Calendar page: header, day chips (small screens), days and airing cards.
+// Calendar page: header, day chips (small screens), days, airing cards and legend.
 // Sizes below come straight from the calendar mockups (desktop and mobile).
 $na-calendar-gap: map-get($na-spacers, 4);
 $na-calendar-days-gap-mobile: map-get($na-spacers, 5);
@@ -11,6 +11,10 @@ $na-chip-padding-y: 6px;
 $na-airing-poster-width: 56px;
 $na-airing-poster-height: 84px;
 $na-airing-cover-height: 96px;
+$na-legend-swatch-size: 16px;
+$na-legend-swatch-radius: 4px;
+$na-legend-bar-height: 4px;
+$na-watchlist-fill: color-mix(in srgb, var(--na-magenta) 12%, transparent);
 
 .na-calendar-header {
   margin-bottom: $na-calendar-gap;
@@ -48,6 +52,45 @@ $na-airing-cover-height: 96px;
 
     @include media-breakpoint-up(md) {
       font-size: map-get($na-font-sizes, 16);
+    }
+  }
+}
+
+.na-calendar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: map-get($na-spacers, 5);
+  margin: 0 0 map-get($na-spacers, 5);
+  padding: map-get($na-spacers, 4) 0;
+  border-top: 1px solid var(--na-border);
+  border-bottom: 1px solid var(--na-border);
+  color: var(--na-muted);
+  font-size: map-get($na-font-sizes, 14);
+  list-style: none;
+
+  &__item {
+    display: inline-flex;
+    align-items: center;
+    gap: map-get($na-spacers, 2);
+  }
+
+  &__swatch {
+    flex: none;
+
+    &--watchlist {
+      width: $na-legend-swatch-size;
+      height: $na-legend-swatch-size;
+      border: 1px solid var(--na-magenta);
+      border-radius: $na-legend-swatch-radius;
+      background: $na-watchlist-fill;
+    }
+
+    &--today {
+      width: $na-legend-swatch-size;
+      height: $na-legend-bar-height;
+      border-radius: $na-radius-pill;
+      background: var(--na-cyan);
     }
   }
 }
@@ -180,9 +223,7 @@ $na-airing-cover-height: 96px;
 .na-airing {
   display: grid;
   grid-template-columns: $na-airing-poster-width 1fr auto;
-  grid-template-areas:
-    "poster title time"
-    "poster episode time";
+  grid-template-areas: "poster main time";
   column-gap: map-get($na-spacers, 3);
   align-items: center;
   padding: map-get($na-spacers, 3);
@@ -195,11 +236,15 @@ $na-airing-cover-height: 96px;
     grid-template-columns: 1fr;
     grid-template-areas:
       "poster"
-      "title"
-      "episode"
+      "main"
       "time";
     row-gap: map-get($na-spacers, 1);
     padding: 0;
+  }
+
+  &--in-watchlist {
+    border-color: var(--na-magenta);
+    box-shadow: $na-glow-magenta-soft;
   }
 
   &__poster {
@@ -217,9 +262,25 @@ $na-airing-cover-height: 96px;
     }
   }
 
+  &__main {
+    grid-area: main;
+    min-width: 0;
+
+    @include media-breakpoint-up(md) {
+      padding-inline: map-get($na-spacers, 3);
+    }
+  }
+
+  &__watchlist {
+    margin: 0 0 map-get($na-spacers, 1);
+    color: var(--na-magenta);
+    font-family: $na-font-accent;
+    font-size: map-get($na-font-sizes, 12);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
   &__title {
-    grid-area: title;
-    align-self: end;
     display: -webkit-box;
     overflow: hidden;
     -webkit-box-orient: vertical;
@@ -236,23 +297,15 @@ $na-airing-cover-height: 96px;
     }
 
     @include media-breakpoint-up(md) {
-      padding-inline: map-get($na-spacers, 3);
-      font-size: map-get($na-font-sizes, 14);
-      align-self: start;
       min-height: 2lh;
+      font-size: map-get($na-font-sizes, 14);
     }
   }
 
   &__episode {
-    grid-area: episode;
-    align-self: start;
-    margin: 0;
+    margin: map-get($na-spacers, 1) 0 0;
     color: var(--na-muted);
     font-size: map-get($na-font-sizes, 12);
-
-    @include media-breakpoint-up(md) {
-      padding-inline: map-get($na-spacers, 3);
-    }
   }
 
   &__time {
