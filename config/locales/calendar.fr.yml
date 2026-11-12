@@ -13,6 +13,7 @@ fr:
         two_months: "Du %{from} au %{to}"
     item:
       episode: "Épisode %{number}"
+      in_watchlist: "Dans ma watchlist"
     day:
       today: "Aujourd'hui · %{day}"
       today_mark: "Aujourd'hui ·"
