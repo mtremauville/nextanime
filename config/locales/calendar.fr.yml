@@ -5,3 +5,5 @@ fr:
     day:
       today: "Aujourd'hui · %{day}"
       none: "Aucune sortie ce jour-là"
+    chips:
+      label: "Choisir un jour"
