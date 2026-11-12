@@ -1,0 +1,8 @@
+<nav class="na-day-chips" aria-label="<%= label %>">
+  <% days.each do |day| %>
+    <%= link_to anchor(day), class: chip_class(day), aria: chip_aria(day) do %>
+      <span class="na-day-chips__weekday"><%= weekday(day) %></span>
+      <span class="na-day-chips__number"><%= number(day) %></span>
+    <% end %>
+  <% end %>
+</nav>

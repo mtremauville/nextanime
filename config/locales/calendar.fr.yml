@@ -1,0 +1,26 @@
+fr:
+  calendar:
+    season:
+      winter: "Hiver"
+      spring: "Printemps"
+      summer: "Été"
+      fall: "Automne"
+    header:
+      eyebrow: "Simulcast"
+      title: "%{season} %{year}"
+      range:
+        one_month: "Du %{from} au %{to} %{month}"
+        two_months: "Du %{from} au %{to}"
+    item:
+      episode: "Épisode %{number}"
+    day:
+      today: "Aujourd'hui · %{day}"
+      today_mark: "Aujourd'hui ·"
+      none: "Aucune sortie ce jour-là"
+    chips:
+      label: "Choisir un jour"
+    show:
+      empty:
+        title: "Aucune sortie annoncée pour les 7 prochains jours"
+        text: "Les prochains épisodes apparaîtront ici dès qu'ils seront annoncés."
+        link: "Parcourir le catalogue"

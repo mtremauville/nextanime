@@ -10,7 +10,11 @@ RSpec.describe "Navigation", type: :request do
   }
 
   # Pages whose title differs from the label of their tab.
-  headings = { "/recos" => "Tes recommandations", "/watchlist" => "Ma watchlist" }
+  headings = {
+    "/recos" => "Tes recommandations",
+    "/watchlist" => "Ma watchlist",
+    "/calendrier" => /\A(Hiver|Printemps|Été|Automne) \d{4}\z/
+  }
 
   let(:document) { Capybara.string(response.body) }
 

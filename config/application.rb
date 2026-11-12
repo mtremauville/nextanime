@@ -35,7 +35,8 @@ module NextAnime
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
     #
-    # config.time_zone = "Central Time (US & Canada)"
+    # Airing times are read, and days are counted, in the time zone of the people the app is made for.
+    config.time_zone = "Europe/Paris"
     # config.eager_load_paths << Rails.root.join("extras")
 
     # Don't generate system test files.
