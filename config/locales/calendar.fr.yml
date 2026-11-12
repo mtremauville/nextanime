@@ -2,3 +2,6 @@ fr:
   calendar:
     item:
       episode: "Épisode %{number}"
+    day:
+      today: "Aujourd'hui · %{day}"
+      none: "Aucune sortie ce jour-là"
