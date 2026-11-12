@@ -54,4 +54,24 @@ RSpec.describe Organisms::CalendarDayComponent, type: :component do
     expect(page).to have_text("Aucune sortie ce jour-là")
     expect(page).to have_no_css("ul")
   end
+
+  it "gives the weekday and the date of a day in their own elements" do
+    render_day
+
+    expect(page).to have_css("section h2 .na-calendar-day__name", text: "Samedi")
+    expect(page).to have_css("section h2 .na-calendar-day__date", text: "24 oct.")
+  end
+
+  it "marks today in its own element, before the weekday" do
+    render_day(date: friday)
+
+    expect(page).to have_css("section h2 .na-calendar-day__today-mark", text: "Aujourd'hui ·")
+    expect(page).to have_css("section h2 .na-calendar-day__name", text: "vendredi")
+  end
+
+  it "does not add that mark to another day" do
+    render_day
+
+    expect(page).to have_no_css(".na-calendar-day__today-mark")
+  end
 end

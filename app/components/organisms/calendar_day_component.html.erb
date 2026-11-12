@@ -1,5 +1,5 @@
 <%= tag.section(id: anchor, class: css_class, aria: { label: label }) do %>
-  <h2 class="na-calendar-day__title"><%= label %></h2>
+  <h2 class="na-calendar-day__title"><% if day.today? %><span class="na-calendar-day__today-mark"><%= today_mark %></span> <% end %><span class="na-calendar-day__name"><%= name %></span> <span class="na-calendar-day__date"><%= number %><span class="na-calendar-day__month"> <%= month %></span></span></h2>
   <% if day.airings.empty? %>
     <p class="na-calendar-day__none"><%= nothing_airs_label %></p>
   <% else %>

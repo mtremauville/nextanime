@@ -15,6 +15,7 @@ fr:
       episode: "Épisode %{number}"
     day:
       today: "Aujourd'hui · %{day}"
+      today_mark: "Aujourd'hui ·"
       none: "Aucune sortie ce jour-là"
     chips:
       label: "Choisir un jour"
