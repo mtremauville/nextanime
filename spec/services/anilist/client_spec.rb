@@ -210,4 +210,40 @@ RSpec.describe Anilist::Client do
       expect { client.top_anime }.to raise_error(Anilist::Error)
     end
   end
+
+  describe "#airing_anime" do
+    it "asks for the anime that are airing now, the most popular first" do
+      client.airing_anime
+
+      expect(sent_payload["query"]).to include("type: ANIME", "status: RELEASING", "sort: POPULARITY_DESC")
+    end
+
+    it "asks for the first page of 50 anime by default" do
+      client.airing_anime
+
+      expect(sent_payload["variables"]).to eq("page" => 1, "perPage" => 50)
+    end
+
+    it "asks for the requested page and size" do
+      client.airing_anime(page: 3, per_page: 25)
+
+      expect(sent_payload["variables"]).to eq("page" => 3, "perPage" => 25)
+    end
+
+    it "asks for everything the import needs, with the next episode" do
+      client.airing_anime
+
+      expect(sent_payload["query"]).to include(
+        "title", "status", "nextAiringEpisode", "genres", "tags", "studios", "isAnimationStudio"
+      )
+    end
+
+    it "returns a page like the most popular anime do" do
+      page = client.airing_anime
+
+      expect(page.number).to eq(2)
+      expect(page.has_next_page).to be(true)
+      expect(page.media.map { |media| media["id"] }).to eq([ 1, 154587 ])
+    end
+  end
 end
