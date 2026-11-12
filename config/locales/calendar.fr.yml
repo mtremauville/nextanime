@@ -1,0 +1,4 @@
+fr:
+  calendar:
+    item:
+      episode: "Épisode %{number}"
