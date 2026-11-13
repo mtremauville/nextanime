@@ -110,4 +110,40 @@ RSpec.describe Tmdb::AnimeLinker do
       expect(client).to have_received(:search).once
     end
   end
+  describe "#link when the title ends with a season marker" do
+    let(:attack_on_titan) do
+      {
+        "id" => 1429, "name" => "Attack on Titan", "original_name" => "進撃の巨人",
+        "first_air_date" => "2013-04-07", "genre_ids" => [ 16 ], "origin_country" => [ "JP" ]
+      }
+    end
+    let(:third_season) do
+      create(:anime, title_english: "Attack on Titan Season 3", title_romaji: "Shingeki no Kyojin Season 3", season_year: 2018)
+    end
+
+    before do
+      allow(client).to receive(:search).and_return([])
+      allow(client).to receive(:search).with(media_type: :tv, query: "Attack on Titan").and_return([ attack_on_titan ])
+    end
+
+    it "finds the series when only the title without the season is known by TMDB" do
+      expect(linker.link(third_season).tmdb_id).to eq(1429)
+    end
+
+    it "searches the full titles before the title of the series" do
+      linker.link(third_season)
+
+      expect(client).to have_received(:search).with(media_type: :tv, query: "Attack on Titan Season 3").ordered
+      expect(client).to have_received(:search).with(media_type: :tv, query: "Shingeki no Kyojin Season 3").ordered
+      expect(client).to have_received(:search).with(media_type: :tv, query: "Attack on Titan").ordered
+    end
+
+    it "searches the title of the series only once when both titles lead to the same one" do
+      haikyu = create(:anime, title_english: "Haikyu!! 2nd Season", title_romaji: "Haikyu!! 2", season_year: 2015)
+
+      linker.link(haikyu)
+
+      expect(client).to have_received(:search).with(media_type: :tv, query: "Haikyu!!").once
+    end
+  end
 end

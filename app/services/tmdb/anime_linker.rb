@@ -35,8 +35,13 @@ module Tmdb
       @matcher.match(anime, @client.search(media_type: media_type, query: title), media_type: media_type)
     end
 
+    # The full titles come first. TMDB knows a later season under the title of its series,
+    # so the titles without the season marker are only tried when the full titles found nothing.
     def titles(anime)
-      [ anime.title_english, anime.title_romaji ].compact_blank.map { |title| TitleNormalizer.search_term(title) }.compact_blank.uniq
+      names = [ anime.title_english, anime.title_romaji ].compact_blank
+      series_names = names.map { |name| TitleNormalizer.series_title(name) }
+
+      (names + series_names).map { |title| TitleNormalizer.search_term(title) }.compact_blank.uniq
     end
   end
 end
