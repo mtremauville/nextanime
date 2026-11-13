@@ -1,0 +1,21 @@
+{
+  "id": 209867,
+  "results": {
+    "FR": {
+      "link": "https://www.themoviedb.org/tv/209867/watch?locale=FR",
+      "flatrate": [
+        { "provider_id": 283, "provider_name": "Crunchyroll", "logo_path": "/crunchyroll.jpg", "display_priority": 1 },
+        { "provider_id": 415, "provider_name": "ADN", "logo_path": "/adn.jpg", "display_priority": 2 }
+      ]
+    },
+    "US": {
+      "link": "https://www.themoviedb.org/tv/209867/watch?locale=US",
+      "flatrate": [
+        { "provider_id": 283, "provider_name": "Crunchyroll", "logo_path": "/crunchyroll.jpg", "display_priority": 1 }
+      ],
+      "buy": [
+        { "provider_id": 2, "provider_name": "Apple TV", "logo_path": "/apple.jpg", "display_priority": 5 }
+      ]
+    }
+  }
+}

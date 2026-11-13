@@ -1,0 +1,22 @@
+{
+  "page": 1,
+  "results": [
+    {
+      "id": 209867,
+      "name": "Frieren: Beyond Journey's End",
+      "original_name": "葬送のフリーレン",
+      "first_air_date": "2023-09-29",
+      "genre_ids": [16, 18, 10765],
+      "origin_country": ["JP"]
+    },
+    {
+      "id": 1,
+      "name": "Frieren",
+      "original_name": "Frieren",
+      "first_air_date": "2020-01-01",
+      "genre_ids": [99],
+      "origin_country": ["US"]
+    }
+  ],
+  "total_results": 2
+}
