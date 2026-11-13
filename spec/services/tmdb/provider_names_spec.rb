@@ -7,7 +7,10 @@ RSpec.describe Tmdb::ProviderNames do
       "Netflix basic with Ads" => "Netflix",
       "Amazon Prime Video with Ads" => "Amazon Prime Video",
       "Crunchyroll Amazon Channel" => "Crunchyroll",
-      "Crunchyroll Apple TV Channel" => "Crunchyroll"
+      "Crunchyroll Apple TV Channel" => "Crunchyroll",
+      "Amazon Prime Video Free" => "Amazon Prime Video",
+      "Fandango at Home Free" => "Fandango at Home",
+      "Anime Digital Network" => "Animation Digital Network"
     }.each do |variant, base_name|
       it "reduces #{variant.inspect} to #{base_name.inspect}" do
         expect(described_class.base_name(variant)).to eq(base_name)
@@ -28,7 +31,9 @@ RSpec.describe Tmdb::ProviderNames do
       "Netflix Standard with Ads" => "netflix",
       "Apple TV+" => "apple-tv-plus",
       "Apple TV Plus" => "apple-tv-plus",
-      "Disney+" => "disney-plus"
+      "Disney+" => "disney-plus",
+      "Amazon Prime Video Free" => "amazon-prime-video",
+      "Anime Digital Network" => "animation-digital-network"
     }.each do |name, slug|
       it "gives #{slug.inspect} for #{name.inspect}" do
         expect(described_class.slug(name)).to eq(slug)
