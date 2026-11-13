@@ -19,3 +19,9 @@ production:
     class: SyncAiringAnimeJob
     queue: default
     schedule: "5 */6 * * *"
+
+  # Refreshes where the anime can be watched, once a week on Tuesday at night (UTC), at a quiet minute.
+  sync_streaming_availabilities:
+    class: SyncStreamingAvailabilitiesJob
+    queue: default
+    schedule: "17 3 * * 2"
