@@ -28,4 +28,15 @@ RSpec.describe StreamingPlatform, type: :model do
     it { is_expected.to validate_uniqueness_of(:slug) }
     it { is_expected.to validate_uniqueness_of(:tmdb_provider_id).allow_nil }
   end
+  describe "#logo_url" do
+    it "points to the logo on the image server of TMDB" do
+      platform = build(:streaming_platform, logo_path: "/pbpMk2JmcoNnQwx5JGpXngfoWtp.jpg")
+
+      expect(platform.logo_url).to eq("https://image.tmdb.org/t/p/w92/pbpMk2JmcoNnQwx5JGpXngfoWtp.jpg")
+    end
+
+    it "has no logo address when the platform has no logo" do
+      expect(build(:streaming_platform, logo_path: nil).logo_url).to be_nil
+    end
+  end
 end
