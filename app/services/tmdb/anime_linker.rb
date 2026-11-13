@@ -36,7 +36,7 @@ module Tmdb
     end
 
     def titles(anime)
-      [ anime.title_english, anime.title_romaji ].compact_blank.uniq
+      [ anime.title_english, anime.title_romaji ].compact_blank.map { |title| TitleNormalizer.search_term(title) }.compact_blank.uniq
     end
   end
 end

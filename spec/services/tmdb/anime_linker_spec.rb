@@ -91,4 +91,23 @@ RSpec.describe Tmdb::AnimeLinker do
       end
     end
   end
+  describe "#link with a qualifier in the title" do
+    it "searches without the qualifier" do
+      qualified = create(:anime, title_english: "JoJo's Bizarre Adventure (TV)", title_romaji: "JoJo no Kimyou na Bouken (TV)", season_year: 2012)
+      allow(client).to receive(:search).and_return([])
+
+      linker.link(qualified)
+
+      expect(client).to have_received(:search).with(media_type: :tv, query: "JoJo's Bizarre Adventure")
+    end
+
+    it "does not search twice for titles that only differ by their qualifier" do
+      doubled = create(:anime, title_english: "Frieren (TV)", title_romaji: "Frieren", season_year: 2023)
+      allow(client).to receive(:search).and_return([])
+
+      linker.link(doubled)
+
+      expect(client).to have_received(:search).once
+    end
+  end
 end
