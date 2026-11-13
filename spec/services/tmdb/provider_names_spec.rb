@@ -33,6 +33,7 @@ RSpec.describe Tmdb::ProviderNames do
       "Apple TV Plus" => "apple-tv-plus",
       "Disney+" => "disney-plus",
       "Amazon Prime Video Free" => "amazon-prime-video",
+      "Amazon Prime Video Free with Ads" => "amazon-prime-video",
       "Anime Digital Network" => "animation-digital-network"
     }.each do |name, slug|
       it "gives #{slug.inspect} for #{name.inspect}" do
