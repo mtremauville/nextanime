@@ -38,6 +38,7 @@ class Anime < ApplicationRecord
   has_many :swipes, dependent: :destroy
   has_many :recommendations, dependent: :destroy
   has_many :watchlist_entries, dependent: :destroy
+  has_many :streaming_links, dependent: :destroy
 
   validates :anilist_id, presence: true, uniqueness: true
   validates :title_romaji, presence: true
