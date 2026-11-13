@@ -150,4 +150,18 @@ RSpec.describe Anime, type: :model do
       expect(anime.display_title).to eq("Shingeki no Kyojin")
     end
   end
+  describe ".most_popular" do
+    let!(:niche) { create(:anime, popularity: 100) }
+    let!(:famous) { create(:anime, popularity: 90_000) }
+    let!(:unrated) { create(:anime, popularity: nil) }
+    let!(:common) { create(:anime, popularity: 5_000) }
+
+    it "lists the most popular anime first and the unrated ones last" do
+      expect(described_class.most_popular(10)).to eq([ famous, common, niche, unrated ])
+    end
+
+    it "keeps only the requested number of anime" do
+      expect(described_class.most_popular(2)).to eq([ famous, common ])
+    end
+  end
 end
