@@ -100,4 +100,26 @@ RSpec.describe Tmdb::TitleMatcher do
       expect(matcher.match(anime, [], media_type: :tv)).to be_nil
     end
   end
+  describe "#match with titles that differ in their form" do
+    it "ignores a year or a qualifier in the title of the anime" do
+      hunter = build(:anime, title_english: "Hunter x Hunter (2011)", title_romaji: "HUNTER×HUNTER (2011)", season_year: 2011)
+      candidate = series(id: 46_298, name: "Hunter x Hunter", original_name: "HUNTER×HUNTER", date: "2011-10-02")
+
+      expect(match_id([ candidate ], hunter)).to eq(46_298)
+    end
+
+    it "ignores the accents of the titles" do
+      naruto = build(:anime, title_english: "Naruto: Shippuden", season_year: 2007)
+      candidate = series(id: 31_910, name: "Naruto Shippūden", original_name: "ナルト 疾風伝", date: "2007-02-15")
+
+      expect(match_id([ candidate ], naruto)).to eq(31_910)
+    end
+
+    it "ignores the mention of the film in the title" do
+      voice = build(:anime, title_english: "A Silent Voice", title_native: "聲の形", format: :movie, season_year: 2016)
+      candidate = film(id: 378_064, title: "A Silent Voice: The Movie", original_title: "映画 聲の形", date: "2016-09-17")
+
+      expect(match_id([ candidate ], voice, media_type: :movie)).to eq(378_064)
+    end
+  end
 end

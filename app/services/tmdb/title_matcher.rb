@@ -47,9 +47,8 @@ module Tmdb
       normalize([ anime.title_english, anime.title_romaji, anime.title_native ]).intersect?(result_titles)
     end
 
-    # Case, punctuation, apostrophes and full-width characters do not make a different title.
     def normalize(titles)
-      titles.compact.map { |title| title.unicode_normalize(:nfkc).downcase.gsub(/[^\p{L}\p{N}]/, "") }.reject(&:empty?)
+      titles.compact.map { |title| TitleNormalizer.normalize(title) }.reject(&:empty?)
     end
   end
 end
