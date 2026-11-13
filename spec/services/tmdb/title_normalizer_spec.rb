@@ -32,4 +32,25 @@ RSpec.describe Tmdb::TitleNormalizer do
       end
     end
   end
+  describe ".series_title" do
+    {
+      "Attack on Titan Season 3" => "Attack on Titan",
+      "Attack on Titan Season 3 Part 2" => "Attack on Titan",
+      "Attack on Titan Final Season Part 2" => "Attack on Titan",
+      "HAIKYU!! 2nd Season" => "HAIKYU!!",
+      "Sword Art Online II" => "Sword Art Online",
+      "Overlord III" => "Overlord",
+      "Mob Psycho 100 II" => "Mob Psycho 100",
+      "Boku no Hero Academia 2" => "Boku no Hero Academia",
+      "JUJUTSU KAISEN Season 2" => "JUJUTSU KAISEN",
+      "Re:ZERO -Starting Life in Another World- Season2" => "Re:ZERO -Starting Life in Another World-",
+      "Mob Psycho 100" => "Mob Psycho 100",
+      "Frieren: Beyond Journey's End" => "Frieren: Beyond Journey's End",
+      "Demon Slayer: Kimetsu no Yaiba Entertainment District Arc" => "Demon Slayer: Kimetsu no Yaiba Entertainment District Arc"
+    }.each do |title, series_title|
+      it "turns #{title.inspect} into #{series_title.inspect}" do
+        expect(described_class.series_title(title)).to eq(series_title)
+      end
+    end
+  end
 end

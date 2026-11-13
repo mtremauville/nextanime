@@ -6,6 +6,11 @@ module Tmdb
     QUALIFIER = /\s*\([^)]*\)/
     MOVIE_MARKERS = /\bthe movie\b|映画|劇場版/
     NOT_A_LETTER_OR_DIGIT = /[^\p{L}\p{N}]/
+    SEASON_MARKERS = /
+      (?:\s+(?:
+        Season\s*\d+ | \d+(?:st|nd|rd|th)\s+Season | Final\s+Season | Part\s*\d+ | Cour\s*\d+ | [IVX]+ | [2-9]
+      ))+\z
+    /xi
 
     def self.normalize(title)
       unaccented = title.unicode_normalize(:nfkd).gsub(LATIN_ACCENTS, "").unicode_normalize(:nfkc)
@@ -16,6 +21,11 @@ module Tmdb
     # TMDB finds nothing for a title that ends with "(TV)" or "(2011)".
     def self.search_term(title)
       title.unicode_normalize(:nfkc).gsub(QUALIFIER, "").strip
+    end
+
+    # TMDB has one series for all the seasons of an anime: "Attack on Titan Season 3" is found as "Attack on Titan".
+    def self.series_title(title)
+      title.sub(SEASON_MARKERS, "").strip
     end
   end
 end
