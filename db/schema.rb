@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_13_001730) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_13_012936) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -91,6 +91,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_13_001730) do
     t.index ["taste_profile_id", "score"], name: "index_recommendations_on_taste_profile_id_and_score"
   end
 
+  create_table "streaming_availabilities", force: :cascade do |t|
+    t.bigint "anime_id", null: false
+    t.bigint "streaming_platform_id", null: false
+    t.string "country_code", null: false
+    t.string "offer_type", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["anime_id", "streaming_platform_id", "country_code", "offer_type"], name: "index_streaming_availabilities_uniqueness", unique: true
+    t.index ["anime_id"], name: "index_streaming_availabilities_on_anime_id"
+    t.index ["streaming_platform_id", "country_code"], name: "index_streaming_availabilities_on_platform_and_country"
+  end
+
   create_table "streaming_links", force: :cascade do |t|
     t.bigint "anime_id", null: false
     t.bigint "streaming_platform_id", null: false
@@ -108,8 +120,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_13_001730) do
     t.string "slug", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "tmdb_provider_id"
     t.index ["name"], name: "index_streaming_platforms_on_name", unique: true
     t.index ["slug"], name: "index_streaming_platforms_on_slug", unique: true
+    t.index ["tmdb_provider_id"], name: "index_streaming_platforms_on_tmdb_provider_id", unique: true
   end
 
   create_table "studios", force: :cascade do |t|
@@ -191,6 +205,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_13_001730) do
   add_foreign_key "anime_tags", "tags"
   add_foreign_key "recommendations", "animes"
   add_foreign_key "recommendations", "taste_profiles"
+  add_foreign_key "streaming_availabilities", "animes"
+  add_foreign_key "streaming_availabilities", "streaming_platforms"
   add_foreign_key "streaming_links", "animes"
   add_foreign_key "streaming_links", "streaming_platforms"
   add_foreign_key "swipes", "animes"

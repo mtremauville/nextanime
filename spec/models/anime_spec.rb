@@ -79,6 +79,7 @@ RSpec.describe Anime, type: :model do
     it { is_expected.to have_many(:swipes).dependent(:destroy) }
     it { is_expected.to have_many(:recommendations).dependent(:destroy) }
     it { is_expected.to have_many(:streaming_links).dependent(:destroy) }
+    it { is_expected.to have_many(:streaming_availabilities).dependent(:destroy) }
     it "removes its genre links when destroyed" do
       anime = create(:anime, genres: [ create(:genre) ])
 
