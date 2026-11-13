@@ -32,7 +32,7 @@ RSpec.describe Anilist::Client do
       client.media_by_ids([ 1535 ])
 
       expect(sent_payload["query"]).to include(
-        "title", "status", "nextAiringEpisode", "genres", "tags", "studios", "isAnimationStudio"
+        "title", "status", "nextAiringEpisode", "genres", "tags", "studios", "isAnimationStudio", "externalLinks { site type language url }"
       )
     end
 
@@ -93,7 +93,7 @@ RSpec.describe Anilist::Client do
       expect(sent_payload["query"]).to include(
         "title", "format", "status", "season", "seasonYear", "episodes", "duration",
         "averageScore", "popularity", "description", "coverImage", "nextAiringEpisode",
-        "genres", "tags", "studios",
+        "genres", "tags", "studios", "externalLinks { site type language url }",
         "bannerImage", "startDate", "endDate", "category", "isAnimationStudio"
       )
     end
@@ -234,7 +234,7 @@ RSpec.describe Anilist::Client do
       client.airing_anime
 
       expect(sent_payload["query"]).to include(
-        "title", "status", "nextAiringEpisode", "genres", "tags", "studios", "isAnimationStudio"
+        "title", "status", "nextAiringEpisode", "genres", "tags", "studios", "isAnimationStudio", "externalLinks { site type language url }"
       )
     end
 

@@ -33,6 +33,7 @@ module Anilist
       genres
       tags { id name category rank isAdult }
       studios { edges { isMain node { id name isAnimationStudio } } }
+      externalLinks { site type language url }
     GRAPHQL
 
     # A page of anime: the media filtered and sorted by the given GraphQL arguments.
