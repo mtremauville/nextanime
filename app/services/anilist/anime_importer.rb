@@ -84,7 +84,10 @@ module Anilist
         platform = streaming_platform_for(link)
         next unless platform
 
-        anime.streaming_links.create!(streaming_platform: platform, url: link.fetch("url"), language: link["language"])
+        anime.streaming_links.find_or_create_by!(url: link.fetch("url")) do |streaming_link|
+          streaming_link.streaming_platform = platform
+          streaming_link.language = link["language"]
+        end
       end
     end
 

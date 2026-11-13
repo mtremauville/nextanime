@@ -281,5 +281,12 @@ RSpec.describe Anilist::AnimeImporter do
 
       expect { importer.import(bebop.merge("externalLinks" => [])) }.to change(StreamingLink, :count).from(3).to(0)
     end
+
+    it "keeps a single link when AniList lists the same url twice" do
+      duplicate = { "site" => "Amazon Prime Video", "type" => "STREAMING", "language" => "English", "url" => "https://primevideo.example/bebop" }
+
+      expect { importer.import(bebop.merge("externalLinks" => bebop["externalLinks"] + [ duplicate ])) }
+        .to change(StreamingLink, :count).by(3)
+    end
   end
 end
