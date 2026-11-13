@@ -7,6 +7,10 @@ RSpec.describe StreamingPlatform, type: :model do
     expect(platform).to be_valid
   end
 
+  describe "associations" do
+    it { is_expected.to have_many(:streaming_links).dependent(:destroy) }
+  end
+
   describe "columns" do
     it { is_expected.to have_db_column(:name).of_type(:string).with_options(null: false) }
     it { is_expected.to have_db_column(:slug).of_type(:string).with_options(null: false) }
