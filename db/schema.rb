@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_13_012936) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_13_014149) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -167,6 +167,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_13_012936) do
     t.index ["user_id"], name: "index_taste_profiles_on_user_id", unique: true, where: "(user_id IS NOT NULL)"
   end
 
+  create_table "tmdb_matches", force: :cascade do |t|
+    t.bigint "anime_id", null: false
+    t.integer "tmdb_id"
+    t.string "media_type"
+    t.datetime "checked_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["anime_id"], name: "index_tmdb_matches_on_anime_id", unique: true
+    t.check_constraint "(tmdb_id IS NULL) = (media_type IS NULL)", name: "tmdb_matches_id_and_media_type_together"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -212,6 +223,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_13_012936) do
   add_foreign_key "swipes", "animes"
   add_foreign_key "swipes", "taste_profiles"
   add_foreign_key "taste_profiles", "users"
+  add_foreign_key "tmdb_matches", "animes"
   add_foreign_key "watchlist_entries", "animes"
   add_foreign_key "watchlist_entries", "users"
 end
