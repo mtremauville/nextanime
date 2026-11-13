@@ -120,4 +120,51 @@ RSpec.describe Tmdb::AvailabilityImporter do
       end
     end
   end
+  describe "#import of the logos and the watch pages" do
+    it "stores the logo of the platform" do
+      importer.import(anime)
+
+      expect(StreamingPlatform.find_by!(slug: "crunchyroll").logo_path).to eq("/crunchyroll.jpg")
+    end
+
+    it "refreshes the logo that TMDB has changed" do
+      create(:streaming_platform, name: "Crunchyroll", slug: "crunchyroll", tmdb_provider_id: 283, logo_path: "/old.jpg")
+
+      importer.import(anime)
+
+      expect(StreamingPlatform.find_by!(slug: "crunchyroll").logo_path).to eq("/crunchyroll.jpg")
+    end
+
+    it "does not take the logo of a variant of a platform" do
+      variant = provider(1, "Netflix Standard with Ads").merge("logo_path" => "/variant.jpg")
+      allow(client).to receive(:watch_providers).and_return("FR" => { "flatrate" => [ variant ] })
+
+      importer.import(anime)
+
+      expect(StreamingPlatform.find_by!(slug: "netflix").logo_path).to be_nil
+    end
+
+    it "stores the watch page of TMDB for each country" do
+      importer.import(anime)
+
+      expect(tmdb_match.reload.watch_links).to include("FR" => "https://www.themoviedb.org/tv/209867/watch?locale=FR")
+    end
+
+    it "ignores the watch page of a country that is not supported" do
+      allow(client).to receive(:watch_providers)
+        .and_return(providers.merge("JP" => { "link" => "https://www.themoviedb.org/tv/209867/watch?locale=JP" }))
+
+      importer.import(anime)
+
+      expect(tmdb_match.reload.watch_links).not_to have_key("JP")
+    end
+
+    it "replaces the watch pages of the previous import" do
+      tmdb_match.update!(watch_links: { "BE" => "https://www.themoviedb.org/tv/209867/watch?locale=BE" })
+
+      importer.import(anime)
+
+      expect(tmdb_match.reload.watch_links).not_to have_key("BE")
+    end
+  end
 end
