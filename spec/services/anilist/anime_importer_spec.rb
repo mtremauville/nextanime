@@ -238,4 +238,48 @@ RSpec.describe Anilist::AnimeImporter do
       end
     end
   end
+
+  describe "the streaming links of the anime" do
+    subject(:anime) { importer.import(bebop) }
+
+    it "keeps the streaming links of the known platforms" do
+      expect(anime.streaming_links.map { |link| link.streaming_platform.name }).to contain_exactly(
+        "Crunchyroll", "Netflix", "Amazon Prime Video"
+      )
+    end
+
+    it "stores the url and the language of a link" do
+      link = anime.streaming_links.find_by!(url: "https://crunchyroll.example/bebop")
+
+      expect(link.language).to eq("English")
+      expect(link.streaming_platform.slug).to eq("crunchyroll")
+    end
+
+    it "ignores the links that are not streaming links" do
+      expect(anime.streaming_links.pluck(:url)).not_to include("https://bebop.example", "https://twitter.example/bebop")
+    end
+
+    it "ignores the streaming sites that are not known platforms" do
+      expect(anime.streaming_links.pluck(:url)).not_to include("https://bilibili.example/bebop")
+    end
+
+    it "shares one platform between the anime" do
+      importer.import(bebop)
+      importer.import(frieren)
+
+      expect(StreamingPlatform.where(slug: "crunchyroll").count).to eq(1)
+    end
+
+    it "does not duplicate the links when the anime is imported again" do
+      importer.import(bebop)
+
+      expect { importer.import(bebop) }.not_to change(StreamingLink, :count)
+    end
+
+    it "drops the links that AniList no longer lists" do
+      importer.import(bebop)
+
+      expect { importer.import(bebop.merge("externalLinks" => [])) }.to change(StreamingLink, :count).from(3).to(0)
+    end
+  end
 end

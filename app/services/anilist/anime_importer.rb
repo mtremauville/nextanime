@@ -8,6 +8,7 @@ module Anilist
         replace_genres(anime, media.fetch("genres"))
         replace_tags(anime, media.fetch("tags"))
         replace_studios(anime, media.dig("studios", "edges"))
+        replace_streaming_links(anime, media.fetch("externalLinks"))
         anime
       end
     end
@@ -74,6 +75,26 @@ module Anilist
         main_taken ||= main
         anime.anime_studios.create!(studio: studio, main: main)
       end
+    end
+
+    def replace_streaming_links(anime, external_links)
+      anime.streaming_links.destroy_all
+
+      external_links.each do |link|
+        platform = streaming_platform_for(link)
+        next unless platform
+
+        anime.streaming_links.create!(streaming_platform: platform, url: link.fetch("url"), language: link["language"])
+      end
+    end
+
+    def streaming_platform_for(link)
+      return unless link.fetch("type") == "STREAMING"
+
+      known = StreamingSites.platform_for(link.fetch("site"))
+      return unless known
+
+      StreamingPlatform.find_or_create_by!(slug: known.fetch(:slug)) { |platform| platform.name = known.fetch(:name) }
     end
 
     # AniList may list a studio twice, and flag several studios as main.
