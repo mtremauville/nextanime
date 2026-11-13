@@ -79,6 +79,8 @@ RSpec.describe Anime, type: :model do
     it { is_expected.to have_many(:swipes).dependent(:destroy) }
     it { is_expected.to have_many(:recommendations).dependent(:destroy) }
     it { is_expected.to have_many(:streaming_links).dependent(:destroy) }
+    it { is_expected.to have_many(:streaming_availabilities).dependent(:destroy) }
+    it { is_expected.to have_one(:tmdb_match).dependent(:destroy) }
     it "removes its genre links when destroyed" do
       anime = create(:anime, genres: [ create(:genre) ])
 
@@ -146,6 +148,20 @@ RSpec.describe Anime, type: :model do
       anime = build(:anime, title_romaji: "Shingeki no Kyojin", title_english: "")
 
       expect(anime.display_title).to eq("Shingeki no Kyojin")
+    end
+  end
+  describe ".most_popular" do
+    let!(:niche) { create(:anime, popularity: 100) }
+    let!(:famous) { create(:anime, popularity: 90_000) }
+    let!(:unrated) { create(:anime, popularity: nil) }
+    let!(:common) { create(:anime, popularity: 5_000) }
+
+    it "lists the most popular anime first and the unrated ones last" do
+      expect(described_class.most_popular(10)).to eq([ famous, common, niche, unrated ])
+    end
+
+    it "keeps only the requested number of anime" do
+      expect(described_class.most_popular(2)).to eq([ famous, common ])
     end
   end
 end

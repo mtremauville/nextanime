@@ -26,6 +26,7 @@ class Anime < ApplicationRecord
   SYNCED_STATUSES = %i[releasing not_yet_released].freeze
 
   scope :to_sync, -> { where(airing_status: SYNCED_STATUSES).order(arel_table[:synced_at].asc.nulls_first) }
+  scope :most_popular, ->(count) { order(arel_table[:popularity].desc.nulls_last).limit(count) }
 
   has_many :anime_genres, dependent: :destroy
   has_many :genres, through: :anime_genres
@@ -39,6 +40,8 @@ class Anime < ApplicationRecord
   has_many :recommendations, dependent: :destroy
   has_many :watchlist_entries, dependent: :destroy
   has_many :streaming_links, dependent: :destroy
+  has_many :streaming_availabilities, dependent: :destroy
+  has_one :tmdb_match, dependent: :destroy
 
   validates :anilist_id, presence: true, uniqueness: true
   validates :title_romaji, presence: true
