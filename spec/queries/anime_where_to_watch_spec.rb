@@ -6,6 +6,7 @@ RSpec.describe AnimeWhereToWatch do
   let(:anime) { create(:anime) }
   let(:crunchyroll) { create(:streaming_platform, name: "Crunchyroll", slug: "crunchyroll") }
   let(:netflix) { create(:streaming_platform, name: "Netflix", slug: "netflix") }
+  let(:unlisted) { create(:streaming_platform, name: "Unlisted platform", slug: "unlisted-platform") }
 
   def offer(platform, offer_type: :flatrate, country_code: "FR")
     create(:streaming_availability, anime: anime, streaming_platform: platform, offer_type: offer_type, country_code: country_code)
@@ -23,16 +24,24 @@ RSpec.describe AnimeWhereToWatch do
       expect(where_to_watch.entries).to eq([])
     end
 
-    it "puts the subscriptions first, then the free offers, then the free offers with ads" do
+    it "gathers the offers of a platform in one entry, the best offer first" do
       offer(netflix, offer_type: :ads)
-      offer(crunchyroll, offer_type: :free)
       offer(netflix)
 
-      expect(where_to_watch.entries.map { |entry| [ entry.platform.name, entry.offer_type ] })
-        .to eq([ %w[Netflix flatrate], %w[Crunchyroll free], %w[Netflix ads] ])
+      expect(where_to_watch.entries.map { |entry| [ entry.platform.name, entry.offer_types ] })
+        .to eq([ [ "Netflix", %w[flatrate ads] ] ])
     end
 
-    it "sorts the platforms of the same type of offer by name" do
+    it "puts the platforms with the best offer first: subscription, free, free with ads" do
+      offer(crunchyroll, offer_type: :free)
+      offer(netflix, offer_type: :ads)
+      offer(unlisted)
+
+      expect(where_to_watch.entries.map { |entry| entry.platform.name })
+        .to eq([ "Unlisted platform", "Crunchyroll", "Netflix" ])
+    end
+
+    it "sorts the platforms with the same best offer by name" do
       offer(netflix)
       offer(crunchyroll)
 
@@ -42,7 +51,6 @@ RSpec.describe AnimeWhereToWatch do
     it "links to the streaming link of AniList when the platform has one" do
       offer(crunchyroll)
       create(:streaming_link, anime: anime, streaming_platform: crunchyroll, url: "https://www.crunchyroll.com/series/ABC")
-      create(:tmdb_match, anime: anime, watch_links: { "FR" => "https://www.themoviedb.org/tv/1/watch?locale=FR" })
 
       expect(where_to_watch.entries.first.url).to eq("https://www.crunchyroll.com/series/ABC")
     end
@@ -55,19 +63,37 @@ RSpec.describe AnimeWhereToWatch do
       expect(where_to_watch.entries.first.url).to eq("https://www.crunchyroll.com/series/FIRST")
     end
 
-    it "links to the watch page of TMDB for the country otherwise" do
+    it "links to the home page of the platform when AniList gives no link, never to TMDB" do
       offer(netflix)
+      create(:tmdb_match, anime: anime, watch_links: { "FR" => "https://www.themoviedb.org/tv/1/watch?locale=FR" })
+
+      expect(where_to_watch.entries.first.url).to eq("https://www.netflix.com")
+    end
+
+    it "has no link when the platform has neither a streaming link nor a home page" do
+      offer(unlisted)
+
+      expect(where_to_watch.entries.first.url).to be_nil
+    end
+  end
+
+  describe "#tmdb_page_url" do
+    it "gives the watch page of TMDB for the country" do
       create(:tmdb_match, anime: anime, watch_links: {
         "FR" => "https://www.themoviedb.org/tv/1/watch?locale=FR", "BE" => "https://www.themoviedb.org/tv/1/watch?locale=BE"
       })
 
-      expect(where_to_watch.entries.first.url).to eq("https://www.themoviedb.org/tv/1/watch?locale=FR")
+      expect(where_to_watch.tmdb_page_url).to eq("https://www.themoviedb.org/tv/1/watch?locale=FR")
     end
 
-    it "has no link when nothing gives one" do
-      offer(netflix)
+    it "is nil when TMDB has no watch page for the country" do
+      create(:tmdb_match, anime: anime, watch_links: {})
 
-      expect(where_to_watch.entries.first.url).to be_nil
+      expect(where_to_watch.tmdb_page_url).to be_nil
+    end
+
+    it "is nil when the anime was never looked up" do
+      expect(where_to_watch.tmdb_page_url).to be_nil
     end
   end
 

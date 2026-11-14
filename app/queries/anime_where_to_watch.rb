@@ -1,7 +1,7 @@
 # What the "where to watch" block of the page of an anime shows for a country: the platforms that
 # offer the anime there, the best offers first, each with the link to watch it.
 class AnimeWhereToWatch
-  Entry = Data.define(:platform, :offer_type, :url)
+  Entry = Data.define(:platform, :offer_types, :url)
 
   OFFER_RANK = %w[flatrate free ads].each_with_index.to_h.freeze
 
@@ -16,31 +16,37 @@ class AnimeWhereToWatch
   end
 
   def entries
-    ranked = availabilities.sort_by do |availability|
-      [ OFFER_RANK.fetch(availability.offer_type), availability.streaming_platform.name ]
+    entries = offer_types_by_platform.map do |platform, offer_types|
+      Entry.new(platform: platform, offer_types: offer_types, url: link_for(platform))
     end
-    ranked.map { |availability| entry_for(availability) }
+    entries.sort_by { |entry| [ OFFER_RANK.fetch(entry.offer_types.first), entry.platform.name ] }
+  end
+
+  # TMDB gives no address on the platforms: its page lists the platforms and is credited as the source.
+  def tmdb_page_url
+    @anime.tmdb_match&.then { |match| match.watch_links[@country_code] }
   end
 
   private
+
+  def offer_types_by_platform
+    availabilities.group_by(&:streaming_platform).transform_values do |offers|
+      offers.map(&:offer_type).sort_by { |offer_type| OFFER_RANK.fetch(offer_type) }
+    end
+  end
 
   def availabilities
     @anime.streaming_availabilities.where(country_code: @country_code).includes(:streaming_platform)
   end
 
-  def entry_for(availability)
-    platform = availability.streaming_platform
-    Entry.new(platform: platform, offer_type: availability.offer_type, url: direct_links[platform.id] || watch_page)
+  # The link of AniList goes straight to the anime on the platform: it is preferred to its home page.
+  def link_for(platform)
+    direct_links[platform.id] || platform.homepage_url
   end
 
-  # The link of AniList goes straight to the anime on the platform: it is preferred to the page of TMDB.
   def direct_links
     @direct_links ||= @anime.streaming_links.order(:id).group_by(&:streaming_platform_id).transform_values do |links|
       links.first.url
     end
-  end
-
-  def watch_page
-    @anime.tmdb_match&.then { |match| match.watch_links[@country_code] }
   end
 end
