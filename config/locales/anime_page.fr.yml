@@ -13,6 +13,7 @@ fr:
         title: "Pas encore disponible en %{country}"
         text: "Aucune plateforme de streaming ne propose cet anime dans ton pays pour le moment. Les disponibilités sont mises à jour chaque semaine."
       credit: "Disponibilités fournies par TMDB, données JustWatch."
+      credit_link: "Voir toutes les offres sur TMDB"
       offers:
         flatrate: Abonnement
         free: Gratuit
