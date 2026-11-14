@@ -39,4 +39,17 @@ RSpec.describe StreamingPlatform, type: :model do
       expect(build(:streaming_platform, logo_path: nil).logo_url).to be_nil
     end
   end
+  describe "#homepage_url" do
+    it "gives the home page of a known platform" do
+      expect(described_class.new(name: "Netflix").homepage_url).to eq("https://www.netflix.com")
+    end
+
+    it "gives nothing for a platform that is not listed" do
+      expect(described_class.new(name: "Unknown platform").homepage_url).to be_nil
+    end
+
+    it "lists only secure web addresses" do
+      expect(described_class::HOMEPAGES.values).to all(start_with("https://"))
+    end
+  end
 end

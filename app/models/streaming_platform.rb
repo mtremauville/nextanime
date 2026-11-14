@@ -2,6 +2,7 @@ class StreamingPlatform < ApplicationRecord
   # TMDB gives the path of a logo only: it is served by its image server, in the smallest size
   # that stays sharp for a logo shown at about 40 pixels.
   LOGO_BASE_URL = "https://image.tmdb.org/t/p/w92".freeze
+  HOMEPAGES = YAML.safe_load_file(Rails.root.join("config/streaming_platform_homepages.yml")).freeze
 
   has_many :streaming_links, dependent: :destroy
   has_many :streaming_availabilities, dependent: :destroy
@@ -13,4 +14,6 @@ class StreamingPlatform < ApplicationRecord
   def logo_url
     "#{LOGO_BASE_URL}#{logo_path}" if logo_path.present?
   end
+
+  def homepage_url = HOMEPAGES[name]
 end
