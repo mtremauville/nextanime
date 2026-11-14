@@ -146,4 +146,51 @@ RSpec.describe "Anime page", type: :request do
       end
     end
   end
+  describe "GET /anime/:id where to watch" do
+    let(:crunchyroll) { create(:streaming_platform, name: "Crunchyroll", slug: "crunchyroll") }
+    let(:watch_page) { "https://www.themoviedb.org/tv/1/watch?locale=FR" }
+
+    context "when TMDB knows the anime" do
+      before { create(:tmdb_match, anime: anime, watch_links: { "FR" => watch_page }) }
+
+      it "shows the platforms that offer it in France, with a link to watch it" do
+        create(:streaming_availability, anime: anime, streaming_platform: crunchyroll, country_code: "FR")
+
+        get anime_path(anime)
+
+        expect(document).to have_css(".na-where-to-watch__country", text: "France")
+        expect(document).to have_css(".na-platform-row__name", text: "Crunchyroll")
+        expect(document).to have_css("a.na-platform-row[href='#{watch_page}']")
+      end
+
+      it "does not show the offers of another country" do
+        create(:streaming_availability, anime: anime, streaming_platform: crunchyroll, country_code: "BE")
+
+        get anime_path(anime)
+
+        expect(document).to have_no_css(".na-platform-row")
+        expect(document).to have_css(".na-where-to-watch__empty-title", text: "Pas encore disponible en France")
+      end
+
+      it "shows the block above the information card" do
+        get anime_path(anime)
+
+        expect(document).to have_css(".na-anime-page__side > .na-where-to-watch + .na-info-card")
+      end
+    end
+
+    it "hides the block when TMDB did not find the anime" do
+      create(:tmdb_match, :unmatched, anime: anime)
+
+      get anime_path(anime)
+
+      expect(document).to have_no_css(".na-where-to-watch")
+    end
+
+    it "hides the block when the anime was never looked up on TMDB" do
+      get anime_path(anime)
+
+      expect(document).to have_no_css(".na-where-to-watch")
+    end
+  end
 end

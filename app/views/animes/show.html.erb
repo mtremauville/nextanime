@@ -22,6 +22,11 @@
         </section>
       <% end %>
     </div>
-    <%= render Molecules::InfoCardComponent.new(rows: @details.information) %>
+    <div class="na-anime-page__side">
+      <% if @where_to_watch_entries %>
+        <%= render Organisms::WhereToWatchComponent.new(entries: @where_to_watch_entries, country_label: @country_label) %>
+      <% end %>
+      <%= render Molecules::InfoCardComponent.new(rows: @details.information) %>
+    </div>
   </div>
 </div>
