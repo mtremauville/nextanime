@@ -4,8 +4,8 @@ RSpec.describe Molecules::PlatformRowComponent, type: :component do
   let(:platform) { build_stubbed(:streaming_platform, name: "Crunchyroll", logo_path: "/abc.png") }
   let(:address) { "https://www.crunchyroll.com/series/ABC" }
 
-  def render_row(offer_type: "flatrate", url: address)
-    render_inline(described_class.new(platform: platform, offer_type: offer_type, url: url))
+  def render_row(offer_types: %w[flatrate], url: address)
+    render_inline(described_class.new(platform: platform, offer_types: offer_types, url: url))
   end
 
   it "shows the name of the platform" do
@@ -22,10 +22,16 @@ RSpec.describe Molecules::PlatformRowComponent, type: :component do
 
   { "flatrate" => "Abonnement", "free" => "Gratuit", "ads" => "Gratuit avec publicité" }.each do |offer_type, label|
     it "says #{label.inspect} for a #{offer_type} offer" do
-      render_row(offer_type: offer_type)
+      render_row(offer_types: [ offer_type ])
 
       expect(page).to have_css(".na-platform-row__offer", exact_text: label)
     end
+  end
+
+  it "separates the offers of the platform, the best first" do
+    render_row(offer_types: %w[flatrate ads])
+
+    expect(page).to have_css(".na-platform-row__offer", exact_text: "Abonnement · Gratuit avec publicité")
   end
 
   context "when the address of the anime on the platform is known" do

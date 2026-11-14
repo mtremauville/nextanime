@@ -2,7 +2,7 @@
   <%= render Atoms::PlatformLogoComponent.new(platform: platform) %>
   <span class="na-platform-row__text">
     <span class="na-platform-row__name"><%= platform.name %></span>
-    <span class="na-platform-row__offer"><%= t("anime_page.where_to_watch.offers.#{offer_type}") %></span>
+    <span class="na-platform-row__offer"><%= offers_text %></span>
   </span>
   <% if url %>
     <span class="visually-hidden"><%= t("anime_page.where_to_watch.new_tab") %></span>
