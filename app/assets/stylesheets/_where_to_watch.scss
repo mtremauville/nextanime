@@ -142,3 +142,15 @@ a.na-platform-row:focus-visible {
   color: var(--na-text);
   background: var(--na-border);
 }
+
+// The link to the watch page of TMDB, on its own line under the credit.
+.na-where-to-watch__credit-link {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--na-cyan);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+
+  &:hover,
+  &:focus-visible { color: var(--na-text); }
+}
