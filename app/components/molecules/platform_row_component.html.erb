@@ -1,0 +1,11 @@
+<%= content_tag(tag_name, row_attributes) do %>
+  <%= render Atoms::PlatformLogoComponent.new(platform: platform) %>
+  <span class="na-platform-row__text">
+    <span class="na-platform-row__name"><%= platform.name %></span>
+    <span class="na-platform-row__offer"><%= t("anime_page.where_to_watch.offers.#{offer_type}") %></span>
+  </span>
+  <% if url %>
+    <span class="visually-hidden"><%= t("anime_page.where_to_watch.new_tab") %></span>
+    <i class="bi bi-arrow-up-right na-platform-row__arrow" aria-hidden="true"></i>
+  <% end %>
+<% end %>

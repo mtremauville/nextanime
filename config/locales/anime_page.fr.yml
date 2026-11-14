@@ -5,3 +5,10 @@ fr:
       why: Pourquoi ce match
     information:
       title: Informations
+    where_to_watch:
+      title: Où regarder
+      new_tab: "(s'ouvre dans un nouvel onglet)"
+      offers:
+        flatrate: Abonnement
+        free: Gratuit
+        ads: Gratuit avec publicité
