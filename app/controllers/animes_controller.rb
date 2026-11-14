@@ -85,6 +85,7 @@ class AnimesController < ApplicationController
     return unless where_to_watch.known?
 
     @where_to_watch_entries = where_to_watch.entries
+    @tmdb_page_url = where_to_watch.tmdb_page_url
     @country_label = Organisms::MainNavigationComponent::COUNTRIES.fetch(country_code)
   end
 

@@ -24,7 +24,7 @@
     </div>
     <div class="na-anime-page__side">
       <% if @where_to_watch_entries %>
-        <%= render Organisms::WhereToWatchComponent.new(entries: @where_to_watch_entries, country_label: @country_label) %>
+        <%= render Organisms::WhereToWatchComponent.new(entries: @where_to_watch_entries, country_label: @country_label, tmdb_page_url: @tmdb_page_url) %>
       <% end %>
       <%= render Molecules::InfoCardComponent.new(rows: @details.information) %>
     </div>

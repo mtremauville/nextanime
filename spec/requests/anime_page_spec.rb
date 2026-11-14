@@ -153,14 +153,15 @@ RSpec.describe "Anime page", type: :request do
     context "when TMDB knows the anime" do
       before { create(:tmdb_match, anime: anime, watch_links: { "FR" => watch_page }) }
 
-      it "shows the platforms that offer it in France, with a link to watch it" do
+      it "shows the platforms that offer it in France, linked to their home page, with the watch page of TMDB in the credit" do
         create(:streaming_availability, anime: anime, streaming_platform: crunchyroll, country_code: "FR")
 
         get anime_path(anime)
 
         expect(document).to have_css(".na-where-to-watch__country", text: "France")
         expect(document).to have_css(".na-platform-row__name", text: "Crunchyroll")
-        expect(document).to have_css("a.na-platform-row[href='#{watch_page}']")
+        expect(document).to have_css("a.na-platform-row[href='https://www.crunchyroll.com']")
+        expect(document).to have_css(".na-where-to-watch__credit a[href='#{watch_page}']")
       end
 
       it "does not show the offers of another country" do
@@ -170,6 +171,16 @@ RSpec.describe "Anime page", type: :request do
 
         expect(document).to have_no_css(".na-platform-row")
         expect(document).to have_css(".na-where-to-watch__empty-title", text: "Pas encore disponible en France")
+      end
+
+      it "shows one row for a platform that has several offers" do
+        create(:streaming_availability, anime: anime, streaming_platform: crunchyroll, country_code: "FR", offer_type: :flatrate)
+        create(:streaming_availability, anime: anime, streaming_platform: crunchyroll, country_code: "FR", offer_type: :ads)
+
+        get anime_path(anime)
+
+        expect(document).to have_css(".na-platform-row", count: 1)
+        expect(document).to have_css(".na-platform-row__offer", text: "Abonnement · Gratuit avec publicité")
       end
 
       it "shows the block above the information card" do
