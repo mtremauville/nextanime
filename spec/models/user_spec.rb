@@ -195,4 +195,24 @@ end
       expect(user.display_name).to eq("mickael")
     end
   end
+  describe "country" do
+    it "is France until the member chooses another" do
+      expect(build(:user).country).to eq("FR")
+    end
+
+    it "accepts a supported country" do
+      expect(build(:user, country: "BE")).to be_valid
+    end
+
+    it "refuses a country that is not supported" do
+      user = build(:user, country: "JP")
+
+      expect(user).not_to be_valid
+      expect(user.errors[:country]).to be_present
+    end
+
+    it "refuses an empty country" do
+      expect(build(:user, country: nil)).not_to be_valid
+    end
+  end
 end
