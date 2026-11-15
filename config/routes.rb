@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   end
   resource :profile, only: %i[show update], path: "profil"
   resource :data_export, only: :show, path: "profil/export"
+  resource :country, only: :update
   get "catalogue", to: "animes#index", as: :catalogue
   resources :animes, only: :show, path: "anime" do
     resource :watchlist_entry, only: :create, path: "watchlist"
