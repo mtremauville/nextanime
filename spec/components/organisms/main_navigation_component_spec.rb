@@ -156,4 +156,28 @@ RSpec.describe Organisms::MainNavigationComponent, type: :component do
       end
     end
   end
+  describe "country selector" do
+    let(:selector) { render_inline(described_class.new(current_path: "/", selected_country: "BE")) }
+
+    it "sends the choice to the country of the visitor" do
+      expect(selector).to have_css("form[action='/country'] select#country")
+      expect(selector).to have_css("form input[name='_method'][value='patch']", visible: :all)
+    end
+
+    it "sends the form as soon as the choice changes" do
+      expect(selector).to have_css("form[data-controller='auto-submit'][data-action='change->auto-submit#submit']")
+    end
+
+    it "selects the country that was chosen" do
+      expect(selector).to have_select("Pays", selected: "Belgique")
+    end
+
+    it "keeps a button for the visitors without JavaScript" do
+      expect(selector).to have_button("Changer de pays", visible: :all)
+    end
+
+    it "gives the same country to the menu of small screens" do
+      expect(selector).to have_field("Belgique", type: "radio", checked: true, visible: :all)
+    end
+  end
 end
