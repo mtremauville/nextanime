@@ -353,3 +353,12 @@
   color: var(--na-cyan);
   text-decoration: none;
 }
+
+// Without JavaScript the choice of the country is sent with a button; the others do not need it.
+.btn.na-country__apply {
+  display: none;
+
+  @media (scripting: none) {
+    display: inline-block;
+  }
+}
