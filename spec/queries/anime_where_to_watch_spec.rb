@@ -7,6 +7,7 @@ RSpec.describe AnimeWhereToWatch do
   let(:crunchyroll) { create(:streaming_platform, name: "Crunchyroll", slug: "crunchyroll") }
   let(:netflix) { create(:streaming_platform, name: "Netflix", slug: "netflix") }
   let(:unlisted) { create(:streaming_platform, name: "Unlisted platform", slug: "unlisted-platform") }
+  let(:sooner) { create(:streaming_platform, name: "Sooner", slug: "sooner") }
 
   def offer(platform, offer_type: :flatrate, country_code: "FR")
     create(:streaming_availability, anime: anime, streaming_platform: platform, offer_type: offer_type, country_code: country_code)
@@ -64,10 +65,20 @@ RSpec.describe AnimeWhereToWatch do
     end
 
     it "links to the home page of the platform when AniList gives no link, never to TMDB" do
-      offer(netflix)
+      offer(sooner)
       create(:tmdb_match, anime: anime, watch_links: { "FR" => "https://www.themoviedb.org/tv/1/watch?locale=FR" })
 
-      expect(where_to_watch.entries.first.url).to eq("https://www.netflix.com")
+      expect(where_to_watch.entries.first.url).to eq("https://www.sooner.be")
+    end
+
+    context "when AniList gives no link and the platform has a search" do
+      let(:anime) { create(:anime, title_english: "Frieren Season 2") }
+
+      it "searches the title of the series, without its season" do
+        offer(netflix)
+
+        expect(where_to_watch.entries.first.url).to eq("https://www.netflix.com/search?q=Frieren")
+      end
     end
 
     it "has no link when the platform has neither a streaming link nor a home page" do

@@ -39,9 +39,15 @@ class AnimeWhereToWatch
     @anime.streaming_availabilities.where(country_code: @country_code).includes(:streaming_platform)
   end
 
-  # The link of AniList goes straight to the anime on the platform: it is preferred to its home page.
+  # The link of AniList goes straight to the anime on the platform: it is preferred to the search of
+  # the title on the platform, which is preferred to the home page of the platform.
   def link_for(platform)
-    direct_links[platform.id] || platform.homepage_url
+    direct_links[platform.id] || platform.search_url(search_title) || platform.homepage_url
+  end
+
+  # A search of the title of a later season finds nothing: the title of the series is searched.
+  def search_title
+    @search_title ||= Tmdb::TitleNormalizer.series_title(@anime.display_title)
   end
 
   def direct_links
