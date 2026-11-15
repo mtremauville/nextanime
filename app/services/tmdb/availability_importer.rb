@@ -1,7 +1,6 @@
 module Tmdb
   # Stores where an anime can be watched, country by country, from the offers of TMDB.
   class AvailabilityImporter
-    COUNTRIES = %w[FR BE CH CA US GB].freeze
     OFFER_TYPES = %w[flatrate free ads].freeze
 
     def initialize(client:, linker: AnimeLinker.new(client: client))
@@ -38,12 +37,12 @@ module Tmdb
 
     # The page of TMDB where the anime can be watched, for each supported country that has one.
     def watch_links_in(providers_by_country)
-      COUNTRIES.index_with { |country_code| providers_by_country.dig(country_code, "link").presence }.compact
+      Country::CODES.index_with { |country_code| providers_by_country.dig(country_code, "link").presence }.compact
     end
 
     # Rent and purchase offers are left out: they do not fit watching an anime week after week.
     def offers_in(providers_by_country)
-      COUNTRIES.flat_map do |country_code|
+      Country::CODES.flat_map do |country_code|
         offers = providers_by_country.fetch(country_code, {})
 
         OFFER_TYPES.flat_map do |offer_type|

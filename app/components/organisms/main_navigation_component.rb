@@ -1,14 +1,4 @@
 class Organisms::MainNavigationComponent < ViewComponent::Base
-  DEFAULT_COUNTRY = "FR".freeze
-  COUNTRIES = {
-    "FR" => "France",
-    "BE" => "Belgique",
-    "CH" => "Suisse",
-    "CA" => "Canada",
-    "US" => "États-Unis",
-    "GB" => "Royaume-Uni"
-  }.freeze
-
   def initialize(current_path:, user: nil)
     @current_path = current_path
     @user = user
@@ -33,7 +23,7 @@ class Organisms::MainNavigationComponent < ViewComponent::Base
   end
 
   def country_options
-    options_for_select(COUNTRIES.map { |code, name| [ name, code ] }, DEFAULT_COUNTRY)
+    options_for_select(Country::NAMES.map { |code, name| [ name, code ] }, Country::DEFAULT)
   end
 
   def current?(href)

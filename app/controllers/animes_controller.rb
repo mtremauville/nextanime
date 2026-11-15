@@ -80,13 +80,13 @@ class AnimesController < ApplicationController
 
   # Where the anime can be watched, once TMDB knows it. Until the visitor can choose a country, it is France.
   def assign_where_to_watch
-    country_code = Organisms::MainNavigationComponent::DEFAULT_COUNTRY
+    country_code = Country::DEFAULT
     where_to_watch = AnimeWhereToWatch.new(anime: @anime, country_code: country_code)
     return unless where_to_watch.known?
 
     @where_to_watch_entries = where_to_watch.entries
     @tmdb_page_url = where_to_watch.tmdb_page_url
-    @country_label = Organisms::MainNavigationComponent::COUNTRIES.fetch(country_code)
+    @country_label = Country.name_for(country_code)
   end
 
   # The anime of this page that the signed in member has in their watchlist, found in one query for the

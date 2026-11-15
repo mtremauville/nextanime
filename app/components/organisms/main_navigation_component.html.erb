@@ -38,7 +38,7 @@
     </div>
   </div>
 
-  <%= render Organisms::MobileMenuComponent.new(items: nav_items, countries: COUNTRIES, selected_country: DEFAULT_COUNTRY, user: user) %>
+  <%= render Organisms::MobileMenuComponent.new(items: nav_items, countries: Country::NAMES, selected_country: Country::DEFAULT, user: user) %>
 </header>
 
 <nav class="na-tabbar d-md-none" aria-label="Onglets">
