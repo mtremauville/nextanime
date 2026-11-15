@@ -1,0 +1,7 @@
+# Search of a title on the streaming platforms, by the name given by TMDB. It leads to the anime
+# itself, or to a very short list, when AniList gives no direct link. %{query} is the title.
+# Platforms that are not listed here fall back to their home page.
+"Netflix": "https://www.netflix.com/search?q=%{query}"
+"Crunchyroll": "https://www.crunchyroll.com/search?q=%{query}"
+"Amazon Prime Video": "https://www.primevideo.com/search?phrase=%{query}"
+"YouTube": "https://www.youtube.com/results?search_query=%{query}"

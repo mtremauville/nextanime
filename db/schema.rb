@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_13_014149) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_13_222424) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -121,6 +121,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_13_014149) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "tmdb_provider_id"
+    t.string "logo_path"
     t.index ["name"], name: "index_streaming_platforms_on_name", unique: true
     t.index ["slug"], name: "index_streaming_platforms_on_slug", unique: true
     t.index ["tmdb_provider_id"], name: "index_streaming_platforms_on_tmdb_provider_id", unique: true
@@ -174,6 +175,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_13_014149) do
     t.datetime "checked_at", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "watch_links", default: {}, null: false
     t.index ["anime_id"], name: "index_tmdb_matches_on_anime_id", unique: true
     t.check_constraint "(tmdb_id IS NULL) = (media_type IS NULL)", name: "tmdb_matches_id_and_media_type_together"
   end

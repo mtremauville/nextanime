@@ -251,3 +251,25 @@
   font-size: 0.875rem;
   font-weight: 600;
 }
+
+// Side column: where to watch, then the information card.
+
+.na-anime-page__side {
+  display: flex;
+  flex: 0 1 22.5rem;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-self: flex-start;
+  width: 100%;
+  min-width: 0;
+
+  // Its own basis would become a height in a column.
+  > .na-info-card { flex: none; }
+}
+
+// Below the desktop layout the side column comes apart: where to watch goes first, before the synopsis.
+@media (max-width: 991.98px) {
+  .na-anime-page__side { display: contents; }
+  .na-where-to-watch { flex: 1 1 100%; order: -1; }
+  .na-anime-page__columns { gap: 2rem; margin-top: 1.75rem; }
+}
