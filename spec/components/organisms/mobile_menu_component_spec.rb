@@ -109,4 +109,22 @@ RSpec.describe Organisms::MobileMenuComponent, type: :component do
       expect(page).to have_no_link("Mon profil")
     end
   end
+  describe "country choice" do
+    it "sends the choice to the country of the visitor" do
+      expect(rendered).to have_css("form[action='/country'] fieldset legend", text: "Pays")
+      expect(rendered).to have_css("form input[name='_method'][value='patch']", visible: :all)
+    end
+
+    it "names the choice country, as the selector of the header does" do
+      expect(rendered).to have_css("input[type='radio'][name='country'][value='BE']")
+    end
+
+    it "sends the form as soon as the choice changes" do
+      expect(rendered).to have_css("form[data-controller='auto-submit'][data-action='change->auto-submit#submit']")
+    end
+
+    it "keeps a button for the visitors without JavaScript" do
+      expect(rendered).to have_button("Changer de pays", visible: :all)
+    end
+  end
 end
