@@ -5,6 +5,3 @@
 "Crunchyroll": "https://www.crunchyroll.com/search?q=%{query}"
 "Amazon Prime Video": "https://www.primevideo.com/search?phrase=%{query}"
 "YouTube": "https://www.youtube.com/results?search_query=%{query}"
-"Tubi TV": "https://tubitv.com/search/%{query}"
-"Hulu": "https://www.hulu.com/search?q=%{query}"
-"Rakuten Viki": "https://www.viki.com/search?q=%{query}"
