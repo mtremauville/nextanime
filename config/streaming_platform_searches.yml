@@ -1,0 +1,11 @@
+# Search of a title on the streaming platforms, by the name given by TMDB. It leads to the anime
+# itself, or to a very short list, when AniList gives no direct link. %{query} is the title.
+# Platforms that are not listed here fall back to their home page.
+"Netflix": "https://www.netflix.com/search?q=%{query}"
+"Crunchyroll": "https://www.crunchyroll.com/search?q=%{query}"
+"Amazon Prime Video": "https://www.primevideo.com/search?phrase=%{query}"
+"YouTube": "https://www.youtube.com/results?search_query=%{query}"
+"Tubi TV": "https://tubitv.com/search/%{query}"
+"Hulu": "https://www.hulu.com/search?q=%{query}"
+"Animation Digital Network": "https://animationdigitalnetwork.com/search?q=%{query}"
+"Rakuten Viki": "https://www.viki.com/search?q=%{query}"

@@ -52,4 +52,23 @@ RSpec.describe StreamingPlatform, type: :model do
       expect(described_class::HOMEPAGES.values).to all(start_with("https://"))
     end
   end
+  describe "#search_url" do
+    it "searches the title on a platform whose search is known" do
+      expect(described_class.new(name: "Netflix").search_url("Attack on Titan"))
+        .to eq("https://www.netflix.com/search?q=Attack%20on%20Titan")
+    end
+
+    it "encodes what is not safe in an address" do
+      expect(described_class.new(name: "Netflix").search_url("Fate/Zero & more"))
+        .to eq("https://www.netflix.com/search?q=Fate%2FZero%20%26%20more")
+    end
+
+    it "gives nothing for a platform whose search is not known" do
+      expect(described_class.new(name: "Unknown platform").search_url("Attack on Titan")).to be_nil
+    end
+
+    it "lists only secure addresses that take the title" do
+      expect(described_class::SEARCH_URLS.values).to all(start_with("https://").and(include("%{query}")))
+    end
+  end
 end
