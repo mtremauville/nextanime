@@ -28,15 +28,18 @@
       <% end %>
     </nav>
 
-    <fieldset class="na-menu__section">
-      <legend class="na-menu__section-title">Pays</legend>
-      <% countries.each do |code, name| %>
-        <label class="na-menu__choice">
-          <%= radio_button_tag "menu_country", code, code == selected_country %>
-          <span><%= name %></span>
-        </label>
-      <% end %>
-    </fieldset>
+    <%= form_with url: country_path, method: :patch, data: { controller: "auto-submit", action: "change->auto-submit#submit" } do %>
+      <fieldset class="na-menu__section">
+        <legend class="na-menu__section-title">Pays</legend>
+        <% countries.each do |code, name| %>
+          <label class="na-menu__choice">
+            <%= radio_button_tag "country", code, code == selected_country %>
+            <span><%= name %></span>
+          </label>
+        <% end %>
+        <%= submit_tag "Changer de pays", name: nil, class: "btn btn-outline-secondary na-country__apply" %>
+      </fieldset>
+    <% end %>
 
     <fieldset class="na-menu__section">
       <legend class="na-menu__section-title">Thème</legend>

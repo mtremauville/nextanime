@@ -10,8 +10,11 @@
 
     <div class="na-header__tools">
       <div class="d-none d-md-block">
-        <label for="country" class="visually-hidden">Pays</label>
-        <%= select_tag "country", country_options, id: "country", class: "form-select na-country" %>
+        <%= form_with url: country_path, method: :patch, class: "na-country-form", data: { controller: "auto-submit", action: "change->auto-submit#submit" } do %>
+          <label for="country" class="visually-hidden">Pays</label>
+          <%= select_tag "country", country_options, id: "country", class: "form-select na-country" %>
+          <%= submit_tag "Changer de pays", name: nil, class: "btn btn-outline-secondary na-country__apply" %>
+        <% end %>
       </div>
 
       <button type="button" class="na-icon-button na-icon-button--plain na-theme-toggle d-none d-md-inline-flex"
@@ -38,7 +41,7 @@
     </div>
   </div>
 
-  <%= render Organisms::MobileMenuComponent.new(items: nav_items, countries: COUNTRIES, selected_country: DEFAULT_COUNTRY, user: user) %>
+  <%= render Organisms::MobileMenuComponent.new(items: nav_items, countries: Country::NAMES, selected_country: selected_country, user: user) %>
 </header>
 
 <nav class="na-tabbar d-md-none" aria-label="Onglets">

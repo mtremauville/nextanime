@@ -1,22 +1,13 @@
 class Organisms::MainNavigationComponent < ViewComponent::Base
-  DEFAULT_COUNTRY = "FR".freeze
-  COUNTRIES = {
-    "FR" => "France",
-    "BE" => "Belgique",
-    "CH" => "Suisse",
-    "CA" => "Canada",
-    "US" => "États-Unis",
-    "GB" => "Royaume-Uni"
-  }.freeze
-
-  def initialize(current_path:, user: nil)
+  def initialize(current_path:, user: nil, selected_country: Country::DEFAULT)
     @current_path = current_path
     @user = user
+    @selected_country = selected_country
   end
 
   private
 
-  attr_reader :user
+  attr_reader :user, :selected_country
 
   def nav_items
     items.map { |item| item.merge(current: current?(item[:href])) }
@@ -33,7 +24,7 @@ class Organisms::MainNavigationComponent < ViewComponent::Base
   end
 
   def country_options
-    options_for_select(COUNTRIES.map { |code, name| [ name, code ] }, DEFAULT_COUNTRY)
+    options_for_select(Country::NAMES.map { |code, name| [ name, code ] }, selected_country)
   end
 
   def current?(href)

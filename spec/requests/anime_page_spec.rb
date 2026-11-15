@@ -190,6 +190,40 @@ RSpec.describe "Anime page", type: :request do
       end
     end
 
+    context "when another country was chosen" do
+      before do
+        create(:tmdb_match, anime: anime, watch_links: {})
+        create(:streaming_availability, anime: anime, streaming_platform: crunchyroll, country_code: "BE")
+      end
+
+      it "shows the offers of the country that a visitor chose" do
+        patch country_path, params: { country: "BE" }
+
+        get anime_path(anime)
+
+        expect(document).to have_css(".na-where-to-watch__country", text: "Belgique")
+        expect(document).to have_css(".na-platform-row__name", text: "Crunchyroll")
+      end
+
+      it "shows the offers of the country of a member, whatever the cookie says" do
+        patch country_path, params: { country: "CH" }
+        sign_in create(:user, country: "BE")
+
+        get anime_path(anime)
+
+        expect(document).to have_css(".na-where-to-watch__country", text: "Belgique")
+      end
+
+      it "falls back to France when the cookie holds a country that is not supported" do
+        cookies[:country] = "JP"
+
+        get anime_path(anime)
+
+        expect(document).to have_css(".na-where-to-watch__country", text: "France")
+        expect(document).to have_no_css(".na-platform-row")
+      end
+    end
+
     it "hides the block when TMDB did not find the anime" do
       create(:tmdb_match, :unmatched, anime: anime)
 

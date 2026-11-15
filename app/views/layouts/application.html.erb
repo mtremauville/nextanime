@@ -5,7 +5,7 @@
   <body>
     <a class="visually-hidden-focusable" href="#main">Aller au contenu</a>
 
-    <%= render Organisms::MainNavigationComponent.new(current_path: request.path, user: current_user) %>
+    <%= render Organisms::MainNavigationComponent.new(current_path: request.path, user: current_user, selected_country: current_country_code) %>
 
     <%= render Molecules::GuestBannerComponent.new unless current_user || devise_controller? %>
 
