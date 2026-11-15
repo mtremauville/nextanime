@@ -78,9 +78,9 @@ class AnimesController < ApplicationController
     @watchlist_entry = current_user.watchlist_entries.find_by(anime: @anime)
   end
 
-  # Where the anime can be watched, once TMDB knows it. Until the visitor can choose a country, it is France.
+  # Where the anime can be watched in the country of the visitor, once TMDB knows the anime.
   def assign_where_to_watch
-    country_code = Country::DEFAULT
+    country_code = current_country_code
     where_to_watch = AnimeWhereToWatch.new(anime: @anime, country_code: country_code)
     return unless where_to_watch.known?
 

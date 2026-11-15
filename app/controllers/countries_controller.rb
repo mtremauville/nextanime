@@ -12,7 +12,7 @@ class CountriesController < ApplicationController
     if current_user
       current_user.update!(country: country_code)
     else
-      cookies.permanent[:country] = { value: country_code, httponly: true, same_site: :lax }
+      cookies.permanent[CurrentCountry::COOKIE_NAME] = { value: country_code, httponly: true, same_site: :lax }
     end
   end
 end
