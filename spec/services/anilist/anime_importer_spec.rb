@@ -289,4 +289,16 @@ RSpec.describe Anilist::AnimeImporter do
         .to change(StreamingLink, :count).by(3)
     end
   end
+  describe "a platform created by the import of TMDB" do
+    let!(:hbo_max) { create(:streaming_platform, name: "HBO Max", slug: "hbo-max") }
+
+    it "is reused for a link that AniList names Max" do
+      max_link = { "site" => "Max", "type" => "STREAMING", "language" => "English", "url" => "https://max.example/bebop" }
+
+      anime = importer.import(bebop.merge("externalLinks" => [ max_link ]))
+
+      expect(anime.streaming_links.map(&:streaming_platform)).to eq([ hbo_max ])
+      expect(StreamingPlatform.where(slug: "max")).to be_empty
+    end
+  end
 end
