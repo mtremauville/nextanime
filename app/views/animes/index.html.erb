@@ -68,7 +68,7 @@
             link_href: catalogue_path
           ) %>
     <% else %>
-      <%= render Organisms::CatalogueGridComponent.new(animes: @page.animes, scorer: @scorer, listed_ids: @listed_ids) %>
+      <%= render Organisms::CatalogueGridComponent.new(animes: @page.animes, scorer: @scorer, listed_ids: @listed_ids, platforms_by_anime: @platforms_by_anime) %>
 
       <div class="d-none d-md-block">
         <%= render Molecules::PaginationComponent.new(
