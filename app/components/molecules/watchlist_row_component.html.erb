@@ -8,6 +8,7 @@
     <%= link_to title, anime_path(anime), class: "na-watch-row__title" %>
     <% if meta %>
       <p class="na-watch-row__meta"><%= meta %></p>
+      <%= render Molecules::PlatformLineComponent.new(platforms: @platforms) %>
     <% end %>
     <%= render Atoms::TagComponent.new(label: status_label, tone: status_tone) %>
   </div>
