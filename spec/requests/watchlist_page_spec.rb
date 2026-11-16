@@ -206,4 +206,54 @@ RSpec.describe "The watchlist page", type: :request do
       expect(html).to have_css("dialog form[action='/watchlist/#{first_entry.id}?status=watching']")
     end
   end
+  describe "the platforms of the listed anime" do
+    let(:member) { create(:user) }
+    let(:html) { Capybara.string(response.body) }
+    let(:crunchyroll) { create(:streaming_platform, name: "Crunchyroll") }
+
+    def list_anime_on(platform, country_code: "FR")
+      anime = create(:anime)
+      create(:watchlist_entry, user: member, anime: anime)
+      create(:streaming_availability, anime: anime, streaming_platform: platform,
+                                      country_code: country_code, offer_type: "flatrate")
+      anime
+    end
+
+    before { sign_in member }
+
+    it "names the platform of an entry in France by default" do
+      list_anime_on(crunchyroll)
+
+      get watchlist_path
+
+      expect(html).to have_css(".na-watch-row .na-platform-line", text: "Crunchyroll")
+    end
+
+    it "uses the country of the member" do
+      member.update!(country: "CH")
+      list_anime_on(crunchyroll, country_code: "CH")
+
+      get watchlist_path
+
+      expect(html).to have_css(".na-watch-row .na-platform-line", text: "Crunchyroll")
+    end
+
+    it "ignores the offers of another country" do
+      list_anime_on(crunchyroll, country_code: "US")
+
+      get watchlist_path
+
+      expect(html).to have_no_css(".na-platform-line")
+    end
+
+    it "loads the offers of every entry with a single query" do
+      3.times { list_anime_on(crunchyroll) }
+      loads = 0
+      counter = ->(*, payload) { loads += 1 if payload[:name] == "StreamingAvailability Load" }
+
+      ActiveSupport::Notifications.subscribed(counter, "sql.active_record") { get watchlist_path }
+
+      expect(loads).to eq(1)
+    end
+  end
 end

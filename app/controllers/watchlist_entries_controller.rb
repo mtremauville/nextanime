@@ -9,6 +9,7 @@ class WatchlistEntriesController < ApplicationController
     @overview = WatchlistOverview.new(policy_scope(WatchlistEntry))
     @status = status_filter
     @entries = @overview.listed(@status)
+    @platforms_by_anime = PlatformsByAnime.new(animes: @entries.map(&:anime), country_code: current_country_code).call
   end
 
   def create
