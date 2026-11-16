@@ -244,4 +244,55 @@ RSpec.describe "Catalogue", type: :request do
       expect(titles.size).to eq(12)
     end
   end
+  describe "the platforms of the anime" do
+    let(:monster) { create(:anime, title_romaji: "Monster", title_english: nil) }
+    let(:netflix) { create(:streaming_platform, name: "Netflix", slug: "netflix") }
+
+    def offer(country_code, anime: monster)
+      create(:streaming_availability, anime: anime, streaming_platform: netflix, country_code: country_code)
+    end
+
+    it "shows the platforms of the anime in France by default" do
+      offer("FR")
+
+      get catalogue_path
+
+      expect(document).to have_css("[data-role='catalogue-item'] .na-platform-badges", text: "Netflix")
+    end
+
+    it "shows the platforms of the country that was chosen" do
+      offer("BE")
+      patch country_path, params: { country: "BE" }
+
+      get catalogue_path
+
+      expect(document).to have_css("[data-role='catalogue-item'] .na-platform-badges", text: "Netflix")
+    end
+
+    it "does not show the platforms of another country" do
+      offer("BE")
+
+      get catalogue_path
+
+      expect(document).to have_no_css(".na-platform-badges")
+    end
+
+    it "shows the platforms on the cards that are added by load more as well" do
+      offer("FR")
+
+      get catalogue_path, headers: { "Accept" => Mime[:turbo_stream].to_s }
+
+      expect(response.body).to include("na-platform-badges")
+    end
+
+    it "looks the platforms up once for the whole page" do
+      create_list(:anime, 3).each { |listed| offer("FR", anime: listed) }
+      loads = []
+      callback = ->(*, payload) { loads << payload[:name] }
+
+      ActiveSupport::Notifications.subscribed(callback, "sql.active_record") { get catalogue_path }
+
+      expect(loads.count("StreamingAvailability Load")).to eq(1)
+    end
+  end
 end

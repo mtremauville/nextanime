@@ -10,7 +10,8 @@
             tags: summary.genre_labels,
             match: recommendation.match_percentage,
             image_url: anime.cover_image_url,
-            reason: explainer&.call(anime)
+            reason: explainer&.call(anime),
+            platforms: platforms_by_anime.fetch(anime.id, [])
           ) %>
     </li>
   <% end %>

@@ -87,4 +87,21 @@ RSpec.describe Organisms::RecommendationGridComponent, type: :component do
       expect(page).to have_css(".na-poster-card__reason", count: 1)
     end
   end
+  describe "the platforms of the anime" do
+    let(:netflix) { create(:streaming_platform, name: "Netflix", slug: "netflix") }
+
+    it "shows the platforms that are known for each anime, on its own card" do
+      render_inline(described_class.new(recommendations: recommendations, platforms_by_anime: { perfect_blue.id => [ netflix ] }))
+
+      items = page.all("[data-role='recommendation']")
+      expect(items.first).to have_css(".na-platform-badges", text: "Netflix")
+      expect(items.last).to have_no_css(".na-platform-badges")
+    end
+
+    it "shows no platform when the platforms are not given" do
+      render_grid
+
+      expect(page).to have_no_css(".na-platform-badges")
+    end
+  end
 end

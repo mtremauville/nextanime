@@ -32,4 +32,20 @@ RSpec.describe Organisms::CatalogueGridComponent, type: :component do
       expect(page).to have_css("#catalogue-grid .na-poster-card__listed", count: 1)
     end
   end
+  describe "the platforms of the anime" do
+    let(:monster) { create(:anime, title_english: "Monster") }
+    let(:netflix) { create(:streaming_platform, name: "Netflix", slug: "netflix") }
+
+    it "passes the platforms of each anime to its card" do
+      render_inline(described_class.new(animes: [ monster ], platforms_by_anime: { monster.id => [ netflix ] }))
+
+      expect(page).to have_css("#catalogue-grid .na-platform-badges", text: "Netflix")
+    end
+
+    it "shows no platform when the platforms are not given" do
+      render_inline(described_class.new(animes: [ monster ]))
+
+      expect(page).to have_no_css(".na-platform-badges")
+    end
+  end
 end

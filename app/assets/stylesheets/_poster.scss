@@ -27,3 +27,30 @@
   letter-spacing: .08em;
   text-transform: uppercase;
 }
+
+// The logos of the platforms on the poster of a card, opposite to the badge of the match.
+.na-poster-card__platforms {
+  position: absolute;
+  bottom: map-get($na-spacers, 3);
+  left: map-get($na-spacers, 3);
+}
+
+.na-platform-badges {
+  display: inline-flex;
+  align-items: center;
+  gap: map-get($na-spacers, 1);
+  padding: map-get($na-spacers, 1);
+  border: 1px solid var(--na-border);
+  border-radius: $na-radius-pill;
+  background: color-mix(in srgb, var(--na-bg) 80%, transparent);
+
+  .na-platform-logo { border-radius: 50%; }
+}
+
+.na-platform-badges__more {
+  padding-inline: map-get($na-spacers, 1) map-get($na-spacers, 2);
+  color: var(--na-text);
+  font-family: $na-font-heading;
+  font-size: .75rem;
+  font-weight: 700;
+}

@@ -11,6 +11,9 @@
     <% if listed %>
       <span class="na-poster-card__listed">Dans ma liste</span>
     <% end %>
+    <% if platforms.any? %>
+      <div class="na-poster-card__platforms"><%= render Molecules::PlatformBadgesComponent.new(platforms: platforms) %></div>
+    <% end %>
   </div>
   <div class="p-3 d-flex flex-column gap-2">
     <h2 class="h5 mb-0">

@@ -14,6 +14,7 @@ class RecommendationsController < ApplicationController
     return unless recommendable?(taste_profile)
 
     @recommendations = ranked_recommendations(taste_profile)
+    @platforms_by_anime = PlatformsByAnime.new(animes: @recommendations.map(&:anime), country_code: current_country_code).call
     @explainer = MatchExplainer.new(taste_profile)
   end
 

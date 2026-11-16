@@ -143,6 +143,14 @@ a.na-platform-row:focus-visible {
   background: var(--na-border);
 }
 
+// The small size, for the badges on the cards
+.na-platform-logo--small {
+  width: 1.5rem;
+  height: 1.5rem;
+
+  &.na-platform-logo--initials { font-size: 0.625rem; }
+}
+
 // The link to the watch page of TMDB, on its own line under the credit.
 .na-where-to-watch__credit-link {
   display: block;

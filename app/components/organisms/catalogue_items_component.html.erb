@@ -7,7 +7,8 @@
           meta: summary.line,
           match: scorer&.percentage(anime),
           image_url: anime.cover_image_url,
-          listed: listed_ids.include?(anime.id)
+          listed: listed_ids.include?(anime.id),
+          platforms: platforms_by_anime.fetch(anime.id, [])
         ) %>
   </li>
 <% end %>

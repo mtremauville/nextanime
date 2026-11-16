@@ -14,6 +14,7 @@ class AnimesController < ApplicationController
     @sort = @requested_sort || default_sort
     @page = CatalogueQuery.new(page: params[:page], search: @search, filters: @filters, sort: @sort, scorer: @scorer).call
     @listed_ids = listed_anime_ids(@page.animes)
+    @platforms_by_anime = PlatformsByAnime.new(animes: @page.animes, country_code: current_country_code).call
     @studios = CatalogueStudios.new(selected_ids: @filters.studio_ids).call
     @active_filters = active_filter_chips
   end
