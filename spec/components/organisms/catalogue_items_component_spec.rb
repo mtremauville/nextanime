@@ -50,4 +50,25 @@ RSpec.describe Organisms::CatalogueItemsComponent, type: :component do
       expect(page.find("li", text: "Pluto")).to have_no_css(".na-poster-card__listed")
     end
   end
+  describe "the platforms of the anime" do
+    let(:netflix) { create(:streaming_platform, name: "Netflix", slug: "netflix") }
+
+    it "shows the platforms that are known for an anime" do
+      render_inline(described_class.new(animes: [ monster ], platforms_by_anime: { monster.id => [ netflix ] }))
+
+      expect(page).to have_css(".na-platform-badges .visually-hidden", text: "Disponible sur Netflix")
+    end
+
+    it "shows no platform for an anime that has none" do
+      render_inline(described_class.new(animes: [ monster ], platforms_by_anime: {}))
+
+      expect(page).to have_no_css(".na-platform-badges")
+    end
+
+    it "shows no platform when the platforms are not given" do
+      render_items(animes: [ monster ])
+
+      expect(page).to have_no_css(".na-platform-badges")
+    end
+  end
 end
