@@ -284,4 +284,40 @@ RSpec.describe "Recommendations", type: :request do
       expect(tag_query_count { get recommendations_path }).to be <= 2
     end
   end
+  describe "the platforms of the recommended anime" do
+    let(:liked) { create(:anime, genres: [ thriller ]) }
+    let(:close) { create(:anime, genres: [ thriller ]) }
+    let(:netflix) { create(:streaming_platform, name: "Netflix", slug: "netflix") }
+
+    before do
+      sign_in user
+      user.create_taste_profile!.record_swipe(liked, liked: true)
+    end
+
+    it "shows the platforms of a recommended anime in France by default" do
+      create(:streaming_availability, anime: close, streaming_platform: netflix, country_code: "FR")
+
+      get recommendations_path
+
+      expect(page).to have_css("[data-role='recommendation'] .na-platform-badges", text: "Netflix")
+    end
+
+    it "shows the platforms of the country that was chosen" do
+      create(:streaming_availability, anime: close, streaming_platform: netflix, country_code: "CH")
+      patch country_path, params: { country: "CH" }
+
+      get recommendations_path
+
+      expect(page).to have_css("[data-role='recommendation'] .na-platform-badges", text: "Netflix")
+    end
+
+    it "does not show the platforms of another country" do
+      create(:streaming_availability, anime: close, streaming_platform: netflix, country_code: "CH")
+
+      get recommendations_path
+
+      expect(page).to have_css("[data-role='recommendation']")
+      expect(page).to have_no_css(".na-platform-badges")
+    end
+  end
 end
