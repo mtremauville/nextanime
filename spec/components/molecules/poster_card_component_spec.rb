@@ -107,4 +107,25 @@ RSpec.describe Molecules::PosterCardComponent, type: :component do
       expect(page).to have_css(".na-poster-card__badge")
     end
   end
+  describe "the platforms of the anime" do
+    let(:platforms) { build_stubbed_list(:streaming_platform, 2, logo_path: nil) }
+
+    it "shows the badges of the platforms over the poster" do
+      render_inline(described_class.new(title: "Perfect Blue", platforms: platforms))
+
+      expect(page).to have_css(".na-poster-card__frame .na-poster-card__platforms .na-platform-badges")
+    end
+
+    it "shows no badges by default" do
+      render_inline(described_class.new(title: "Perfect Blue"))
+
+      expect(page).to have_no_css(".na-platform-badges")
+    end
+
+    it "shows no badges when no platform is known" do
+      render_inline(described_class.new(title: "Perfect Blue", platforms: []))
+
+      expect(page).to have_no_css(".na-poster-card__platforms")
+    end
+  end
 end
