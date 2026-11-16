@@ -1,0 +1,9 @@
+<p class="na-platform-line">
+  <span class="na-platform-line__lead"><%= t("platform_line.lead") %></span>
+  <%= render Atoms::PlatformLogoComponent.new(platform: best_platform, size: :small) %>
+  <span class="na-platform-line__name"><%= best_platform.name %></span>
+  <% if other_platforms? %>
+    <span class="na-platform-line__more" aria-hidden="true"><%= t("platform_line.more", count: other_platforms.size) %></span>
+    <span class="visually-hidden"><%= t("platform_line.also_on", names: other_platform_names) %></span>
+  <% end %>
+</p>
