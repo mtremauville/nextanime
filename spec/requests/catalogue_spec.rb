@@ -336,7 +336,8 @@ RSpec.describe "Catalogue", type: :request do
     it "shows a chip, linked to the catalogue without it, for the chosen platform" do
       get catalogue_path, params: { platform_ids: [ crunchyroll.id ] }
 
-      expect(document).to have_link(href: catalogue_path, text: /Crunchyroll/)
+      expect(document).to have_css(".na-active-filters .na-filter-chip", text: "Crunchyroll")
+      expect(document).to have_link(href: catalogue_path, class: "na-filter-chip__remove")
     end
 
     it "keeps offering a chosen platform that has no offer in the country" do
