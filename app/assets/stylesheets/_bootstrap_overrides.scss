@@ -34,7 +34,8 @@ $btn-font-family: $na-font-heading;
 $btn-font-weight: 700;
 $card-border-radius: $na-radius-lg;
 $card-bg: $na-dark-surface;
-$input-bg: $na-dark-bg;
-$input-border-color: $na-dark-border;
-$input-color: $na-dark-text;
+$input-bg: var(--na-bg);
+$input-border-color: var(--na-border);
+// Une valeur Sass est figée à la compilation : les champs doivent suivre le thème (clair ou sombre).
+$input-color: var(--na-text);
 $focus-ring-color: rgba($na-dark-cyan, .6);
