@@ -90,4 +90,28 @@ RSpec.describe Molecules::WatchlistRowComponent, type: :component do
 
     expect(page).to have_no_css(".na-watch-row__actions")
   end
+  describe "the platforms of the anime" do
+    def render_with_platforms(platforms)
+      entry = create(:watchlist_entry)
+      render_inline(described_class.new(entry: entry, platforms: platforms))
+    end
+
+    it "shows the platform line in the main column" do
+      render_with_platforms([ build_stubbed(:streaming_platform, name: "Crunchyroll") ])
+
+      expect(page).to have_css(".na-watch-row__main .na-platform-line", text: "Crunchyroll")
+    end
+
+    it "shows no platform line when no platform is known" do
+      render_with_platforms([])
+
+      expect(page).to have_no_css(".na-platform-line")
+    end
+
+    it "shows no platform line when platforms are not given" do
+      render_inline(described_class.new(entry: create(:watchlist_entry)))
+
+      expect(page).to have_no_css(".na-platform-line")
+    end
+  end
 end

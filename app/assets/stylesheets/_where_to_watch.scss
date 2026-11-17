@@ -162,3 +162,28 @@ a.na-platform-row:focus-visible {
   &:hover,
   &:focus-visible { color: var(--na-text); }
 }
+
+.na-platform-line {
+  display: flex;
+  align-items: center;
+  gap: map-get($na-spacers, 2);
+  min-width: 0;
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--na-muted);
+}
+
+.na-platform-line__lead,
+.na-platform-line__more {
+  flex: none;
+  white-space: nowrap;
+}
+
+.na-platform-line__name {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--na-text);
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

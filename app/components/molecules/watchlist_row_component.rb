@@ -5,7 +5,8 @@ module Molecules
 
     renders_one :actions
 
-    def initialize(entry:)
+    def initialize(entry:, platforms: [])
+      @platforms = platforms
       @entry = entry
       super()
     end
