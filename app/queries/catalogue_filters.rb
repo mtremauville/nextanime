@@ -1,4 +1,4 @@
-class CatalogueFilters < Data.define(:genre_ids, :studio_ids, :formats, :statuses, :season, :year_from, :year_to)
+class CatalogueFilters < Data.define(:genre_ids, :studio_ids, :platform_ids, :formats, :statuses, :season, :year_from, :year_to)
   FORMATS = %w[tv tv_short movie ova ona special].freeze
   STATUSES = %w[finished releasing not_yet_released].freeze
   SEASONS = %w[winter spring summer fall].freeze
@@ -11,6 +11,7 @@ class CatalogueFilters < Data.define(:genre_ids, :studio_ids, :formats, :statuse
       new(
         genre_ids: positive_integers(source[:genre_ids]),
         studio_ids: positive_integers(source[:studio_ids]),
+        platform_ids: positive_integers(source[:platform_ids]),
         formats: allowed(source[:formats], FORMATS),
         statuses: allowed(source[:statuses], STATUSES),
         season: (source[:season] if SEASONS.include?(source[:season])),
@@ -62,7 +63,7 @@ class CatalogueFilters < Data.define(:genre_ids, :studio_ids, :formats, :statuse
   # The same filters minus one: a value of a list, the season, or both years (:years).
   def without(name, value = nil)
     case name
-    when :genre_ids, :studio_ids, :formats, :statuses then with(name => public_send(name) - [ value ])
+    when :genre_ids, :studio_ids, :platform_ids, :formats, :statuses then with(name => public_send(name) - [ value ])
     when :season then with(season: nil)
     when :years then with(year_from: nil, year_to: nil)
     else raise ArgumentError, "Unknown filter: #{name.inspect}"

@@ -222,4 +222,33 @@ RSpec.describe CatalogueFilters do
       expect(filters.without(:studio_ids, 4).studio_ids).to eq([ 5 ])
     end
   end
+  describe "the platform filter" do
+    it "keeps the platform ids that are positive integers, once each" do
+      filters = described_class.from_params({ platform_ids: [ "3", "3", "x", "0", "-2", "7" ] })
+
+      expect(filters.platform_ids).to eq([ 3, 7 ])
+    end
+
+    it "has no platform by default" do
+      expect(described_class.from_params(nil).platform_ids).to eq([])
+    end
+
+    it "ignores platform ids that are not a list" do
+      expect(described_class.from_params({ platform_ids: { "a" => "1" } }).platform_ids).to eq([])
+    end
+
+    it "is active as soon as a platform is selected" do
+      expect(described_class.from_params({ platform_ids: [ "4" ] })).to be_active
+    end
+
+    it "puts the platforms in the query parameters" do
+      expect(described_class.from_params({ platform_ids: [ "4" ] }).to_query_params).to eq({ platform_ids: [ 4 ] })
+    end
+
+    it "can leave one platform out" do
+      filters = described_class.from_params({ platform_ids: [ "4", "5" ] })
+
+      expect(filters.without(:platform_ids, 4).platform_ids).to eq([ 5 ])
+    end
+  end
 end
