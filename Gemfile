@@ -81,3 +81,5 @@ gem "webmock", "~> 3.34", group: :test
 gem "rack-attack", "~> 6.8"
 
 gem "pundit", "~> 2.5"
+
+gem "axe-core-rspec", "~> 4.14", group: :test
