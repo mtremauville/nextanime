@@ -70,3 +70,24 @@ form[aria-busy="true"] button[type="submit"]:disabled {
     }
   }
 }
+
+// « Voir plus » : le spinner n'apparaît que pendant le chargement de la suite.
+.na-load-more__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  .na-spinner {
+    display: none;
+  }
+
+  &[aria-busy="true"] {
+    pointer-events: none;
+    opacity: 0.85;
+
+    .na-spinner {
+      display: inline-block;
+    }
+  }
+}

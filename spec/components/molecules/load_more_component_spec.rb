@@ -44,4 +44,19 @@ RSpec.describe Molecules::LoadMoreComponent, type: :component do
     expect(page).to have_no_link("Voir plus")
     expect(page).to have_css("[data-role='progress']", text: "84 sur 84")
   end
+  describe "while the next anime load" do
+    before { render_inline(described_class.new(shown: 12, total: 40, next_url: "/catalogue?page=2")) }
+
+    it "lets a controller mark the link as busy at the click" do
+      expect(page).to have_css("a.na-load-more__button[data-controller='pending'][data-action*='click->pending#start']")
+    end
+
+    it "holds a spinner in the link, that the style shows only while it is busy" do
+      expect(page).to have_css("a.na-load-more__button .na-spinner.na-spinner--small[aria-hidden='true']")
+    end
+
+    it "keeps the name and the address of the link" do
+      expect(page).to have_link("Voir plus", href: "/catalogue?page=2")
+    end
+  end
 end
