@@ -12,10 +12,11 @@ class AnimesController < ApplicationController
     @scorer = MatchScorer.new(taste_profile) if liked_something?(taste_profile)
     @requested_sort = sort_choice
     @sort = @requested_sort || default_sort
-    @page = CatalogueQuery.new(page: params[:page], search: @search, filters: @filters, sort: @sort, scorer: @scorer).call
+    @page = CatalogueQuery.new(page: params[:page], search: @search, filters: @filters, sort: @sort, scorer: @scorer, country_code: current_country_code).call
     @listed_ids = listed_anime_ids(@page.animes)
     @platforms_by_anime = PlatformsByAnime.new(animes: @page.animes, country_code: current_country_code).call
     @studios = CatalogueStudios.new(selected_ids: @filters.studio_ids).call
+    @platforms = CataloguePlatforms.new(country_code: current_country_code, selected_ids: @filters.platform_ids).call
     @active_filters = active_filter_chips
   end
 
@@ -40,7 +41,7 @@ class AnimesController < ApplicationController
 
   # One chip per active filter, linked to the catalogue without that filter.
   def active_filter_chips
-    CatalogueFilterChips.new(filters: @filters, genres: @genres, studios: @studios).call.map do |chip|
+    CatalogueFilterChips.new(filters: @filters, genres: @genres, studios: @studios, platforms: @platforms).call.map do |chip|
       { label: chip.label, href: catalogue_path_for(chip.remaining) }
     end
   end

@@ -295,4 +295,56 @@ RSpec.describe "Catalogue", type: :request do
       expect(loads.count("StreamingAvailability Load")).to eq(1)
     end
   end
+  describe "the platform filter" do
+    let(:crunchyroll) { create(:streaming_platform, name: "Crunchyroll") }
+    let(:netflix) { create(:streaming_platform, name: "Netflix") }
+
+    def offer(title, platform, country_code: "FR")
+      anime = create(:anime, title_romaji: title, title_english: nil)
+      create(:streaming_availability, anime: anime, streaming_platform: platform,
+                                      country_code: country_code, offer_type: "flatrate")
+    end
+
+    before do
+      offer("On Crunchyroll", crunchyroll)
+      offer("On Netflix", netflix)
+      offer("Only in the US", crunchyroll, country_code: "US")
+      create(:anime, title_romaji: "No offer", title_english: nil)
+    end
+
+    it "offers the platforms of the country in the filters" do
+      get catalogue_path
+
+      expect(document).to have_css("input[name='platform_ids[]'][value='#{crunchyroll.id}']")
+      expect(document).to have_css("input[name='platform_ids[]'][value='#{netflix.id}']")
+    end
+
+    it "keeps the anime available on the chosen platform" do
+      get catalogue_path, params: { platform_ids: [ crunchyroll.id ] }
+
+      expect(titles).to eq([ "On Crunchyroll" ])
+    end
+
+    it "looks at the offers of the country of the visitor" do
+      patch country_path, params: { country: "US" }
+
+      get catalogue_path, params: { platform_ids: [ crunchyroll.id ] }
+
+      expect(titles).to eq([ "Only in the US" ])
+    end
+
+    it "shows a chip, linked to the catalogue without it, for the chosen platform" do
+      get catalogue_path, params: { platform_ids: [ crunchyroll.id ] }
+
+      expect(document).to have_link(href: catalogue_path, text: /Crunchyroll/)
+    end
+
+    it "keeps offering a chosen platform that has no offer in the country" do
+      idle = create(:streaming_platform, name: "Idle")
+
+      get catalogue_path, params: { platform_ids: [ idle.id ] }
+
+      expect(document).to have_checked_field("Idle")
+    end
+  end
 end
