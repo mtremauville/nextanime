@@ -75,7 +75,7 @@ RSpec.describe Organisms::CatalogueFiltersComponent, type: :component do
 
   describe "with filters already chosen" do
     let(:chosen) do
-      CatalogueFilters.new(genre_ids: [ 5 ], studio_ids: [], formats: %w[movie], statuses: %w[finished], season: "fall", year_from: 1990, year_to: 2005)
+      CatalogueFilters.new(genre_ids: [ 5 ], studio_ids: [], platform_ids: [], formats: %w[movie], statuses: %w[finished], season: "fall", year_from: 1990, year_to: 2005)
     end
 
     before { render_filters(filters: chosen) }
@@ -341,6 +341,63 @@ RSpec.describe Organisms::CatalogueFiltersComponent, type: :component do
       render_inline(described_class.new(action: "/catalogue", filters: no_filter, genres: genres, studios: studios, variant: :sheet))
 
       expect(page).to have_css("fieldset[data-controller='filter-search'] input[type='search']", visible: :all, count: 1)
+    end
+  end
+  describe "platforms" do
+    let(:crunchyroll) { CataloguePlatforms::Option.new(id: 5, name: "Crunchyroll", count: 120) }
+    let(:netflix) { CataloguePlatforms::Option.new(id: 9, name: "Netflix", count: 90) }
+    let(:platforms) { [ crunchyroll, netflix ] }
+
+    def render_with_platforms(filters: no_filter, variant: :column, studios: [])
+      render_inline(described_class.new(action: "/catalogue", filters: filters, genres: genres,
+                                        studios: studios, platforms: platforms, variant: variant))
+    end
+
+    it "offers the platforms as checkboxes, with their number of anime" do
+      render_with_platforms
+
+      expect(page).to have_css("fieldset legend", text: "Plateformes")
+      expect(page).to have_css("input[type='checkbox'][name='platform_ids[]'][value='5']")
+      expect(page).to have_field("Crunchyroll", type: "checkbox")
+      expect(page).to have_css("fieldset", text: "Crunchyroll") { |group| group.has_css?("[data-role='count']", text: "120") }
+    end
+
+    it "checks the chosen platforms only" do
+      render_with_platforms(filters: CatalogueFilters.from_params(platform_ids: %w[5]))
+
+      expect(page).to have_checked_field("Crunchyroll")
+      expect(page).to have_unchecked_field("Netflix")
+    end
+
+    it "leaves out the platforms when there is none" do
+      render_filters
+
+      expect(page).to have_no_css("input[name='platform_ids[]']")
+    end
+
+    it "puts the platforms after the formats and before the studios" do
+      render_with_platforms(studios: [ CatalogueStudios::Option.new(id: 3, name: "MAPPA", count: 38) ])
+
+      expect(page.text).to match(/Format.*Plateformes.*Studio/m)
+    end
+
+    it "does not offer to search the platforms" do
+      render_with_platforms
+
+      expect(page).to have_no_css("input[type='search']", visible: :all)
+    end
+
+    describe "as a sheet" do
+      before { render_with_platforms(variant: :sheet) }
+
+      it "draws the platforms as pills, without counts" do
+        expect(page).to have_css(".na-filter-group--pills input[name='platform_ids[]']", count: 2)
+        expect(page).to have_no_css("[data-role='count']")
+      end
+
+      it "gives the platforms their own ids, apart from the column" do
+        expect(page).to have_css("input#sheet-filter-platform-ids-5")
+      end
     end
   end
 end

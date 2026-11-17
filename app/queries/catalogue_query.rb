@@ -35,13 +35,14 @@ class CatalogueQuery
     def shown_count = (number - 1) * per_page + animes.size
   end
 
-  def initialize(page: FIRST_PAGE, per_page: PER_PAGE, search: nil, filters: CatalogueFilters.from_params(nil), sort: nil, scorer: nil)
+  def initialize(page: FIRST_PAGE, per_page: PER_PAGE, search: nil, filters: CatalogueFilters.from_params(nil), sort: nil, scorer: nil, country_code: Country::DEFAULT)
     @requested_page = page
     @per_page = per_page
     @search = search.to_s.strip
     @filters = filters
     @sort = sort.to_s
     @scorer = scorer
+    @country_code = country_code
   end
 
   def call
@@ -79,7 +80,7 @@ class CatalogueQuery
   # Without popularity an anime goes last: PostgreSQL would put it first in a descending order.
   def ranked_animes = matching_animes.order(*order_clauses)
 
-  attr_reader :filters, :sort, :scorer
+  attr_reader :filters, :sort, :scorer, :country_code
 
   def order_clauses
     case sort
@@ -118,6 +119,7 @@ class CatalogueQuery
     scope = scope.where(season_year: year_range) if year_range
     scope = scope.where(id: with_every_genre) if filters.genre_ids.any?
     scope = scope.where(id: from_any_studio) if filters.studio_ids.any?
+    scope = scope.where(id: on_any_platform) if filters.platform_ids.any?
     scope
   end
 
@@ -138,6 +140,12 @@ class CatalogueQuery
   # made by several of the selected studios from being listed several times.
   def from_any_studio
     AnimeStudio.where(studio_id: filters.studio_ids).select(:anime_id)
+  end
+
+  # The offers are those of one country. A subquery keeps an anime offered on several of the
+  # selected platforms from being listed several times.
+  def on_any_platform
+    StreamingAvailability.where(country_code: country_code, streaming_platform_id: filters.platform_ids).select(:anime_id)
   end
 
   def searched_animes

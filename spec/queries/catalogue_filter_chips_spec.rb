@@ -85,4 +85,37 @@ RSpec.describe CatalogueFilterChips do
       expect(labels_for(genre_ids: %w[4], studio_ids: %w[3], formats: %w[movie])).to eq(%w[Thriller MAPPA Film])
     end
   end
+  describe "platform chips" do
+    let(:crunchyroll) { CataloguePlatforms::Option.new(id: 5, name: "Crunchyroll", count: 120) }
+    let(:netflix) { CataloguePlatforms::Option.new(id: 9, name: "Netflix", count: 90) }
+
+    def platform_chips_for(params)
+      described_class.new(filters: CatalogueFilters.from_params(params), genres: genres, studios: studios,
+                          platforms: [ crunchyroll, netflix ]).call
+    end
+
+    it "gives one chip per selected platform, named after the platform" do
+      expect(platform_chips_for(platform_ids: %w[5 9]).map(&:label)).to eq(%w[Crunchyroll Netflix])
+    end
+
+    it "gives no chip to a platform that is not listed" do
+      expect(platform_chips_for(platform_ids: %w[5 99]).map(&:label)).to eq(%w[Crunchyroll])
+    end
+
+    it "gives, with a platform chip, the filters that remain once it is removed" do
+      expect(platform_chips_for(platform_ids: %w[5 9]).first.remaining.platform_ids).to eq([ 9 ])
+    end
+
+    it "puts the platforms after the studios and before the formats" do
+      chips = platform_chips_for(genre_ids: %w[4], studio_ids: %w[3], platform_ids: %w[5], formats: %w[movie])
+
+      expect(chips.map(&:label)).to eq(%w[Thriller MAPPA Crunchyroll Film])
+    end
+
+    it "gives no platform chip when no list of platforms is given" do
+      chips = described_class.new(filters: CatalogueFilters.from_params(platform_ids: %w[5]), genres: genres, studios: studios).call
+
+      expect(chips).to eq([])
+    end
+  end
 end
