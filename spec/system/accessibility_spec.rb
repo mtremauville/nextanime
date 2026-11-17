@@ -332,4 +332,115 @@ RSpec.describe "Accessibility of the pages", type: :system, js: true do
       end
     end
   end
+  describe "form fields in the light theme" do
+    # Measures the contrast of the text and of the placeholder of every visible field against its real
+    # background. axe does not always decide on a select, so the check is done here.
+    def low_contrast_fields
+      page.evaluate_script(<<~JS)
+        (() => {
+          const parse = (value) => {
+            const match = value.match(/\\(([^)]+)\\)/)
+            if (!match) return null
+            const tokens = match[1].replace(/[,/]/g, " ").trim().split(/\\s+/)
+            const srgb = tokens[0] === "srgb"
+            const numbers = srgb ? tokens.slice(1) : tokens
+            const channel = (token) => srgb ? Number(token) * 255 : Number(token)
+            const alpha = numbers[3] === undefined ? 1 : (numbers[3].endsWith("%") ? parseFloat(numbers[3]) / 100 : Number(numbers[3]))
+            return { r: channel(numbers[0]), g: channel(numbers[1]), b: channel(numbers[2]), a: alpha }
+          }
+          const over = (top, base) => ({
+            r: top.r * top.a + base.r * (1 - top.a),
+            g: top.g * top.a + base.g * (1 - top.a),
+            b: top.b * top.a + base.b * (1 - top.a)
+          })
+          const backgroundOf = (element) => {
+            const layers = []
+            for (let node = element; node; node = node.parentElement) {
+              const color = parse(getComputedStyle(node).backgroundColor)
+              if (color && color.a > 0) {
+                layers.push(color)
+                if (color.a >= 1) break
+              }
+            }
+            return layers.reverse().reduce((base, layer) => over(layer, base), { r: 255, g: 255, b: 255 })
+          }
+          const linear = (channel) => {
+            const value = channel / 255
+            return value <= 0.03928 ? value / 12.92 : Math.pow((value + 0.055) / 1.055, 2.4)
+          }
+          const luminance = ({ r, g, b }) => 0.2126 * linear(r) + 0.7152 * linear(g) + 0.0722 * linear(b)
+          const ratio = (first, second) => {
+            const [high, low] = [luminance(first), luminance(second)].sort((a, b) => b - a)
+            return (high + 0.05) / (low + 0.05)
+          }
+          const describe = (element) => element.tagName.toLowerCase() + (element.id ? "#" + element.id : "") +
+            (typeof element.className === "string" && element.className ? "." + element.className.trim().split(/\\s+/).join(".") : "")
+          const fields = Array.from(document.querySelectorAll(
+            "input:not([type=hidden]):not([type=checkbox]):not([type=radio]):not([type=submit]):not([type=button]), select, textarea"
+          )).filter((element) => element.getClientRects().length > 0)
+            .filter((element) => { const rect = element.getBoundingClientRect(); return rect.width > 1 && rect.height > 1 })
+
+          const found = []
+          fields.forEach((element) => {
+            const background = backgroundOf(element)
+            const text = parse(getComputedStyle(element).color)
+            if (text) {
+              const value = ratio(over(text, background), background)
+              if (value < 4.5) found.push(describe(element) + " text " + value.toFixed(2))
+            }
+            if (element.placeholder) {
+              const style = getComputedStyle(element, "::placeholder")
+              const placeholder = parse(style.color)
+              if (placeholder) {
+                placeholder.a *= parseFloat(style.opacity)
+                const value = ratio(over(placeholder, background), background)
+                if (value < 4.5) found.push(describe(element) + " placeholder " + value.toFixed(2))
+              }
+            }
+          })
+          return found
+        })()
+      JS
+    end
+
+    def expect_readable_fields
+      expect(page).to have_css("main#main")
+      page.execute_script("document.documentElement.dataset.bsTheme = 'light'")
+      wait_for_the_transitions
+      found = low_contrast_fields
+      expect(found).to be_empty, "Fields under 4.5:1:\n#{found.map { |field| "FIELD|#{field}" }.join("\n")}"
+    end
+
+    context "on a wide screen" do
+      before { page.current_window.resize_to(1400, 900) }
+
+      { "the catalogue" => "/catalogue", "the sign in page" => "/users/sign_in",
+        "the sign up page" => "/users/sign_up", "the forgotten password page" => "/users/password/new" }.each do |name, path|
+        it "keeps the text of every field readable on #{name}" do
+          visit path
+          expect_readable_fields
+        end
+      end
+
+      context "when signed in" do
+        before { sign_in_with_a_taste_profile }
+
+        it "keeps the text of every field readable on the profile" do
+          visit "/profil"
+          expect_readable_fields
+        end
+      end
+    end
+
+    context "on a phone" do
+      before { page.current_window.resize_to(393, 852) }
+
+      it "keeps the text of every field readable in the filters sheet" do
+        visit catalogue_path
+        click_button "Filtres", exact: true
+        expect(page).to have_css("dialog#filters-sheet[open]")
+        expect_readable_fields
+      end
+    end
+  end
 end
