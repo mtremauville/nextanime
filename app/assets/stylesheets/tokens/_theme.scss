@@ -36,7 +36,7 @@
   // Couleurs de Bootstrap rendues lisibles (WCAG AA) sur les fonds clairs.
   --bs-code-color: var(--na-magenta);
   --bs-form-invalid-color: #{$na-light-danger};
-  --bs-link-color-rgb: 168, 58, 111;      // $na-light-magenta (Bootstrap veut un triplet RVB)
+  --bs-link-color-rgb: 163, 55, 105;      // $na-light-magenta (Bootstrap veut un triplet RVB)
   --bs-link-hover-color-rgb: 143, 47, 92; // plus foncé au survol, 5,9:1 au minimum
 }
 

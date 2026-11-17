@@ -116,4 +116,49 @@ RSpec.describe "Accessibility of the pages", type: :system, js: true do
       end
     end
   end
+  describe "open states on a phone" do
+    before { page.current_window.resize_to(393, 852) }
+
+    def audit_in_theme(theme)
+      page.execute_script("document.documentElement.dataset.bsTheme = '#{theme}'")
+      wait_for_the_transitions
+      expect(page).to be_axe_clean.according_to(*wcag_aa)
+    end
+
+    %w[dark light].each do |theme|
+      context "in the #{theme} theme" do
+        it "has no WCAG AA violation in the burger menu" do
+          visit root_path
+          click_button "Ouvrir le menu"
+          expect(page).to have_css("#mobile-menu", visible: :visible)
+          audit_in_theme(theme)
+        end
+
+        it "has no WCAG AA violation in the filters sheet" do
+          visit catalogue_path
+          click_button "Filtres", exact: true
+          expect(page).to have_css("dialog#filters-sheet[open]")
+          audit_in_theme(theme)
+        end
+
+        it "has no WCAG AA violation in the catalogue with an active filter" do
+          create(:anime, title_romaji: "Film", title_english: nil, format: :movie, genres: [ genre ])
+          visit catalogue_path(formats: %w[movie tv])
+          expect(page).to have_css(".na-filter-chip")
+          audit_in_theme(theme)
+        end
+
+        context "when signed in" do
+          before { sign_in_with_a_taste_profile }
+
+          it "has no WCAG AA violation in the confirmation to delete the account" do
+            visit "/profil"
+            click_button "Supprimer mon compte"
+            expect(page).to have_css("#delete-account", visible: :visible)
+            audit_in_theme(theme)
+          end
+        end
+      end
+    end
+  end
 end
