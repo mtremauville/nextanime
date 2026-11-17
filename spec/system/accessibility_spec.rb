@@ -212,6 +212,31 @@ RSpec.describe "Accessibility of the pages", type: :system, js: true do
       expect_no_small_target
     end
 
+    it "keeps every control at least 44 px wide and high in the burger menu" do
+      visit root_path
+      click_button "Ouvrir le menu"
+      expect(page).to have_css("#mobile-menu", visible: :visible)
+      expect_no_small_target
+    end
+
+    it "keeps every control at least 44 px wide and high in the filters sheet" do
+      visit catalogue_path
+      click_button "Filtres", exact: true
+      expect(page).to have_css("dialog#filters-sheet[open]")
+      expect_no_small_target
+    end
+
+    context "when signed in and asking to delete the account" do
+      before { sign_in_with_a_taste_profile }
+
+      it "keeps every control at least 44 px wide and high in the confirmation" do
+        visit "/profil"
+        click_button "Supprimer mon compte"
+        expect(page).to have_css("#delete-account", visible: :visible)
+        expect_no_small_target
+      end
+    end
+
     context "when signed in" do
       before { sign_in_with_a_taste_profile }
 
