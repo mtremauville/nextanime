@@ -101,6 +101,13 @@
   }
 }
 
+// The mobile mockups keep 16 px between the screen edge and the content.
+@include media-breakpoint-down(md) {
+  .container {
+    --bs-gutter-x: 2rem;
+  }
+}
+
 .na-main {
   padding-top: 1.5rem;
   padding-bottom: 5.5rem;
