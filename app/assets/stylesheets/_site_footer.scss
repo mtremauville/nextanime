@@ -1,0 +1,45 @@
+// The footer of every page: the sources of the data.
+
+.na-site-footer {
+  margin-top: map-get($na-spacers, 5);
+  padding: map-get($na-spacers, 4) 0 calc(5.5rem + env(safe-area-inset-bottom));
+  font-size: 0.8125rem;
+  color: var(--na-muted);
+  border-top: 1px solid var(--na-border);
+
+  @include media-breakpoint-up(md) {
+    padding-bottom: map-get($na-spacers, 4);
+  }
+
+  a {
+    color: var(--na-text);
+    text-decoration: underline;
+
+    &:hover {
+      color: var(--na-cyan);
+    }
+  }
+}
+
+.na-site-footer__inner {
+  display: flex;
+  flex-direction: column;
+  gap: map-get($na-spacers, 2);
+}
+
+.na-site-footer__notice,
+.na-site-footer__sources {
+  margin: 0;
+}
+
+.na-site-footer__sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: map-get($na-spacers, 1) map-get($na-spacers, 4);
+}
+
+// The tab bar of a phone covers the bottom of the page. The footer is the last thing on it, so it
+// holds the room that .na-main reserves for the bar when nothing follows it.
+.na-main:has(+ .na-site-footer) {
+  padding-bottom: 1.5rem;
+}

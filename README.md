@@ -19,6 +19,13 @@ bundle exec rubocop
 bin/brakeman
 ```
 
+## Sources des données
+
+- **Catalogue** : [AniList](https://anilist.co/).
+- **Disponibilités de streaming** : données [JustWatch](https://www.justwatch.com/), fournies par l'API [TMDB](https://www.themoviedb.org/) et affichées avec leur source.
+
+This product uses the TMDB API but is not endorsed or certified by TMDB.
+
 ## Conventions Git
 Branches `feature/xxx` depuis `dev`, Pull Request avec CI verte, squash vers `dev`.
 Commits au format Conventional Commits (`feat:`, `fix:`, `test:`, `docs:`, `chore:`, `refactor:`).
