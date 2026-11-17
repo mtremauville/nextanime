@@ -1,0 +1,35 @@
+// The footer of every page: the sources of the data.
+
+.na-site-footer {
+  margin-top: map-get($na-spacers, 5);
+  padding: map-get($na-spacers, 4) 0;
+  font-size: 0.8125rem;
+  color: var(--na-muted);
+  border-top: 1px solid var(--na-border);
+
+  a {
+    color: var(--na-text);
+    text-decoration: underline;
+
+    &:hover {
+      color: var(--na-cyan);
+    }
+  }
+}
+
+.na-site-footer__inner {
+  display: flex;
+  flex-direction: column;
+  gap: map-get($na-spacers, 2);
+}
+
+.na-site-footer__notice,
+.na-site-footer__sources {
+  margin: 0;
+}
+
+.na-site-footer__sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: map-get($na-spacers, 1) map-get($na-spacers, 4);
+}
