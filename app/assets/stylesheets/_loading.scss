@@ -38,23 +38,35 @@
   }
 }
 
-// Turbo sets aria-busy on a form while it sends it, and disables the button that sent it: that
-// button shows a ring in the colour of its text. Only a <button> can hold the ring (not an input).
-form[aria-busy="true"] button[type="submit"]:disabled::before {
-  content: "";
-  display: inline-block;
-  box-sizing: border-box;
-  width: 1em;
-  height: 1em;
-  margin-right: 0.5em;
-  vertical-align: -0.125em;
-  border: 2px solid color-mix(in srgb, currentcolor 25%, transparent);
-  border-top-color: currentcolor;
-  border-radius: 50%;
-  animation: na-spin 0.8s linear infinite;
+// A pink button draws its ring in the dark of the page.
+.btn-na-primary {
+  --na-spinner-color: var(--na-bg);
+}
 
-  @media (prefers-reduced-motion: reduce) {
-    border-right-color: currentcolor;
-    animation: none;
+// Turbo sets aria-busy on a form while it sends it, and disables the button that sent it. That
+// button hides its content and shows a ring at its centre, so that it keeps its size. Only a
+// <button> can hold the ring (not an input).
+form[aria-busy="true"] button[type="submit"]:disabled {
+  position: relative;
+  color: transparent;
+  opacity: 1;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    box-sizing: border-box;
+    width: 1rem;
+    height: 1rem;
+    margin: auto;
+    border: 2px solid color-mix(in srgb, var(--na-spinner-color, var(--na-cyan)) 25%, transparent);
+    border-top-color: var(--na-spinner-color, var(--na-cyan));
+    border-radius: 50%;
+    animation: na-spin 0.8s linear infinite;
+
+    @media (prefers-reduced-motion: reduce) {
+      border-right-color: var(--na-spinner-color, var(--na-cyan));
+      animation: none;
+    }
   }
 }
