@@ -16,7 +16,7 @@
       ) %>
 </div>
 
-<div class="na-catalogue-layout">
+<div class="na-catalogue-layout" data-controller="pending" data-action="turbo:submit-start->pending#start turbo:fetch-request-error->pending#stop">
   <div class="na-catalogue-layout__filters d-none d-md-block">
     <%= render Organisms::CatalogueFiltersComponent.new(
           action: catalogue_path,
@@ -71,6 +71,7 @@
           ) %>
     <% else %>
       <%= render Organisms::CatalogueGridComponent.new(animes: @page.animes, scorer: @scorer, listed_ids: @listed_ids, platforms_by_anime: @platforms_by_anime) %>
+      <%= render Organisms::CatalogueSkeletonComponent.new %>
 
       <div class="d-none d-md-block">
         <%= render Molecules::PaginationComponent.new(

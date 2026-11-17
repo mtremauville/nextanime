@@ -1,0 +1,148 @@
+// Loading states: the ring that turns while something loads.
+
+@keyframes na-spin {
+  to { transform: rotate(360deg); }
+}
+
+.na-spinner {
+  --na-spinner-color: var(--na-cyan);
+
+  display: inline-block;
+  flex: none;
+  box-sizing: border-box;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid color-mix(in srgb, var(--na-spinner-color) 25%, transparent);
+  border-top-color: var(--na-spinner-color);
+  border-radius: 50%;
+  animation: na-spin 0.8s linear infinite;
+
+  &--small {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+
+  &--magenta {
+    --na-spinner-color: var(--na-magenta);
+  }
+
+  // For a spinner drawn on a pink button.
+  &--dark {
+    --na-spinner-color: var(--na-bg);
+  }
+
+  // With "reduce motion" the ring stays still: a fixed arc instead of a turning one.
+  @media (prefers-reduced-motion: reduce) {
+    border-right-color: var(--na-spinner-color);
+    animation: none;
+  }
+}
+
+// A pink button draws its ring in the dark of the page.
+.btn-na-primary {
+  --na-spinner-color: var(--na-bg);
+}
+
+// Turbo sets aria-busy on a form while it sends it, and disables the button that sent it. That
+// button hides its content and shows a ring at its centre, so that it keeps its size. Only a
+// <button> can hold the ring (not an input).
+form[aria-busy="true"] button[type="submit"]:disabled {
+  position: relative;
+  color: transparent;
+  opacity: 1;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    box-sizing: border-box;
+    width: 1rem;
+    height: 1rem;
+    margin: auto;
+    border: 2px solid color-mix(in srgb, var(--na-spinner-color, var(--na-cyan)) 25%, transparent);
+    border-top-color: var(--na-spinner-color, var(--na-cyan));
+    border-radius: 50%;
+    animation: na-spin 0.8s linear infinite;
+
+    @media (prefers-reduced-motion: reduce) {
+      border-right-color: var(--na-spinner-color, var(--na-cyan));
+      animation: none;
+    }
+  }
+}
+
+// « Voir plus » : le spinner n'apparaît que pendant le chargement de la suite.
+.na-load-more__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  .na-spinner {
+    display: none;
+  }
+
+  &[aria-busy="true"] {
+    pointer-events: none;
+    opacity: 0.85;
+
+    .na-spinner {
+      display: inline-block;
+    }
+  }
+}
+
+// Squelettes : des formes grises qui tiennent la place du contenu pendant qu'il charge.
+@keyframes na-shimmer {
+  from { background-position: 100% 0; }
+  to { background-position: -100% 0; }
+}
+
+.na-skeleton {
+  --na-skeleton-base: rgba(124, 108, 255, 0.12);
+  --na-skeleton-highlight: rgba(124, 108, 255, 0.24);
+
+  background-color: var(--na-skeleton-base);
+  background-image: linear-gradient(90deg, var(--na-skeleton-base) 0%, var(--na-skeleton-highlight) 50%, var(--na-skeleton-base) 100%);
+  background-size: 200% 100%;
+  border-radius: 0.375rem;
+  animation: na-shimmer 1.4s linear infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    background-image: none;
+    animation: none;
+  }
+
+  // Le cadre de l'affiche n'a pas de hauteur propre : la proportion d'une vraie affiche la lui donne.
+  &--poster {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    border-radius: 0;
+  }
+
+  &--title {
+    width: 85%;
+    height: 1.125rem;
+  }
+
+  &--meta {
+    width: 60%;
+    height: 0.8125rem;
+  }
+}
+
+// Au repos, seule la vraie grille se voit. Pendant l'envoi d'un filtre, du tri ou de la recherche,
+// les squelettes prennent sa place.
+.na-catalogue-grid.na-catalogue-skeleton {
+  display: none;
+}
+
+.na-catalogue-layout[aria-busy="true"] {
+  .na-catalogue-grid {
+    display: none;
+  }
+
+  .na-catalogue-grid.na-catalogue-skeleton {
+    display: grid;
+  }
+}
