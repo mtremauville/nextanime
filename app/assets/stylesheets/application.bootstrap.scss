@@ -59,6 +59,12 @@ body { font-family: $na-font-body; background: var(--na-bg); color: var(--na-tex
 .na-meter { height: 8px; border-radius: $na-radius-pill; background: var(--na-surface-2);
   > span { display: block; height: 100%; border-radius: inherit; background: var(--na-magenta); } }
 a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--na-cyan); outline-offset: 2px; }
+
+// Bootstrap retire le contour des .btn (outline: 0) au profit d'une ombre que nos variantes ne définissent pas.
+.btn:focus-visible { outline: 2px solid var(--na-cyan); outline-offset: 2px; }
+
+// <main> reçoit le focus du lien d'évitement (tabindex="-1") : ce n'est pas un contrôle, il n'a pas besoin de contour.
+main:focus { outline: none; }
 @import "styleguide";
 @import "meter";
 @import "poster";
