@@ -1,6 +1,7 @@
 require "rails_helper"
 
-# Audits the pages of the app against WCAG 2.1 level AA, on a phone and on a wide screen.
+# Audits the pages of the app against WCAG 2.1 level AA, on a phone and on a wide screen,
+# in the dark and in the light theme.
 RSpec.describe "Accessibility of the pages", type: :system, js: true do
   include Warden::Test::Helpers
 
@@ -43,32 +44,45 @@ RSpec.describe "Accessibility of the pages", type: :system, js: true do
     login_as(user, scope: :user)
   end
 
-  def expect_no_violation_on(path)
+  def expect_no_violation_on(path, theme:)
     visit path
     expect(page).to have_css("main#main")
+    page.execute_script("document.documentElement.dataset.bsTheme = '#{theme}'")
+    wait_for_the_transitions
     expect(page).to be_axe_clean.according_to(*wcag_aa)
   end
 
+  # Changing the theme runs CSS transitions: the audit has to read the final colors, not the ones in between.
+  def wait_for_the_transitions
+    Timeout.timeout(Capybara.default_max_wait_time) do
+      sleep 0.05 until page.evaluate_script(<<~JS)
+        document.getAnimations().every((animation) => animation.effect.getTiming().iterations === Infinity)
+      JS
+    end
+  end
+
   { "a phone" => [ 393, 852 ], "a wide screen" => [ 1400, 900 ] }.each do |screen, size|
-    context "on #{screen}" do
-      before { page.current_window.resize_to(*size) }
+    %w[dark light].each do |theme|
+      context "on #{screen}, in the #{theme} theme" do
+        before { page.current_window.resize_to(*size) }
 
-      public_pages.each do |name, path|
-        it "has no WCAG AA violation on #{name}" do
-          expect_no_violation_on(path)
-        end
-      end
-
-      it "has no WCAG AA violation on the page of an anime" do
-        expect_no_violation_on(anime_path(anime))
-      end
-
-      context "when signed in" do
-        before { sign_in_with_a_taste_profile }
-
-        member_pages.each do |name, path|
+        public_pages.each do |name, path|
           it "has no WCAG AA violation on #{name}" do
-            expect_no_violation_on(path)
+            expect_no_violation_on(path, theme: theme)
+          end
+        end
+
+        it "has no WCAG AA violation on the page of an anime" do
+          expect_no_violation_on(anime_path(anime), theme: theme)
+        end
+
+        context "when signed in" do
+          before { sign_in_with_a_taste_profile }
+
+          member_pages.each do |name, path|
+            it "has no WCAG AA violation on #{name}" do
+              expect_no_violation_on(path, theme: theme)
+            end
           end
         end
       end

@@ -32,6 +32,17 @@
   --na-glow-cyan: 0 2px 8px rgba(58, 53, 80, .10);
   --na-magenta-soft: rgba(168, 58, 111, .12);
   --na-cyan-soft:    rgba(47, 111, 118, .12);
+
+  // Couleurs de Bootstrap rendues lisibles (WCAG AA) sur les fonds clairs.
+  --bs-code-color: var(--na-magenta);
+  --bs-form-invalid-color: #{$na-light-danger};
+  --bs-link-color-rgb: 168, 58, 111;      // $na-light-magenta (Bootstrap veut un triplet RVB)
+  --bs-link-hover-color-rgb: 143, 47, 92; // plus foncé au survol, 5,9:1 au minimum
+}
+
+// Bootstrap calcule .text-secondary avec le gris du thème sombre : en clair, c'est --na-muted.
+[data-bs-theme="light"] .text-secondary {
+  color: var(--na-muted) !important;
 }
 
 // Affiches : mêmes dégradés quel que soit le thème
