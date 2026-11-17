@@ -30,6 +30,9 @@
 }
 
 .na-guest-banner__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: $na-touch-target;
   font-weight: 600;
   color: var(--na-cyan);
   text-decoration: underline;

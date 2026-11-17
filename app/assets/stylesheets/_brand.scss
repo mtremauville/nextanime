@@ -4,6 +4,7 @@ $na-brand-glow: color-mix(in srgb, var(--na-magenta) 45%, transparent);
 .na-brand {
   display: inline-flex;
   align-items: center;
+  min-height: $na-touch-target;
   gap: .5rem;
   color: var(--na-text);
   font-family: $na-font-heading;

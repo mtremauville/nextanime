@@ -36,6 +36,9 @@
   }
 
   &__profile-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: $na-touch-target;
     margin-right: map-get($na-spacers, 2);
     font-size: map-get($na-font-sizes, 14);
     color: var(--na-cyan);

@@ -161,4 +161,66 @@ RSpec.describe "Accessibility of the pages", type: :system, js: true do
       end
     end
   end
+  describe "touch targets on a phone" do
+    before { page.current_window.resize_to(393, 852) }
+
+    # The controls that a thumb cannot hit with ease: under 44 px wide or high. Left out: a link inside
+    # a sentence, a link stretched over its whole card, and a check box whose label is the real target.
+    def small_targets
+      page.evaluate_script(<<~JS)
+        (() => {
+          const MIN = 44
+          const selector = "a[href], button, input:not([type=hidden]), select, textarea, summary, [role=button]"
+          const targetOf = (element) => {
+            const isCheck = element.matches("input[type=checkbox], input[type=radio]")
+            return (isCheck && element.labels && element.labels[0]) || element
+          }
+          const describe = (element, rect) => {
+            const name = element.tagName.toLowerCase() + (element.id ? "#" + element.id : "") +
+              (element.className && typeof element.className === "string" ? "." + element.className.trim().split(/\\s+/).join(".") : "")
+            const text = (element.getAttribute("aria-label") || element.textContent || "").trim().replace(/\\s+/g, " ").slice(0, 24)
+            return name + " [" + text + "] " + Math.round(rect.width) + "x" + Math.round(rect.height)
+          }
+          return Array.from(document.querySelectorAll(selector))
+            .filter((element) => element.getClientRects().length > 0)
+            .filter((element) => getComputedStyle(element).visibility !== "hidden")
+            .filter((element) => !element.matches(".stretched-link, .visually-hidden, .visually-hidden-focusable"))
+            .filter((element) => getComputedStyle(element).display !== "inline")
+            .map((element) => ({ element, rect: targetOf(element).getBoundingClientRect() }))
+            .filter(({ rect }) => !(rect.width <= 1 && rect.height <= 1))
+            .filter(({ rect }) => Math.round(rect.width) < MIN || Math.round(rect.height) < MIN)
+            .map(({ element, rect }) => describe(element, rect))
+        })()
+      JS
+    end
+
+    def expect_no_small_target
+      expect(page).to have_css("main#main")
+      targets = small_targets
+      expect(targets).to be_empty, "Controls under 44 px:\n#{targets.map { |target| "TARGET|#{target}" }.join("\n")}"
+    end
+
+    public_pages.each do |name, path|
+      it "keeps every control at least 44 px wide and high on #{name}" do
+        visit path
+        expect_no_small_target
+      end
+    end
+
+    it "keeps every control at least 44 px wide and high on the page of an anime" do
+      visit anime_path(anime)
+      expect_no_small_target
+    end
+
+    context "when signed in" do
+      before { sign_in_with_a_taste_profile }
+
+      member_pages.each do |name, path|
+        it "keeps every control at least 44 px wide and high on #{name}" do
+          visit path
+          expect_no_small_target
+        end
+      end
+    end
+  end
 end
