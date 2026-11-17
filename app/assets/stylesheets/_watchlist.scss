@@ -205,6 +205,10 @@
 
     &__title {
       font-size: 1.125rem;
+      // A link of its own, so it gets a full touch target on a phone.
+      display: inline-flex;
+      align-items: center;
+      min-height: $na-touch-target;
     }
 
     &__progress {

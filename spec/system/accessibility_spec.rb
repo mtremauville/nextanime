@@ -41,6 +41,7 @@ RSpec.describe "Accessibility of the pages", type: :system, js: true do
 
   def sign_in_with_a_taste_profile
     user.create_taste_profile!.record_swipe(anime, liked: true)
+    create(:watchlist_entry, :watching, user: user, anime: create(:anime, episodes: 13))
     login_as(user, scope: :user)
   end
 
