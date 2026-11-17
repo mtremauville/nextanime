@@ -276,8 +276,18 @@
   }
 }
 
-// On small screens the buttons sit beside the bar, after the mobile mockup.
+// On small screens, after the mobile mockup: the progress buttons sit beside
+// the bar, and the removal button goes to the top right corner of the card.
 @include media-breakpoint-down(md) {
+  .na-watch-row {
+    position: relative;
+
+    &__main {
+      // Leaves room for the removal button.
+      padding-right: calc(#{$na-touch-target} + 0.75rem);
+    }
+  }
+
   .na-watch-row__progress {
     display: grid;
     grid-template-columns: 1fr auto;
@@ -294,5 +304,11 @@
     justify-content: flex-end;
     gap: 0.25rem;
     margin-top: 0;
+
+    .btn-na-ghost {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+    }
   }
 }
