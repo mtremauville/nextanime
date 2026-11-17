@@ -248,4 +248,88 @@ RSpec.describe "Accessibility of the pages", type: :system, js: true do
       end
     end
   end
+  describe "keyboard on a wide screen" do
+    before { page.current_window.resize_to(1400, 900) }
+
+    def press(key)
+      page.driver.browser.action.send_keys(key).perform
+    end
+
+    def focused_control
+      page.evaluate_script(<<~JS)
+        (() => {
+          const element = document.activeElement
+          if (!element || element === document.body) return null
+          const style = getComputedStyle(element)
+          const rect = element.getBoundingClientRect()
+          const outline = style.outlineStyle !== "none" && parseFloat(style.outlineWidth) > 0
+          const name = element.tagName.toLowerCase() + (element.id ? "#" + element.id : "") +
+            (typeof element.className === "string" && element.className ? "." + element.className.trim().split(/\\s+/).join(".") : "")
+          const text = (element.getAttribute("aria-label") || element.textContent || "").trim().replace(/\\s+/g, " ").slice(0, 24)
+          return {
+            position: Array.prototype.indexOf.call(document.getElementsByTagName("*"), element),
+            name: name + " [" + text + "]",
+            indicated: outline || style.boxShadow !== "none",
+            hidden: rect.width <= 1 && rect.height <= 1
+          }
+        })()
+      JS
+    end
+
+    # The controls reached with the Tab key that show nothing around them when they have the focus.
+    def tab_stops_without_focus_indicator
+      seen = []
+      missing = []
+      80.times do
+        press(:tab)
+        stop = focused_control
+        break if stop.nil? || seen.include?(stop["position"])
+
+        seen << stop["position"]
+        missing << stop["name"] unless stop["indicated"] || stop["hidden"]
+      end
+      missing
+    end
+
+    def expect_a_visible_focus_everywhere
+      expect(page).to have_css("main#main")
+      missing = tab_stops_without_focus_indicator
+      expect(missing).to be_empty, "Controls with no visible focus:\n#{missing.map { |name| "NOFOCUS|#{name}" }.join("\n")}"
+    end
+
+    it "offers the skip link first, and leads to the main content" do
+      visit catalogue_path
+      expect(page).to have_css("main#main")
+
+      press(:tab)
+      expect(page.evaluate_script("document.activeElement.textContent.trim()")).to eq("Aller au contenu")
+
+      press(:enter)
+      focused = -> { "The focus is on: #{page.evaluate_script('document.activeElement.outerHTML.slice(0, 160)')}" }
+      expect(page).to have_css("main#main:focus"), focused
+    end
+
+    public_pages.each do |name, path|
+      it "shows where the focus is on every control of #{name}" do
+        visit path
+        expect_a_visible_focus_everywhere
+      end
+    end
+
+    it "shows where the focus is on every control of the page of an anime" do
+      visit anime_path(anime)
+      expect_a_visible_focus_everywhere
+    end
+
+    context "when signed in" do
+      before { sign_in_with_a_taste_profile }
+
+      member_pages.each do |name, path|
+        it "shows where the focus is on every control of #{name}" do
+          visit path
+          expect_a_visible_focus_everywhere
+        end
+      end
+    end
+  end
 end
