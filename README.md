@@ -12,6 +12,20 @@ NextAnime recommande des anime par swipe : tu notes quelques références, l'app
 - **Compte** (Devise) avec export et suppression des données depuis le profil
 - **Politique de confidentialité** et balises de partage (Open Graph, Twitter Card)
 
+## Aperçu
+
+![Écran de swipe](docs/screenshots/swipe.png)
+
+![Recommandations personnalisées](docs/screenshots/recommendations.png)
+
+![Catalogue](docs/screenshots/catalogue.png)
+
+![Fiche d'un anime et ses plateformes de streaming](docs/screenshots/anime.png)
+
+![Watchlist](docs/screenshots/watchlist.png)
+
+![Calendrier des sorties](docs/screenshots/calendar.png)
+
 ## Stack
 
 Ruby 3.3.5, Rails 8.1, PostgreSQL, Hotwire (Turbo + Stimulus, importmap), Bootstrap + SCSS, ViewComponent (design atomique), Devise, Pundit, Solid Queue, RSpec + Capybara (Selenium, Chrome headless).
