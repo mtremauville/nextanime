@@ -183,6 +183,13 @@ $na-auth-glow: color-mix(in srgb, var(--na-magenta) 45%, transparent);
   font-weight: 600;
 }
 
+// Lien seul sous la case de confidentialité : une vraie cible tactile, pas un lien dans une phrase.
+.na-auth-form__policy-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: $na-touch-target;
+}
+
 // Affiches décoratives de la présentation (dégradés des maquettes, clair et sombre).
 $na-showcase-scrim: #0B0A14;
 $na-showcase-gradients: (

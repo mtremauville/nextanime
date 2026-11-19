@@ -22,8 +22,14 @@ RSpec.describe Organisms::SiteFooterComponent, type: :component do
   end
 
   it "opens every source in a new tab, without giving it access to the page" do
-    attributes = page.all(".na-site-footer a").map { |link| [ link[:target], link[:rel] ] }
+    attributes = page.all(".na-site-footer__sources a").map { |link| [ link[:target], link[:rel] ] }
 
     expect(attributes.uniq).to eq([ [ "_blank", "noopener noreferrer" ] ])
+  end
+
+  it "links to the privacy policy, in the same tab" do
+    link = page.find(".na-site-footer").find_link("Confidentialité", href: "/confidentialite")
+
+    expect(link[:target]).to be_nil
   end
 end
