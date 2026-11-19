@@ -8,7 +8,8 @@ Rails.application.configure do
     policy.script_src :self
     policy.style_src :self, "https://fonts.googleapis.com"
     policy.font_src :self, "https://fonts.gstatic.com", :data
-    policy.img_src :self, :https, :data
+    # The covers and banners come from AniList, the logos of the platforms from TMDB.
+    policy.img_src :self, "https://s4.anilist.co", "https://image.tmdb.org", :data
     policy.connect_src :self
     policy.object_src :none
     policy.base_uri :self
@@ -19,6 +20,4 @@ Rails.application.configure do
   # The importmap tags are inline scripts: they carry the nonce of the session.
   config.content_security_policy_nonce_generator = ->(request) { request.session[:csp_nonce] ||= SecureRandom.base64(16) }
   config.content_security_policy_nonce_directives = %w[script-src style-src]
-
-  # Reports the violations in the browser console without blocking anything yet.
 end

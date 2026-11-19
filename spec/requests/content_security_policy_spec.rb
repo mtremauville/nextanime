@@ -19,6 +19,19 @@ RSpec.describe "Content security policy", type: :request do
     expect(policy).to include("font-src 'self' https://fonts.gstatic.com data:")
   end
 
+  it "allows the images of the app: the covers of AniList and the logos of TMDB" do
+    image_sources = policy[/img-src [^;]*/].split
+    logo_host = URI(StreamingPlatform::LOGO_BASE_URL).host
+
+    expect(image_sources).to include("'self'", "https://s4.anilist.co", "https://#{logo_host}")
+  end
+
+  it "does not allow the images of every https site" do
+    image_sources = policy[/img-src [^;]*/].split
+
+    expect(image_sources).not_to include("https:")
+  end
+
   it "forbids plug-ins, framing and a changed base address" do
     expect(policy).to include("object-src 'none'")
     expect(policy).to include("frame-ancestors 'none'")
