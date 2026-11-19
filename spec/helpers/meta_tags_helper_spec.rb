@@ -11,6 +11,12 @@ RSpec.describe MetaTagsHelper, type: :helper do
 
       expect(helper.page_title).to eq("Connexion · NextAnime")
     end
+
+    it "is safe to print, so that a title with an ampersand is not escaped twice" do
+      helper.content_for(:title, "Kaguya & Ishigami")
+
+      expect(helper.page_title).to be_html_safe
+    end
   end
 
   describe "#page_description" do

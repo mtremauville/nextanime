@@ -5,7 +5,7 @@ module MetaTagsHelper
   SHARED_IMAGE_PATH = "/og-image.png".freeze
 
   def page_title
-    [ content_for(:title).presence, SITE_NAME ].compact.join(TITLE_SEPARATOR)
+    safe_join([ content_for(:title).presence, SITE_NAME ].compact, TITLE_SEPARATOR)
   end
 
   def page_description
