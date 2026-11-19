@@ -39,15 +39,17 @@ bin/setup
 
 ## Importer les données
 
-Le catalogue est vide au départ. Les imports sont des jobs : ils sont mis en file par la commande, puis exécutés par le worker lancé avec `bin/dev`, avec une pause entre deux pages. Les guillemets sont nécessaires avec zsh.
+Le catalogue est vide au départ. Les deux imports AniList sont des jobs : la commande les met en file, puis le worker lancé avec `bin/dev` les exécute, avec une pause entre deux pages. L'import TMDB s'exécute directement dans la commande. Les guillemets sont nécessaires avec zsh.
 
 ```bash
-bin/rails "anilist:import[500]"          # les 500 anime les mieux classés
-bin/rails "anilist:import_airing[500]"   # les anime en cours de diffusion
-bin/rails "tmdb:import_availabilities[100]"   # où les regarder (voir ci-dessous)
+bin/rails "anilist:import[500]"          # les 500 anime les plus populaires
+bin/rails "anilist:import_airing[500]"   # jusqu'à 500 anime en cours de diffusion
+bin/rails "tmdb:import_availabilities[100]"   # où regarder les 100 plus populaires (voir ci-dessous)
 ```
 
-La progression se suit dans `log/development.log` (lignes `Performed ImportTopAnimeJob`).
+Sans argument, la limite est de 500 anime (100 pour les disponibilités). L'import des disponibilités se lance une fois le catalogue importé.
+
+La progression des imports AniList se suit dans `log/development.log` : chaque page importée y donne une ligne `Performed` (`ImportTopAnimeJob` ou `ImportAiringAnimeJob`).
 
 ### Disponibilités de streaming (jeton TMDB)
 
