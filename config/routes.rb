@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
   get "styleguide", to: "styleguide#show"
+  get "decouvrir", to: "swipes#index", as: :discover
   root "swipes#index"
   resources :swipes, only: :create
   resource :taste_profile, only: [] do
