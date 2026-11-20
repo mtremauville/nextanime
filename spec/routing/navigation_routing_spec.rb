@@ -1,8 +1,8 @@
 require "rails_helper"
 
 RSpec.describe "Navigation routing", type: :routing do
-  it "routes the root to the swipe page" do
-    expect(get: "/").to route_to("swipes#index")
+  it "routes the root to the home page" do
+    expect(get: "/").to route_to("home#show")
   end
 
   it "routes /catalogue to the catalogue" do

@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   # root "posts#index"
   get "styleguide", to: "styleguide#show"
   get "decouvrir", to: "swipes#index", as: :discover
-  root "swipes#index"
+  root "home#show"
   resources :swipes, only: :create
   resource :taste_profile, only: [] do
     delete :reset

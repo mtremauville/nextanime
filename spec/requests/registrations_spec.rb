@@ -66,6 +66,8 @@ RSpec.describe "Sign up", type: :request do
 
         expect(response).to redirect_to(root_path)
         follow_redirect!
+        expect(response).to redirect_to(discover_path)
+        follow_redirect!
         expect(document).to have_css("[role='status']", text: I18n.t("devise.registrations.signed_up"))
       end
     end

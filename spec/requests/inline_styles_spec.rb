@@ -3,6 +3,8 @@ require "rails_helper"
 RSpec.describe "Inline styles", type: :request do
   PAGES_UNDER_CONTENT_SECURITY_POLICY = {
     "the home page" => "/",
+    "the swipe page" => "/decouvrir",
+    "the swipe page" => "/decouvrir",
     "the styleguide" => "/styleguide",
     "the sign in page" => "/users/sign_in",
     "the sign up page" => "/users/sign_up"

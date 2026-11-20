@@ -51,6 +51,8 @@ RSpec.describe "Sign in", type: :request do
 
       expect(response).to redirect_to(root_path)
       follow_redirect!
+      expect(response).to redirect_to(discover_path)
+      follow_redirect!
       expect(document).to have_css("[role='status']", text: I18n.t("devise.sessions.signed_in"))
     end
 

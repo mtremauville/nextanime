@@ -29,7 +29,7 @@ RSpec.describe "Password reset", type: :system do
     fill_in "Confirmer le nouveau mot de passe", with: new_password
     click_on "Changer mon mot de passe"
 
-    expect(page).to have_current_path(root_path)
+    expect(page).to have_current_path(discover_path)
     expect(page).to have_text("Ton mot de passe a bien été changé")
     expect(page).to have_css("form[action='/users/sign_out']", minimum: 1)
   end

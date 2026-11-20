@@ -31,7 +31,7 @@ RSpec.describe "Keeping the guest swipes after sign up", type: :system, js: true
 
     sign_up
 
-    expect(page).to have_current_path(root_path)
+    expect(page).to have_current_path(discover_path)
     expect(page).to have_percent(33)
     expect(page).to have_no_css("[data-anime-id='#{swiped_id}']", visible: :all)
   end
@@ -43,7 +43,7 @@ RSpec.describe "Keeping the guest swipes after sign up", type: :system, js: true
     expect(page).to have_percent(33)
 
     sign_up
-    expect(page).to have_current_path(root_path)
+    expect(page).to have_current_path(discover_path)
 
     expect(User.find_by!(email: email).taste_profile.swiped_anime_ids).to eq([ swiped_id ])
   end
