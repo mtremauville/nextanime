@@ -31,6 +31,7 @@ fr:
       status: Statut
       score: Note moyenne
     show:
-      back: "← Retour aux recommandations"
+      back_to_recommendations: "← Retour aux recommandations"
+      back_to_catalogue: "← Retour au catalogue"
       synopsis: Synopsis
       tags: Tags

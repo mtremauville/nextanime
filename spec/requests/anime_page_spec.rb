@@ -50,7 +50,16 @@ RSpec.describe "Anime page", type: :request do
       expect(document).to have_css(".na-info-card dd", text: "74")
     end
 
-    it "links back to the recommendations" do
+    it "links a visitor back to the catalogue, the recommendations being for members" do
+      get anime_path(anime)
+
+      expect(document).to have_link("← Retour au catalogue", href: catalogue_path)
+      expect(document).to have_no_css("a.na-anime-page__back[href='#{recommendations_path}']")
+    end
+
+    it "links a member back to the recommendations" do
+      sign_in create(:user)
+
       get anime_path(anime)
 
       expect(document).to have_link("← Retour aux recommandations", href: recommendations_path)
