@@ -60,6 +60,18 @@ RSpec.describe "Home", type: :request do
       end
     end
 
+    context "for a visitor, in the metadata of the page" do
+      before { get root_path }
+
+      it "describes the promise of the app" do
+        expect(document).to have_css("meta[name='description'][content^='Swipe tes références, NextAnime cerne ta vibe']", visible: :all)
+      end
+
+      it "shares the image of the site" do
+        expect(document).to have_css("meta[property='og:image'][content$='/og-image.png']", visible: :all)
+      end
+    end
+
     context "for a signed in user" do
       before { sign_in create(:user) }
 
