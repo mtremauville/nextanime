@@ -194,14 +194,6 @@
   color: var(--na-muted);
 }
 
-.na-menu__choice {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  min-height: $na-touch-target;
-  padding: 0.5rem 0;
-}
-
 // One switch for the theme. It is as wide as the menu, so that a thumb hits it with ease.
 .na-menu__switch {
   display: flex;
