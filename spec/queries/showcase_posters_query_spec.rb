@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe LandingPostersQuery do
+RSpec.describe ShowcasePostersQuery do
   it "gives the cover of each anime of the landing page, by name" do
     create(:anime, anilist_id: 1535, cover_image_url: "https://img.test/death-note.jpg")
     create(:anime, anilist_id: 437, cover_image_url: "https://img.test/perfect-blue.jpg")

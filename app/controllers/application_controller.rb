@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
   stale_when_importmap_changes
 
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :load_showcase_posters, if: :devise_controller?
 
   layout :layout_for_request
 
@@ -16,6 +17,10 @@ class ApplicationController < ActionController::Base
 
   def layout_for_request
     devise_controller? ? "auth" : "application"
+  end
+
+  def load_showcase_posters
+    @poster_urls = ShowcasePostersQuery.new.call
   end
 
   def configure_permitted_parameters

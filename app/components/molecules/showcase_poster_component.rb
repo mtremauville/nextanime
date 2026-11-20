@@ -1,5 +1,5 @@
 module Molecules
-  # Affiche décorative d'un anime pour la présentation des pages d'authentification et de l'accueil.
+  # Affiche décorative d'un anime pour la présentation des pages d'authentification.
   # Sans couverture, elle garde son dégradé.
   class ShowcasePosterComponent < ViewComponent::Base
     POSITIONS = %i[left center right].freeze
