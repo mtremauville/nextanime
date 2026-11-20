@@ -42,6 +42,14 @@ RSpec.describe "Home", type: :request do
       it "gives the three steps" do
         expect(document).to have_css("ol.na-steps > li", count: 3)
       end
+
+      it "shows an example of recommendation" do
+        expect(document).to have_css("section.na-example ul.na-example__recos > li", count: 2)
+      end
+
+      it "says that this recommendation is only an example" do
+        expect(document).to have_css("section.na-example .na-tag", text: "Exemple")
+      end
     end
 
     context "for a signed in user" do
