@@ -11,11 +11,11 @@
       <%= render Organisms::SwipeDeckComponent.new(animes: @animes, completed: @completed) %>
     </div>
     <div class="na-swipe-page__side na-swipe-page__side--end">
-      <%= render Organisms::SwipeHistoryPanelComponent.new(recommendations_href: recommendations_path) %>
+      <%= render Organisms::SwipeHistoryPanelComponent.new(audience: audience) %>
     </div>
   </div>
 <% elsif @deck_finished %>
-  <%= render Molecules::DeckFinishedComponent.new(recommendations_href: recommendations_path) %>
+  <%= render Molecules::DeckFinishedComponent.new(audience: audience) %>
 <% else %>
   <p class="text-body-secondary text-center"><%= t("swipes.deck.empty") %></p>
 <% end %>

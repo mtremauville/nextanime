@@ -41,11 +41,22 @@ RSpec.describe "Swipes", type: :request do
       expect(Capybara.string(response.body)).to have_no_link("Sauvegarder mon profil →")
     end
 
-    it "shows the history panel linking to the recommendations" do
+    it "shows the history panel inviting a visitor to create an account" do
       get discover_path
 
-      expect(response.body).to include("Ton historique")
-      expect(response.body).to include(%(href="#{recommendations_path}"))
+      history = document.find("aside[aria-labelledby='swipe-history-title']")
+      expect(history).to have_text("Ton historique")
+      expect(history).to have_link("Créer un compte", href: new_user_registration_path)
+      expect(history).to have_no_link(href: recommendations_path)
+    end
+
+    it "shows the history panel linking a member to the recommendations" do
+      sign_in create(:user)
+
+      get discover_path
+
+      history = document.find("aside[aria-labelledby='swipe-history-title']")
+      expect(history).to have_link("Voir mes recommandations", href: recommendations_path)
     end
       before do
         create_list(:anime, 3, cover_image_url: "https://img.test/cover.jpg")
@@ -165,15 +176,58 @@ RSpec.describe "Swipes", type: :request do
   end
 
   describe "POST /swipes on the last card" do
-    it "replaces the whole deck with the end of deck message" do
+    def swipe_the_last_card
       post swipes_path,
            params: { anime_id: create(:anime).id, liked: true, position: 25, total: 24 },
            headers: { "Accept" => "text/vnd.turbo-stream.html" }
+    end
+
+    it "replaces the whole deck with the end of deck message" do
+      swipe_the_last_card
 
       expect(response.body).to include('<turbo-stream action="replace" target="swipe-deck">')
       expect(response.body).to include("Session terminée !")
       expect(response.body).to include(%(href="#{discover_path}"))
+    end
+
+    it "invites a visitor to create an account to see the recommendations" do
+      swipe_the_last_card
+
+      expect(response.body).to include("Créer un compte pour voir mes recommandations")
+      expect(response.body).not_to include(%(href="#{recommendations_path}"))
+    end
+
+    it "sends a member to the recommendations" do
+      sign_in create(:user)
+
+      swipe_the_last_card
+
       expect(response.body).to include(%(href="#{recommendations_path}"))
+      expect(response.body).not_to include("Créer un compte pour voir mes recommandations")
+    end
+  end
+
+  describe "GET / once every anime has been swiped" do
+    let!(:anime) { create(:anime, cover_image_url: "https://img.test/cover.jpg") }
+
+    it "invites a visitor to create an account to see the recommendations" do
+      post swipes_path, params: { anime_id: anime.id, liked: true }
+
+      get discover_path
+
+      finished = document.find("#swipe-deck")
+      expect(finished).to have_link("Créer un compte pour voir mes recommandations", href: new_user_registration_path)
+      expect(finished).to have_no_link(href: recommendations_path)
+    end
+
+    it "sends a member to the recommendations" do
+      member = create(:user)
+      sign_in member
+      member.create_taste_profile!.record_swipe(anime, liked: true)
+
+      get discover_path
+
+      expect(document.find("#swipe-deck")).to have_link("Voir mes recommandations", href: recommendations_path)
     end
   end
 

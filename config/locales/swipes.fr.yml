@@ -26,9 +26,13 @@ fr:
       empty: Aucun swipe pour l'instant. Tes choix apparaîtront ici.
       callout: Tu peux déjà voir tes recommandations, elles s'affinent à chaque swipe.
       link: Voir mes recommandations
+      visitor_callout: "Crée un compte pour garder tes swipes et retrouver tes recommandations."
+      visitor_link: "Créer un compte"
     finished:
       title: Tu as tout vu !
       session_title: Session terminée !
       text: Tes swipes ont affiné tes recommandations.
       link: Voir mes recommandations
+      visitor_text: "Crée un compte pour garder tes swipes et découvrir tes recommandations."
+      visitor_link: "Créer un compte pour voir mes recommandations"
       new_session: Nouvelle session

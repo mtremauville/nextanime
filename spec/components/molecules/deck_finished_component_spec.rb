@@ -2,9 +2,10 @@ require "rails_helper"
 
 RSpec.describe Molecules::DeckFinishedComponent, type: :component do
   subject(:render_finished) do
-    render_inline(described_class.new(recommendations_href: "/recos", new_session_href: new_session_href))
+    render_inline(described_class.new(audience: audience, new_session_href: new_session_href))
   end
 
+  let(:audience) { :member }
   let(:new_session_href) { "/" }
 
   it "keeps the deck id so that it takes the deck's place" do
@@ -43,6 +44,27 @@ RSpec.describe Molecules::DeckFinishedComponent, type: :component do
 
       expect(page).to have_css(".na-swipe-deck__finished-actions a", count: 2)
     end
+  end
+
+  context "for a visitor" do
+    let(:audience) { :visitor }
+
+    it "invites to create an account instead of linking to the recommendations" do
+      render_finished
+
+      expect(page).to have_link("Créer un compte pour voir mes recommandations", href: "/users/sign_up")
+      expect(page).to have_no_link(href: "/recos")
+    end
+
+    it "says that the swipes are kept" do
+      render_finished
+
+      expect(page).to have_text("Crée un compte pour garder tes swipes")
+    end
+  end
+
+  it "raises for an unknown audience" do
+    expect { described_class.new(audience: :stranger) }.to raise_error(ArgumentError)
   end
 
   context "when there is nothing new to draw" do
