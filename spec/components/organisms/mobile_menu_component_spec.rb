@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe Organisms::MobileMenuComponent, type: :component do
   subject(:rendered) do
-    render_inline(described_class.new(items: items, countries: countries, selected_country: "FR"))
+    render_inline(described_class.new(items: items, countries: countries, selected_country: "FR", user: user))
   end
 
   let(:items) do
@@ -12,6 +12,7 @@ RSpec.describe Organisms::MobileMenuComponent, type: :component do
     ]
   end
   let(:countries) { { "FR" => "France", "BE" => "Belgique" } }
+  let(:user) { nil }
 
   it "renders a dialog labelled by its title" do
     expect(rendered).to have_css("dialog#mobile-menu[aria-labelledby='mobile-menu-title']")
@@ -33,19 +34,10 @@ RSpec.describe Organisms::MobileMenuComponent, type: :component do
     expect(rendered).to have_css("nav[aria-label='Navigation mobile'] a[aria-current='page']", count: 1, text: "Catalogue")
   end
 
-  it "lists the countries in a labelled group" do
-    expect(rendered).to have_css("fieldset legend", text: "Pays")
-    expect(rendered).to have_field("Belgique", type: "radio", checked: false)
-  end
-
-  it "selects the given country" do
-    expect(rendered).to have_field("France", type: "radio", checked: true)
-  end
-
-  it "offers the dark and light themes" do
+  it "offers one switch between the dark and the light theme" do
     expect(rendered).to have_css("fieldset legend", text: "Thème")
-    expect(rendered).to have_css("button[data-theme-theme-param='dark']", text: "Sombre")
-    expect(rendered).to have_css("button[data-theme-theme-param='light']", text: "Clair")
+    expect(rendered).to have_css("button[role='switch'][aria-checked='true'][data-controller='theme'][data-action='theme#toggle']", text: "Mode sombre")
+    expect(rendered).to have_no_css("button[data-theme-theme-param]")
   end
 
   describe "account" do
@@ -110,21 +102,40 @@ RSpec.describe Organisms::MobileMenuComponent, type: :component do
     end
   end
   describe "country choice" do
-    it "sends the choice to the country of the visitor" do
-      expect(rendered).to have_css("form[action='/country'] fieldset legend", text: "Pays")
-      expect(rendered).to have_css("form input[name='_method'][value='patch']", visible: :all)
+    context "for a member" do
+      let(:user) { build_stubbed(:user) }
+
+      it "lists the countries in a labelled drop-down list" do
+        expect(rendered).to have_select("Pays", options: [ "France", "Belgique" ])
+      end
+
+      it "selects the given country" do
+        expect(rendered).to have_select("Pays", selected: "France")
+      end
+
+      it "sends the choice to the country of the member" do
+        expect(rendered).to have_css("form[action='/country'] select#menu-country")
+        expect(rendered).to have_css("form input[name='_method'][value='patch']", visible: :all)
+      end
+
+      it "names the choice country, as the selector of the header does" do
+        expect(rendered).to have_css("select[name='country'] option[value='BE']", text: "Belgique")
+      end
+
+      it "sends the form as soon as the choice changes" do
+        expect(rendered).to have_css("form[data-controller='auto-submit'][data-action='change->auto-submit#submit']")
+      end
+
+      it "keeps a button for the members without JavaScript" do
+        expect(rendered).to have_button("Changer de pays", visible: :all)
+      end
     end
 
-    it "names the choice country, as the selector of the header does" do
-      expect(rendered).to have_css("input[type='radio'][name='country'][value='BE']")
-    end
-
-    it "sends the form as soon as the choice changes" do
-      expect(rendered).to have_css("form[data-controller='auto-submit'][data-action='change->auto-submit#submit']")
-    end
-
-    it "keeps a button for the visitors without JavaScript" do
-      expect(rendered).to have_button("Changer de pays", visible: :all)
+    context "for a visitor" do
+      it "offers no choice of country" do
+        expect(rendered).to have_no_select("Pays")
+        expect(rendered).to have_no_css("form[action='/country']")
+      end
     end
   end
 end

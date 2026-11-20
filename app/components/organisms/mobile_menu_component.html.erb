@@ -28,28 +28,20 @@
       <% end %>
     </nav>
 
-    <%= form_with url: country_path, method: :patch, data: { controller: "auto-submit", action: "change->auto-submit#submit" } do %>
-      <fieldset class="na-menu__section">
-        <legend class="na-menu__section-title">Pays</legend>
-        <% countries.each do |code, name| %>
-          <label class="na-menu__choice">
-            <%= radio_button_tag "country", code, code == selected_country %>
-            <span><%= name %></span>
-          </label>
-        <% end %>
+    <% if user %>
+      <%= form_with url: country_path, method: :patch, data: { controller: "auto-submit", action: "change->auto-submit#submit" } do %>
+        <%= render Molecules::SelectFieldComponent.new(name: "country", label: "Pays", options: countries, selected: selected_country, id_prefix: "menu") %>
         <%= submit_tag "Changer de pays", name: nil, class: "btn btn-outline-secondary na-country__apply" %>
-      </fieldset>
+      <% end %>
     <% end %>
 
     <fieldset class="na-menu__section">
       <legend class="na-menu__section-title">Thème</legend>
-      <div class="na-menu__themes">
-        <% THEMES.each do |theme, label| %>
-          <button type="button" class="na-menu__theme"
-                  data-controller="theme" data-action="theme#choose"
-                  data-theme-theme-param="<%= theme %>"><%= label %></button>
-        <% end %>
-      </div>
+      <button type="button" class="na-menu__switch" role="switch" aria-checked="true"
+              data-controller="theme" data-action="theme#toggle">
+        <span>Mode sombre</span>
+        <span class="na-menu__switch-track" aria-hidden="true"></span>
+      </button>
     </fieldset>
 
     <div class="na-menu__actions">

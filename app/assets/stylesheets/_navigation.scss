@@ -194,34 +194,53 @@
   color: var(--na-muted);
 }
 
-.na-menu__choice {
+// One switch for the theme. It is as wide as the menu, so that a thumb hits it with ease.
+.na-menu__switch {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: space-between;
+  width: 100%;
   min-height: $na-touch-target;
   padding: 0.5rem 0;
-}
-
-.na-menu__themes {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.na-menu__theme {
-  flex: 1;
-  min-height: $na-touch-target;
-  padding: 0.5rem;
-  border: 1px solid var(--na-border);
-  border-radius: 0.5rem;
+  border: 0;
   background: transparent;
   font-weight: 600;
   color: var(--na-text);
 }
 
-[data-bs-theme="dark"] .na-menu__theme[data-theme-theme-param="dark"],
-[data-bs-theme="light"] .na-menu__theme[data-theme-theme-param="light"] {
+.na-menu__switch-track {
+  position: relative;
+  flex: none;
+  width: 2.75rem;
+  height: 1.5rem;
+  border: 1px solid var(--na-border);
+  border-radius: 999px;
+
+  // The thumb sits on the left while the switch is off and slides to the right when it is on.
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0.15625rem;
+    left: 0.15625rem;
+    width: 1.0625rem;
+    height: 1.0625rem;
+    border-radius: 50%;
+    background: var(--na-muted);
+    transition: transform 0.15s ease;
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+  }
+}
+
+.na-menu__switch[aria-checked="true"] .na-menu__switch-track {
   border-color: var(--na-cyan);
-  color: var(--na-cyan);
+
+  &::after {
+    background: var(--na-cyan);
+    transform: translateX(1.25rem);
+  }
 }
 
 .na-avatar {

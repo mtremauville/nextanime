@@ -1,10 +1,17 @@
 <footer class="na-site-footer">
   <div class="container na-site-footer__inner">
+    <div class="na-site-footer__main">
+      <p class="na-site-footer__copyright">© <%= Date.current.year %> NextAnime · <%= t("site_footer.data_from") %> <%= source_link("AniList", :anilist) %></p>
+      <nav class="na-site-footer__nav" aria-label="<%= t("site_footer.nav_label") %>">
+        <% links.each do |label, path| %>
+          <%= link_to label, path %>
+        <% end %>
+      </nav>
+    </div>
     <p class="na-site-footer__notice" lang="en"><%= t("site_footer.tmdb_notice") %></p>
     <p class="na-site-footer__sources">
-      <span><%= t("site_footer.catalogue") %> <%= source_link("AniList", :anilist) %></span>
       <span><%= t("site_footer.availabilities") %> <%= source_link("JustWatch", :justwatch) %>, <%= t("site_footer.via") %> <%= source_link("TMDB", :tmdb) %></span>
+      <span><%= link_to t("site_footer.privacy"), privacy_policy_path %></span>
     </p>
-    <p><%= link_to t("site_footer.privacy"), privacy_policy_path %></p>
   </div>
 </footer>

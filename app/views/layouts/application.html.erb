@@ -13,6 +13,6 @@
       <%= render "shared/flash" %><%= yield %>
     </main>
 
-    <%= render Organisms::SiteFooterComponent.new %>
+    <%= render Organisms::SiteFooterComponent.new(audience: current_user ? :member : :visitor) %>
   </body>
 </html>
