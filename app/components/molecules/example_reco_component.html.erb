@@ -1,5 +1,9 @@
 <li class="na-example-reco">
-  <div class="<%= poster_class %>" aria-hidden="true"></div>
+  <div class="<%= poster_class %>" aria-hidden="true">
+    <% if image_url %>
+      <img class="na-example-reco__image" src="<%= image_url %>" alt="" loading="lazy">
+    <% end %>
+  </div>
   <div class="na-example-reco__body">
     <div class="na-example-reco__heading">
       <p class="na-example-reco__title"><%= title %></p>

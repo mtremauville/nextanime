@@ -3,7 +3,11 @@
   <div class="na-example__tag"><%= render Atoms::TagComponent.new(label: "Exemple", tone: :cyan) %></div>
   <div class="na-example__liked">
     <p class="na-eyebrow na-example__label">Tu aimes déjà</p>
-    <div class="na-example__liked-poster na-poster--<%= LIKED[:poster] %>" aria-hidden="true"></div>
+    <div class="na-example__liked-poster na-poster--<%= LIKED[:poster] %>" aria-hidden="true">
+      <% if liked_image_url %>
+        <img class="na-example__image" src="<%= liked_image_url %>" alt="" loading="lazy">
+      <% end %>
+    </div>
     <p class="na-example__liked-title"><%= LIKED[:title] %></p>
     <div class="na-example__tags">
       <% LIKED[:tags].each do |label| %>
@@ -16,7 +20,7 @@
     <p class="na-eyebrow na-example__label">On peut te recommander</p>
     <ul class="na-example__recos">
       <% RECOMMENDATIONS.each do |recommendation| %>
-        <%= render Molecules::ExampleRecoComponent.new(**recommendation) %>
+        <%= render Molecules::ExampleRecoComponent.new(**recommendation_attributes(recommendation)) %>
       <% end %>
     </ul>
   </div>

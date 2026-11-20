@@ -478,3 +478,17 @@
     font-size: map-get($na-font-sizes, 16);
   }
 }
+
+// A cover fills the poster it is on. The gradient stays behind it until the image has loaded.
+.na-example__liked-poster,
+.na-example-reco__poster {
+  overflow: hidden;
+}
+
+.na-example__image,
+.na-example-reco__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

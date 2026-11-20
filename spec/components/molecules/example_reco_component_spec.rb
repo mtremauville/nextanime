@@ -51,4 +51,20 @@ RSpec.describe Molecules::ExampleRecoComponent, type: :component do
     expect { described_class.new(title: "Titre", meta: "Série", match: 50, reason: "Raison", poster: :gold) }
       .to raise_error(ArgumentError, /Unknown poster/)
   end
+  context "with a cover" do
+    it "shows the cover on the poster, which only decorates" do
+      render_inline(described_class.new(title: "Perfect Blue", meta: "Film", match: 92, reason: "Raison", poster: :violet,
+                                        image_url: "https://img.test/perfect-blue.jpg"))
+
+      expect(page).to have_css(".na-example-reco__poster[aria-hidden='true'] img.na-example-reco__image[src='https://img.test/perfect-blue.jpg'][alt='']")
+    end
+  end
+
+  context "without a cover" do
+    it "keeps the gradient and shows no image" do
+      render_reco
+
+      expect(page).to have_no_css("img")
+    end
+  end
 end

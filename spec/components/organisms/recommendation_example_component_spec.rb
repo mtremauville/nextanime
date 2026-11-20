@@ -36,4 +36,22 @@ RSpec.describe Organisms::RecommendationExampleComponent, type: :component do
   it "hides the arrow from assistive technologies, as it only decorates" do
     expect(page).to have_css(".na-example__arrow[aria-hidden='true']")
   end
+  context "with the covers of the anime" do
+    before do
+      render_inline(described_class.new(poster_urls: {
+        death_note: "https://img.test/death-note.jpg",
+        perfect_blue: "https://img.test/perfect-blue.jpg"
+      }))
+    end
+
+    it "shows the cover of the anime that the visitor likes" do
+      expect(page).to have_css(".na-example__liked-poster img[src='https://img.test/death-note.jpg'][alt='']")
+    end
+
+    it "shows the cover of each recommendation that has one" do
+      sources = page.all(".na-example-reco__poster img").map { |image| image[:src] }
+
+      expect(sources).to eq([ "https://img.test/perfect-blue.jpg" ])
+    end
+  end
 end
