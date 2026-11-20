@@ -17,6 +17,14 @@ RSpec.describe "Choosing a country", type: :request do
       expect(cookie).to match(/httponly/i).and match(/samesite=lax/i)
     end
 
+    it "forgets the country after a day" do
+      patch country_path, params: { country: "BE" }
+
+      cookie = Array(response.headers["Set-Cookie"]).find { |header| header.start_with?("country=") }
+      expires_at = Time.httpdate(cookie[/expires=([^;]+)/i, 1])
+      expect(expires_at).to be_within(1.minute).of(1.day.from_now)
+    end
+
     it "goes back to the page that was being read" do
       patch country_path, params: { country: "BE" }, headers: { "Referer" => "http://www.example.com/catalogue" }
 
