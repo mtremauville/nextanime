@@ -110,3 +110,91 @@
   letter-spacing: .12em;
   text-transform: uppercase;
 }
+
+// How it works: three numbered steps, stacked on a phone and side by side from md.
+.na-how {
+  padding: map-get($na-spacers, 6) 0 map-get($na-spacers, 7);
+
+  @include media-breakpoint-up(md) {
+    padding: map-get($na-spacers, 7) 0 map-get($na-spacers, 8);
+  }
+}
+
+.na-how__title {
+  margin: map-get($na-spacers, 2) 0 map-get($na-spacers, 5);
+  font-family: $na-font-heading;
+  font-size: 1.75rem; // the mobile mockup; the scale has no 28
+  font-weight: 700;
+  line-height: 1.15;
+
+  @include media-breakpoint-up(md) {
+    margin-bottom: map-get($na-spacers, 6);
+    font-size: map-get($na-font-sizes, 32);
+  }
+}
+
+.na-steps {
+  display: grid;
+  gap: map-get($na-spacers, 3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  @include media-breakpoint-up(md) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: map-get($na-spacers, 5);
+  }
+}
+
+.na-step {
+  display: flex;
+  gap: map-get($na-spacers, 4);
+  padding: 1.25rem; // the mobile mockup; the spacers have no 20
+  background: var(--na-surface);
+  border: 1px solid var(--na-border);
+  border-radius: $na-radius-lg;
+
+  @include media-breakpoint-up(md) {
+    flex-direction: column;
+    padding: map-get($na-spacers, 6);
+  }
+}
+
+.na-step__number {
+  flex: none;
+  font-family: $na-font-accent;
+  font-size: map-get($na-font-sizes, 32);
+  line-height: 1;
+
+  @include media-breakpoint-up(md) {
+    font-size: map-get($na-font-sizes, 48);
+  }
+}
+
+.na-step--magenta .na-step__number { color: var(--na-magenta); }
+.na-step--cyan .na-step__number { color: var(--na-cyan); }
+
+.na-step__body { min-width: 0; }
+
+.na-step__title {
+  margin: 0 0 map-get($na-spacers, 1);
+  font-family: $na-font-heading;
+  font-size: map-get($na-font-sizes, 20);
+  font-weight: 700;
+
+  @include media-breakpoint-up(md) {
+    margin-bottom: map-get($na-spacers, 2);
+    font-size: map-get($na-font-sizes, 24);
+  }
+}
+
+.na-step__text {
+  margin: 0;
+  color: var(--na-muted);
+  font-size: map-get($na-font-sizes, 14);
+  line-height: 1.6;
+
+  @include media-breakpoint-up(md) {
+    font-size: map-get($na-font-sizes, 16);
+  }
+}

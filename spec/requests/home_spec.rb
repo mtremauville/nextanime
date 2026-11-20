@@ -32,6 +32,18 @@ RSpec.describe "Home", type: :request do
       end
     end
 
+    context "for a visitor, further down the page" do
+      before { get root_path }
+
+      it "explains how the app works" do
+        expect(document).to have_css("h2", text: "De tes goûts à tes découvertes")
+      end
+
+      it "gives the three steps" do
+        expect(document).to have_css("ol.na-steps > li", count: 3)
+      end
+    end
+
     context "for a signed in user" do
       before { sign_in create(:user) }
 
