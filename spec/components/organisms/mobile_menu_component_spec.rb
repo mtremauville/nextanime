@@ -42,10 +42,10 @@ RSpec.describe Organisms::MobileMenuComponent, type: :component do
     expect(rendered).to have_field("France", type: "radio", checked: true)
   end
 
-  it "offers the dark and light themes" do
+  it "offers one switch between the dark and the light theme" do
     expect(rendered).to have_css("fieldset legend", text: "Thème")
-    expect(rendered).to have_css("button[data-theme-theme-param='dark']", text: "Sombre")
-    expect(rendered).to have_css("button[data-theme-theme-param='light']", text: "Clair")
+    expect(rendered).to have_css("button[role='switch'][aria-checked='true'][data-controller='theme'][data-action='theme#toggle']", text: "Mode sombre")
+    expect(rendered).to have_no_css("button[data-theme-theme-param]")
   end
 
   describe "account" do
