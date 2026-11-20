@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Molecules::AccountActionsComponent, type: :component do
+RSpec.describe Organisms::AccountActionsComponent, type: :component do
   context "without a user" do
     before { render_inline(described_class.new) }
 
