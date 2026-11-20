@@ -4,7 +4,7 @@ RSpec.describe Organisms::MainNavigationComponent, type: :component do
   subject(:rendered) { render_inline(described_class.new(current_path: current_path)) }
 
   let(:current_path) { "/catalogue" }
-  let(:labels) { %w[Découvrir Catalogue Recos Calendrier] }
+  let(:labels) { %w[Découvrir Catalogue] }
 
   it "links the brand to the home page" do
     expect(rendered).to have_css("header a[href='/']", text: "NextAnime")
@@ -102,10 +102,14 @@ RSpec.describe Organisms::MainNavigationComponent, type: :component do
     end
   end
 
-  describe "watchlist" do
+  describe "the pages reserved to members" do
+    let(:labels) { %w[Recos Watchlist Calendrier] }
+
     context "for a visitor" do
-      it "is hidden from the desktop navigation, the tab bar and the mobile menu" do
-        expect(rendered).to have_no_link("Watchlist", visible: :all)
+      it "are hidden from the desktop navigation, the tab bar and the mobile menu" do
+        labels.each do |label|
+          expect(rendered).to have_no_link(label, visible: :all)
+        end
       end
     end
 
@@ -114,10 +118,12 @@ RSpec.describe Organisms::MainNavigationComponent, type: :component do
         render_inline(described_class.new(current_path: current_path, user: build_stubbed(:user)))
       end
 
-      it "is offered in the desktop navigation, the tab bar and the mobile menu" do
-        expect(rendered).to have_css("nav[aria-label='Navigation principale'] a", text: "Watchlist")
-        expect(rendered).to have_css("nav[aria-label='Onglets'] a", text: "Watchlist")
-        expect(rendered).to have_css("dialog nav a", text: "Watchlist")
+      it "are offered in the desktop navigation, the tab bar and the mobile menu" do
+        labels.each do |label|
+          expect(rendered).to have_css("nav[aria-label='Navigation principale'] a", text: label)
+          expect(rendered).to have_css("nav[aria-label='Onglets'] a", text: label)
+          expect(rendered).to have_css("dialog nav a", text: label)
+        end
       end
     end
   end

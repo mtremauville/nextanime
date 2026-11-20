@@ -14,13 +14,22 @@ class Organisms::MainNavigationComponent < ViewComponent::Base
   end
 
   def items
+    user ? public_items + member_items : public_items
+  end
+
+  def public_items
     [
       { label: "Découvrir", href: discover_path, icon: "stars" },
-      { label: "Catalogue", href: catalogue_path, icon: "grid" },
+      { label: "Catalogue", href: catalogue_path, icon: "grid" }
+    ]
+  end
+
+  def member_items
+    [
       { label: "Recos", href: recommendations_path, icon: "heart" },
-      ({ label: "Watchlist", href: watchlist_path, icon: "bookmark" } if user),
+      { label: "Watchlist", href: watchlist_path, icon: "bookmark" },
       { label: "Calendrier", href: calendar_path, icon: "calendar3" }
-    ].compact
+    ]
   end
 
   def country_options
