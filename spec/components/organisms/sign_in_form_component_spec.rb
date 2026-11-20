@@ -3,7 +3,9 @@ require "rails_helper"
 RSpec.describe Organisms::SignInFormComponent, type: :component do
   let(:resource) { User.new(email: "mika@example.com", password: "secret-value-123") }
 
-  before { render_inline(described_class.new(resource: resource)) }
+  let(:forgot_password_href) { "/users/password/new" }
+
+  before { render_inline(described_class.new(resource: resource, forgot_password_href: forgot_password_href)) }
 
   it "posts to the sign in route" do
     expect(page).to have_css("form[action='/users/sign_in'][method='post']")
@@ -35,6 +37,18 @@ RSpec.describe Organisms::SignInFormComponent, type: :component do
 
   it "links to the password reset" do
     expect(page).to have_link("Mot de passe oublié ?", href: "/users/password/new")
+  end
+
+  context "without a way to reset the password" do
+    let(:forgot_password_href) { nil }
+
+    it "offers no forgotten password link" do
+      expect(page).to have_no_link("Mot de passe oublié ?")
+    end
+
+    it "still offers to remember the user" do
+      expect(page).to have_unchecked_field("Se souvenir de moi")
+    end
   end
 
   it "submits with a full-width primary button" do
