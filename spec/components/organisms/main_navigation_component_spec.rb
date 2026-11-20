@@ -182,8 +182,14 @@ RSpec.describe Organisms::MainNavigationComponent, type: :component do
       expect(selector).to have_button("Changer de pays", visible: :all)
     end
 
-    it "gives the same country to the menu of small screens" do
-      expect(selector).to have_field("Belgique", type: "radio", checked: true, visible: :all)
+    it "gives the same country to the menu of small screens, for a member" do
+      menu = render_inline(described_class.new(current_path: "/", selected_country: "BE", user: build_stubbed(:user)))
+
+      expect(menu).to have_select("menu-country", selected: "Belgique", visible: :all)
+    end
+
+    it "gives no country to the menu of small screens, for a visitor" do
+      expect(selector).to have_no_css("dialog form[action='/country']", visible: :all)
     end
   end
 end
