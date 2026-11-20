@@ -12,15 +12,15 @@ RSpec.describe Organisms::HeroComponent, type: :component do
   end
 
   it "leads to the swipe deck, as the main action" do
-    expect(page).to have_link("Découvrir mes recommandations", href: "/decouvrir", class: "btn-na-primary")
+    expect(page).to have_link("Commencer à swiper", href: "/decouvrir", class: "btn-na-primary")
   end
 
-  it "leads to the calendar, as the secondary action" do
-    expect(page).to have_link("Voir le calendrier", href: "/calendrier", class: "btn-na-outline")
+  it "leads to the catalogue, as the secondary action" do
+    expect(page).to have_link("Parcourir le catalogue", href: "/catalogue", class: "btn-na-outline")
   end
 
-  it "says that the app is free and needs no sign up" do
-    expect(page).to have_css(".na-hero__note", text: "Gratuit · sans inscription")
+  it "says that the app is free and that swiping needs no account" do
+    expect(page).to have_css(".na-hero__note", text: "Gratuit · swipe sans compte")
   end
 
   it "hides the Japanese kicker from assistive technologies, as it only decorates" do

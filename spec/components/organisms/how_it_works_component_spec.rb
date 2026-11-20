@@ -17,6 +17,12 @@ RSpec.describe Organisms::HowItWorksComponent, type: :component do
     expect(titles).to eq([ "Swipe tes références", "On cerne ta vibe", "Trouve ton match" ])
   end
 
+  it "tells that the recommendations come with a free account" do
+    render_inline(described_class.new)
+
+    expect(page).to have_text("Avec un compte gratuit, retrouve des recommandations classées par pourcentage de match")
+  end
+
   it "numbers the steps from 01 to 03" do
     expect(page.all(".na-step__number").map(&:text)).to eq(%w[01 02 03])
   end

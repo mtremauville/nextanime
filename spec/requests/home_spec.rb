@@ -20,15 +20,17 @@ RSpec.describe "Home", type: :request do
       before { get root_path }
 
       it "invites to start the discovery without an account" do
-        expect(document).to have_link("Découvrir mes recommandations", href: discover_path)
+        expect(document.find(".na-hero")).to have_link("Commencer à swiper", href: discover_path)
       end
 
-      it "links to the release calendar" do
-        expect(document).to have_link("Voir le calendrier", href: calendar_path)
+      it "links to the catalogue, not to the pages for members" do
+        expect(document.find(".na-hero")).to have_link("Parcourir le catalogue", href: catalogue_path)
+        expect(document).to have_no_link(href: calendar_path)
+        expect(document).to have_no_link(href: recommendations_path)
       end
 
-      it "says that the app is free and needs no sign up" do
-        expect(document).to have_text("Gratuit · sans inscription")
+      it "says that the app is free and that swiping needs no account" do
+        expect(document).to have_text("Gratuit · swipe sans compte")
       end
     end
 
