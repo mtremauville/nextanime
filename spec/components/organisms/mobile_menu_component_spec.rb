@@ -71,10 +71,15 @@ RSpec.describe Organisms::MobileMenuComponent, type: :component do
         expect(page).to have_css(".na-menu__account", text: "mickael@example.com")
       end
 
-      it "signs out with a DELETE request" do
-        expect(page).to have_css("form[action='/users/sign_out'][method='post']")
-        expect(page).to have_css("input[name='_method'][value='delete']", visible: :all)
-        expect(page).to have_button("Déconnexion")
+      it "asks to confirm before signing out" do
+        expect(page).to have_css("button.w-100[data-action='confirm-modal#open']", text: "Déconnexion")
+        expect(page).to have_css("dialog#signout-menu h2#signout-menu-title", text: "Se déconnecter ?")
+      end
+
+      it "signs out with a DELETE request once confirmed" do
+        expect(page).to have_css("dialog#signout-menu form[action='/users/sign_out'][method='post']")
+        expect(page).to have_css("dialog#signout-menu input[name='_method'][value='delete']", visible: :all)
+        expect(page).to have_css("dialog#signout-menu button[type='submit']", text: "Se déconnecter")
       end
 
       it "shows neither the guest notice nor the sign in links" do

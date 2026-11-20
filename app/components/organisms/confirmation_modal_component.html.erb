@@ -1,6 +1,6 @@
 <%= tag.div(data: controller_data) do %>
   <% if trigger_label || trigger_icon %>
-    <%= render Atoms::ButtonComponent.new(variant: trigger_variant, aria: trigger_aria_attributes, data: { action: "confirm-modal#open" }) do %>
+    <%= render Atoms::ButtonComponent.new(variant: trigger_variant, class: trigger_class, aria: trigger_aria_attributes, data: { action: "confirm-modal#open" }) do %>
       <% if trigger_icon %><i class="bi bi-<%= trigger_icon %>" aria-hidden="true"></i><% end %><%= trigger_label %>
     <% end %>
   <% end %>
