@@ -8,7 +8,7 @@ RSpec.describe Organisms::FinalCallComponent, type: :component do
   end
 
   it "says that no account is needed to start" do
-    expect(page).to have_css(".na-cta__text", text: "Aucun compte requis pour commencer.")
+    expect(page).to have_css(".na-cta__text", text: "Swipe sans compte, crée-en un gratuitement pour garder tes recommandations.")
   end
 
   it "leads to the swipe deck, as the main action" do

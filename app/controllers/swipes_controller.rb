@@ -6,7 +6,7 @@ class SwipesController < ApplicationController
   TASTE_TARGET = "taste-profile-panel".freeze
 
   rescue_from ActiveRecord::RecordInvalid, ArgumentError, with: :unprocessable
-  helper_method :taste_panel_link
+  helper_method :taste_panel_link, :audience
 
   def index
     ensure_taste_session
@@ -50,8 +50,7 @@ class SwipesController < ApplicationController
   # and the cards already swiped are the ones before the position.
   def deck_stream
     if position_param == total_param + 1
-      turbo_stream.replace(DECK_TARGET, Molecules::DeckFinishedComponent.new(recommendations_href: recommendations_path,
-                                                                             new_session_href: discover_path))
+      turbo_stream.replace(DECK_TARGET, Molecules::DeckFinishedComponent.new(audience: audience, new_session_href: discover_path))
     else
       turbo_stream.replace(PROGRESS_TARGET, Molecules::DeckProgressComponent.new(completed: position_param - 1, total: total_param))
     end
@@ -68,6 +67,11 @@ class SwipesController < ApplicationController
     return { href: profile_path } if current_user
 
     { href: new_user_registration_path, label: I18n.t("swipes.taste_profile.save_link") }
+  end
+
+  # A member is sent to the recommendations, a visitor is invited to create the account that gives access to them.
+  def audience
+    current_user ? :member : :visitor
   end
 
   def unprocessable

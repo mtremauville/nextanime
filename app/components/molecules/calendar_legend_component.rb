@@ -1,14 +1,7 @@
 module Molecules
-  # Explains the marks of the calendar: today, and the anime of the watchlist of a member.
+  # Explains the marks of the calendar: today, and the anime of the watchlist of the member.
   class CalendarLegendComponent < ViewComponent::Base
-    def initialize(watchlist: false)
-      @watchlist = watchlist
-      super()
-    end
-
     private
-
-    attr_reader :watchlist
 
     def label = I18n.t("calendar.legend.label")
 

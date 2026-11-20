@@ -1,6 +1,8 @@
 class RecommendationsController < ApplicationController
   include CurrentTasteProfile
 
+  before_action :authenticate_user!
+
   DISPLAYED = 24
   TASTE_PILLS = 2
   KINDS = { "series" => %i[tv tv_short ona], "movies" => %i[movie] }.freeze

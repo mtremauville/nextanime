@@ -131,12 +131,12 @@ RSpec.describe "Swiping the deck", type: :system, js: true do
     end
   end
 
-  it "ends the session with a link to the recommendations and a new session" do
+  it "ends the session with an invitation to create an account and a new session" do
     3.times { click_button "J'aime cet anime" }
 
     within("#swipe-deck") do
       expect(page).to have_text(/session terminée/i)
-      expect(page).to have_link("Voir mes recommandations", href: recommendations_path)
+      expect(page).to have_link("Créer un compte pour voir mes recommandations", href: new_user_registration_path)
       expect(page).to have_link("Nouvelle session", href: discover_path)
     end
     expect(page).to have_no_button("J'aime cet anime")

@@ -1,7 +1,11 @@
 <% content_for :title, @anime.display_title %>
 
 <div class="na-anime-page">
-  <%= link_to t(".back"), recommendations_path, class: "na-anime-page__back" %>
+  <% if current_user %>
+    <%= link_to t(".back_to_recommendations"), recommendations_path, class: "na-anime-page__back" %>
+  <% else %>
+    <%= link_to t(".back_to_catalogue"), catalogue_path, class: "na-anime-page__back" %>
+  <% end %>
 
   <%= render Organisms::AnimeHeroComponent.new(anime: @anime, details: @details, match_percent: @match_percent, reason: @reason) do |hero| %>
     <% hero.with_actions do %>

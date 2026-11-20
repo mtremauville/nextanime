@@ -4,7 +4,10 @@ RSpec.describe "The calendar page", type: :request do
   include ActiveSupport::Testing::TimeHelpers
 
   let(:friday_noon) { Time.zone.local(2026, 10, 23, 12, 0) }
+  let(:member) { create(:user) }
   let(:html) { Capybara.string(response.body) }
+
+  before { sign_in member }
 
   def show_calendar(at: friday_noon)
     travel_to(at) { get calendar_path }
@@ -15,15 +18,25 @@ RSpec.describe "The calendar page", type: :request do
                    next_airing_at: Time.zone.local(2026, 10, day, hour, minute))
   end
 
-  it "is open to visitors" do
-    show_calendar
+  describe "for a visitor" do
+    before { sign_out member }
 
-    expect(response).to have_http_status(:ok)
+    it "sends the visitor to the sign in page" do
+      show_calendar
+
+      expect(response).to redirect_to(new_user_session_path)
+    end
+
+    it "brings the visitor back to the calendar after signing in" do
+      show_calendar
+
+      post user_session_path, params: { user: { email: member.email, password: member.password } }
+
+      expect(response).to redirect_to(calendar_path)
+    end
   end
 
-  it "is open to members" do
-    sign_in create(:user)
-
+  it "shows the page to a member" do
     show_calendar
 
     expect(response).to have_http_status(:ok)
@@ -78,15 +91,13 @@ RSpec.describe "The calendar page", type: :request do
     expect(html).to have_no_css("section[aria-label]")
   end
 
-  describe "the watchlist of a member" do
-    let(:member) { create(:user) }
+  describe "the watchlist of the member" do
     let(:watched) { anime_airing("Glitch Samurai", 23, 20, 0, 4) }
 
     before { anime_airing("Neon Requiem", 24, 18, 30, 3) }
 
     it "marks the airing anime that are in the watchlist of the member" do
       member.watchlist_entries.create!(anime: watched)
-      sign_in member
 
       show_calendar
 
@@ -95,8 +106,6 @@ RSpec.describe "The calendar page", type: :request do
     end
 
     it "explains the mark in the legend" do
-      sign_in member
-
       show_calendar
 
       expect(html).to have_css(".na-calendar-legend__item", text: "Dans ma watchlist")
@@ -104,23 +113,13 @@ RSpec.describe "The calendar page", type: :request do
 
     it "does not mark the anime that are in the watchlist of another member" do
       create(:user).watchlist_entries.create!(anime: watched)
-      sign_in member
 
       show_calendar
 
       expect(html).to have_no_css(".na-airing--in-watchlist")
     end
 
-    it "shows a visitor no mark and no watchlist legend" do
-      member.watchlist_entries.create!(anime: watched)
-
-      show_calendar
-
-      expect(html).to have_no_css(".na-airing--in-watchlist")
-      expect(html).to have_no_text("Dans ma watchlist")
-    end
-
-    it "explains today in the legend to everyone" do
+    it "explains today in the legend" do
       show_calendar
 
       expect(html).to have_css(".na-calendar-legend__item", text: "Aujourd'hui")

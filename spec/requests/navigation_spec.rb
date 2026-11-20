@@ -43,13 +43,15 @@ RSpec.describe "Navigation", type: :request do
     before { get "/catalogue" }
 
     it "offers the pages open to visitors" do
-      %w[Découvrir Catalogue Recos Calendrier].each do |title|
+      %w[Découvrir Catalogue].each do |title|
         expect(document).to have_css("nav[aria-label='Onglets'] a", text: title)
       end
     end
 
-    it "does not offer the watchlist" do
-      expect(document).to have_no_css("nav[aria-label='Onglets'] a", text: "Watchlist")
+    it "does not offer the pages reserved to members" do
+      %w[Recos Watchlist Calendrier].each do |title|
+        expect(document).to have_no_css("nav[aria-label='Onglets'] a", text: title)
+      end
     end
   end
 

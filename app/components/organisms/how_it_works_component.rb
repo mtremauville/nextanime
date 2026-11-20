@@ -15,7 +15,7 @@ module Organisms
       {
         title: "Trouve ton match",
         tone: :magenta,
-        text: "Des recommandations classées par pourcentage de match, avec la raison du match en une phrase."
+        text: "Avec un compte gratuit, retrouve des recommandations classées par pourcentage de match, avec la raison du match en une phrase."
       }
     ].freeze
   end
