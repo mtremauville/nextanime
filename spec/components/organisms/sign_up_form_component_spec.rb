@@ -48,6 +48,12 @@ RSpec.describe Organisms::SignUpFormComponent, type: :component do
     expect(page).to have_checked_field("J'accepte la politique de confidentialité")
   end
 
+  it "offers to read the privacy policy in a new tab, so that the form is not lost" do
+    link = page.find_link("Lire la politique de confidentialité", href: "/confidentialite")
+
+    expect([ link[:target], link[:rel] ]).to eq([ "_blank", "noopener noreferrer" ])
+  end
+
   it "submits with a full-width primary button" do
     expect(page).to have_css("button.btn-na-primary.w-100[type='submit']", text: "Créer mon compte")
   end

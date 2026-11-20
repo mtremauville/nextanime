@@ -1,8 +1,17 @@
 <head>
-  <title><%= content_for(:title) || "Next Anime" %></title>
+  <title><%= page_title %></title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="application-name" content="Next Anime">
+  <%= tag.meta name: "application-name", content: MetaTagsHelper::SITE_NAME %>
+  <%= tag.meta name: "description", content: page_description %>
+  <%= tag.meta property: "og:site_name", content: MetaTagsHelper::SITE_NAME %>
+  <%= tag.meta property: "og:title", content: page_title %>
+  <%= tag.meta property: "og:description", content: page_description %>
+  <%= tag.meta property: "og:type", content: "website" %>
+  <%= tag.meta property: "og:locale", content: "fr_FR" %>
+  <%= tag.meta property: "og:url", content: page_url %>
+  <%= tag.meta property: "og:image", content: shared_image_url %>
+  <%= tag.meta name: "twitter:card", content: "summary_large_image" %>
   <meta name="mobile-web-app-capable" content="yes">
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
