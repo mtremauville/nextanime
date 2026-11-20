@@ -43,13 +43,11 @@
 
     <fieldset class="na-menu__section">
       <legend class="na-menu__section-title">Thème</legend>
-      <div class="na-menu__themes">
-        <% THEMES.each do |theme, label| %>
-          <button type="button" class="na-menu__theme"
-                  data-controller="theme" data-action="theme#choose"
-                  data-theme-theme-param="<%= theme %>"><%= label %></button>
-        <% end %>
-      </div>
+      <button type="button" class="na-menu__switch" role="switch" aria-checked="true"
+              data-controller="theme" data-action="theme#toggle">
+        <span>Mode sombre</span>
+        <span class="na-menu__switch-track" aria-hidden="true"></span>
+      </button>
     </fieldset>
 
     <div class="na-menu__actions">

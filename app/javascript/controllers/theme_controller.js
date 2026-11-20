@@ -1,8 +1,9 @@
 import { Controller } from "@hotwired/stimulus"
 
 const STORAGE_KEY = "nextanime-theme"
-const DEFAULT_THEME = "dark"
-const THEMES = [ "dark", "light" ]
+const DARK = "dark"
+const LIGHT = "light"
+const DEFAULT_THEME = DARK
 
 export default class extends Controller {
   connect() {
@@ -11,23 +12,19 @@ export default class extends Controller {
   }
 
   toggle() {
-    this.#apply(document.documentElement.dataset.bsTheme === "dark" ? "light" : "dark")
-  }
-
-  choose({ params: { theme } }) {
-    if (THEMES.includes(theme)) this.#apply(theme)
+    this.#apply(document.documentElement.dataset.bsTheme === DARK ? LIGHT : DARK)
   }
 
   #apply(theme) {
     document.documentElement.dataset.bsTheme = theme
-    this.#syncChoices(theme)
+    this.#syncSwitches(theme)
     try { localStorage.setItem(STORAGE_KEY, theme) } catch (_) { /* storage unavailable */ }
   }
 
-  // Keeps every theme choice button in sync, wherever the theme was changed from.
-  #syncChoices(theme) {
-    document.querySelectorAll("[data-theme-theme-param]").forEach((button) => {
-      button.setAttribute("aria-pressed", String(button.dataset.themeThemeParam === theme))
+  // Keeps every theme switch in sync, wherever the theme was changed from. A switch is on in the dark theme.
+  #syncSwitches(theme) {
+    document.querySelectorAll("[role='switch'][data-controller~='theme']").forEach((themeSwitch) => {
+      themeSwitch.setAttribute("aria-checked", String(theme === DARK))
     })
   }
 

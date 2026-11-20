@@ -1,6 +1,5 @@
 class Organisms::MobileMenuComponent < ViewComponent::Base
   DOM_ID = "mobile-menu".freeze
-  THEMES = { "dark" => "Sombre", "light" => "Clair" }.freeze
 
   attr_reader :items, :countries, :selected_country, :user
 
