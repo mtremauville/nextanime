@@ -4,7 +4,9 @@
 
   <div class="na-auth-form__options">
     <%= render Molecules::CheckboxFieldComponent.new(name: "user[remember_me]", label: "Se souvenir de moi") %>
-    <%= link_to "Mot de passe oublié ?", new_user_password_path, class: "na-auth-form__forgot" %>
+    <% if forgot_password_href %>
+      <%= link_to "Mot de passe oublié ?", forgot_password_href, class: "na-auth-form__forgot" %>
+    <% end %>
   </div>
 
   <%= render Atoms::ButtonComponent.new(type: "submit", class: "w-100") do %>Se connecter<% end %>

@@ -33,6 +33,15 @@ RSpec.describe "Sign in", type: :request do
       expect(document).to have_link("Mot de passe oublié ?", href: new_user_password_path)
     end
 
+    it "does not link to the password reset while it is off" do
+      allow(Rails.configuration.x).to receive(:password_reset_enabled).and_return(false)
+
+      get new_user_session_path
+
+      expect(document).to have_no_link("Mot de passe oublié ?")
+      expect(document).to have_field("Mot de passe", type: "password")
+    end
+
     it "submits with a clear label" do
       expect(document).to have_button("Se connecter")
     end
