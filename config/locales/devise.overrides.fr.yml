@@ -1,0 +1,15 @@
+fr:
+  devise:
+    failure:
+      invalid: "Adresse e-mail ou mot de passe incorrect."
+      not_found_in_database: "Adresse e-mail ou mot de passe incorrect."
+    mailer:
+      reset_password_instructions:
+        subject: "Réinitialise ton mot de passe NextAnime"
+    passwords:
+      no_token: "Ce lien n'est pas valide. Demande-en un nouveau."
+      send_paranoid_instructions: "Si ton adresse e-mail est connue, tu vas recevoir un lien pour choisir un nouveau mot de passe."
+      updated: "Ton mot de passe a bien été changé. Tu es connecté."
+      updated_not_active: "Ton mot de passe a bien été changé."
+    registrations:
+      destroyed: "Ton compte et tes données ont été supprimés. À bientôt !"

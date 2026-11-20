@@ -1,0 +1,6 @@
+<% content_for :title, "Ton prochain anime se cache dans tes goûts" %>
+<%= render Organisms::HeroComponent.new(poster_urls: @poster_urls) %>
+<%= render Organisms::HowItWorksComponent.new %>
+<%= render Organisms::RecommendationExampleComponent.new(poster_urls: @poster_urls) %>
+<%= render Organisms::FeaturesComponent.new %>
+<%= render Organisms::FinalCallComponent.new %>

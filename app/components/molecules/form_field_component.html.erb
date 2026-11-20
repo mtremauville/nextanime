@@ -1,0 +1,10 @@
+<div class="mb-3">
+  <%= label_tag input_id, label, class: "form-label fw-semibold" %>
+  <%= tag.input(**input_options) %>
+  <% if hint %>
+    <div id="<%= hint_id %>" class="form-text"><%= hint %></div>
+  <% end %>
+  <% if error %>
+    <div id="<%= error_id %>" class="invalid-feedback d-block" role="alert"><%= error %></div>
+  <% end %>
+</div>

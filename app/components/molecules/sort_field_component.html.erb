@@ -1,0 +1,6 @@
+<%= form_with url: action, method: :get, class: "na-sort", data: { controller: "auto-submit", action: "change->auto-submit#submit" } do %>
+  <%= render Atoms::HiddenFieldsComponent.new(fields: hidden) %>
+  <%= label_tag FIELD_ID, t("catalogue.sort.label"), class: "na-sort__label" %>
+  <%= select_tag "sort", options_for_select(choices, selected), id: FIELD_ID, class: "form-select na-sort__select" %>
+  <%= submit_tag t("catalogue.sort.apply"), name: nil, class: "btn btn-outline-secondary na-sort__apply" %>
+<% end %>

@@ -1,0 +1,29 @@
+fr:
+  recommendations:
+    index:
+      summary:
+        one: "Trié par match · %{count} résultat"
+        other: "Trié par match · %{count} résultats"
+      filter:
+        label: Filtrer par format
+        all: Tous
+        series: Séries
+        movies: Films
+      invite:
+        title: Swipe quelques animes pour recevoir tes recommandations
+        text: Plus tu swipes, plus elles te ressemblent.
+        link: Commencer à swiper
+      exhausted:
+        title: Tu as tout swipé
+        text: Il n'y a plus d'anime à te recommander pour l'instant. De nouveaux animes arrivent au fil du temps.
+        profile_link: Voir mon profil
+        sign_up_link: Créer un compte pour garder ton profil
+      empty:
+        title: Aucune recommandation dans ce format
+        text: Essaie un autre format, ou continue à swiper pour affiner ton profil.
+        link: Continuer à swiper
+    header:
+      eyebrow: Ton match
+      title: Tes recommandations
+      profile_link: Ton profil →
+      swipe_link: Continuer à swiper

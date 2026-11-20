@@ -1,0 +1,37 @@
+fr:
+  animes:
+    formats:
+      tv: Série
+      tv_short: Série courte
+      movie: Film
+      special: Spécial
+      ova: OVA
+      ona: ONA
+      music: Musique
+    episodes:
+      one: "%{count} épisode"
+      other: "%{count} épisodes"
+    statuses:
+      finished: Terminé
+      releasing: En cours de diffusion
+      not_yet_released: Pas encore diffusé
+      cancelled: Annulé
+      hiatus: En pause
+    seasons:
+      winter: Hiver
+      spring: Printemps
+      summer: Été
+      fall: Automne
+    score: "%{score} / 100"
+    information:
+      format: Format
+      episodes: Épisodes
+      studio: Studio
+      season: Saison
+      status: Statut
+      score: Note moyenne
+    show:
+      back_to_recommendations: "← Retour aux recommandations"
+      back_to_catalogue: "← Retour au catalogue"
+      synopsis: Synopsis
+      tags: Tags

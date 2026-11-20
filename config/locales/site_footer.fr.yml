@@ -1,0 +1,7 @@
+fr:
+  site_footer:
+    tmdb_notice: "This product uses the TMDB API but is not endorsed or certified by TMDB."
+    catalogue: "Catalogue :"
+    availabilities: "Disponibilités :"
+    via: "via"
+    privacy: "Confidentialité"

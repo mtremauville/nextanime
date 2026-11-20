@@ -1,0 +1,12 @@
+<div class="na-match-panel">
+  <div class="na-match-panel__score">
+    <p class="na-match-panel__percent"><%= percent %>%</p>
+    <p class="na-match-panel__label"><%= t("anime_page.match.label") %></p>
+  </div>
+  <% if reason %>
+    <div class="na-match-panel__reason">
+      <h2 class="na-match-panel__why"><%= t("anime_page.match.why") %></h2>
+      <p class="na-match-panel__text"><%= reason %></p>
+    </div>
+  <% end %>
+</div>

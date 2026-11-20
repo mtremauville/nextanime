@@ -1,0 +1,8 @@
+<section aria-labelledby="na-features-title">
+  <h2 id="na-features-title" class="visually-hidden">Fonctionnalités</h2>
+  <ul class="na-features">
+    <% FEATURES.each do |feature| %>
+      <%= render Molecules::FeatureCardComponent.new(tag: feature[:tag], title: feature[:title], tone: feature[:tone]) do %><%= feature[:text] %><% end %>
+    <% end %>
+  </ul>
+</section>

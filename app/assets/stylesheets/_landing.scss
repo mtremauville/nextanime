@@ -1,0 +1,494 @@
+// The landing page: the hero, then the sections that follow it.
+
+// Two columns while there is room for them, the posters under the text otherwise.
+.na-hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: map-get($na-spacers, 7);
+  padding: map-get($na-spacers, 6) 0 map-get($na-spacers, 7);
+
+  @include media-breakpoint-up(md) {
+    padding: map-get($na-spacers, 9) 0 map-get($na-spacers, 8);
+  }
+}
+
+.na-hero__content {
+  flex: 1 1 32.5rem;
+  min-width: 0;
+}
+
+.na-hero__showcase {
+  display: flex;
+  flex: 1 1 18.125rem;
+  justify-content: center;
+  min-width: 0;
+
+  // The posters of the mobile mockups: 150 x 225 px in a frame of 290 px, so nothing overflows a phone.
+  @include media-breakpoint-down(md) {
+    .na-showcase { width: 18.125rem; height: 16.25rem; }
+
+    .na-showcase-poster {
+      width: 9.375rem;
+      height: 14.0625rem;
+
+      &--left { top: 1.875rem; left: 0; }
+      &--center { top: 0; left: 4.375rem; }
+      &--right { top: 2.5rem; left: 8.75rem; }
+    }
+
+    .na-showcase-poster__title {
+      padding: 2rem .625rem .625rem;
+      font-size: map-get($na-font-sizes, 14);
+    }
+  }
+}
+
+.na-hero__kicker {
+  margin: 0 0 map-get($na-spacers, 3);
+  color: var(--na-cyan);
+  font-family: $na-font-accent;
+  font-size: map-get($na-font-sizes, 14);
+  letter-spacing: .12em;
+}
+
+.na-hero__title {
+  margin: 0 0 map-get($na-spacers, 4);
+  font-family: $na-font-heading;
+  font-size: map-get($na-font-sizes, 40);
+  font-weight: 700;
+  line-height: 1.1;
+
+  @include media-breakpoint-up(md) {
+    font-size: map-get($na-font-sizes, 64);
+    line-height: 1.05;
+  }
+}
+
+.na-hero__accent {
+  color: var(--na-magenta);
+  text-shadow: var(--na-glow-magenta);
+}
+
+.na-hero__lead {
+  max-width: 32.5rem;
+  margin: 0 0 map-get($na-spacers, 6);
+  color: var(--na-muted);
+  font-size: map-get($na-font-sizes, 16);
+  line-height: 1.6;
+
+  @include media-breakpoint-up(md) {
+    font-size: map-get($na-font-sizes, 18);
+  }
+}
+
+// Stacked and full width on a phone, side by side from md.
+.na-hero__actions {
+  display: flex;
+  flex-direction: column;
+  gap: map-get($na-spacers, 3);
+  margin-bottom: map-get($na-spacers, 4);
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @include media-breakpoint-up(md) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: map-get($na-spacers, 4);
+  }
+}
+
+.na-hero__note {
+  margin: 0;
+  color: var(--na-muted);
+  font-family: $na-font-accent;
+  font-size: map-get($na-font-sizes, 12);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+// How it works: three numbered steps, stacked on a phone and side by side from md.
+.na-how {
+  padding: map-get($na-spacers, 6) 0 map-get($na-spacers, 7);
+
+  @include media-breakpoint-up(md) {
+    padding: map-get($na-spacers, 7) 0 map-get($na-spacers, 8);
+  }
+}
+
+.na-how__title {
+  margin: map-get($na-spacers, 2) 0 map-get($na-spacers, 5);
+  font-family: $na-font-heading;
+  font-size: 1.75rem; // the mobile mockup; the scale has no 28
+  font-weight: 700;
+  line-height: 1.15;
+
+  @include media-breakpoint-up(md) {
+    margin-bottom: map-get($na-spacers, 6);
+    font-size: map-get($na-font-sizes, 32);
+  }
+}
+
+.na-steps {
+  display: grid;
+  gap: map-get($na-spacers, 3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  @include media-breakpoint-up(md) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: map-get($na-spacers, 5);
+  }
+}
+
+.na-step {
+  display: flex;
+  gap: map-get($na-spacers, 4);
+  padding: 1.25rem; // the mobile mockup; the spacers have no 20
+  background: var(--na-surface);
+  border: 1px solid var(--na-border);
+  border-radius: $na-radius-lg;
+
+  @include media-breakpoint-up(md) {
+    flex-direction: column;
+    padding: map-get($na-spacers, 6);
+  }
+}
+
+.na-step__number {
+  flex: none;
+  font-family: $na-font-accent;
+  font-size: map-get($na-font-sizes, 32);
+  line-height: 1;
+
+  @include media-breakpoint-up(md) {
+    font-size: map-get($na-font-sizes, 48);
+  }
+}
+
+.na-step--magenta .na-step__number { color: var(--na-magenta); }
+.na-step--cyan .na-step__number { color: var(--na-cyan); }
+
+.na-step__body { min-width: 0; }
+
+.na-step__title {
+  margin: 0 0 map-get($na-spacers, 1);
+  font-family: $na-font-heading;
+  font-size: map-get($na-font-sizes, 20);
+  font-weight: 700;
+
+  @include media-breakpoint-up(md) {
+    margin-bottom: map-get($na-spacers, 2);
+    font-size: map-get($na-font-sizes, 24);
+  }
+}
+
+.na-step__text {
+  margin: 0;
+  color: var(--na-muted);
+  font-size: map-get($na-font-sizes, 14);
+  line-height: 1.6;
+
+  @include media-breakpoint-up(md) {
+    font-size: map-get($na-font-sizes, 16);
+  }
+}
+
+// The example of a recommendation: what the visitor likes, then what the app could suggest.
+// Stacked on a phone, in one row from md. The matches are made up, the block says so with its tag.
+.na-example {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: map-get($na-spacers, 4);
+  margin-bottom: map-get($na-spacers, 7);
+  padding: 1.25rem; // the mobile mockup; the spacers have no 20
+  background: var(--na-surface);
+  border: 1px solid var(--na-border);
+  border-radius: $na-radius-lg;
+
+  @include media-breakpoint-up(md) {
+    gap: map-get($na-spacers, 7);
+    margin-bottom: map-get($na-spacers, 8);
+    padding: 2.5rem;
+  }
+}
+
+.na-example__tag { flex: 0 0 100%; }
+
+.na-example__label {
+  margin: 0;
+  color: var(--na-cyan);
+}
+
+// A phone shows the liked anime as a row (small poster, title, tags); md shows the poster above them.
+.na-example__liked {
+  display: grid;
+  flex: 1 1 100%;
+  grid-template-areas: "label label" "poster title" "poster tags";
+  grid-template-columns: 3.5rem 1fr;
+  gap: map-get($na-spacers, 2) map-get($na-spacers, 3);
+  align-items: start;
+
+  @include media-breakpoint-up(md) {
+    flex: 0 1 16.25rem;
+    grid-template-areas: "label" "poster" "title" "tags";
+    grid-template-columns: 1fr;
+  }
+}
+
+.na-example__liked .na-example__label { grid-area: label; }
+
+.na-example__liked-poster {
+  grid-area: poster;
+  width: 3.5rem;
+  height: 5.25rem;
+  border-radius: $na-radius-sm;
+
+  @include media-breakpoint-up(md) {
+    width: 10rem;
+    height: 15rem;
+    border: 1px solid var(--na-border);
+    border-radius: $na-radius-md;
+  }
+}
+
+.na-example__liked-title {
+  grid-area: title;
+  margin: 0;
+  font-family: $na-font-heading;
+  font-size: map-get($na-font-sizes, 18);
+  font-weight: 700;
+}
+
+.na-example__tags {
+  display: flex;
+  flex-wrap: wrap;
+  grid-area: tags;
+  gap: map-get($na-spacers, 2);
+
+  .na-tag { color: var(--na-muted); }
+}
+
+.na-example__arrow {
+  display: none;
+  color: var(--na-magenta);
+  font-family: $na-font-accent;
+  font-size: map-get($na-font-sizes, 40);
+
+  @include media-breakpoint-up(md) {
+    display: block;
+  }
+}
+
+.na-example__recommended {
+  display: flex;
+  flex: 1 1 100%;
+  flex-direction: column;
+  gap: map-get($na-spacers, 3);
+  min-width: 0;
+
+  @include media-breakpoint-up(md) {
+    flex: 1 1 26rem;
+    gap: map-get($na-spacers, 4);
+  }
+}
+
+.na-example__recos {
+  display: flex;
+  flex-direction: column;
+  gap: map-get($na-spacers, 3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  @include media-breakpoint-up(md) {
+    gap: map-get($na-spacers, 4);
+  }
+}
+
+.na-example-reco {
+  display: flex;
+  gap: map-get($na-spacers, 3);
+  padding: map-get($na-spacers, 3);
+  background: var(--na-surface-2);
+  border: 1px solid var(--na-border);
+  border-radius: $na-radius-md;
+
+  @include media-breakpoint-up(md) {
+    gap: map-get($na-spacers, 4);
+    align-items: center;
+    padding: map-get($na-spacers, 4);
+  }
+}
+
+.na-example-reco__poster {
+  flex: none;
+  width: 3.5rem;
+  height: 5.25rem;
+  border-radius: $na-radius-sm;
+
+  @include media-breakpoint-up(md) {
+    width: 4.5rem;
+    height: 6.75rem;
+  }
+}
+
+.na-example-reco__body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.na-example-reco__heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: map-get($na-spacers, 3);
+}
+
+.na-example-reco__title {
+  margin: 0;
+  font-family: $na-font-heading;
+  font-size: map-get($na-font-sizes, 16);
+  font-weight: 700;
+
+  @include media-breakpoint-up(md) {
+    font-size: map-get($na-font-sizes, 20);
+  }
+}
+
+.na-example-reco__meta {
+  margin: 2px 0 map-get($na-spacers, 2);
+  color: var(--na-muted);
+  font-size: map-get($na-font-sizes, 12);
+}
+
+.na-example-reco__reason {
+  margin: 0;
+  font-size: map-get($na-font-sizes, 14);
+  line-height: 1.5;
+}
+
+// The features: three short cards, stacked on a phone and side by side from md.
+.na-features {
+  display: grid;
+  gap: map-get($na-spacers, 3);
+  margin: 0 0 map-get($na-spacers, 7);
+  padding: 0;
+  list-style: none;
+
+  @include media-breakpoint-up(md) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: map-get($na-spacers, 5);
+    margin-bottom: map-get($na-spacers, 8);
+  }
+}
+
+.na-feature {
+  padding: 1.25rem; // the mobile mockup; the spacers have no 20
+  border: 1px solid var(--na-border);
+  border-radius: $na-radius-md;
+
+  @include media-breakpoint-up(md) {
+    padding: map-get($na-spacers, 5);
+  }
+}
+
+.na-feature__tag {
+  margin: 0 0 map-get($na-spacers, 2);
+  font-family: $na-font-accent;
+  font-size: map-get($na-font-sizes, 12);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.na-feature--magenta .na-feature__tag { color: var(--na-magenta); }
+.na-feature--cyan .na-feature__tag { color: var(--na-cyan); }
+
+.na-feature__title {
+  margin: 0 0 map-get($na-spacers, 2);
+  font-family: $na-font-heading;
+  font-size: map-get($na-font-sizes, 18);
+  font-weight: 700;
+
+  @include media-breakpoint-up(md) {
+    font-size: map-get($na-font-sizes, 20);
+  }
+}
+
+.na-feature__text {
+  margin: 0;
+  color: var(--na-muted);
+  font-size: map-get($na-font-sizes, 14);
+  line-height: 1.6;
+}
+
+// The last invitation: one button, full width on a phone.
+.na-cta {
+  margin-bottom: map-get($na-spacers, 7);
+  padding: map-get($na-spacers, 6) 1.25rem; // the mobile mockup; the spacers have no 20
+  text-align: center;
+  background: radial-gradient(circle at 80% 0%, color-mix(in srgb, var(--na-magenta) 18%, transparent), transparent 60%);
+  border: 1px solid var(--na-magenta);
+  border-radius: $na-radius-lg;
+  box-shadow: 0 0 2rem color-mix(in srgb, var(--na-magenta) 25%, transparent);
+
+  @include media-breakpoint-up(md) {
+    margin-bottom: map-get($na-spacers, 8);
+    padding: 3.5rem 2.5rem;
+  }
+
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+
+    @include media-breakpoint-up(md) {
+      display: inline-flex;
+      width: auto;
+    }
+  }
+}
+
+.na-cta__title {
+  margin: 0 0 map-get($na-spacers, 2);
+  font-family: $na-font-heading;
+  font-size: 1.625rem; // the mobile mockup; the scale has no 26
+  font-weight: 700;
+
+  @include media-breakpoint-up(md) {
+    margin-bottom: map-get($na-spacers, 4);
+    font-size: map-get($na-font-sizes, 32);
+  }
+}
+
+.na-cta__text {
+  margin: 0 0 1.25rem;
+  color: var(--na-muted);
+  font-size: map-get($na-font-sizes, 14);
+
+  @include media-breakpoint-up(md) {
+    margin-bottom: map-get($na-spacers, 5);
+    font-size: map-get($na-font-sizes, 16);
+  }
+}
+
+// A cover fills the poster it is on. The gradient stays behind it until the image has loaded.
+.na-example__liked-poster,
+.na-example-reco__poster {
+  overflow: hidden;
+}
+
+.na-example__image,
+.na-example-reco__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

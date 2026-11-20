@@ -1,0 +1,6 @@
+<span class="na-filter-chip">
+  <%= label %>
+  <%= link_to remove_href, class: "na-filter-chip__remove", aria: { label: t("catalogue.active_filters.remove", label: label) } do %>
+    <span aria-hidden="true">×</span>
+  <% end %>
+</span>

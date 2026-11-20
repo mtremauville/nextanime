@@ -1,0 +1,54 @@
+// Links that narrow a list of results, with a line that sums the list up.
+.na-result-filter {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: map-get($na-spacers, 4);
+  padding-block: map-get($na-spacers, 4);
+  margin-bottom: map-get($na-spacers, 6);
+  border-block: 1px solid var(--na-border);
+
+  &__choices {
+    display: flex;
+    flex-wrap: wrap;
+    gap: map-get($na-spacers, 2);
+  }
+
+  &__choice {
+    display: inline-flex;
+    align-items: center;
+    min-height: $na-touch-target;
+    padding-inline: map-get($na-spacers, 4) + map-get($na-spacers, 1);
+    border: 1px solid var(--na-border);
+    border-radius: $na-radius-pill;
+    color: var(--na-muted);
+    font-size: map-get($na-font-sizes, 14);
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover {
+      color: var(--na-text);
+      background: var(--na-surface-2);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--na-cyan);
+      outline-offset: 2px;
+    }
+
+    &.is-current {
+      color: var(--na-text);
+      background: var(--na-magenta-soft);
+      border-color: var(--na-magenta);
+    }
+  }
+
+  &__summary {
+    margin: 0;
+    font-family: $na-font-accent;
+    font-size: map-get($na-font-sizes, 14);
+    color: var(--na-muted);
+    text-transform: uppercase;
+  }
+}

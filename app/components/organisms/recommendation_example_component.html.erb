@@ -1,0 +1,27 @@
+<section class="na-example" aria-labelledby="na-example-title">
+  <h2 id="na-example-title" class="visually-hidden">Exemple de recommandation</h2>
+  <div class="na-example__tag"><%= render Atoms::TagComponent.new(label: "Exemple", tone: :cyan) %></div>
+  <div class="na-example__liked">
+    <p class="na-eyebrow na-example__label">Tu aimes déjà</p>
+    <div class="na-example__liked-poster na-poster--<%= LIKED[:poster] %>" aria-hidden="true">
+      <% if liked_image_url %>
+        <img class="na-example__image" src="<%= liked_image_url %>" alt="" loading="lazy">
+      <% end %>
+    </div>
+    <p class="na-example__liked-title"><%= LIKED[:title] %></p>
+    <div class="na-example__tags">
+      <% LIKED[:tags].each do |label| %>
+        <%= render Atoms::TagComponent.new(label: label, tone: :muted) %>
+      <% end %>
+    </div>
+  </div>
+  <span class="na-example__arrow" aria-hidden="true">→</span>
+  <div class="na-example__recommended">
+    <p class="na-eyebrow na-example__label">On peut te recommander</p>
+    <ul class="na-example__recos">
+      <% RECOMMENDATIONS.each do |recommendation| %>
+        <%= render Molecules::ExampleRecoComponent.new(**recommendation_attributes(recommendation)) %>
+      <% end %>
+    </ul>
+  </div>
+</section>

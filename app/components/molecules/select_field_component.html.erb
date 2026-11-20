@@ -1,0 +1,4 @@
+<div class="mb-3">
+  <%= label_tag input_id, label, class: "form-label fw-semibold" %>
+  <%= select_tag name, options_for_select(choices, selected), include_blank: blank, id: input_id, class: "form-select" %>
+</div>

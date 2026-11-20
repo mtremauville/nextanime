@@ -1,0 +1,21 @@
+<% content_for :title, "Calendrier" %>
+
+<%= render Organisms::CalendarHeaderComponent.new(calendar: @calendar) %>
+
+<% if @calendar.empty? %>
+  <%= render Molecules::EmptyStateComponent.new(title: t(".empty.title"), text: t(".empty.text"), link_label: t(".empty.link"), link_href: catalogue_path) %>
+<% else %>
+  <div class="d-md-none">
+    <%= render Molecules::DayChipsComponent.new(days: @calendar.days) %>
+  </div>
+
+  <div class="d-none d-md-block">
+    <%= render Molecules::CalendarLegendComponent.new %>
+  </div>
+
+  <div class="na-calendar__days">
+    <% @calendar.days.each do |day| %>
+      <%= render Organisms::CalendarDayComponent.new(day: day, watched_anime_ids: @watched_anime_ids) %>
+    <% end %>
+  </div>
+<% end %>

@@ -1,0 +1,46 @@
+<% content_for :title, "Mes recommandations" %>
+
+<%= render Organisms::RecommendationsHeaderComponent.new(
+      tags: @tag_names,
+      genres: @genre_names,
+      swipe_href: discover_path,
+      profile_href: (profile_path if current_user)
+    ) %>
+
+<% if @recommendations.nil? %>
+  <%= render Molecules::EmptyStateComponent.new(
+        title: t(".invite.title"),
+        text: t(".invite.text"),
+        link_label: t(".invite.link"),
+        link_href: discover_path
+      ) %>
+<% elsif @recommendations.empty? && @kind.nil? %>
+  <%= render Molecules::EmptyStateComponent.new(
+        title: t(".exhausted.title"),
+        text: t(".exhausted.text"),
+        link_label: current_user ? t(".exhausted.profile_link") : t(".exhausted.sign_up_link"),
+        link_href: current_user ? profile_path : new_user_registration_path,
+        link_variant: :outline
+      ) %>
+<% else %>
+  <% choices = { nil => t(".filter.all"), "series" => t(".filter.series"), "movies" => t(".filter.movies") }.map do |kind, label|
+       { label: label, href: recommendations_path(kind: kind), current: kind == @kind }
+     end %>
+  <%= render Molecules::ResultFilterComponent.new(
+        label: t(".filter.label"),
+        choices: choices,
+        summary: t(".summary", count: @recommendations.size)
+      ) %>
+
+  <% if @recommendations.empty? %>
+    <%= render Molecules::EmptyStateComponent.new(
+          title: t(".empty.title"),
+          text: t(".empty.text"),
+          link_label: t(".empty.link"),
+          link_href: discover_path,
+          link_variant: :outline
+        ) %>
+  <% else %>
+    <%= render Organisms::RecommendationGridComponent.new(recommendations: @recommendations, explainer: @explainer, platforms_by_anime: @platforms_by_anime) %>
+  <% end %>
+<% end %>

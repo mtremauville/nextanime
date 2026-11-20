@@ -1,0 +1,15 @@
+<section class="na-hero" aria-labelledby="na-hero-title">
+  <div class="na-hero__content">
+    <p class="na-hero__kicker" lang="ja" aria-hidden="true">次のアニメを見つけよう</p>
+    <h1 id="na-hero-title" class="na-hero__title">Ton prochain anime se cache dans <span class="na-hero__accent">tes goûts</span>.</h1>
+    <p class="na-hero__lead">Swipe tes références, NextAnime cerne ta vibe et te propose des anime qui te ressemblent, pas ceux que tout le monde regarde.</p>
+    <div class="na-hero__actions">
+      <%= render Atoms::ButtonComponent.new(href: discover_path) do %>Commencer à swiper<% end %>
+      <%= render Atoms::ButtonComponent.new(variant: :outline, href: catalogue_path) do %>Parcourir le catalogue<% end %>
+    </div>
+    <p class="na-hero__note">Gratuit · swipe sans compte · quelques minutes</p>
+  </div>
+  <div class="na-hero__showcase">
+    <%= render Organisms::AuthShowcaseComponent.new(image_urls: poster_urls) %>
+  </div>
+</section>

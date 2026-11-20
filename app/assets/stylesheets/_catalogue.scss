@@ -1,0 +1,704 @@
+// The catalogue: a header, a grid of poster cards and, under it, the pagination on a wide screen
+// or the "load more" block on a phone.
+.na-catalogue-header {
+  margin-bottom: map-get($na-spacers, 4);
+
+  &__title {
+    margin: 0 0 map-get($na-spacers, 2);
+  }
+
+  &__results {
+    margin: 0;
+    font-family: $na-font-accent;
+    font-size: 0.875rem;
+    color: var(--na-muted);
+  }
+}
+
+.na-catalogue-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11.875rem, 1fr));
+  gap: map-get($na-spacers, 4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  &__item {
+    display: flex;
+    min-width: 0;
+
+    > .na-poster-card {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+
+  .na-poster-card h2 {
+    font-size: 1rem;
+  }
+
+  .na-poster-card__badge {
+    left: auto;
+    right: map-get($na-spacers, 2);
+  }
+
+  @include media-breakpoint-down(sm) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: map-get($na-spacers, 3);
+
+    .na-poster-card h2 {
+      font-size: 0.875rem;
+    }
+  }
+}
+
+.na-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: map-get($na-spacers, 2);
+  margin-top: map-get($na-spacers, 5);
+
+  &__page,
+  &__edge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.75rem;
+    border: 1px solid var(--na-border);
+    border-radius: $na-radius-md;
+    font-size: 0.875rem;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  &__page {
+    min-width: 2.75rem;
+    font-family: $na-font-accent;
+  }
+
+  &__page--current {
+    border-color: var(--na-magenta);
+    background: color-mix(in srgb, var(--na-magenta) 12%, transparent);
+  }
+
+  &__edge {
+    padding: 0 map-get($na-spacers, 3);
+    font-weight: 600;
+    color: var(--na-muted);
+  }
+
+  &__edge--next {
+    border-color: var(--na-cyan);
+    color: var(--na-cyan);
+  }
+
+  &__edge--disabled {
+    opacity: 0.5;
+  }
+
+  &__gap {
+    color: var(--na-muted);
+  }
+}
+
+.na-load-more {
+  margin-top: map-get($na-spacers, 4);
+  text-align: center;
+
+  &__progress {
+    margin: 0 0 map-get($na-spacers, 3);
+    font-family: $na-font-accent;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--na-muted);
+  }
+
+  .na-meter {
+    max-width: 12.5rem;
+    margin: 0 auto map-get($na-spacers, 4);
+  }
+
+  &__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 3.25rem;
+    padding: 0 1.75rem;
+    border: 1px solid var(--na-cyan);
+    border-radius: $na-radius-md;
+    font-family: $na-font-heading;
+    font-weight: 700;
+    color: var(--na-cyan);
+    text-decoration: none;
+
+    &:hover {
+      background: color-mix(in srgb, var(--na-cyan) 12%, transparent);
+    }
+  }
+}
+
+.na-search {
+  position: relative;
+  margin-bottom: map-get($na-spacers, 4);
+
+  &__icon {
+    position: absolute;
+    top: 50%;
+    left: map-get($na-spacers, 3);
+    display: flex;
+    transform: translateY(-50%);
+    color: var(--na-muted);
+    pointer-events: none;
+  }
+
+  &__input {
+    width: 100%;
+    min-height: 3.25rem;
+    padding: 0 map-get($na-spacers, 3) 0 2.75rem;
+    border: 1px solid var(--na-border);
+    border-radius: $na-radius-md;
+    background: var(--na-surface);
+    color: inherit;
+    font-size: 1rem;
+    appearance: none;
+
+    &::placeholder {
+      color: var(--na-muted);
+    }
+
+    &:focus {
+      border-color: var(--na-cyan);
+      outline: 2px solid var(--na-cyan);
+      outline-offset: 2px;
+    }
+  }
+}
+
+// The search takes the whole width, then two columns on a wide screen: the filters, the results.
+// On a phone only the results are shown; the filters get their own sheet in a later story.
+.na-catalogue-search {
+  margin-bottom: 1.5rem;
+}
+
+.na-catalogue-layout {
+  @include media-breakpoint-up(md) {
+    display: grid;
+    grid-template-columns: 17.5rem minmax(0, 1fr);
+    gap: 2rem;
+    align-items: start;
+  }
+}
+
+.na-catalogue-layout__results {
+  min-width: 0;
+}
+
+.na-filters {
+  padding: 1.5rem;
+  background: var(--na-surface);
+  border: 1px solid var(--na-border);
+  border-radius: $na-radius-lg;
+
+  .form-control,
+  .form-select {
+    min-height: 2.75rem;
+    font-size: 0.875rem;
+    background-color: var(--bs-body-bg);
+    border-color: var(--na-border);
+    border-radius: $na-radius-md;
+  }
+
+  .form-label {
+    margin-bottom: 0.75rem;
+    font-family: $na-font-accent;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--na-cyan);
+  }
+}
+
+.na-filters__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.na-filters__title {
+  margin: 0;
+  font-family: $na-font-heading;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.na-filters__reset {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--na-cyan);
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    text-decoration: underline;
+  }
+}
+
+.na-filters__years {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  span {
+    color: var(--na-muted);
+  }
+}
+
+.na-filter-group {
+  min-width: 0;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  border: 0;
+}
+
+.na-filter-group__legend {
+  float: none;
+  width: auto;
+  margin-bottom: 0.75rem;
+  padding: 0;
+  font-family: $na-font-accent;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--na-cyan);
+}
+
+.na-filter-group__options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  .form-check {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 2.25rem;
+    margin: 0;
+    padding: 0;
+    font-size: 0.875rem;
+  }
+
+  .form-check-input {
+    flex: none;
+    float: none;
+    width: 1.125rem;
+    height: 1.125rem;
+    margin: 0;
+    background-color: var(--bs-body-bg);
+    border-color: var(--na-border);
+
+    &:checked {
+      background-color: var(--na-magenta);
+      border-color: var(--na-magenta);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--na-cyan);
+      outline-offset: 2px;
+      box-shadow: none;
+    }
+  }
+
+  .form-check-label {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    cursor: pointer;
+  }
+}
+
+.na-filter-group__count {
+  font-family: $na-font-accent;
+  font-size: 0.75rem;
+  color: var(--na-muted);
+}
+
+// The formats are pills: the checkbox stays in the page for the keyboard but is not drawn.
+.na-filter-group--pills .na-filter-group__options {
+  flex-flow: row wrap;
+  gap: 0.5rem;
+
+  .form-check {
+    position: relative;
+    min-height: 0;
+  }
+
+  .form-check-input {
+    position: absolute;
+    opacity: 0;
+  }
+
+  .form-check-label {
+    min-height: 2.75rem;
+    padding: 0 1rem;
+    font-weight: 600;
+    border: 1px solid var(--na-border);
+    border-radius: $na-radius-pill;
+  }
+
+  .form-check-input:checked + .form-check-label {
+    border-color: var(--na-magenta);
+    background: rgba(255, 46, 147, 0.12);
+  }
+
+  .form-check-input:focus-visible + .form-check-label {
+    outline: 2px solid var(--na-cyan);
+    outline-offset: 2px;
+  }
+}
+
+// The filters apply as soon as they change. The button is only for visitors without scripts,
+// so it is hidden from the start, which avoids a flash before the controller starts.
+.btn.na-filters__apply {
+  display: none;
+
+  @media (scripting: none) {
+    display: block;
+  }
+}
+
+// The sort list. On a phone the label is only for screen readers, as in the mockup.
+.na-sort {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.na-sort__label {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--na-muted);
+
+  @include media-breakpoint-down(sm) {
+    @include visually-hidden;
+  }
+}
+
+.na-sort__select {
+  width: auto;
+  min-height: 2.75rem;
+  font-size: 0.875rem;
+  background-color: var(--na-surface);
+  border-color: var(--na-border);
+  border-radius: $na-radius-md;
+}
+
+// Like the filters: the button is only for visitors without scripts.
+.btn.na-sort__apply {
+  display: none;
+
+  @media (scripting: none) {
+    display: inline-block;
+  }
+}
+
+// The active filters and the sort sit above the results: the chips on the left and the sort on the
+// right of a wide screen, one under the other over the whole width of a phone.
+.na-catalogue-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+
+  .na-sort {
+    margin-left: auto;
+  }
+
+  @include media-breakpoint-down(sm) {
+    .na-sort,
+    .na-sort__select {
+      flex: 1 1 auto;
+      width: 100%;
+    }
+  }
+}
+
+// The filters under way, one chip each. The cross removes that filter only.
+.na-active-filters {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+
+  @include media-breakpoint-down(sm) {
+    flex-basis: 100%;
+  }
+}
+
+.na-filter-chip {
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0 0.5rem 0 0.75rem;
+  font-size: 0.75rem;
+  border: 1px solid var(--na-magenta);
+  border-radius: 999px;
+}
+
+.na-filter-chip__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 0.875rem;
+  color: var(--na-muted);
+  text-decoration: none;
+  border-radius: 999px;
+
+  &:hover {
+    color: var(--na-cyan);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--na-cyan);
+    outline-offset: 2px;
+  }
+}
+
+// The button of a phone that opens the filters.
+.na-filters-trigger {
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 3rem;
+  padding: 0 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--na-text);
+  background: color-mix(in srgb, var(--na-magenta) 12%, transparent);
+  border: 1px solid var(--na-magenta);
+  border-radius: $na-radius-md;
+
+  &:focus-visible {
+    outline: 2px solid var(--na-cyan);
+    outline-offset: 2px;
+  }
+}
+
+.na-filters-trigger__count {
+  font-family: $na-font-accent;
+  color: var(--na-magenta);
+}
+
+// A phone has two rows above the results: the filters button beside the sort, then the chips.
+.na-catalogue-toolbar {
+  @include media-breakpoint-down(md) {
+    .na-catalogue-toolbar__filters {
+      flex: 1 1 0;
+      order: 1;
+      min-width: 0;
+    }
+
+    .na-sort {
+      flex: 1 1 0;
+      order: 2;
+      width: auto;
+      min-width: 0;
+    }
+
+    .na-active-filters {
+      flex: 1 1 100%;
+      order: 3;
+    }
+  }
+}
+
+// A sheet that rises from the bottom of the screen, up to 6rem from the top. The dialog only
+// becomes a flex box once open, or it would show while closed. The padding lives on the panel,
+// not on the dialog: a click on the dialog itself is a click on the backdrop.
+.na-sheet__dialog {
+  width: 100%;
+  max-width: none;
+  height: calc(100% - 6rem);
+  max-height: none;
+  padding: 0;
+  margin: auto 0 0;
+  color: var(--na-text);
+  background: var(--na-surface);
+  border: 0;
+  border-top: 1px solid var(--na-border);
+  border-radius: 1rem 1rem 0 0;
+
+  &[open] {
+    display: flex;
+  }
+
+  &::backdrop {
+    background: rgba(11, 10, 20, 0.7);
+  }
+}
+
+// The page behind an open sheet does not scroll.
+html:has(.na-sheet__dialog[open]),
+body:has(.na-sheet__dialog[open]) {
+  overflow: hidden;
+}
+
+.na-sheet__panel {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  padding-top: 0.75rem;
+}
+
+.na-sheet__handle {
+  flex: none;
+  width: 2.5rem;
+  height: 0.25rem;
+  margin: 0 auto 1rem;
+  background: var(--na-border);
+  border-radius: 999px;
+}
+
+.na-sheet__header {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem 0.5rem;
+}
+
+.na-sheet__title {
+  margin: 0;
+  font-size: 1.375rem;
+  font-weight: 700;
+}
+
+.na-sheet__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  font-size: 1.5rem;
+  color: var(--na-muted);
+  background: none;
+  border: 0;
+  border-radius: $na-radius-md;
+
+  &:focus-visible {
+    outline: 2px solid var(--na-cyan);
+    outline-offset: 2px;
+  }
+}
+
+.na-sheet__content {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+}
+
+// The filters in the sheet: no card around them, a body that scrolls and a footer that stays.
+.na-filters--sheet {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+
+  .na-filters__form {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .na-filters__body {
+    flex: 1 1 auto;
+    padding: 0.5rem 1rem 1rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .na-filter-group--pills .form-check-label {
+    min-height: 2.75rem;
+  }
+
+  .na-filters__footer {
+    display: flex;
+    flex: none;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem 1.5rem;
+    background: var(--na-surface);
+    border-top: 1px solid var(--na-border);
+
+    .btn {
+      min-height: 3.25rem;
+    }
+
+    > :first-child {
+      flex: 1 1 0;
+      color: var(--na-text);
+      border-color: var(--na-border);
+    }
+
+    .na-filters__show {
+      flex: 2 1 0;
+    }
+  }
+}
+
+// A group that can be searched: the field above the choices, and a list that scrolls instead of growing.
+.na-filter-group--searchable {
+  .na-filter-group__search {
+    margin-bottom: 0.5rem;
+  }
+
+  .na-filter-group__options {
+    max-height: 16rem;
+    overflow-y: auto;
+    // The scrollbar sits in the margin of the panel, so that the counts stay in line with the other groups.
+    margin-right: -0.5rem;
+    padding-right: 0.5rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--bs-border-color) transparent;
+  }
+
+  // Four rows and a half of pills: the last row is cut, which tells that the list scrolls.
+  &.na-filter-group--pills .na-filter-group__options {
+    max-height: 14.5rem;
+  }
+}
+
+.na-filter-group__no-match {
+  margin: 0 0 0.5rem;
+  font-size: 0.875rem;
+  color: var(--bs-secondary-color);
+
+  &:empty {
+    display: none;
+  }
+}

@@ -1,7 +1,32 @@
 class ApplicationController < ActionController::Base
+  include Pundit::Authorization
+  include CurrentCountry
+
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
 
   # Changes to the importmap will invalidate the etag for HTML responses
   stale_when_importmap_changes
+
+  before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :load_showcase_posters, if: :devise_controller?
+
+  layout :layout_for_request
+  helper_method :password_reset_enabled?
+
+  private
+
+  def layout_for_request
+    devise_controller? ? "auth" : "application"
+  end
+
+  def password_reset_enabled? = Rails.configuration.x.password_reset_enabled
+
+  def load_showcase_posters
+    @poster_urls = ShowcasePostersQuery.new.call
+  end
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_up, keys: [ :privacy_policy ])
+  end
 end

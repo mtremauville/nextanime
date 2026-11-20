@@ -1,0 +1,7 @@
+fr:
+  platform_line:
+    lead: "Sur"
+    more:
+      one: "et %{count} autre"
+      other: "et %{count} autres"
+    also_on: "Aussi disponible sur %{names}"

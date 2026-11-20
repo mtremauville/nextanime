@@ -1,0 +1,24 @@
+<nav class="na-pagination" aria-label="<%= t("catalogue.pagination.label") %>">
+  <% if previous_number %>
+    <%= link_to t("catalogue.pagination.previous"), url.call(previous_number), rel: "prev", class: "na-pagination__edge" %>
+  <% else %>
+    <span class="na-pagination__edge na-pagination__edge--disabled" aria-disabled="true"><%= t("catalogue.pagination.previous") %></span>
+  <% end %>
+
+  <% items.each do |item| %>
+    <% if item == :gap %>
+      <span class="na-pagination__gap" data-role="gap" aria-hidden="true">…</span>
+    <% else %>
+      <%= link_to item.to_s, url.call(item),
+            class: [ "na-pagination__page", ("na-pagination__page--current" if item == current) ],
+            aria: { label: t("catalogue.pagination.page", number: item), current: ("page" if item == current) },
+            data: { role: "page" } %>
+    <% end %>
+  <% end %>
+
+  <% if next_number %>
+    <%= link_to t("catalogue.pagination.next"), url.call(next_number), rel: "next", class: "na-pagination__edge na-pagination__edge--next" %>
+  <% else %>
+    <span class="na-pagination__edge na-pagination__edge--disabled" aria-disabled="true"><%= t("catalogue.pagination.next") %></span>
+  <% end %>
+</nav>

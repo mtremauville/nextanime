@@ -1,0 +1,91 @@
+<% content_for :title, "Catalogue" %>
+
+<% filters_sheet_id = "filters-sheet" %>
+
+<header class="na-catalogue-header">
+  <p class="na-eyebrow"><%= t("catalogue.index.eyebrow") %></p>
+  <h1 class="na-catalogue-header__title"><%= t("catalogue.index.title") %></h1>
+  <p class="na-catalogue-header__results" data-role="results" role="status"><%= t("catalogue.index.results", count: @page.total_count) %></p>
+</header>
+
+<div class="na-catalogue-search">
+  <%= render Molecules::SearchFieldComponent.new(
+        action: catalogue_path,
+        label: t("catalogue.search.label"),
+        placeholder: t("catalogue.search.placeholder"),
+        value: @search,
+        hidden: @filters.to_query_params.merge(sort: @requested_sort)
+      ) %>
+</div>
+
+<div class="na-catalogue-layout" data-controller="pending" data-action="turbo:submit-start->pending#start turbo:fetch-request-error->pending#stop">
+  <div class="na-catalogue-layout__filters d-none d-md-block">
+    <%= render Organisms::CatalogueFiltersComponent.new(
+          action: catalogue_path,
+          filters: @filters,
+          genres: @genres,
+          genre_counts: @genre_counts,
+          studios: @studios,
+          platforms: @platforms,
+          search: @search,
+          sort: @requested_sort
+        ) %>
+  </div>
+
+  <div class="na-catalogue-layout__results">
+    <div class="na-catalogue-toolbar">
+      <div class="na-catalogue-toolbar__filters d-md-none">
+        <%= render Organisms::BottomSheetComponent.new(
+              id: filters_sheet_id,
+              title: t("catalogue.filters.title"),
+              close_label: t("catalogue.filters.close")
+            ) do |sheet| %>
+          <% sheet.with_trigger do %>
+            <%= render Molecules::FiltersTriggerComponent.new(count: @active_filters.size, controls: filters_sheet_id) %>
+          <% end %>
+          <%= render Organisms::CatalogueFiltersComponent.new(
+                action: catalogue_path,
+                filters: @filters,
+                genres: @genres,
+                search: @search,
+                sort: @requested_sort,
+                studios: @studios,
+                platforms: @platforms,
+                variant: :sheet
+              ) %>
+        <% end %>
+      </div>
+      <%= render Molecules::ActiveFiltersComponent.new(chips: @active_filters) %>
+      <%= render Molecules::SortFieldComponent.new(
+            action: catalogue_path,
+            selected: @sort,
+            offer_match: @scorer.present?,
+            hidden: @filters.to_query_params.merge(q: @search)
+          ) %>
+    </div>
+
+    <% if @page.total_count.zero? %>
+      <%= render Molecules::EmptyStateComponent.new(
+            title: t("catalogue.empty.title"),
+            text: t("catalogue.empty.text"),
+            link_label: t("catalogue.empty.reset"),
+            link_href: catalogue_path
+          ) %>
+    <% else %>
+      <%= render Organisms::CatalogueGridComponent.new(animes: @page.animes, scorer: @scorer, listed_ids: @listed_ids, platforms_by_anime: @platforms_by_anime) %>
+      <%= render Organisms::CatalogueSkeletonComponent.new %>
+
+      <div class="d-none d-md-block">
+        <%= render Molecules::PaginationComponent.new(
+              current: @page.number,
+              total: @page.total_pages,
+              url: ->(number) { catalogue_page_path(number) }
+            ) %>
+      </div>
+
+      <div class="d-md-none">
+        <%= render "load_more", page: @page %>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+<% if tags.any? %>
+  <ul class="na-tag-gauges" data-list="tags">
+    <% tags.each_with_index do |ranked_tag, index| %>
+      <li class="na-tag-gauges__item" data-role="tag">
+        <span class="na-tag-gauges__name"><%= ranked_tag.name %></span>
+        <div class="na-tag-gauges__bar"><%= render Atoms::MeterComponent.new(value: ranked_tag.rank, label: ranked_tag.name, tone: tone_at(index)) %></div>
+        <span class="na-tag-gauges__rank"><%= ranked_tag.rank %> %</span>
+      </li>
+    <% end %>
+  </ul>
+<% end %>

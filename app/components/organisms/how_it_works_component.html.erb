@@ -1,0 +1,9 @@
+<section class="na-how" aria-labelledby="na-how-title">
+  <p class="na-eyebrow">Comment ça marche</p>
+  <h2 id="na-how-title" class="na-how__title">De tes goûts à tes découvertes</h2>
+  <ol class="na-steps">
+    <% STEPS.each.with_index(1) do |step, number| %>
+      <%= render Molecules::StepCardComponent.new(number: number, title: step[:title], tone: step[:tone]) do %><%= step[:text] %><% end %>
+    <% end %>
+  </ol>
+</section>

@@ -1,0 +1,4 @@
+<div class="na-stepper">
+  <%= button_to "−", path, method: :patch, params: { move: "rewind" }, form_class: "na-stepper__form na-stepper__form--rewind", class: "na-stepper__button", disabled: rewind_disabled?, aria: { label: label_for("rewind") } %>
+  <%= button_to "+", path, method: :patch, params: { move: "advance" }, form_class: "na-stepper__form na-stepper__form--advance", class: "na-stepper__button na-stepper__button--advance", disabled: advance_disabled?, aria: { label: label_for("advance") } %>
+</div>

@@ -1,0 +1,12 @@
+<%= render Organisms::ConfirmationModalComponent.new(
+      id: modal_id,
+      title: title,
+      confirm_label: translate(:confirm),
+      confirm_url: confirm_url,
+      icon: "trash",
+      trigger_icon: "trash",
+      trigger_aria_label: trigger_aria_label,
+      trigger_variant: :ghost
+    ) do %>
+  <%= warning %>
+<% end %>

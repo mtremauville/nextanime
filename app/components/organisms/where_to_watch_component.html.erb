@@ -1,0 +1,28 @@
+<section class="na-where-to-watch" aria-labelledby="where-to-watch-title">
+  <div class="na-where-to-watch__header">
+    <h2 class="na-where-to-watch__title" id="where-to-watch-title"><%= t("anime_page.where_to_watch.title") %></h2>
+    <span class="na-where-to-watch__country"><%= country_label %></span>
+  </div>
+  <% if entries.any? %>
+    <p class="na-where-to-watch__intro"><%= t("anime_page.where_to_watch.available_in", country: country_label) %></p>
+    <ul class="na-where-to-watch__list">
+      <% entries.each do |entry| %>
+        <li><%= render Molecules::PlatformRowComponent.new(platform: entry.platform, offer_types: entry.offer_types, url: entry.url) %></li>
+      <% end %>
+    </ul>
+  <% else %>
+    <div class="na-where-to-watch__empty">
+      <p class="na-where-to-watch__empty-title"><%= t("anime_page.where_to_watch.empty.title", country: country_label) %></p>
+      <p class="na-where-to-watch__empty-text"><%= t("anime_page.where_to_watch.empty.text") %></p>
+    </div>
+  <% end %>
+  <p class="na-where-to-watch__credit">
+    <%= t("anime_page.where_to_watch.credit") %>
+    <% if tmdb_page_url %>
+      <%= link_to tmdb_page_url, class: "na-where-to-watch__credit-link", target: "_blank", rel: "noopener noreferrer" do %>
+        <%= t("anime_page.where_to_watch.credit_link") %>
+        <span class="visually-hidden"><%= t("anime_page.where_to_watch.new_tab") %></span>
+      <% end %>
+    <% end %>
+  </p>
+</section>

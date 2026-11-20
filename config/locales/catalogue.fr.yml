@@ -1,0 +1,61 @@
+fr:
+  catalogue:
+    sort:
+      label: Trier par
+      apply: Trier
+      match: Meilleur match
+      popularity: Popularité
+      score: Note
+      recent: Plus récents
+      title: Titre A–Z
+    filters:
+      title: Filtres
+      genres: Genres
+      format: Format
+      studios: Studio
+      studio_search: Rechercher un studio
+      no_studio: Aucun studio ne correspond
+      platforms: Plateformes
+      status: Statut
+      season: Saison
+      all_seasons: Toutes les saisons
+      years: Année
+      year_from: Année minimale
+      year_to: Année maximale
+      apply: Appliquer
+      show_results: Voir les résultats
+      close: Fermer les filtres
+      reset: Réinitialiser
+      statuses:
+        finished: Terminé
+        releasing: En cours de diffusion
+        not_yet_released: À venir
+    empty:
+      title: "Aucun anime ne correspond"
+      text: "Essaie d'enlever un filtre ou de chercher autre chose."
+      reset: "Voir tout le catalogue"
+    active_filters:
+      title: "Filtres actifs"
+      remove: "Retirer le filtre %{label}"
+      years:
+        range: "%{from}–%{to}"
+        from: "Depuis %{year}"
+        to: "Jusqu'en %{year}"
+    pagination:
+      label: Pagination
+      previous: "← Précédent"
+      next: "Suivant →"
+      page: "Page %{number}"
+    load_more:
+      progress: "%{shown} sur %{total}"
+      label: "Anime affichés"
+      button: "Voir plus"
+    index:
+      eyebrow: EXPLORER
+      title: Catalogue
+      results:
+        one: "%{count} résultat"
+        other: "%{count} résultats"
+    search:
+      label: Rechercher un anime
+      placeholder: "Rechercher un titre, un studio…"

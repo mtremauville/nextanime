@@ -1,0 +1,25 @@
+.na-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: .75rem;
+  margin-bottom: 1rem;
+  padding: .75rem 1rem;
+  border: 1px solid var(--na-border);
+  border-left-width: 4px;
+  border-radius: $na-radius-lg;
+  background: var(--na-surface);
+  color: var(--na-text);
+
+  &__icon { margin-top: .125rem; }
+  &__message { margin: 0; }
+
+  &--success {
+    border-left-color: var(--na-cyan);
+    .na-alert__icon { color: var(--na-cyan); }
+  }
+
+  &--danger {
+    border-left-color: var(--bs-danger);
+    .na-alert__icon { color: var(--bs-danger); }
+  }
+}

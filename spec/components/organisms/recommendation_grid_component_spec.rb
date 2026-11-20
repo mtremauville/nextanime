@@ -1,0 +1,107 @@
+require "rails_helper"
+
+RSpec.describe Organisms::RecommendationGridComponent, type: :component do
+  subject(:render_grid) { render_inline(described_class.new(recommendations: recommendations)) }
+
+  let(:perfect_blue) do
+    create(:anime, title_romaji: "Perfect Blue", title_english: nil, format: :movie, start_date: Date.new(1997, 8, 5),
+                   cover_image_url: "/perfect-blue.jpg", genres: [ create(:genre, name: "Thriller") ])
+  end
+  let(:monster) { create(:anime, title_romaji: "Monster", title_english: nil, format: :tv) }
+  let(:recommendations) do
+    [ Recommendation.new(anime: perfect_blue, score: 0.94), Recommendation.new(anime: monster, score: 0.8) ]
+  end
+
+  it "renders one item per recommendation" do
+    render_grid
+
+    expect(page).to have_css("[data-role='recommendation']", count: 2)
+  end
+
+  it "keeps the order it was given" do
+    render_grid
+
+    expect(page.all("h2").map { |heading| heading.text.strip }).to eq([ "Perfect Blue", "Monster" ])
+  end
+
+  it "shows the match as a percentage" do
+    render_grid
+
+    expect(page).to have_css(".na-badge-match [aria-hidden='true']", text: "94%")
+    expect(page).to have_css(".na-badge-match [aria-hidden='true']", text: "80%")
+  end
+
+  it "describes the anime in one line" do
+    render_grid
+
+    expect(page).to have_css("p", text: "Film · 1997")
+  end
+
+  it "shows the genres as pills" do
+    render_grid
+
+    expect(page).to have_css("span.na-tag", text: "Thriller")
+  end
+
+  it "shows the cover" do
+    render_grid
+
+    expect(page).to have_css("img.na-poster-card__image[src='/perfect-blue.jpg']")
+  end
+
+  it "links each card to the page of its anime" do
+    render_grid
+
+    expect(page).to have_link("Perfect Blue", href: "/anime/#{perfect_blue.id}")
+    expect(page).to have_link("Monster", href: "/anime/#{monster.id}")
+  end
+
+  it "shows no reason without an explainer" do
+    render_grid
+
+    expect(page).to have_no_css(".na-poster-card__reason")
+  end
+
+  context "with an explainer" do
+    subject(:render_grid) do
+      render_inline(described_class.new(recommendations: recommendations, explainer: explainer))
+    end
+
+    let(:explainer) { instance_double(MatchExplainer) }
+
+    before do
+      allow(explainer).to receive(:call).with(perfect_blue).and_return("Parce que tu aimes Thriller.")
+      allow(explainer).to receive(:call).with(monster).and_return(nil)
+    end
+
+    it "shows the reason of the cards that have one" do
+      render_grid
+
+      expect(page).to have_css("p.na-poster-card__reason", text: "Parce que tu aimes Thriller.", count: 1)
+    end
+
+    it "leaves a card without reason when nothing is said about it" do
+      render_grid
+
+      expect(page).to have_css("[data-role='recommendation']", count: 2)
+      expect(page).to have_css(".na-poster-card__reason", count: 1)
+    end
+  end
+  describe "the platforms of the anime" do
+    let(:netflix) { create(:streaming_platform, name: "Netflix", slug: "netflix") }
+
+    it "shows the platforms that are known for each anime, on its own card" do
+      render_inline(described_class.new(recommendations: recommendations, platforms_by_anime: { perfect_blue.id => [ netflix ] }))
+
+      items = page.all("[data-role='recommendation']")
+      expect(items.first).to have_css(".na-platform-badges", text: "Netflix")
+      expect(items.last).to have_no_css(".na-platform-badges")
+    end
+
+    it "shows no platform when the platforms are not given" do
+      render_grid
+
+      expect(page).to have_no_css(".na-platform-badges")
+    end
+  end
+end

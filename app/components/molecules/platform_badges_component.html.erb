@@ -1,0 +1,9 @@
+<div class="na-platform-badges">
+  <span class="visually-hidden"><%= t("platform_badges.available_on", names: names) %></span>
+  <% shown_platforms.each do |platform| %>
+    <%= render Atoms::PlatformLogoComponent.new(platform: platform, size: :small) %>
+  <% end %>
+  <% if hidden_count.positive? %>
+    <span class="na-platform-badges__more" aria-hidden="true">+<%= hidden_count %></span>
+  <% end %>
+</div>

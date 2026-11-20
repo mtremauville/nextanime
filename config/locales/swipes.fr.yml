@@ -1,0 +1,38 @@
+fr:
+  swipes:
+    deck:
+      label: Deck de cartes
+      empty: Le catalogue est vide pour le moment. Reviens bientôt !
+    progress:
+      session: Ta session
+      percent: "%{percent} %"
+      label: Progression de la session
+    actions:
+      pass: Passer
+      pass_label: Passer cet anime
+      like: J'aime
+      like_label: J'aime cet anime
+      hint: "← Passer · J'aime →"
+    taste_profile:
+      eyebrow: Ton profil se dessine
+      title: Genres et ambiances
+      empty: Swipe quelques animes pour dessiner ton profil.
+      link: Voir mon profil complet →
+      save_link: Sauvegarder mon profil →
+      percent: "%{percent} %"
+    history:
+      eyebrow: Derniers swipes
+      title: Ton historique
+      empty: Aucun swipe pour l'instant. Tes choix apparaîtront ici.
+      callout: Tu peux déjà voir tes recommandations, elles s'affinent à chaque swipe.
+      link: Voir mes recommandations
+      visitor_callout: "Crée un compte pour garder tes swipes et retrouver tes recommandations."
+      visitor_link: "Créer un compte"
+    finished:
+      title: Tu as tout vu !
+      session_title: Session terminée !
+      text: Tes swipes ont affiné tes recommandations.
+      link: Voir mes recommandations
+      visitor_text: "Crée un compte pour garder tes swipes et découvrir tes recommandations."
+      visitor_link: "Créer un compte pour voir mes recommandations"
+      new_session: Nouvelle session

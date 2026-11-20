@@ -1,0 +1,17 @@
+<article class="na-swipe-card">
+  <img class="na-swipe-card__image" src="<%= anime.cover_image_url %>" alt="" loading="lazy">
+  <% if badge %>
+    <span class="na-swipe-card__badge"><%= badge %></span>
+  <% end %>
+  <div class="na-swipe-card__caption">
+    <h2 class="na-swipe-card__title"><%= anime.display_title %></h2>
+    <% if meta %>
+      <p class="na-swipe-card__meta"><%= meta %></p>
+    <% end %>
+    <div class="d-flex flex-wrap gap-2">
+      <% genre_labels.each do |label| %>
+        <%= render Atoms::TagComponent.new(label: label) %>
+      <% end %>
+    </div>
+  </div>
+</article>

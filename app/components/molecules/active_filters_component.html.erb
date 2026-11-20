@@ -1,0 +1,5 @@
+<ul class="na-active-filters" aria-label="<%= t("catalogue.active_filters.title") %>">
+  <% chips.each do |chip| %>
+    <li><%= render Atoms::FilterChipComponent.new(label: chip[:label], remove_href: chip[:href]) %></li>
+  <% end %>
+</ul>

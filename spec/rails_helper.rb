@@ -1,7 +1,8 @@
 require "simplecov"
 SimpleCov.start "rails" do
   enable_coverage :branch
-  minimum_coverage 90 # objectif indicatif sur le code métier
+  skip %w[app/jobs/application_job.rb app/mailers/application_mailer.rb app/models/application_record.rb]
+  minimum_coverage 90 if ENV["CI"] # enforced on CI, not on partial local runs
 end
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
@@ -13,6 +14,13 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 # that will avoid rails generators crashing because migrations haven't been run yet
 # return unless Rails.env.test?
 require 'rspec/rails'
+require_relative "support/chrome_storage_reset"
+require "webmock/rspec"
+require "axe-rspec"
+
+WebMock.disable_net_connect!(allow_localhost: true)
+
+Capybara.enable_aria_label = true
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -39,8 +47,24 @@ begin
 rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
+DESKTOP_WINDOW = [ 1400, 900 ].freeze
+
 RSpec.configure do |config|
+  config.include Devise::Test::IntegrationHelpers, type: :request
+  config.include ActiveSupport::Testing::TimeHelpers, type: :request
   config.include FactoryBot::Syntax::Methods
+  config.include ViewComponent::TestHelpers, type: :component
+  config.include Capybara::RSpecMatchers, type: :component
+
+  config.before(:each, type: :system) do
+    driven_by :rack_test
+  end
+
+  config.before(:each, type: :system, js: true) do
+    driven_by :selenium, using: :headless_chrome, screen_size: DESKTOP_WINDOW
+    # The browser is reused: undo the resizing of a previous (mobile) spec.
+    page.current_window.resize_to(*DESKTOP_WINDOW)
+  end
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_paths = [
     Rails.root.join('spec/fixtures')

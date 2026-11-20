@@ -58,11 +58,28 @@ group :development do
   gem "web-console"
 end
 
-gem "rspec-rails", "~> 8.0", groups: [ :development, :test ]
+gem "rspec-rails", "~> 8.1", groups: [ :development, :test ]
 gem "factory_bot_rails", "~> 6.5", groups: [ :development, :test ]
 gem "faker", "~> 3.8", groups: [ :development, :test ]
 
 gem "shoulda-matchers", "~> 8.0", group: :test
 gem "capybara", "~> 3.40", group: :test
-gem "selenium-webdriver", "~> 4.51", group: :test
+gem "selenium-webdriver", "~> 4.52", group: :test
 gem "simplecov", "~> 1.3", group: :test
+
+gem "view_component", "~> 4.23"
+
+gem "devise", "~> 5.0"
+
+gem "rails-i18n", "~> 8.1"
+gem "devise-i18n", "~> 1.16"
+
+gem "letter_opener", "~> 1.10", group: :development
+
+gem "webmock", "~> 3.34", group: :test
+
+gem "rack-attack", "~> 6.8"
+
+gem "pundit", "~> 2.5"
+
+gem "axe-core-rspec", "~> 4.14", group: :test

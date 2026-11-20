@@ -1,0 +1,21 @@
+<% content_for :title, "Découvrir" %>
+
+<h1 class="visually-hidden">Découvrir</h1>
+
+<% if @animes.any? %>
+  <div class="na-swipe-page">
+    <div class="na-swipe-page__side na-swipe-page__side--start">
+      <%= render Organisms::TasteProfilePanelComponent.new(**taste_panel_link, tastes: @dominant_tastes) %>
+    </div>
+    <div class="na-swipe-page__main">
+      <%= render Organisms::SwipeDeckComponent.new(animes: @animes, completed: @completed) %>
+    </div>
+    <div class="na-swipe-page__side na-swipe-page__side--end">
+      <%= render Organisms::SwipeHistoryPanelComponent.new(audience: audience) %>
+    </div>
+  </div>
+<% elsif @deck_finished %>
+  <%= render Molecules::DeckFinishedComponent.new(audience: audience) %>
+<% else %>
+  <p class="text-body-secondary text-center"><%= t("swipes.deck.empty") %></p>
+<% end %>

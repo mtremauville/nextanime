@@ -1,0 +1,20 @@
+fr:
+  anime_page:
+    match:
+      label: de match
+      why: Pourquoi ce match
+    information:
+      title: Informations
+    where_to_watch:
+      title: Où regarder
+      new_tab: "(s'ouvre dans un nouvel onglet)"
+      available_in: "Disponible en streaming en %{country}."
+      empty:
+        title: "Pas encore disponible en %{country}"
+        text: "Aucune plateforme de streaming ne propose cet anime dans ton pays pour le moment. Les disponibilités sont mises à jour chaque semaine."
+      credit: "Disponibilités fournies par TMDB, données JustWatch."
+      credit_link: "Voir toutes les offres sur TMDB"
+      offers:
+        flatrate: Abonnement
+        free: Gratuit
+        ads: Gratuit avec publicité
