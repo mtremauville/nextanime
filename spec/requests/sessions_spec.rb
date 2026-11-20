@@ -38,7 +38,7 @@ RSpec.describe "Sign in", type: :request do
     end
 
     it "lets visitors try the app without an account" do
-      expect(document).to have_link("Essayer sans compte", href: root_path)
+      expect(document).to have_link("Essayer sans compte", href: discover_path)
       expect(document).to have_text("Tu peux swiper tout de suite")
     end
   end

@@ -24,7 +24,7 @@ RSpec.describe "Recommendations", type: :request do
 
         expect(response).to have_http_status(:ok)
         expect(page).to have_text("Swipe quelques animes")
-        expect(page).to have_link(href: root_path)
+        expect(page).to have_link(href: discover_path)
       end
 
       it "does not create a taste profile just to look" do

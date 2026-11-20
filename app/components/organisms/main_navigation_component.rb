@@ -15,7 +15,7 @@ class Organisms::MainNavigationComponent < ViewComponent::Base
 
   def items
     [
-      { label: "Découvrir", href: root_path, icon: "stars" },
+      { label: "Découvrir", href: discover_path, icon: "stars" },
       { label: "Catalogue", href: catalogue_path, icon: "grid" },
       { label: "Recos", href: recommendations_path, icon: "heart" },
       ({ label: "Watchlist", href: watchlist_path, icon: "bookmark" } if user),
@@ -28,8 +28,6 @@ class Organisms::MainNavigationComponent < ViewComponent::Base
   end
 
   def current?(href)
-    return @current_path == href if href == root_path
-
     @current_path == href || @current_path.start_with?("#{href}/")
   end
 end

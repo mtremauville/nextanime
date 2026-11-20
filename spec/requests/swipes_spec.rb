@@ -172,7 +172,7 @@ RSpec.describe "Swipes", type: :request do
 
       expect(response.body).to include('<turbo-stream action="replace" target="swipe-deck">')
       expect(response.body).to include("Session terminée !")
-      expect(response.body).to include(%(href="#{root_path}"))
+      expect(response.body).to include(%(href="#{discover_path}"))
       expect(response.body).to include(%(href="#{recommendations_path}"))
     end
   end

@@ -137,7 +137,7 @@ RSpec.describe "Swiping the deck", type: :system, js: true do
     within("#swipe-deck") do
       expect(page).to have_text(/session terminée/i)
       expect(page).to have_link("Voir mes recommandations", href: recommendations_path)
-      expect(page).to have_link("Nouvelle session", href: root_path)
+      expect(page).to have_link("Nouvelle session", href: discover_path)
     end
     expect(page).to have_no_button("J'aime cet anime")
     expect(Swipe.count).to eq(3)

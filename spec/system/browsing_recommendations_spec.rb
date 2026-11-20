@@ -50,7 +50,7 @@ RSpec.describe "Browsing the recommendations", type: :system, js: true do
 
       click_link "Commencer à swiper"
 
-      expect(page).to have_current_path(root_path)
+      expect(page).to have_current_path(discover_path)
     end
   end
 end

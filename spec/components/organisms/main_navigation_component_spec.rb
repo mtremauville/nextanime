@@ -64,8 +64,8 @@ RSpec.describe Organisms::MainNavigationComponent, type: :component do
       end
     end
 
-    context "when on the home page" do
-      let(:current_path) { "/" }
+    context "when on the discovery page" do
+      let(:current_path) { "/decouvrir" }
 
       it "activates only the Découvrir tab" do
         expect(rendered).to have_css("nav[aria-label='Onglets'] a[aria-current='page']", count: 1, text: "Découvrir")
