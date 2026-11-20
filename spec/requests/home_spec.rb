@@ -72,6 +72,26 @@ RSpec.describe "Home", type: :request do
       end
     end
 
+    context "for a visitor, with the anime of the page in the database" do
+      before do
+        create(:anime, anilist_id: 437, cover_image_url: "https://img.test/perfect-blue.jpg")
+        create(:anime, anilist_id: 1535, cover_image_url: "https://img.test/death-note.jpg")
+        get root_path
+      end
+
+      it "shows their covers on the posters of the hero" do
+        expect(document).to have_css(".na-hero__showcase img[src='https://img.test/perfect-blue.jpg']")
+      end
+
+      it "shows the cover of the anime that the visitor likes, in the example" do
+        expect(document).to have_css(".na-example__liked-poster img[src='https://img.test/death-note.jpg']")
+      end
+
+      it "shows the cover of a recommendation, in the example" do
+        expect(document).to have_css(".na-example-reco__poster img[src='https://img.test/perfect-blue.jpg']")
+      end
+    end
+
     context "for a signed in user" do
       before { sign_in create(:user) }
 
