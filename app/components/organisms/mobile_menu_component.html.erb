@@ -46,7 +46,16 @@
 
     <div class="na-menu__actions">
       <% if user %>
-        <%= button_to "Déconnexion", destroy_user_session_path, method: :delete, class: "btn btn-na-outline w-100" %>
+        <%= render Organisms::ConfirmationModalComponent.new(
+              id: "signout-menu",
+              title: "Se déconnecter ?",
+              confirm_label: "Se déconnecter",
+              confirm_url: destroy_user_session_path,
+              icon: "box-arrow-right",
+              tone: :cyan,
+              trigger_label: "Déconnexion",
+              trigger_class: "w-100"
+            ) do %>Tu pourras te reconnecter à tout moment.<% end %>
       <% else %>
         <%= render Atoms::ButtonComponent.new(href: new_user_registration_path, class: "w-100") do %>Créer un compte<% end %>
         <%= render Atoms::ButtonComponent.new(variant: :outline, href: new_user_session_path, class: "w-100") do %>Connexion<% end %>

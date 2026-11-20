@@ -29,10 +29,15 @@ RSpec.describe Organisms::AccountActionsComponent, type: :component do
       expect(page).to have_css(".visually-hidden", text: "Connecté en tant que mickael@example.com")
     end
 
-    it "signs out with a DELETE request" do
-      expect(page).to have_css("form[action='/users/sign_out'][method='post']")
-      expect(page).to have_css("input[name='_method'][value='delete']", visible: :all)
-      expect(page).to have_button("Déconnexion")
+    it "asks to confirm before signing out" do
+      expect(page).to have_css("button.na-account__signout[data-action='confirm-modal#open']", text: "Déconnexion")
+      expect(page).to have_css("dialog#signout-header h2#signout-header-title", text: "Se déconnecter ?")
+    end
+
+    it "signs out with a DELETE request once confirmed" do
+      expect(page).to have_css("dialog#signout-header form[action='/users/sign_out'][method='post']")
+      expect(page).to have_css("dialog#signout-header input[name='_method'][value='delete']", visible: :all)
+      expect(page).to have_css("dialog#signout-header button[type='submit']", text: "Se déconnecter")
     end
 
     it "shows the sign out as a neutral button" do

@@ -13,15 +13,27 @@ RSpec.describe "Account access", type: :system do
     click_button "Se connecter"
   end
 
-  it "signs in and out from the header" do
+  it "signs in and out from the header after confirming", :js do
     sign_in_through_the_form
 
     expect(page).to have_css("[role='status']", text: I18n.t("devise.sessions.signed_in"))
 
     within(".na-header__tools") { click_button "Déconnexion" }
+    expect(page).to have_css("#signout-header[open]")
+    within("#signout-header") { click_button "Se déconnecter" }
 
     expect(page).to have_css("[role='status']", text: I18n.t("devise.sessions.signed_out"))
     expect(page).to have_css(".na-header__tools a[href='/users/sign_in']")
+  end
+
+  it "keeps the member signed in when the sign out is cancelled", :js do
+    sign_in_through_the_form
+
+    within(".na-header__tools") { click_button "Déconnexion" }
+    within("#signout-header") { click_button "Annuler" }
+
+    expect(page).to have_no_css("#signout-header[open]")
+    expect(page).to have_css(".na-header__tools .na-account__profile")
   end
 
   it "signs out from the burger menu", :js do
@@ -32,6 +44,8 @@ RSpec.describe "Account access", type: :system do
     within("#mobile-menu") do
       expect(page).to have_text(email)
       click_button "Déconnexion"
+      expect(page).to have_css("#signout-menu[open]")
+      click_button "Se déconnecter"
     end
 
     expect(page).to have_css("[role='status']", text: I18n.t("devise.sessions.signed_out"))

@@ -7,7 +7,7 @@ module Organisms
 
     def initialize(id:, title:, confirm_label:, confirm_url:, confirm_method: :delete, icon: "exclamation-triangle",
                    tone: :magenta, trigger_label: nil, trigger_variant: :outline, trigger_icon: nil,
-                   trigger_aria_label: nil, confirmation_word: nil)
+                   trigger_aria_label: nil, trigger_class: nil, confirmation_word: nil)
       raise ArgumentError, "Unknown tone: #{tone.inspect}" unless TONES.include?(tone)
 
       @modal_id = id
@@ -21,6 +21,7 @@ module Organisms
       @trigger_variant = trigger_variant
       @trigger_icon = trigger_icon
       @trigger_aria_label = trigger_aria_label
+      @trigger_class = trigger_class
       @confirmation_word = confirmation_word
       super()
     end
@@ -28,7 +29,7 @@ module Organisms
     private
 
     attr_reader :modal_id, :title, :confirm_label, :confirm_url, :confirm_method, :icon, :tone,
-                :trigger_label, :trigger_variant, :trigger_icon, :trigger_aria_label, :confirmation_word
+                :trigger_label, :trigger_variant, :trigger_icon, :trigger_aria_label, :trigger_class, :confirmation_word
 
     def title_id
       "#{modal_id}-title"
