@@ -6,9 +6,9 @@ RSpec.describe "Mobile menu theme choice", type: :system, js: true do
 
   before do
     page.current_window.resize_to(390, 844)
-    visit root_path
+    visit discover_path
     page.execute_script("localStorage.clear()")
-    visit root_path
+    visit discover_path
     click_button "Ouvrir le menu"
   end
 

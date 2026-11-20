@@ -6,7 +6,7 @@ RSpec.describe "Taste profile panel on the swipe page", type: :request do
   before { create(:anime, cover_image_url: "https://img.test/cover.jpg") }
 
   context "as a visitor" do
-    before { get root_path }
+    before { get discover_path }
 
     it "offers no way to reset the taste profile" do
       expect(page).to have_no_button("Réinitialiser mon profil")
@@ -17,7 +17,7 @@ RSpec.describe "Taste profile panel on the swipe page", type: :request do
   context "when signed in" do
     before do
       sign_in create(:user)
-      get root_path
+      get discover_path
     end
 
     it "offers no way to reset the taste profile either" do

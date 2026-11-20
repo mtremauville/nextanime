@@ -16,7 +16,7 @@ RSpec.describe "Guest banner", type: :request do
   it "is hidden for a signed in user" do
     sign_in create(:user)
 
-    get root_path
+    get discover_path
 
     expect(page).to have_no_css(".na-guest-banner")
   end

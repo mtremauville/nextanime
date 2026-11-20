@@ -4,7 +4,7 @@ RSpec.describe "Account access", type: :request do
   let(:document) { Capybara.string(response.body) }
 
   context "for a visitor" do
-    before { get root_path }
+    before { get discover_path }
 
     it "offers to sign in and to sign up in the header" do
       expect(document).to have_css(".na-header__tools .na-account a[href='/users/sign_in']", text: "Connexion")
@@ -15,7 +15,7 @@ RSpec.describe "Account access", type: :request do
   context "for a signed in user" do
     before do
       sign_in create(:user, email: "mickael@example.com")
-      get root_path
+      get discover_path
     end
 
     it "shows the account and a sign out button in the header" do

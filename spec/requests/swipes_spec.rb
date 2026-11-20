@@ -5,7 +5,7 @@ RSpec.describe "Swipes", type: :request do
 
   describe "GET /" do
     it "is open to visitors without an account" do
-      get root_path
+      get discover_path
 
       expect(response).to have_http_status(:ok)
     end
@@ -14,21 +14,21 @@ RSpec.describe "Swipes", type: :request do
       deck_query = instance_double(SwipeDeckQuery, call: [])
       allow(SwipeDeckQuery).to receive(:new).and_return(deck_query)
 
-      get root_path
+      get discover_path
 
       expect(deck_query).to have_received(:call)
     end
 
     context "with anime in the catalog" do
     it "shows the taste profile panel without a profile link yet" do
-      get root_path
+      get discover_path
 
       expect(response.body).to include("Genres et ambiances")
       expect(response.body).not_to include("Voir mon profil complet")
     end
 
     it "offers a visitor to save the profile by creating an account" do
-      get root_path
+      get discover_path
 
       expect(Capybara.string(response.body)).to have_link("Sauvegarder mon profil →", href: new_user_registration_path)
     end
@@ -36,20 +36,20 @@ RSpec.describe "Swipes", type: :request do
     it "offers no account link to a signed in user" do
       sign_in create(:user)
 
-      get root_path
+      get discover_path
 
       expect(Capybara.string(response.body)).to have_no_link("Sauvegarder mon profil →")
     end
 
     it "shows the history panel linking to the recommendations" do
-      get root_path
+      get discover_path
 
       expect(response.body).to include("Ton historique")
       expect(response.body).to include(%(href="#{recommendations_path}"))
     end
       before do
         create_list(:anime, 3, cover_image_url: "https://img.test/cover.jpg")
-        get root_path
+        get discover_path
       end
 
       it "shows the deck with its progress" do
@@ -63,7 +63,7 @@ RSpec.describe "Swipes", type: :request do
     end
 
     context "with an empty catalog" do
-      before { get root_path }
+      before { get discover_path }
 
       it "explains that there is nothing to swipe yet" do
         expect(document).to have_text("Le catalogue est vide")
@@ -187,7 +187,7 @@ RSpec.describe "Swipes", type: :request do
     it "does not offer the anime already swiped again" do
       swipe(animes.first)
 
-      get root_path
+      get discover_path
 
       expect(response.body).not_to include(%(data-anime-id="#{animes.first.id}"))
       expect(response.body).to include(%(data-anime-id="#{animes.second.id}"))
@@ -197,7 +197,7 @@ RSpec.describe "Swipes", type: :request do
     it "also leaves out the anime that were passed" do
       swipe(animes.first, liked: false)
 
-      get root_path
+      get discover_path
 
       expect(response.body).not_to include(%(data-anime-id="#{animes.first.id}"))
     end
@@ -205,7 +205,7 @@ RSpec.describe "Swipes", type: :request do
     it "starts a new session over the remaining anime" do
       swipe(animes.first)
 
-      get root_path
+      get discover_path
 
       expect(response.body).to include("0 %")
       expect(response.body).to include(%(data-swipe-deck-total-value="2"))
@@ -214,7 +214,7 @@ RSpec.describe "Swipes", type: :request do
     it "tells the visitor that every anime was seen" do
       animes.each { |anime| swipe(anime) }
 
-      get root_path
+      get discover_path
 
       expect(response.body).to include("Tu as tout vu !")
       expect(response.body).not_to include("Le catalogue est vide")
@@ -223,7 +223,7 @@ RSpec.describe "Swipes", type: :request do
     it "gives the whole deck to a visitor with a forged cookie" do
       cookies[:taste_session] = "forged"
 
-      get root_path
+      get discover_path
 
       animes.each { |anime| expect(response.body).to include(%(data-anime-id="#{anime.id}")) }
     end
@@ -232,13 +232,13 @@ RSpec.describe "Swipes", type: :request do
       swipe(animes.first)
       TasteProfile.destroy_all
 
-      get root_path
+      get discover_path
 
       expect(response.body).to include(%(data-anime-id="#{animes.first.id}"))
     end
 
     it "does not create a profile just by looking at the deck" do
-      expect { get root_path }.not_to change(TasteProfile, :count)
+      expect { get discover_path }.not_to change(TasteProfile, :count)
     end
   end
 
@@ -253,7 +253,7 @@ RSpec.describe "Swipes", type: :request do
       sign_in user
       user.create_taste_profile!.record_swipe(liked, liked: true)
 
-      get root_path
+      get discover_path
 
       expect(document).to have_css("#taste-profile-panel [data-role='taste']", text: "Thriller")
     end
@@ -261,20 +261,20 @@ RSpec.describe "Swipes", type: :request do
     it "shows the tastes of a visitor, found through the cookie" do
       post swipes_path, params: { anime_id: liked.id, liked: true, position: 1, total: 20 }
 
-      get root_path
+      get discover_path
 
       expect(document).to have_css("#taste-profile-panel [data-role='taste']", text: "Thriller")
     end
 
     it "keeps the empty message while the person has not swiped" do
-      get root_path
+      get discover_path
 
       expect(document).to have_text("Swipe quelques animes pour dessiner ton profil.")
       expect(document).to have_no_css("[data-role='taste']")
     end
 
     it "does not create a taste profile just to look" do
-      expect { get root_path }.not_to change(TasteProfile, :count)
+      expect { get discover_path }.not_to change(TasteProfile, :count)
     end
   end
 

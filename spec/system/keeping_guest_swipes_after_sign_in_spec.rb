@@ -15,7 +15,7 @@ RSpec.describe "Keeping the guest swipes after sign in", type: :system, js: true
   end
 
   def swipe_as_a_guest
-    visit root_path
+    visit discover_path
     guest_swiped_id = find(visible_slot)["data-anime-id"].to_i
     click_button "J'aime cet anime"
     expect(page).to have_percent(25)

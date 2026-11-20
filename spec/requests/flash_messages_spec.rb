@@ -13,7 +13,7 @@ RSpec.describe "Flash messages", type: :request do
   end
 
   it "shows nothing when there is no flash" do
-    get root_path
+    get discover_path
 
     expect(document).to have_no_css(".na-alert")
   end

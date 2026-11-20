@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe "Swiping very fast as a new visitor", type: :system, js: true do
   before do
     create_list(:anime, 3, cover_image_url: "https://img.test/cover.jpg")
-    visit root_path
+    visit discover_path
   end
 
   def wait_for_swipes(count)

@@ -24,7 +24,7 @@ RSpec.describe "Keeping the guest swipes after sign up", type: :system, js: true
   end
 
   it "does not offer again the anime swiped as a guest" do
-    visit root_path
+    visit discover_path
     swiped_id = find(visible_slot)["data-anime-id"].to_i
     click_button "J'aime cet anime"
     expect(page).to have_percent(33)
@@ -37,7 +37,7 @@ RSpec.describe "Keeping the guest swipes after sign up", type: :system, js: true
   end
 
   it "stores the guest swipes on the new account" do
-    visit root_path
+    visit discover_path
     swiped_id = find(visible_slot)["data-anime-id"].to_i
     click_button "J'aime cet anime"
     expect(page).to have_percent(33)
