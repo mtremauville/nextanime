@@ -373,3 +373,57 @@
   font-size: map-get($na-font-sizes, 14);
   line-height: 1.5;
 }
+
+// The features: three short cards, stacked on a phone and side by side from md.
+.na-features {
+  display: grid;
+  gap: map-get($na-spacers, 3);
+  margin: 0 0 map-get($na-spacers, 7);
+  padding: 0;
+  list-style: none;
+
+  @include media-breakpoint-up(md) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: map-get($na-spacers, 5);
+    margin-bottom: map-get($na-spacers, 8);
+  }
+}
+
+.na-feature {
+  padding: 1.25rem; // the mobile mockup; the spacers have no 20
+  border: 1px solid var(--na-border);
+  border-radius: $na-radius-md;
+
+  @include media-breakpoint-up(md) {
+    padding: map-get($na-spacers, 5);
+  }
+}
+
+.na-feature__tag {
+  margin: 0 0 map-get($na-spacers, 2);
+  font-family: $na-font-accent;
+  font-size: map-get($na-font-sizes, 12);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.na-feature--magenta .na-feature__tag { color: var(--na-magenta); }
+.na-feature--cyan .na-feature__tag { color: var(--na-cyan); }
+
+.na-feature__title {
+  margin: 0 0 map-get($na-spacers, 2);
+  font-family: $na-font-heading;
+  font-size: map-get($na-font-sizes, 18);
+  font-weight: 700;
+
+  @include media-breakpoint-up(md) {
+    font-size: map-get($na-font-sizes, 20);
+  }
+}
+
+.na-feature__text {
+  margin: 0;
+  color: var(--na-muted);
+  font-size: map-get($na-font-sizes, 14);
+  line-height: 1.6;
+}

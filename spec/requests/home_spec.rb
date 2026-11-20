@@ -50,6 +50,10 @@ RSpec.describe "Home", type: :request do
       it "says that this recommendation is only an example" do
         expect(document).to have_css("section.na-example .na-tag", text: "Exemple")
       end
+
+      it "lists the three features of the app" do
+        expect(document).to have_css("ul.na-features > li", count: 3)
+      end
     end
 
     context "for a signed in user" do
