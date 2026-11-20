@@ -4,6 +4,7 @@ module CurrentCountry
   extend ActiveSupport::Concern
 
   COOKIE_NAME = :country
+  COOKIE_DURATION = 1.day
 
   included do
     helper_method :current_country_code
