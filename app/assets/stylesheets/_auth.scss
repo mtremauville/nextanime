@@ -222,6 +222,14 @@ $na-showcase-gradients: (
     &--#{$name} { background: linear-gradient(160deg, nth($stops, 1) 0%, nth($stops, 2) 100%); }
   }
 
+  &__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
   &__title {
     position: absolute;
     right: 0;
