@@ -12,12 +12,15 @@ class ApplicationController < ActionController::Base
   before_action :load_showcase_posters, if: :devise_controller?
 
   layout :layout_for_request
+  helper_method :password_reset_enabled?
 
   private
 
   def layout_for_request
     devise_controller? ? "auth" : "application"
   end
+
+  def password_reset_enabled? = Rails.configuration.x.password_reset_enabled
 
   def load_showcase_posters
     @poster_urls = ShowcasePostersQuery.new.call

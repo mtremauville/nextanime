@@ -57,6 +57,9 @@ Rails.application.configure do
   # Set host to be used by links generated in mailer templates.
   config.action_mailer.default_url_options = { host: "nextanime.tremic.fr", protocol: "https" }
 
+  # No e-mail can be sent yet, so the reset of the password by e-mail is off until the SMTP server below is set up.
+  config.x.password_reset_enabled = false
+
   # Specify outgoing SMTP server. Remember to add smtp/* credentials via bin/rails credentials:edit.
   # config.action_mailer.smtp_settings = {
   #   user_name: Rails.application.credentials.dig(:smtp, :user_name),

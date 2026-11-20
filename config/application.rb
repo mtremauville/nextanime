@@ -20,6 +20,9 @@ Bundler.require(*Rails.groups)
 
 module NextAnime
   class Application < Rails::Application
+    # Whether a password can be reset by e-mail. Production turns it off until it can send e-mails.
+    config.x.password_reset_enabled = true
+
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.1
 
