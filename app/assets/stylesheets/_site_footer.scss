@@ -1,14 +1,16 @@
-// The footer of every page: the sources of the data.
+// The footer of every page: who runs the site, where the data comes from, and a way around.
 
 .na-site-footer {
   margin-top: map-get($na-spacers, 5);
   padding: map-get($na-spacers, 4) 0 calc(5.5rem + env(safe-area-inset-bottom));
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
+  line-height: 1.6;
   color: var(--na-muted);
   border-top: 1px solid var(--na-border);
 
   @include media-breakpoint-up(md) {
     padding-bottom: map-get($na-spacers, 4);
+    font-size: 0.875rem;
   }
 
   a {
@@ -27,6 +29,15 @@
   gap: map-get($na-spacers, 2);
 }
 
+// The first line of the mockup: the name of the site on one side, the way around on the other.
+.na-site-footer__main {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: map-get($na-spacers, 2) map-get($na-spacers, 4);
+}
+
+.na-site-footer__copyright,
 .na-site-footer__notice,
 .na-site-footer__sources {
   margin: 0;
@@ -36,6 +47,26 @@
   display: flex;
   flex-wrap: wrap;
   gap: map-get($na-spacers, 1) map-get($na-spacers, 4);
+}
+
+// The tab bar of a phone already leads to these pages.
+.na-site-footer__nav {
+  display: none;
+
+  @include media-breakpoint-up(md) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: map-get($na-spacers, 4);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+      color: var(--na-cyan);
+    }
+  }
 }
 
 // The tab bar of a phone covers the bottom of the page. The footer is the last thing on it, so it
