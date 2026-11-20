@@ -1,7 +1,7 @@
-# The covers of the anime that the landing page shows, by the name the page gives them.
-# An anime that is not in the database yet, or has no cover, is left out: the page then
-# keeps the gradient it has by default.
-class LandingPostersQuery
+# The covers of the anime on the posters of the showcase (the landing page and the authentication
+# pages), by the name the showcase gives them. An anime that is not in the database yet, or has
+# no cover, is left out: its poster then keeps the gradient it has by default.
+class ShowcasePostersQuery
   ANILIST_IDS = {
     death_note: 1535,
     perfect_blue: 437,
