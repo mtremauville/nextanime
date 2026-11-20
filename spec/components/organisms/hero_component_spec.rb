@@ -29,4 +29,11 @@ RSpec.describe Organisms::HeroComponent, type: :component do
   it "decorates with three posters that assistive technologies skip" do
     expect(page).to have_css(".na-hero__showcase .na-showcase[aria-hidden='true'] .na-showcase-poster", count: 3)
   end
+  context "with the covers of the anime" do
+    it "shows them on the posters" do
+      render_inline(described_class.new(poster_urls: { perfect_blue: "https://img.test/perfect-blue.jpg" }))
+
+      expect(page).to have_css(".na-hero__showcase img.na-showcase-poster__image[src='https://img.test/perfect-blue.jpg']")
+    end
+  end
 end
