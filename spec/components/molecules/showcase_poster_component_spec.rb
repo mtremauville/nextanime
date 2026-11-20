@@ -33,6 +33,10 @@ RSpec.describe Molecules::ShowcasePosterComponent, type: :component do
       expect(page).to have_css("img.na-showcase-poster__image[src='https://img.test/perfect-blue.jpg'][alt='']")
     end
 
+    it "lets the browser load the cover when it is needed, the showcase being hidden on small screens" do
+      expect(page).to have_css("img.na-showcase-poster__image[loading='lazy']")
+    end
+
     it "keeps the title over the cover" do
       expect(page).to have_css(".na-showcase-poster__title", text: "Perfect Blue")
     end
