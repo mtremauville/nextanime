@@ -21,7 +21,9 @@ RSpec.describe "The journey of a new visitor", type: :system, js: true do
   end
 
   def swipe_as_a_guest
-    visit discover_path
+    visit root_path
+    click_link "Découvrir mes recommandations"
+    expect(page).to have_current_path(discover_path)
     swiped_id = find(visible_slot)["data-anime-id"].to_i
     click_button "J'aime cet anime"
     expect(page).to have_percent(33)
