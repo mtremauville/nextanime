@@ -7,7 +7,7 @@
 
     <%= render Organisms::MainNavigationComponent.new(current_path: request.path, user: current_user, selected_country: current_country_code) %>
 
-    <%= render Molecules::GuestBannerComponent.new unless current_user || devise_controller? %>
+    <%= render Molecules::GuestBannerComponent.new unless current_user || devise_controller? || current_page?(root_path) %>
 
     <main tabindex="-1" id="main" class="container na-main">
       <%= render "shared/flash" %><%= yield %>

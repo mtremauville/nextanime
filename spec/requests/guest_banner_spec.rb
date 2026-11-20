@@ -5,7 +5,7 @@ RSpec.describe "Guest banner", type: :request do
     Capybara.string(response.body)
   end
 
-  %w[/ /catalogue /recos].each do |path|
+  %w[/decouvrir /catalogue /recos].each do |path|
     it "is shown to a visitor on #{path}" do
       get path
 
@@ -23,6 +23,12 @@ RSpec.describe "Guest banner", type: :request do
 
   it "is hidden on the authentication pages" do
     get new_user_session_path
+
+    expect(page).to have_no_css(".na-guest-banner")
+  end
+
+  it "is hidden on the landing page, where nothing has started yet" do
+    get root_path
 
     expect(page).to have_no_css(".na-guest-banner")
   end
