@@ -8,7 +8,7 @@ RSpec.describe Molecules::GuestAccessComponent, type: :component do
   end
 
   it "links to the swipe page as an outline button" do
-    expect(page).to have_css("a.btn-na-outline[href='/']", text: "Essayer sans compte")
+    expect(page).to have_css("a.btn-na-outline[href='/decouvrir']", text: "Essayer sans compte")
   end
 
   it "explains that the profile is only saved with an account" do

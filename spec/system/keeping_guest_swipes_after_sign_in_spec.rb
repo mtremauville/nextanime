@@ -15,7 +15,7 @@ RSpec.describe "Keeping the guest swipes after sign in", type: :system, js: true
   end
 
   def swipe_as_a_guest
-    visit root_path
+    visit discover_path
     guest_swiped_id = find(visible_slot)["data-anime-id"].to_i
     click_button "J'aime cet anime"
     expect(page).to have_percent(25)
@@ -41,7 +41,7 @@ RSpec.describe "Keeping the guest swipes after sign in", type: :system, js: true
 
     sign_in
 
-    expect(page).to have_current_path(root_path)
+    expect(page).to have_current_path(discover_path)
     expect(page).to have_percent(50)
     expect(page).to have_no_css("[data-anime-id='#{guest_swiped_id}']", visible: :all)
     expect(page).to have_no_css("[data-anime-id='#{account_swiped_id}']", visible: :all)
@@ -52,7 +52,7 @@ RSpec.describe "Keeping the guest swipes after sign in", type: :system, js: true
     account_swiped_id = give_the_account_a_swipe_on_another_anime(guest_swiped_id)
 
     sign_in
-    expect(page).to have_current_path(root_path)
+    expect(page).to have_current_path(discover_path)
 
     expect(account.reload.taste_profile.swiped_anime_ids).to contain_exactly(guest_swiped_id, account_swiped_id)
   end

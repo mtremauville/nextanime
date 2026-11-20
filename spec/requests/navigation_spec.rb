@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "Navigation", type: :request do
   pages = {
-    "/" => "Découvrir",
+    "/decouvrir" => "Découvrir",
     "/catalogue" => "Catalogue",
     "/recos" => "Recos",
     "/watchlist" => "Watchlist",

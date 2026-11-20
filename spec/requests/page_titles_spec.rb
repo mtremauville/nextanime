@@ -8,7 +8,8 @@ RSpec.describe "Page titles", type: :request do
   end
 
   {
-    "the swipe page" => [ "/", "Découvrir · NextAnime" ],
+    "the landing page" => [ "/", "Ton prochain anime se cache dans tes goûts · NextAnime" ],
+    "the swipe page" => [ "/decouvrir", "Découvrir · NextAnime" ],
     "the catalogue" => [ "/catalogue", "Catalogue · NextAnime" ],
     "the privacy policy" => [ "/confidentialite", "Politique de confidentialité · NextAnime" ]
   }.each do |page, (path, title)|

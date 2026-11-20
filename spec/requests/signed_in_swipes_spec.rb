@@ -38,14 +38,14 @@ RSpec.describe "Swiping while signed in", type: :request do
     it "leaves out the anime the account already swiped" do
       TasteProfile.create!(user: user).record_swipe(seen, liked: false)
 
-      get root_path
+      get discover_path
 
       expect(page).to have_css("[data-anime-id='#{unseen.id}']", visible: :all)
       expect(page).to have_no_css("[data-anime-id='#{seen.id}']", visible: :all)
     end
 
     it "does not create a profile just by looking at the deck" do
-      expect { get root_path }.not_to change(TasteProfile, :count)
+      expect { get discover_path }.not_to change(TasteProfile, :count)
     end
   end
 end

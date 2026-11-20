@@ -38,7 +38,7 @@ RSpec.describe "Sign in", type: :request do
     end
 
     it "lets visitors try the app without an account" do
-      expect(document).to have_link("Essayer sans compte", href: root_path)
+      expect(document).to have_link("Essayer sans compte", href: discover_path)
       expect(document).to have_text("Tu peux swiper tout de suite")
     end
   end
@@ -50,6 +50,8 @@ RSpec.describe "Sign in", type: :request do
       post user_session_path, params: { user: { email: email, password: password } }
 
       expect(response).to redirect_to(root_path)
+      follow_redirect!
+      expect(response).to redirect_to(discover_path)
       follow_redirect!
       expect(document).to have_css("[role='status']", text: I18n.t("devise.sessions.signed_in"))
     end

@@ -5,7 +5,7 @@ RSpec.describe "Mobile menu", type: :system, js: true do
 
   before do
     page.current_window.resize_to(390, 844)
-    visit root_path
+    visit discover_path
   end
 
   it "is closed by default" do

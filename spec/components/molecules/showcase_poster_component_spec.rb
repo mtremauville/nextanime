@@ -24,4 +24,25 @@ RSpec.describe Molecules::ShowcasePosterComponent, type: :component do
   it "raises for an unknown gradient" do
     expect { render_poster(gradient: :green) }.to raise_error(ArgumentError)
   end
+  context "with a cover" do
+    before do
+      render_inline(described_class.new(title: "Perfect Blue", position: :left, gradient: :violet, image_url: "https://img.test/perfect-blue.jpg"))
+    end
+
+    it "shows the cover, which only decorates" do
+      expect(page).to have_css("img.na-showcase-poster__image[src='https://img.test/perfect-blue.jpg'][alt='']")
+    end
+
+    it "keeps the title over the cover" do
+      expect(page).to have_css(".na-showcase-poster__title", text: "Perfect Blue")
+    end
+  end
+
+  context "without a cover" do
+    it "keeps the gradient and shows no image" do
+      render_inline(described_class.new(title: "Perfect Blue", position: :left, gradient: :violet))
+
+      expect(page).to have_no_css("img")
+    end
+  end
 end

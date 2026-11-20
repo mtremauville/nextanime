@@ -3,7 +3,7 @@
 <%= render Organisms::RecommendationsHeaderComponent.new(
       tags: @tag_names,
       genres: @genre_names,
-      swipe_href: root_path,
+      swipe_href: discover_path,
       profile_href: (profile_path if current_user)
     ) %>
 
@@ -12,7 +12,7 @@
         title: t(".invite.title"),
         text: t(".invite.text"),
         link_label: t(".invite.link"),
-        link_href: root_path
+        link_href: discover_path
       ) %>
 <% elsif @recommendations.empty? && @kind.nil? %>
   <%= render Molecules::EmptyStateComponent.new(
@@ -37,7 +37,7 @@
           title: t(".empty.title"),
           text: t(".empty.text"),
           link_label: t(".empty.link"),
-          link_href: root_path,
+          link_href: discover_path,
           link_variant: :outline
         ) %>
   <% else %>

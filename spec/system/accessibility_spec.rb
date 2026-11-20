@@ -14,7 +14,8 @@ RSpec.describe "Accessibility of the pages", type: :system, js: true do
   let(:user) { create(:user) }
 
   public_pages = {
-    "the swipe page" => "/",
+    "the landing page" => "/",
+    "the swipe page" => "/decouvrir",
     "the catalogue" => "/catalogue",
     "the sign in page" => "/users/sign_in",
     "the sign up page" => "/users/sign_up",

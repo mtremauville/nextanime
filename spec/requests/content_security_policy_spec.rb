@@ -4,7 +4,7 @@ RSpec.describe "Content security policy", type: :request do
   let(:policy) { response.headers["Content-Security-Policy"] }
   let(:nonce) { policy[/'nonce-([^']+)'/, 1] }
 
-  before { get root_path }
+  before { get discover_path }
 
   it "is sent with every page" do
     expect(policy).to be_present
@@ -49,7 +49,7 @@ RSpec.describe "Content security policy", type: :request do
 
   it "keeps the same nonce during the whole session, so that Turbo visits stay valid" do
     first_nonce = nonce
-    get root_path
+    get discover_path
 
     expect(first_nonce).to be_present
     expect(response.headers["Content-Security-Policy"][/'nonce-([^']+)'/, 1]).to eq(first_nonce)

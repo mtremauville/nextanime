@@ -79,7 +79,7 @@ RSpec.describe "Choosing a country", type: :request do
     def selector = Capybara.string(response.body)
 
     it "shows France to a visitor who chose nothing" do
-      get root_path
+      get discover_path
 
       expect(selector).to have_select("country", selected: "France")
     end
@@ -87,7 +87,7 @@ RSpec.describe "Choosing a country", type: :request do
     it "shows the country that a visitor chose" do
       patch country_path, params: { country: "BE" }
 
-      get root_path
+      get discover_path
 
       expect(selector).to have_select("country", selected: "Belgique")
     end
@@ -95,7 +95,7 @@ RSpec.describe "Choosing a country", type: :request do
     it "shows the country of a member" do
       sign_in create(:user, country: "CH")
 
-      get root_path
+      get discover_path
 
       expect(selector).to have_select("country", selected: "Suisse")
     end

@@ -4,7 +4,7 @@ RSpec.describe "Navigation", type: :system do
   let(:tab_bar) { "nav[aria-label='Onglets']" }
 
   it "moves from one tab to another and keeps the current tab highlighted" do
-    visit root_path
+    visit discover_path
     expect(page).to have_css("#{tab_bar} a[aria-current='page']", text: "Découvrir")
 
     within(tab_bar) { click_link "Catalogue" }

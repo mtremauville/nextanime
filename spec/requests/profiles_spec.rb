@@ -41,7 +41,7 @@ RSpec.describe "Profile page", type: :request do
       it "offers to keep swiping" do
         get profile_path
 
-        expect(html).to have_link("Continuer à swiper", href: root_path)
+        expect(html).to have_link("Continuer à swiper", href: discover_path)
       end
 
       it "offers to reset the taste profile after a confirmation" do

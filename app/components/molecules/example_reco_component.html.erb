@@ -1,0 +1,15 @@
+<li class="na-example-reco">
+  <div class="<%= poster_class %>" aria-hidden="true">
+    <% if image_url %>
+      <img class="na-example-reco__image" src="<%= image_url %>" alt="" loading="lazy">
+    <% end %>
+  </div>
+  <div class="na-example-reco__body">
+    <div class="na-example-reco__heading">
+      <p class="na-example-reco__title"><%= title %></p>
+      <%= render Atoms::MatchBadgeComponent.new(percent: match) %>
+    </div>
+    <p class="na-example-reco__meta"><%= meta %></p>
+    <p class="na-example-reco__reason"><%= reason %></p>
+  </div>
+</li>

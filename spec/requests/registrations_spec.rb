@@ -51,7 +51,7 @@ RSpec.describe "Sign up", type: :request do
     end
 
     it "lets visitors try the app without an account" do
-      expect(document).to have_link("Essayer sans compte", href: root_path)
+      expect(document).to have_link("Essayer sans compte", href: discover_path)
     end
   end
 
@@ -65,6 +65,8 @@ RSpec.describe "Sign up", type: :request do
         post user_registration_path, params: params
 
         expect(response).to redirect_to(root_path)
+        follow_redirect!
+        expect(response).to redirect_to(discover_path)
         follow_redirect!
         expect(document).to have_css("[role='status']", text: I18n.t("devise.registrations.signed_up"))
       end

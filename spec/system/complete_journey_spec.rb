@@ -22,6 +22,8 @@ RSpec.describe "The journey of a new visitor", type: :system, js: true do
 
   def swipe_as_a_guest
     visit root_path
+    click_link "Découvrir mes recommandations"
+    expect(page).to have_current_path(discover_path)
     swiped_id = find(visible_slot)["data-anime-id"].to_i
     click_button "J'aime cet anime"
     expect(page).to have_percent(33)
@@ -35,7 +37,7 @@ RSpec.describe "The journey of a new visitor", type: :system, js: true do
     fill_in "user[password_confirmation]", with: password
     check "user[privacy_policy]", allow_label_click: true
     click_button "Créer mon compte"
-    expect(page).to have_current_path(root_path)
+    expect(page).to have_current_path(discover_path)
   end
 
   def open_a_recommendation_other_than(swiped_id)

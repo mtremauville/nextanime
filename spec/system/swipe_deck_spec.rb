@@ -5,7 +5,7 @@ RSpec.describe "Swiping the deck", type: :system, js: true do
 
   before do
     create_list(:anime, 3, cover_image_url: "https://img.test/cover.jpg")
-    visit root_path
+    visit discover_path
   end
 
   # The guard keeps "0 %" from matching inside "100 %".
@@ -137,7 +137,7 @@ RSpec.describe "Swiping the deck", type: :system, js: true do
     within("#swipe-deck") do
       expect(page).to have_text(/session terminée/i)
       expect(page).to have_link("Voir mes recommandations", href: recommendations_path)
-      expect(page).to have_link("Nouvelle session", href: root_path)
+      expect(page).to have_link("Nouvelle session", href: discover_path)
     end
     expect(page).to have_no_button("J'aime cet anime")
     expect(Swipe.count).to eq(3)
@@ -165,7 +165,7 @@ RSpec.describe "Swiping the deck", type: :system, js: true do
       click_button "J'aime cet anime"
       expect(page).to have_percent(33)
 
-      visit root_path
+      visit discover_path
 
       expect(page).to have_percent(33)
       expect(displayed_anime_id).not_to eq(first_id)
@@ -175,7 +175,7 @@ RSpec.describe "Swiping the deck", type: :system, js: true do
       click_button "J'aime cet anime"
       expect(page).to have_percent(33)
 
-      visit root_path
+      visit discover_path
       click_button "J'aime cet anime"
 
       expect(page).to have_percent(67)
@@ -185,7 +185,7 @@ RSpec.describe "Swiping the deck", type: :system, js: true do
       click_button "J'aime cet anime"
       expect(page).to have_percent(33)
 
-      visit root_path
+      visit discover_path
       2.times { click_button "J'aime cet anime" }
 
       within("#swipe-deck") { expect(page).to have_text(/session terminée/i) }

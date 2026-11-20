@@ -39,7 +39,7 @@ RSpec.describe "Account access", type: :system do
 
   it "offers the guest mode and the sign in link in the burger menu", :js do
     page.driver.browser.manage.window.resize_to(390, 844)
-    visit root_path
+    visit discover_path
 
     click_button "Ouvrir le menu"
     within("#mobile-menu") do

@@ -7,7 +7,7 @@ RSpec.describe "Refreshing the taste panel while swiping", type: :system, js: tr
   before do
     thriller = create(:genre, name: "Thriller")
     create_list(:anime, 3, cover_image_url: "https://img.test/cover.jpg", genres: [ thriller ])
-    visit root_path
+    visit discover_path
   end
 
   it "starts with the invitation to swipe" do

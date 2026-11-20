@@ -51,7 +51,7 @@ class SwipesController < ApplicationController
   def deck_stream
     if position_param == total_param + 1
       turbo_stream.replace(DECK_TARGET, Molecules::DeckFinishedComponent.new(recommendations_href: recommendations_path,
-                                                                             new_session_href: root_path))
+                                                                             new_session_href: discover_path))
     else
       turbo_stream.replace(PROGRESS_TARGET, Molecules::DeckProgressComponent.new(completed: position_param - 1, total: total_param))
     end
