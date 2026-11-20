@@ -427,3 +427,54 @@
   font-size: map-get($na-font-sizes, 14);
   line-height: 1.6;
 }
+
+// The last invitation: one button, full width on a phone.
+.na-cta {
+  margin-bottom: map-get($na-spacers, 7);
+  padding: map-get($na-spacers, 6) 1.25rem; // the mobile mockup; the spacers have no 20
+  text-align: center;
+  background: radial-gradient(circle at 80% 0%, color-mix(in srgb, var(--na-magenta) 18%, transparent), transparent 60%);
+  border: 1px solid var(--na-magenta);
+  border-radius: $na-radius-lg;
+  box-shadow: 0 0 2rem color-mix(in srgb, var(--na-magenta) 25%, transparent);
+
+  @include media-breakpoint-up(md) {
+    margin-bottom: map-get($na-spacers, 8);
+    padding: 3.5rem 2.5rem;
+  }
+
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+
+    @include media-breakpoint-up(md) {
+      display: inline-flex;
+      width: auto;
+    }
+  }
+}
+
+.na-cta__title {
+  margin: 0 0 map-get($na-spacers, 2);
+  font-family: $na-font-heading;
+  font-size: 1.625rem; // the mobile mockup; the scale has no 26
+  font-weight: 700;
+
+  @include media-breakpoint-up(md) {
+    margin-bottom: map-get($na-spacers, 4);
+    font-size: map-get($na-font-sizes, 32);
+  }
+}
+
+.na-cta__text {
+  margin: 0 0 1.25rem;
+  color: var(--na-muted);
+  font-size: map-get($na-font-sizes, 14);
+
+  @include media-breakpoint-up(md) {
+    margin-bottom: map-get($na-spacers, 5);
+    font-size: map-get($na-font-sizes, 16);
+  }
+}

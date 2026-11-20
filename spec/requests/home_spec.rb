@@ -54,6 +54,10 @@ RSpec.describe "Home", type: :request do
       it "lists the three features of the app" do
         expect(document).to have_css("ul.na-features > li", count: 3)
       end
+
+      it "ends with a way to start swiping without an account" do
+        expect(document).to have_link("Commencer à swiper", href: discover_path)
+      end
     end
 
     context "for a signed in user" do
