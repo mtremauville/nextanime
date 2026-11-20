@@ -19,6 +19,8 @@ RSpec.describe "Recommendations", type: :request do
 
   describe "GET /recos" do
     context "without any swipe" do
+      before { sign_in user }
+
       it "invites to swipe" do
         get recommendations_path
 
@@ -122,12 +124,27 @@ RSpec.describe "Recommendations", type: :request do
       end
     end
 
-    context "as a visitor who swiped" do
-      it "uses the profile attached to the cookie" do
+    context "as a visitor" do
+      it "sends the visitor to the sign in page" do
+        get recommendations_path
+
+        expect(response).to redirect_to(new_user_session_path)
+      end
+
+      it "brings the visitor back to the recommendations after signing in" do
+        get recommendations_path
+
+        post user_session_path, params: { user: { email: user.email, password: user.password } }
+
+        expect(response).to redirect_to(recommendations_path)
+      end
+
+      it "gives the swipes of the visitor to the account, whose recommendations are then ready" do
         liked = create(:anime, genres: [ thriller ])
         other = create(:anime, genres: [ thriller ])
         post swipes_path, params: { anime_id: liked.id, liked: true, position: 1, total: 24 }
 
+        post user_session_path, params: { user: { email: user.email, password: user.password } }
         get recommendations_path
 
         expect(card_titles).to match([ a_string_including(other.display_title) ])
@@ -191,15 +208,6 @@ RSpec.describe "Recommendations", type: :request do
       expect(page).to have_text("Aucune recommandation")
       expect(page).to have_link("Tous", href: recommendations_path)
     end
-
-    it "has no link to the profile for a visitor" do
-      sign_out user
-      post swipes_path, params: { anime_id: liked.id, liked: true, position: 1, total: 24 }
-
-      get recommendations_path
-
-      expect(page).to have_no_link("Ton profil")
-    end
   end
 
   describe "GET /recos once every anime has been swiped" do
@@ -224,17 +232,6 @@ RSpec.describe "Recommendations", type: :request do
       get recommendations_path
 
       expect(page).to have_link("Voir mon profil", href: profile_path)
-    end
-
-    it "offers a visitor to create an account" do
-      sign_out user
-      post swipes_path, params: { anime_id: liked.id, liked: true }
-      post swipes_path, params: { anime_id: passed.id, liked: false }
-
-      get recommendations_path
-
-      expect(page).to have_text("Tu as tout swipé")
-      expect(page).to have_link("Créer un compte pour garder ton profil", href: new_user_registration_path)
     end
 
     it "keeps the message of the format when a format is chosen" do

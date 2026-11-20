@@ -5,7 +5,7 @@ RSpec.describe "Guest banner", type: :request do
     Capybara.string(response.body)
   end
 
-  %w[/decouvrir /catalogue /recos].each do |path|
+  %w[/decouvrir /catalogue].each do |path|
     it "is shown to a visitor on #{path}" do
       get path
 
