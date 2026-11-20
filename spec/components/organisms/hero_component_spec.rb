@@ -26,4 +26,7 @@ RSpec.describe Organisms::HeroComponent, type: :component do
   it "hides the Japanese kicker from assistive technologies, as it only decorates" do
     expect(page).to have_css("p[lang='ja'][aria-hidden='true']", text: "次のアニメを見つけよう")
   end
+  it "decorates with three posters that assistive technologies skip" do
+    expect(page).to have_css(".na-hero__showcase .na-showcase[aria-hidden='true'] .na-showcase-poster", count: 3)
+  end
 end

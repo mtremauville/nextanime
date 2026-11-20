@@ -1,10 +1,46 @@
 // The landing page: the hero, then the sections that follow it.
 
+// Two columns while there is room for them, the posters under the text otherwise.
 .na-hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: map-get($na-spacers, 7);
   padding: map-get($na-spacers, 6) 0 map-get($na-spacers, 7);
 
   @include media-breakpoint-up(md) {
     padding: map-get($na-spacers, 9) 0 map-get($na-spacers, 8);
+  }
+}
+
+.na-hero__content {
+  flex: 1 1 32.5rem;
+  min-width: 0;
+}
+
+.na-hero__showcase {
+  display: flex;
+  flex: 1 1 18.125rem;
+  justify-content: center;
+  min-width: 0;
+
+  // The posters of the mobile mockups: 150 x 225 px in a frame of 290 px, so nothing overflows a phone.
+  @include media-breakpoint-down(md) {
+    .na-showcase { width: 18.125rem; height: 16.25rem; }
+
+    .na-showcase-poster {
+      width: 9.375rem;
+      height: 14.0625rem;
+
+      &--left { top: 1.875rem; left: 0; }
+      &--center { top: 0; left: 4.375rem; }
+      &--right { top: 2.5rem; left: 8.75rem; }
+    }
+
+    .na-showcase-poster__title {
+      padding: 2rem .625rem .625rem;
+      font-size: map-get($na-font-sizes, 14);
+    }
   }
 }
 
