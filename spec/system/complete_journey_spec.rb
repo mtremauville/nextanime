@@ -22,7 +22,7 @@ RSpec.describe "The journey of a new visitor", type: :system, js: true do
 
   def swipe_as_a_guest
     visit root_path
-    click_link "Découvrir mes recommandations"
+    within(".na-hero") { click_link "Commencer à swiper" }
     expect(page).to have_current_path(discover_path)
     swiped_id = find(visible_slot)["data-anime-id"].to_i
     click_button "J'aime cet anime"

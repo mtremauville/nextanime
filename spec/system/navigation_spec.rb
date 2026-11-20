@@ -15,7 +15,7 @@ RSpec.describe "Navigation", type: :system do
   end
 
   it "goes back home from the brand link" do
-    visit calendar_path
+    visit catalogue_path
     click_link "NextAnime"
 
     expect(page).to have_current_path(root_path)
