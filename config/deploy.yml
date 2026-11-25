@@ -20,9 +20,11 @@ env:
   secret:
     - RAILS_MASTER_KEY
     - NEXT_ANIME_DATABASE_PASSWORD
+    - SMTP_PASSWORD
   clear:
     SOLID_QUEUE_IN_PUMA: true
     DB_HOST: next_anime-db
+    SMTP_USERNAME: no-reply@tremic.fr
 
 aliases:
   console: app exec --interactive --reuse "bin/rails console"

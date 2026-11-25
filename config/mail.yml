@@ -1,0 +1,12 @@
+# Outgoing SMTP server of the production mailbox (Hostinger).
+# The mailbox and its password come from the environment: see config/deploy.yml and .kamal/secrets.
+production:
+  address: smtp.hostinger.com
+  port: 587
+  domain: tremic.fr
+  authentication: plain
+  enable_starttls_auto: true
+  open_timeout: 5
+  read_timeout: 5
+  user_name: <%= ENV["SMTP_USERNAME"].to_s.to_json %>
+  password: <%= ENV["SMTP_PASSWORD"].to_s.to_json %>
