@@ -1,4 +1,4 @@
-module Molecules
+module Organisms
   class AccountActionsComponent < ViewComponent::Base
     def initialize(user: nil)
       @user = user

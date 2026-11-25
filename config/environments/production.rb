@@ -50,24 +50,18 @@ Rails.application.configure do
   config.active_job.queue_adapter = :solid_queue
   config.solid_queue.connects_to = { database: { writing: :queue } }
 
-  # Ignore bad email addresses and do not raise email delivery errors.
-  # Set this to true and configure the email server for immediate delivery to raise delivery errors.
-  # config.action_mailer.raise_delivery_errors = false
+  # Send through the SMTP server of config/mail.yml, and raise the errors so that they reach the logs.
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.raise_delivery_errors = true
 
   # Set host to be used by links generated in mailer templates.
   config.action_mailer.default_url_options = { host: "nextanime.tremic.fr", protocol: "https" }
 
-  # No e-mail can be sent yet, so the reset of the password by e-mail is off until the SMTP server below is set up.
+  # The reset of the password by e-mail stays off until an e-mail sent from production has really been received.
   config.x.password_reset_enabled = false
 
-  # Specify outgoing SMTP server. Remember to add smtp/* credentials via bin/rails credentials:edit.
-  # config.action_mailer.smtp_settings = {
-  #   user_name: Rails.application.credentials.dig(:smtp, :user_name),
-  #   password: Rails.application.credentials.dig(:smtp, :password),
-  #   address: "smtp.example.com",
-  #   port: 587,
-  #   authentication: :plain
-  # }
+  # Outgoing SMTP server: see config/mail.yml; the password comes from SMTP_PASSWORD.
+  config.action_mailer.smtp_settings = config_for(:mail)
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).

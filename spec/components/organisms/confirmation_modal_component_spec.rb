@@ -139,3 +139,18 @@ RSpec.describe Organisms::ConfirmationModalComponent, "with an icon as trigger",
     expect(page).to have_no_css("button[data-action='confirm-modal#open']", text: /\S/)
   end
 end
+
+RSpec.describe Organisms::ConfirmationModalComponent, "with a class on the trigger", type: :component do
+  before do
+    render_inline(described_class.new(id: "x", title: "T", confirm_label: "OK", confirm_url: "/x",
+                                      trigger_label: "Ouvrir", trigger_class: "w-100"))
+  end
+
+  it "puts the class on the button that opens the dialog" do
+    expect(page).to have_css("button.w-100[data-action='confirm-modal#open']", text: "Ouvrir")
+  end
+
+  it "keeps the usual classes of the button" do
+    expect(page).to have_css("button.btn.btn-na-outline.w-100[data-action='confirm-modal#open']")
+  end
+end

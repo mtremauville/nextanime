@@ -5,7 +5,16 @@
       <span>Mon profil</span>
     <% end %>
     <span class="visually-hidden">Connecté en tant que <%= user.email %></span>
-    <%= button_to "Déconnexion", destroy_user_session_path, method: :delete, class: "btn na-account__signout" %>
+    <%= render Organisms::ConfirmationModalComponent.new(
+          id: "signout-header",
+          title: "Se déconnecter ?",
+          confirm_label: "Se déconnecter",
+          confirm_url: destroy_user_session_path,
+          icon: "box-arrow-right",
+          tone: :cyan,
+          trigger_label: "Déconnexion",
+          trigger_class: "na-account__signout"
+        ) do %>Tu pourras te reconnecter à tout moment.<% end %>
   <% else %>
     <%= link_to "Connexion", new_user_session_path, class: "na-account__link" %>
     <%= render Atoms::ButtonComponent.new(variant: :outline, href: new_user_registration_path) do %>Créer un compte<% end %>
