@@ -76,7 +76,7 @@ gem "devise-i18n", "~> 1.16"
 
 gem "letter_opener", "~> 1.10", group: :development
 
-gem "webmock", "~> 3.34", group: :test
+gem "webmock", "~> 3.38", group: :test
 
 gem "rack-attack", "~> 6.8"
 
