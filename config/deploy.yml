@@ -3,12 +3,18 @@ image: mtremauville/next_anime
 
 servers:
   web:
-    - 147.79.114.207
+    - 2.25.22.96
 
 proxy:
   ssl: false
   host: nextanime.tremic.fr
   forward_headers: true
+  # Behind the host nginx shared with the Ghost blog: kamal-proxy must not take ports 80/443.
+  run:
+    http_port: 8080
+    https_port: 8443
+    bind_ips:
+      - 127.0.0.1
 
 registry:
   server: ghcr.io
@@ -40,7 +46,7 @@ builder:
 accessories:
   db:
     image: postgres:17
-    host: 147.79.114.207
+    host: 2.25.22.96
     port: "127.0.0.1:5432:5432"
     env:
       clear:
