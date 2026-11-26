@@ -30,7 +30,8 @@ env:
   clear:
     SOLID_QUEUE_IN_PUMA: true
     DB_HOST: next_anime-db
-    SMTP_USERNAME: no-reply@tremic.fr
+    # The mailbox signs in; no-reply@tremic.fr is only an alias used as the sender.
+    SMTP_USERNAME: mickael.tremauville@tremic.fr
 
 aliases:
   console: app exec --interactive --reuse "bin/rails console"
